@@ -1,3 +1,4 @@
+import ContentSection from "@/components/ContentSection";
 import AnalycitsDashboard from "@/components/ui/Analycits-dashboard";
 import Cta from "@/components/ui/Cta";
 import CtaMiddle from "@/components/ui/Cta-middle";
@@ -22,6 +23,7 @@ export default function Home() {
       <AnalycitsDashboard />
       <CtaMiddle />
       <FeatureDivider />
+      {/* <ContentSection /> */}
       <Features2 />
       <Cta />
     </main>

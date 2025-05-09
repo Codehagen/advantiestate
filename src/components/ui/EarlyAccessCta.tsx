@@ -34,7 +34,7 @@ export default function EarlyAccessCta() {
 
   return (
     <section
-      aria-labelledby="cta-title"
+      aria-labelledby="early-access-title"
       className="mx-auto mb-20 mt-32 max-w-6xl p-1 px-2 sm:mt-56"
     >
       <div className="relative flex items-center justify-center">
@@ -60,16 +60,15 @@ export default function EarlyAccessCta() {
           <div className="flex flex-col items-center justify-center text-center">
             <div>
               <h3
-                id="cta-title"
+                id="early-access-title"
                 className="inline-block bg-gradient-to-t from-warm-grey to-warm-grey-3 bg-clip-text p-2 text-4xl font-bold tracking-tighter text-transparent md:text-6xl dark:from-warm-white dark:to-warm-grey-1"
               >
-                Hold Deg Oppdatert med Innsikt fra Advanti
+                Hold Deg Oppdatert
               </h3>
               <p className="mx-auto mt-4 max-w-2xl text-warm-grey-2 sm:text-lg dark:text-warm-grey-1">
                 <Balancer>
-                  Meld deg på for å motta de siste markedsanalysene, nyheter og
-                  innsikt om næringseiendom i Nord-Norge direkte fra våre
-                  eksperter.
+                  Motta de siste nyhetene, markedsoppdateringer og innsikt om
+                  næringseiendom i Nord-Norge direkte i din innboks.
                 </Balancer>
               </p>
             </div>
@@ -91,7 +90,7 @@ export default function EarlyAccessCta() {
                       />
                     </svg>
                     <p className="text-lg font-medium text-warm-grey dark:text-warm-white">
-                      Takk for din interesse!
+                      Takk for din påmelding!
                     </p>
                     <p className="text-warm-grey-2 dark:text-warm-grey-1">
                       Du vil nå motta våre oppdateringer.
@@ -124,7 +123,7 @@ export default function EarlyAccessCta() {
                       variant="primary"
                       disabled={isSubmitting}
                     >
-                      {isSubmitting ? "Sender..." : "Meld deg på"}
+                      {isSubmitting ? "Registrerer..." : "Abonner"}
                     </Button>
                   </form>
                 )}
