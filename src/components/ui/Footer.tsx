@@ -5,24 +5,28 @@ import ThemeSwitch from "../ThemeSwitch";
 
 const navigation = {
   produkter: [
-    { name: "Simulering", href: "#", external: false },
-    { name: "Markedsanalyse", href: "#", external: false },
+    { name: "Verdsettelse", href: "/tjenester/verdsettelse", external: false },
     {
-      name: "Porteføljestyring",
-      href: "#",
+      name: "Transaksjon",
+      href: "/tjenester/salg",
       external: false,
     },
-    { name: "Rapporter", href: "#", external: false },
+    { name: "Utleie", href: "/tjenester/utleie", external: false },
+    {
+      name: "Strategisk Rådgivning",
+      href: "/tjenester/strategisk-radgivning",
+      external: false,
+    },
   ],
   ressurser: [
-    { name: "Investor", href: "/investor", external: false },
-    { name: "Integrasjoner", href: "/integrasjoner", external: false },
+    { name: "Investor", href: "#", external: false },
     { name: "Markedsrapporter", href: "/markedsinnsikt", external: false },
     { name: "Kunnskapssenter", href: "/help", external: false },
   ],
   selskap: [
     { name: "Om oss", href: "/om-oss", external: false },
     { name: "Kontakt", href: "/kontakt", external: false },
+    { name: "Karriere", href: "#", external: false },
     { name: "Blogg", href: "/blog", external: false },
     { name: "Kunder", href: "/kunder", external: false },
   ],
@@ -53,7 +57,7 @@ export default function Footer() {
             <div className="grid grid-cols-2 gap-8">
               <div>
                 <h3 className="text-sm font-semibold leading-6 text-warm-grey dark:text-warm-white">
-                  Produkter
+                  Tjenester
                 </h3>
                 <ul
                   role="list"

@@ -1,72 +1,72 @@
-import { allBlogPosts } from "content-collections"
-import { Metadata } from "next"
-import { notFound } from "next/navigation"
+import { allBlogPosts } from "content-collections";
+import { Metadata } from "next";
+import { notFound } from "next/navigation";
 
-import BlogCard from "@/components/blog/blog-card"
-import { BLOG_CATEGORIES } from "@/lib/blog/content"
-import { getBlurDataURL } from "@/lib/blog/images"
-import { constructMetadata } from "@/lib/utils"
+import BlogCard from "@/components/blog/blog-card";
+import { BLOG_CATEGORIES } from "@/lib/blog/content";
+import { getBlurDataURL } from "@/lib/blog/images";
+import { constructMetadata } from "@/lib/utils";
 
 interface BlogPost {
-  title: string
-  summary: string
-  publishedAt: string
-  image: string
-  author: string
-  slug: string
-  mdx?: string
-  related?: string[]
-  tableOfContents?: any
-  images?: any
-  tweetIds?: any
-  githubRepos?: any
-  categories?: string[]
-  _meta?: any
+  title: string;
+  summary: string;
+  publishedAt: string;
+  image: string;
+  author: string;
+  slug: string;
+  mdx?: string;
+  related?: string[];
+  tableOfContents?: any;
+  images?: any;
+  tweetIds?: any;
+  githubRepos?: any;
+  categories?: string[];
+  _meta?: any;
 }
 
 interface BlogPostWithBlur extends BlogPost {
-  blurDataURL: string
+  blurDataURL: string;
 }
 
 export async function generateStaticParams() {
   return BLOG_CATEGORIES.map((category) => ({
     slug: category.slug,
-  }))
+  }));
 }
 
 export async function generateMetadata({
   params,
 }: {
-  params: { slug: string }
+  params: { slug: string };
 }): Promise<Metadata | undefined> {
-  const { slug } = await params
-  const category = BLOG_CATEGORIES.find((category) => category.slug === slug)
+  const { slug } = await params;
+  const category = BLOG_CATEGORIES.find((category) => category.slug === slug);
   if (!category) {
-    return
+    return;
   }
 
-  const { title, description } = category
+  const { title, description } = category;
 
   return constructMetadata({
-    title: `${title} – Propdock`,
+    title: `${title} – Advanti`,
     description,
     image: `/api/og/help?title=${encodeURIComponent(
-      title,
+      title
     )}&summary=${encodeURIComponent(description)}`,
-  })
+  });
 }
 
 export default async function BlogCategory({
   params,
 }: {
   params: {
-    slug: string
-  }
+    slug: string;
+  };
 }) {
-  const { slug } = await params
-  const data = BLOG_CATEGORIES.find((category) => category.slug === slug)
+  const { slug } = await params;
+  const data = BLOG_CATEGORIES.find((category) => category.slug === slug);
   if (!data) {
-    notFound()
+    notFound();
   }
 
   const articles: BlogPostWithBlur[] = await Promise.all(
@@ -82,10 +82,10 @@ export default async function BlogCategory({
         slug: post.slug,
         categories: post.categories,
         blurDataURL: await getBlurDataURL(post.image),
-      })),
-  )
+      }))
+  );
 
   return articles.map((article, idx) => (
     <BlogCard key={article.slug} data={article} priority={idx <= 1} />
-  ))
+  ));
 }

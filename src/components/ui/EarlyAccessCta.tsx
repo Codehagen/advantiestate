@@ -1,40 +1,40 @@
-"use client"
+"use client";
 
-import { Button } from "@/components/Button"
-import { Input } from "@/components/Input"
-import { submitEarlyAccess } from "@/lib/actions"
-import { useState } from "react"
-import { Balancer } from "react-wrap-balancer"
+import { Button } from "@/components/Button";
+import { Input } from "@/components/Input";
+import { submitEarlyAccess } from "@/lib/actions";
+import { useState } from "react";
+import { Balancer } from "react-wrap-balancer";
 
 export default function EarlyAccessCta() {
-  const [email, setEmail] = useState("")
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [isSubmitted, setIsSubmitted] = useState(false)
-  const [error, setError] = useState<string | null>(null)
+  const [email, setEmail] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault()
-    setIsSubmitting(true)
-    setError(null)
+    e.preventDefault();
+    setIsSubmitting(true);
+    setError(null);
 
     try {
-      const result = await submitEarlyAccess(email)
+      const result = await submitEarlyAccess(email);
       if (result.success) {
-        setIsSubmitted(true)
-        setEmail("")
+        setIsSubmitted(true);
+        setEmail("");
       } else {
-        setError("Det oppstod en feil. Vennligst prøv igjen senere.")
+        setError("Det oppstod en feil. Vennligst prøv igjen senere.");
       }
     } catch (err) {
-      setError("Det oppstod en feil. Vennligst prøv igjen senere.")
+      setError("Det oppstod en feil. Vennligst prøv igjen senere.");
     } finally {
-      setIsSubmitting(false)
+      setIsSubmitting(false);
     }
   }
 
   return (
     <section
-      aria-labelledby="early-access-title"
+      aria-labelledby="cta-title"
       className="mx-auto mb-20 mt-32 max-w-6xl p-1 px-2 sm:mt-56"
     >
       <div className="relative flex items-center justify-center">
@@ -60,15 +60,16 @@ export default function EarlyAccessCta() {
           <div className="flex flex-col items-center justify-center text-center">
             <div>
               <h3
-                id="early-access-title"
+                id="cta-title"
                 className="inline-block bg-gradient-to-t from-warm-grey to-warm-grey-3 bg-clip-text p-2 text-4xl font-bold tracking-tighter text-transparent md:text-6xl dark:from-warm-white dark:to-warm-grey-1"
               >
-                Få tidlig tilgang
+                Hold Deg Oppdatert med Innsikt fra Advanti
               </h3>
               <p className="mx-auto mt-4 max-w-2xl text-warm-grey-2 sm:text-lg dark:text-warm-grey-1">
                 <Balancer>
-                  Vær blant de første som får tilgang til Propdock. Registrer
-                  deg nå for å bli med i vår eksklusive tidlig tilgang.
+                  Meld deg på for å motta de siste markedsanalysene, nyheter og
+                  innsikt om næringseiendom i Nord-Norge direkte fra våre
+                  eksperter.
                 </Balancer>
               </p>
             </div>
@@ -93,7 +94,7 @@ export default function EarlyAccessCta() {
                       Takk for din interesse!
                     </p>
                     <p className="text-warm-grey-2 dark:text-warm-grey-1">
-                      Vi vil kontakte deg så snart som mulig.
+                      Du vil nå motta våre oppdateringer.
                     </p>
                   </div>
                 ) : (
@@ -123,7 +124,7 @@ export default function EarlyAccessCta() {
                       variant="primary"
                       disabled={isSubmitting}
                     >
-                      {isSubmitting ? "Sender..." : "Få tilgang"}
+                      {isSubmitting ? "Sender..." : "Meld deg på"}
                     </Button>
                   </form>
                 )}
@@ -138,5 +139,5 @@ export default function EarlyAccessCta() {
         </div>
       </div>
     </section>
-  )
+  );
 }

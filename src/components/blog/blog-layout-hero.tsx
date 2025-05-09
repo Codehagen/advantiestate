@@ -1,23 +1,23 @@
-"use client"
+"use client";
 
-import { RiCheckLine, RiListUnordered } from "@remixicon/react"
-import { motion } from "framer-motion"
-import Link from "next/link"
-import { useParams } from "next/navigation"
-import { useState } from "react"
+import { RiCheckLine, RiListUnordered } from "@remixicon/react";
+import { motion } from "framer-motion";
+import Link from "next/link";
+import { useParams } from "next/navigation";
+import { useState } from "react";
 
-import { BLOG_CATEGORIES } from "@/lib/blog/content"
-import { cx } from "@/lib/utils"
+import { BLOG_CATEGORIES } from "@/lib/blog/content";
+import { cx } from "@/lib/utils";
 
-import MaxWidthWrapper from "./max-width-wrapper"
-import Popover from "./popover"
+import MaxWidthWrapper from "./max-width-wrapper";
+import Popover from "./popover";
 
 export default function BlogLayoutHero() {
-  const { slug } = useParams() as { slug?: string }
+  const { slug } = useParams() as { slug?: string };
 
-  const data = BLOG_CATEGORIES.find((category) => category.slug === slug)
+  const data = BLOG_CATEGORIES.find((category) => category.slug === slug);
 
-  const [openPopover, setOpenPopover] = useState(false)
+  const [openPopover, setOpenPopover] = useState(false);
 
   return (
     <>
@@ -27,7 +27,7 @@ export default function BlogLayoutHero() {
             {data?.title || "Blog"}
           </h1>
           <p className="mt-4 text-xl text-warm-white/80">
-            {data?.description || "Siste innsikter og artikler fra Propdock."}
+            {data?.description || "Siste innsikter og artikler fra Advanti."}
           </p>
           <nav className="mt-6 hidden w-fit items-center space-x-2 rounded-full border border-warm-grey/20 bg-warm-white/5 p-2 backdrop-blur-sm md:flex">
             <CategoryLink title="Oversikt" href="/blog" active={!slug} />
@@ -84,7 +84,7 @@ export default function BlogLayoutHero() {
         >
           <button
             onClick={() => {
-              setOpenPopover(!openPopover)
+              setOpenPopover(!openPopover);
             }}
             className="flex w-full items-center space-x-2 border-t border-warm-grey/20 px-2.5 py-4 text-sm text-warm-white/80"
           >
@@ -94,7 +94,7 @@ export default function BlogLayoutHero() {
         </Popover>
       </div>
     </>
-  )
+  );
 }
 
 const CategoryLink = ({
@@ -104,11 +104,11 @@ const CategoryLink = ({
   mobile,
   setOpenPopover,
 }: {
-  title: string
-  href: string
-  active?: boolean
-  mobile?: boolean
-  setOpenPopover?: (open: boolean) => void
+  title: string;
+  href: string;
+  active?: boolean;
+  mobile?: boolean;
+  setOpenPopover?: (open: boolean) => void;
 }) => {
   if (mobile) {
     return (
@@ -122,7 +122,7 @@ const CategoryLink = ({
         <p className="text-sm">{title}</p>
         {active && <RiCheckLine size={16} className="text-warm-white/60" />}
       </Link>
-    )
+    );
   }
   return (
     <Link href={href} className="relative z-10">
@@ -131,7 +131,7 @@ const CategoryLink = ({
           "rounded-full px-4 py-2 text-sm transition-all",
           active
             ? "bg-warm-white/10 text-warm-white"
-            : "text-warm-white/80 hover:bg-warm-white/5 active:bg-warm-white/10",
+            : "text-warm-white/80 hover:bg-warm-white/5 active:bg-warm-white/10"
         )}
       >
         {title}
@@ -144,5 +144,5 @@ const CategoryLink = ({
         />
       )}
     </Link>
-  )
-}
+  );
+};

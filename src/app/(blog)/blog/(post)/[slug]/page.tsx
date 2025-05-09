@@ -1,55 +1,55 @@
-import Author from "@/components/blog/author"
-import MaxWidthWrapper from "@/components/blog/max-width-wrapper"
-import { MDX } from "@/components/blog/mdx"
-import BlurImage from "@/lib/blog/blur-image"
-import { BLOG_CATEGORIES } from "@/lib/blog/content"
-import { getBlurDataURL } from "@/lib/blog/images"
-import { constructMetadata, formatDate } from "@/lib/utils"
-import { allBlogPosts } from "content-collections"
-import { Metadata } from "next"
-import Link from "next/link"
-import { notFound } from "next/navigation"
+import Author from "@/components/blog/author";
+import MaxWidthWrapper from "@/components/blog/max-width-wrapper";
+import { MDX } from "@/components/blog/mdx";
+import BlurImage from "@/lib/blog/blur-image";
+import { BLOG_CATEGORIES } from "@/lib/blog/content";
+import { getBlurDataURL } from "@/lib/blog/images";
+import { constructMetadata, formatDate } from "@/lib/utils";
+import { allBlogPosts } from "content-collections";
+import { Metadata } from "next";
+import Link from "next/link";
+import { notFound } from "next/navigation";
 
 export async function generateStaticParams() {
   return allBlogPosts.map((post) => ({
     slug: post.slug,
-  }))
+  }));
 }
 
 export async function generateMetadata({
   params,
 }: {
-  params: { slug: string }
+  params: { slug: string };
 }): Promise<Metadata | undefined> {
-  const { slug } = await params
-  const post = allBlogPosts.find((post) => post.slug === slug)
+  const { slug } = await params;
+  const post = allBlogPosts.find((post) => post.slug === slug);
   if (!post) {
-    return
+    return;
   }
 
-  const { title, seoTitle, summary, seoDescription, image } = post
+  const { title, seoTitle, summary, seoDescription, image } = post;
 
   return constructMetadata({
-    title: `${seoTitle || title} – Propdock`,
+    title: `${seoTitle || title} – Advanti`,
     description: seoDescription || summary,
     image,
-  })
+  });
 }
 
 // Priority categories that should be shown first
-const PRIORITY_CATEGORIES = ["real-estate", "landscaping"]
+const PRIORITY_CATEGORIES = ["real-estate", "landscaping"];
 
 export default async function BlogArticle({
   params,
 }: {
   params: {
-    slug: string
-  }
+    slug: string;
+  };
 }) {
-  const { slug } = await params
-  const data = allBlogPosts.find((post) => post.slug === slug)
+  const { slug } = await params;
+  const data = allBlogPosts.find((post) => post.slug === slug);
   if (!data) {
-    notFound()
+    notFound();
   }
 
   const [thumbnailBlurhash, images] = await Promise.all([
@@ -58,34 +58,34 @@ export default async function BlogArticle({
       (data.images || []).map(async (src: string) => ({
         src,
         blurDataURL: await getBlurDataURL(src),
-      })),
+      }))
     ),
-  ])
+  ]);
 
   // First try to find a priority category (industry category)
   let category = PRIORITY_CATEGORIES.filter((cat) =>
-    data.categories.includes(cat as any),
+    data.categories.includes(cat as any)
   )
     .map((cat) => BLOG_CATEGORIES.find((c) => c.slug === cat))
-    .find((cat) => cat !== undefined)
+    .find((cat) => cat !== undefined);
 
   // If no priority category found, fall back to any valid category
   if (!category) {
     category = data.categories
       .map((cat) => BLOG_CATEGORIES.find((c) => c.slug === cat))
-      .find((cat) => cat !== undefined)
+      .find((cat) => cat !== undefined);
   }
 
   if (!category) {
-    console.error(`No valid category found for post: ${data.slug}`)
-    notFound()
+    console.error(`No valid category found for post: ${data.slug}`);
+    notFound();
   }
 
   const relatedArticles = data.related
     ? data.related
         .map((slug) => allBlogPosts.find((post) => post.slug === slug))
         .filter((post): post is NonNullable<typeof post> => post !== undefined)
-    : []
+    : [];
 
   return (
     <>
@@ -165,5 +165,5 @@ export default async function BlogArticle({
         </MaxWidthWrapper>
       </div>
     </>
-  )
+  );
 }

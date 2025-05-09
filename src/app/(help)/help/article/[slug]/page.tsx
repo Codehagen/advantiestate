@@ -1,78 +1,78 @@
-import { allHelpPosts, HelpPost } from "content-collections"
-import { Metadata } from "next"
-import Link from "next/link"
-import { notFound } from "next/navigation"
+import { allHelpPosts, HelpPost } from "content-collections";
+import { Metadata } from "next";
+import Link from "next/link";
+import { notFound } from "next/navigation";
 
-import Author from "@/components/blog/author"
-import Feedback from "@/components/blog/feedback"
-import HelpArticleLink from "@/components/blog/help-article-link"
-import MaxWidthWrapper from "@/components/blog/max-width-wrapper"
-import { MDX } from "@/components/blog/mdx"
-import SearchButton from "@/components/blog/search-button"
-import TableOfContents from "@/components/blog/table-of-contents"
-import { HELP_CATEGORIES } from "@/lib/blog/content"
-import { getBlurDataURL } from "@/lib/blog/images"
-import { constructMetadata } from "@/lib/utils"
-import { RiArrowRightSLine } from "@remixicon/react"
+import Author from "@/components/blog/author";
+import Feedback from "@/components/blog/feedback";
+import HelpArticleLink from "@/components/blog/help-article-link";
+import MaxWidthWrapper from "@/components/blog/max-width-wrapper";
+import { MDX } from "@/components/blog/mdx";
+import SearchButton from "@/components/blog/search-button";
+import TableOfContents from "@/components/blog/table-of-contents";
+import { HELP_CATEGORIES } from "@/lib/blog/content";
+import { getBlurDataURL } from "@/lib/blog/images";
+import { constructMetadata } from "@/lib/utils";
+import { RiArrowRightSLine } from "@remixicon/react";
 
 export async function generateStaticParams() {
   return allHelpPosts.map((post) => ({
     slug: post.slug,
-  }))
+  }));
 }
 
 export async function generateMetadata({
   params,
 }: {
-  params: { slug: string }
+  params: { slug: string };
 }): Promise<Metadata | undefined> {
-  const { slug } = await params
-  const post = allHelpPosts.find((post) => post.slug === slug)
+  const { slug } = await params;
+  const post = allHelpPosts.find((post) => post.slug === slug);
   if (!post) {
-    return
+    return;
   }
 
-  const { title, summary } = post
+  const { title, summary } = post;
 
   return constructMetadata({
-    title: `${title} – Propdock Kunnskapsbase`,
+    title: `${title} – Advanti Kunnskapsbase`,
     description: summary,
     image: `/api/og/help?title=${encodeURIComponent(
-      title,
+      title
     )}&summary=${encodeURIComponent(summary)}`,
-  })
+  });
 }
 
 export default async function HelpArticle({
   params,
 }: {
   params: {
-    slug: string
-  }
+    slug: string;
+  };
 }) {
-  const { slug } = await params
-  const data = allHelpPosts.find((post) => post.slug === slug)
+  const { slug } = await params;
+  const data = allHelpPosts.find((post) => post.slug === slug);
   if (!data) {
-    notFound()
+    notFound();
   }
   const category = HELP_CATEGORIES.find(
-    (category) => data.categories[0] === category.slug,
-  )!
+    (category) => data.categories[0] === category.slug
+  )!;
 
   const [images] = await Promise.all([
     await Promise.all(
       data.images.map(async (src: string) => ({
         src,
         blurDataURL: await getBlurDataURL(src),
-      })),
+      }))
     ),
-  ])
+  ]);
 
   const relatedArticles =
     ((data.related &&
       data.related
         .map((slug) => allHelpPosts.find((post) => post.slug === slug))
-        .filter(Boolean)) as HelpPost[]) || []
+        .filter(Boolean)) as HelpPost[]) || [];
 
   return (
     <>
@@ -148,5 +148,5 @@ export default async function HelpArticle({
         </MaxWidthWrapper>
       </div>
     </>
-  )
+  );
 }

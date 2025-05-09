@@ -1,7 +1,7 @@
-"use client"
-import { Button } from "@/components/Button"
-import { Input } from "@/components/Input"
-import { Balancer } from "react-wrap-balancer"
+"use client";
+import { Button } from "@/components/Button";
+import { Input } from "@/components/Input";
+import { Balancer } from "react-wrap-balancer";
 
 export default function Cta() {
   return (
@@ -40,7 +40,7 @@ export default function Cta() {
               <p className="mx-auto mt-4 max-w-2xl text-warm-grey-2 sm:text-lg dark:text-warm-grey-1">
                 <Balancer>
                   Ta kontakt med oss for å få mer informasjon om våre tjenester
-                  og tilgang til Propdock.
+                  og tilgang til markedsdata.
                 </Balancer>
               </p>
             </div>
@@ -101,5 +101,5 @@ export default function Cta() {
         </div>
       </div>
     </section>
-  )
+  );
 }

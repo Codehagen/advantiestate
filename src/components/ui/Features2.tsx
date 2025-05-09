@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import { Badge } from "@/components/Badge"
+import { Badge } from "@/components/Badge";
 import {
   RiArrowRightLine,
   RiBarChartBoxLine,
@@ -9,68 +9,69 @@ import {
   RiLineChartLine,
   RiPieChartLine,
   RiStackLine,
-} from "@remixicon/react"
-import Link from "next/link"
-import { Balancer } from "react-wrap-balancer"
+} from "@remixicon/react";
+import Link from "next/link";
+import { Balancer } from "react-wrap-balancer";
 
 const features = [
   {
-    title: "Avansert verdivurdering",
+    title: "Verdivurdering og Analyse",
     description:
-      "Omfattende verktøy for DCF-analyse, yield-beregninger og sensitivitetsanalyser.",
+      "Dyptgående verdivurderinger og markedsanalyser som gir deg et solid beslutningsgrunnlag.",
     icon: RiLineChartLine,
     href: "/tjenester",
   },
   {
-    title: "Markedsanalyse",
+    title: "Transaksjonsrådgivning",
     description:
-      "Få innsikt i markedstrender, sammenlignbare eiendommer og demografiske data.",
-    icon: RiPieChartLine,
-    href: "/tjenester",
-  },
-  {
-    title: "Porteføljestyring",
-    description:
-      "Oversikt over eiendomsporteføljen med nøkkeltall, ytelse og optimeringsmuligheter.",
-    icon: RiBuildingLine,
-    href: "/tjenester",
-  },
-  {
-    title: "Scenariomodellering",
-    description:
-      "Simuler ulike investeringsscenarier og sammenlign resultater for bedre beslutninger.",
+      "Ekspertbistand gjennom hele kjøps- eller salgsprosessen, fra strategi til gjennomføring.",
     icon: RiStackLine,
     href: "/tjenester",
   },
   {
-    title: "Markedsdata",
+    title: "Utleie av Næringseiendom",
     description:
-      "Tilgang til sanntidsdata og markedsinformasjon for bedre analyser og beslutninger.",
+      "Effektiv utleieformidling og rådgivning for å finne de rette leietakerne eller lokalene.",
+    icon: RiBuildingLine,
+    href: "/tjenester",
+  },
+  {
+    title: "Kjøp og Salg",
+    description:
+      "Din partner for identifisering av muligheter og gjennomføring av kjøp og salg av næringseiendom.",
+    icon: RiPieChartLine,
+    href: "/tjenester",
+  },
+  {
+    title: "Markedsdata og Innsikt",
+    description:
+      "Tilgang til oppdatert markedsdata og dybdeinnsikt for å styrke dine strategiske valg.",
     icon: RiDatabaseLine,
     href: "/tjenester",
   },
   {
-    title: "Finansiell analyse",
+    title: "Strategisk Rådgivning",
     description:
-      "Detaljerte finansielle beregninger inkludert yield, ROI og kontantstrømanalyser.",
+      "Skreddersydde råd for utvikling, investering og optimalisering av din eiendomsportefølje.",
     icon: RiBarChartBoxLine,
     href: "/tjenester",
   },
-]
+];
 
 export default function Features2() {
   return (
     <section className="mx-auto w-full max-w-6xl px-4 py-20 lg:py-40">
       <div className="flex flex-col items-center gap-6 text-center">
-        <Badge>Funksjoner</Badge>
+        <Badge>Våre Tjenester</Badge>
         <h2 className="text-balance bg-gradient-to-t from-warm-grey to-warm-grey-3 bg-clip-text text-4xl font-semibold tracking-tighter text-transparent md:text-6xl dark:from-warm-white dark:to-warm-grey-1">
-          Kraftige verktøy for eiendomsanalyse
+          Din ekspert innen næringseiendom
         </h2>
         <p className="max-w-2xl text-lg text-warm-grey-2 dark:text-warm-grey-1">
           <Balancer>
-            Propdock gir deg avanserte analyseverktøy og markedsinnsikt for
-            bedre investeringsbeslutninger i næringseiendom. Alt samlet på én
-            plattform.
+            Advanti tilbyr et komplett spekter av tjenester innen
+            næringseiendom. Fra verdivurdering og analyse til
+            transaksjonsrådgivning og utleie – vi er din dedikerte partner i
+            Nord-Norge.
           </Balancer>
         </p>
       </div>
@@ -98,5 +99,5 @@ export default function Features2() {
         ))}
       </div>
     </section>
-  )
+  );
 }

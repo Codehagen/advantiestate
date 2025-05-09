@@ -1,16 +1,16 @@
-import { Badge } from "@/components/Badge"
-import { FeatureComparison } from "@/components/propdock/FeatureComparison"
-import { FeatureShowcase } from "@/components/propdock/FeatureShowcase"
-import { AnimatedCTA } from "@/components/ui/AnimatedCTA"
-import FeatureDivider from "@/components/ui/FeatureDivider"
-import { constructMetadata } from "@/lib/utils"
-import Balancer from "react-wrap-balancer"
+import { Badge } from "@/components/Badge";
+import { FeatureComparison } from "@/components/propdock/FeatureComparison";
+import { FeatureShowcase } from "@/components/propdock/FeatureShowcase";
+import { AnimatedCTA } from "@/components/ui/AnimatedCTA";
+import FeatureDivider from "@/components/ui/FeatureDivider";
+import { constructMetadata } from "@/lib/utils";
+import Balancer from "react-wrap-balancer";
 
 export const metadata = constructMetadata({
-  title: "Propdock Verdsettelse | Avansert verdivurdering av næringseiendom",
+  title: "Verdivurdering & Analyse av Næringseiendom | Advanti",
   description:
-    "Propdocks analyseplattform gir deg presise verdivurderinger av næringseiendom med DCF-modeller, yield-beregninger og sensitivitetsanalyser.",
-})
+    "Advanti tilbyr dyptgående verdivurderinger og analyser av næringseiendom, basert på markedsdata og anerkjente metoder.",
+});
 
 export default function VerdsettelsePage() {
   return (
@@ -23,20 +23,19 @@ export default function VerdsettelsePage() {
           animationFillMode: "backwards",
         }}
       >
-        <Badge>Propdock Verdsettelse</Badge>
+        <Badge>Verdivurdering og Analyse</Badge>
         <div className="lg:grid lg:grid-cols-2 lg:gap-16">
           <div>
             <h1
               id="verdsettelse-overview"
               className="mt-2 inline-block bg-gradient-to-t from-warm-grey to-warm-grey-3 bg-clip-text py-2 text-4xl font-bold tracking-tighter text-transparent sm:text-6xl md:text-6xl dark:from-warm-white dark:to-warm-grey-1"
             >
-              <Balancer>Intelligent verdivurdering av næringseiendom</Balancer>
+              <Balancer>Dyptgående verdivurdering av næringseiendom</Balancer>
             </h1>
             <p className="mt-6 max-w-2xl text-lg text-warm-grey-2 dark:text-warm-grey-1">
-              Propdock er en avansert analyseplattform som gir deg presise
-              verdivurderinger av næringseiendom. Plattformen kombinerer
-              markedsledende analyseverktøy med sanntidsdata for å gi deg det
-              komplette beslutningsgrunnlaget.
+              Advanti leverer presise verdivurderinger av næringseiendom. Vi
+              kombinerer anerkjente analysemetoder med fersk markedsdata for å
+              gi deg et solid og pålitelig beslutningsgrunnlag.
             </p>
           </div>
           <div className="mt-8 lg:mt-0">
@@ -49,15 +48,15 @@ export default function VerdsettelsePage() {
 
       <section className="mx-auto mt-24 w-full max-w-6xl">
         <div className="flex flex-col items-center gap-6 text-center">
-          <Badge>Analyseverktøy</Badge>
+          <Badge>Vår Metode</Badge>
           <h2 className="text-balance bg-gradient-to-t from-warm-grey to-warm-grey-3 bg-clip-text text-4xl font-semibold tracking-tighter text-transparent md:text-6xl dark:from-warm-white dark:to-warm-grey-1">
-            Verktøy for presis verdivurdering
+            Metoder for presis verdivurdering
           </h2>
           <p className="max-w-2xl text-lg text-warm-grey-2 dark:text-warm-grey-1">
             <Balancer>
-              Propdock gir deg tilgang til avanserte analyseverktøy og
-              markedsledende metodikk for verdivurdering av næringseiendom.
-              Plattformen sikrer at alle verdidrivere blir grundig analysert.
+              Advanti benytter anerkjente metoder for verdivurdering av
+              næringseiendom, inkludert DCF-analyser og yield-betraktninger.
+              Dette sikrer at alle relevante verdidrivere blir grundig vurdert.
             </Balancer>
           </p>
         </div>
@@ -69,9 +68,9 @@ export default function VerdsettelsePage() {
       <FeatureDivider className="mx-auto mt-24 max-w-6xl" />
 
       <FeatureComparison
-        badge="Moderne plattform"
-        title="Fra Excel til intelligent verdivurdering"
-        description="Oppgrader fra tidkrevende Excel-ark til en moderne plattform. Propdock automatiserer beregningene, eliminerer formelfeil og gir deg alltid oppdaterte markedsdata."
+        badge="Fra Data til Innsikt"
+        title="Solid Beslutningsgrunnlag"
+        description="Advanti transformerer kompleks data til klar innsikt. Vi systematiserer informasjon og leverer analyser som gir deg et trygt og godt fundament for dine eiendomsbeslutninger."
         lightImage="/images/hero-light.webp"
         darkImage="/images/hero-dark.webp"
       />
@@ -79,19 +78,19 @@ export default function VerdsettelsePage() {
       <section className="mx-auto mt-24 w-full max-w-6xl">
         <AnimatedCTA
           badge="Kom i gang"
-          title="Klar for å verdsette din eiendom?"
-          description="Få tilgang til markedsledende verktøy for verdivurdering av næringseiendom. Start med Propdock i dag."
+          title="Behov for Verdivurdering eller Analyse?"
+          description="Ta kontakt for en uforpliktende samtale om hvordan Advanti kan bistå dere."
           primaryAction={{
-            label: "Start nå",
+            label: "Kontakt oss",
             href: "/kontakt",
           }}
           secondaryAction={{
-            label: "Se alle funksjoner",
+            label: "Se våre tjenester",
             href: "/tjenester",
           }}
           size="default"
         />
       </section>
     </div>
-  )
+  );
 }

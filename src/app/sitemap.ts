@@ -1,18 +1,18 @@
-import { BLOG_CATEGORIES, HELP_CATEGORIES } from "@/lib/blog/content"
+import { BLOG_CATEGORIES, HELP_CATEGORIES } from "@/lib/blog/content";
 import {
   allBlogPosts,
   allCustomersPosts,
   allHelpPosts,
   allIntegrationsPosts,
-} from "content-collections"
-import { MetadataRoute } from "next"
-import { headers } from "next/headers"
+} from "content-collections";
+import { MetadataRoute } from "next";
+import { headers } from "next/headers";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const headersList = await headers()
-  const domain = headersList.get("host") ?? "www.propdock.no"
-  const protocol = process.env.NODE_ENV === "development" ? "http" : "https"
-  const baseUrl = `${protocol}://${domain}`
+  const headersList = await headers();
+  const domain = headersList.get("host") ?? "www.advantiestate.no";
+  const protocol = process.env.NODE_ENV === "development" ? "http" : "https";
+  const baseUrl = `${protocol}://${domain}`;
 
   // Core static pages
   const staticPages = [
@@ -32,7 +32,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     lastModified: new Date(),
     changeFrequency: "daily" as const,
     priority: route === "" ? 1.0 : 0.8,
-  }))
+  }));
 
   // Blog category pages
   const blogCategories = BLOG_CATEGORIES.map((category) => ({
@@ -40,7 +40,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     lastModified: new Date(),
     changeFrequency: "weekly" as const,
     priority: 0.7,
-  }))
+  }));
 
   // Help category pages
   const helpCategories = HELP_CATEGORIES.map((category) => ({
@@ -48,7 +48,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     lastModified: new Date(),
     changeFrequency: "weekly" as const,
     priority: 0.7,
-  }))
+  }));
 
   // Dynamic help article pages
   const helpPages = allHelpPosts.map((post) => ({
@@ -56,7 +56,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     lastModified: new Date(post.updatedAt),
     changeFrequency: "weekly" as const,
     priority: 0.8,
-  }))
+  }));
 
   // Dynamic blog pages
   const blogPages = allBlogPosts.map((post) => ({
@@ -64,7 +64,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     lastModified: new Date(post.publishedAt),
     changeFrequency: "weekly" as const,
     priority: 0.8,
-  }))
+  }));
 
   // Dynamic customer story pages
   const customerPages = allCustomersPosts.map((post) => ({
@@ -72,7 +72,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     lastModified: new Date(post.publishedAt),
     changeFrequency: "weekly" as const,
     priority: 0.9,
-  }))
+  }));
 
   // Dynamic integration pages
   const integrationPages = allIntegrationsPosts.map((post) => ({
@@ -80,7 +80,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     lastModified: new Date(post.publishedAt),
     changeFrequency: "weekly" as const,
     priority: 0.7,
-  }))
+  }));
 
   return [
     ...staticPages,
@@ -90,5 +90,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...blogPages,
     ...customerPages,
     ...integrationPages,
-  ]
+  ];
 }
