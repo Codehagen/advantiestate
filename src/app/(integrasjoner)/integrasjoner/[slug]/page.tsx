@@ -1,62 +1,62 @@
-import { allIntegrationsPosts } from "content-collections"
-import { Metadata } from "next"
-import Link from "next/link"
-import { notFound } from "next/navigation"
+import { allIntegrationsPosts } from "content-collections";
+import { Metadata } from "next";
+import Link from "next/link";
+import { notFound } from "next/navigation";
 
-import MaxWidthWrapper from "@/components/blog/max-width-wrapper"
-import { MDX } from "@/components/blog/mdx"
-import BlurImage from "@/lib/blog/blur-image"
-import { getBlurDataURL } from "@/lib/blog/images"
-import { constructMetadata } from "@/lib/utils"
+import MaxWidthWrapper from "@/components/blog/max-width-wrapper";
+import { MDX } from "@/components/blog/mdx";
+import BlurImage from "@/lib/blog/blur-image";
+import { getBlurDataURL } from "@/lib/blog/images";
+import { constructMetadata } from "@/lib/utils";
 
 export async function generateStaticParams() {
   return allIntegrationsPosts.map((post) => ({
     slug: post.slug,
-  }))
+  }));
 }
 
 export async function generateMetadata({
   params,
 }: {
-  params: { slug: string }
+  params: { slug: string };
 }): Promise<Metadata | undefined> {
-  const { slug } = await params
-  const post = allIntegrationsPosts.find((post) => post.slug === slug)
+  const { slug } = await params;
+  const post = allIntegrationsPosts.find((post) => post.slug === slug);
   if (!post) {
-    return
+    return;
   }
 
-  const { title, summary, image } = post
+  const { title, summary, image } = post;
 
   return constructMetadata({
-    title: `${title} – Propdock integrasjoner`,
+    title: `${title} – Advanti Datakilder`,
     description: summary,
     image,
-  })
+  });
 }
 
 export default async function IntegrationPage({
   params,
 }: {
   params: {
-    slug: string
-  }
+    slug: string;
+  };
 }) {
-  const { slug } = await params
-  const data = allIntegrationsPosts.find((post) => post.slug === slug)
+  const { slug } = await params;
+  const data = allIntegrationsPosts.find((post) => post.slug === slug);
   if (!data) {
-    notFound()
+    notFound();
   }
 
   const [thumbnailBlurhash, images] = await Promise.all([
     getBlurDataURL(data.image),
     await Promise.all(
-      data.images.map(async (src: string) => ({
+      (data.images || []).map(async (src: string) => ({
         src,
         blurDataURL: await getBlurDataURL(src),
-      })),
+      }))
     ),
-  ])
+  ]);
 
   return (
     <>
@@ -66,7 +66,7 @@ export default async function IntegrationPage({
             href="/integrasjoner"
             className="text-sm text-warm-white/60 hover:text-warm-white/80"
           >
-            ← Tilbake til integrasjoner
+            ← Tilbake til Datakilder
           </Link>
           <h1 className="font-display text-3xl font-bold !leading-snug text-warm-white sm:text-4xl">
             {data.title}
@@ -113,7 +113,7 @@ export default async function IntegrationPage({
                 <div
                   key={title}
                   className={`flex flex-col space-y-2 ${
-                    title === "Om integrasjonen" ? "col-span-2" : "col-span-1"
+                    title === "Om Datakilden" ? "col-span-2" : "col-span-1"
                   }`}
                 >
                   <p className="font-medium text-warm-white">{title}</p>
@@ -165,24 +165,24 @@ export default async function IntegrationPage({
         </MaxWidthWrapper>
       </div>
     </>
-  )
+  );
 }
 
 const sidebarContent = [
   {
-    title: "Om integrasjonen",
+    title: "Om Datakilden",
     value: "integrationDescription",
   },
   {
-    title: "Integrasjonstype",
+    title: "Kildetype",
     value: "integrationType",
   },
   {
-    title: "Kompatibilitet",
+    title: "Relevans",
     value: "compatibility",
   },
   {
     title: "Sist oppdatert",
     value: "publishedAt",
   },
-]
+];

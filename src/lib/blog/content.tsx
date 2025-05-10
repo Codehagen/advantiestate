@@ -14,7 +14,7 @@ export const BLOG_CATEGORIES = [
     title: "Om Advanti",
     slug: "company",
     description:
-      "Siste oppdateringer og nyheter fra Advanti. Lær om vårt firma og teamet bak.",
+      "Hold deg oppdatert med de siste nyhetene og innsiktene fra Advanti. Bli kjent med vårt firma, våre verdier, og teamet av eksperter i Nord-Norge.",
   },
   {
     title: "Verdivurdering",
@@ -37,7 +37,7 @@ export const BLOG_CATEGORIES = [
 ];
 
 export const POPULAR_ARTICLES = [
-  "hva-er-propdock",
+  "hva-er-advanti",
   "hva-er-yield",
   "netto-leieinntekter",
   "sensitivitetsanalyse",
@@ -66,35 +66,35 @@ export const HELP_CATEGORIES: {
     title: "Kom i gang",
     slug: "getting-started",
     description:
-      "Veiledninger for å komme i gang med våre tjenester innen verdivurdering, salg, utleie og rådgivning.",
+      "Ny hos Advanti? Her finner du alt du trenger for å komme i gang med våre tjenester: verdivurdering, salg, utleie og strategisk rådgivning.",
     icon: <RiBarChartBoxLine className="h-6 w-6 text-gray-500" />,
   },
   {
     title: "Begreper",
     slug: "terms",
     description:
-      "Lær om viktige begreper og terminologi innen næringseiendom og analyse.",
+      "Forstå nøkkelbegreper og fagterminologi innen næringseiendom. Vår guide dekker alt fra verdivurdering til markedsanalyse for bedre innsikt.",
     icon: <RiBuildingLine className="h-6 w-6 text-gray-500" />,
   },
   {
     title: "For Investorer",
     slug: "for-investors",
     description:
-      "Spesialisert rådgivning og analyse for investeringsbeslutninger og porteføljestrategi.",
+      "Invester i Nord-Norges næringseiendom med Advanti. Få spesialisert rådgivning, markedsanalyse og strategier for din portefølje og investeringsbeslutninger.",
     icon: <RiFileChartLine className="h-6 w-6 text-gray-500" />,
   },
   {
     title: "Markedsanalyse",
     slug: "analysis",
     description:
-      "Lær hvordan du bruker markedsdata og trender for bedre eiendomsbeslutninger med Advantis innsikt.",
+      "Utforsk hvordan Advanti analyserer markedsdata og trender i Nord-Norges næringseiendom. Få innsikt som styrker dine eiendomsbeslutninger.",
     icon: <RiTeamLine className="h-6 w-6 text-gray-500" />,
   },
   {
     title: "Verdivurdering",
     slug: "valuation",
     description:
-      "Forstå DCF-modeller, yield-analyser og andre metoder for verdivurdering av næringseiendom.",
+      "Dypdykk i metoder for verdivurdering av næringseiendom. Lær om DCF-modeller, yield-beregning og hvordan Advanti sikrer presise verdivurderinger.",
     icon: <RiSettings4Line className="h-6 w-6 text-gray-500" />,
   },
 ];

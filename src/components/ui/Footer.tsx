@@ -22,6 +22,7 @@ const navigation = {
     { name: "Investor", href: "#", external: false },
     { name: "Markedsrapporter", href: "/markedsinnsikt", external: false },
     { name: "Kunnskapssenter", href: "/help", external: false },
+    { name: "Datakilder", href: "/integrasjoner", external: false },
   ],
   selskap: [
     { name: "Om oss", href: "/om-oss", external: false },
