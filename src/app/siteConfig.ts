@@ -6,7 +6,6 @@ export const siteConfig = {
   baseLinks: {
     home: "/",
     about: "/om-oss",
-    pricing: "/pricing",
     tjenester: "/tjenester",
     privacy: "/privacy",
     terms: "/terms",
@@ -15,6 +14,6 @@ export const siteConfig = {
     kontakt: "/kontakt",
     blog: "/blog",
   },
-}
+};
 
-export type siteConfig = typeof siteConfig
+export type siteConfig = typeof siteConfig;

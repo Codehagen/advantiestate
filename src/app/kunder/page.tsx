@@ -1,13 +1,13 @@
-import { Customer } from "@/components/blog/customers"
-import { AnimatedGridPattern } from "@/components/ui/Animated-Grid-Background"
-import { FadeContainer, FadeSpan } from "@/components/ui/Fade"
-import { constructMetadata } from "@/lib/utils"
+import { Customer } from "@/components/blog/customers";
+import { AnimatedGridPattern } from "@/components/ui/Animated-Grid-Background";
+import { FadeContainer, FadeSpan } from "@/components/ui/Fade";
+import { constructMetadata } from "@/lib/utils";
 
 export const metadata = constructMetadata({
-  title: "Kundehistorier - Propdock",
+  title: "Våre Kunder og Prosjekter - Advanti",
   description:
-    "Opplev hvordan ledende eiendomsaktører i Norge bruker Propdock for verdivurdering og analyse av næringseiendom.",
-})
+    "Se eksempler på vellykkede transaksjoner og prosjekter Advanti har gjennomført for våre kunder innen næringseiendom i Nord-Norge.",
+});
 
 export default function Customers() {
   return (
@@ -15,17 +15,17 @@ export default function Customers() {
       <section aria-label="hero">
         <FadeContainer className="relative mx-auto flex max-w-6xl flex-col items-center justify-center">
           <h1 className="mt-8 text-center text-5xl font-semibold tracking-tighter text-warm-grey sm:text-8xl sm:leading-[5.5rem] dark:text-warm-white">
-            <FadeSpan>Våre</FadeSpan> <FadeSpan>suksess</FadeSpan>
+            <FadeSpan>Våre fornøyde</FadeSpan> <FadeSpan>kunder og</FadeSpan>
             <br />
-            <FadeSpan>historier</FadeSpan>
+            <FadeSpan>vellykkede prosjekter</FadeSpan>
           </h1>
 
           <p className="mt-5 max-w-xl text-balance text-center text-base text-warm-grey-2 sm:mt-8 sm:text-xl">
             <FadeSpan>
-              Se hvordan ledende eiendomsaktører bruker Propdock
+              Advanti har bistått en rekke aktører i Nord-Norge med å realisere
             </FadeSpan>{" "}
-            <FadeSpan>for å ta bedre investeringsbeslutninger</FadeSpan>{" "}
-            <FadeSpan>og optimalisere sine porteføljer</FadeSpan>
+            <FadeSpan>deres mål innen næringseiendom. Se et utvalg av</FadeSpan>{" "}
+            <FadeSpan>våre referanser og kundehistorier.</FadeSpan>
           </p>
 
           <div className="absolute inset-0 -z-10 flex items-center justify-center overflow-hidden">
@@ -53,7 +53,7 @@ export default function Customers() {
         </div>
       </section>
     </div>
-  )
+  );
 }
 
 const customers = [
@@ -158,4 +158,11 @@ const customers = [
   //   slug: "1komma5grad",
   //   site: "https://1komma5grad.com/",
   // },
-]
+  // { // Example structure for a new entry - replace with actual data
+  //   slug: "firmanavn-eller-prosjektnavn", // used for linking or as an ID
+  //   name: "Firmanavn AS", // Display name
+  //   logoUrl: "/path/to/logo.png", // Path to the company/project logo
+  //   description: "Kort beskrivelse av samarbeidet eller prosjektet.", // Optional short description
+  //   caseStudyUrl: "/kunder/firmanavn-case-study" // Optional link to a detailed case study page
+  // },
+];

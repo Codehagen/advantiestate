@@ -9,7 +9,7 @@ export function Hero2() {
         <FadeDiv className="mx-auto">
           <a
             aria-label="Utforsk Propdock"
-            href="/propdock"
+            href="/tjenester"
             className="mx-auto w-full"
           >
             <div className="focus:outline-hidden inline-flex max-w-full items-center gap-3 rounded-lg border border-warm-grey/20 bg-light-blue-1/50 px-2.5 py-0.5 pl-0.5 pr-3 font-medium text-warm-grey shadow-lg shadow-light-blue/20 filter backdrop-blur-[1px] transition-colors hover:bg-light-blue/[2.5%] sm:text-sm dark:border-warm-white/30 dark:bg-light-blue/20">

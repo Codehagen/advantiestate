@@ -1,51 +1,51 @@
-import { allCustomersPosts } from "content-collections"
-import { Metadata } from "next"
-import Link from "next/link"
-import { notFound } from "next/navigation"
+import { allCustomersPosts } from "content-collections";
+import { Metadata } from "next";
+import Link from "next/link";
+import { notFound } from "next/navigation";
 
-import MaxWidthWrapper from "@/components/blog/max-width-wrapper"
-import { MDX } from "@/components/blog/mdx"
-import BlurImage from "@/lib/blog/blur-image"
-import { getBlurDataURL } from "@/lib/blog/images"
-import { constructMetadata } from "@/lib/utils"
+import MaxWidthWrapper from "@/components/blog/max-width-wrapper";
+import { MDX } from "@/components/blog/mdx";
+import BlurImage from "@/lib/blog/blur-image";
+import { getBlurDataURL } from "@/lib/blog/images";
+import { constructMetadata } from "@/lib/utils";
 
 export async function generateStaticParams() {
   return allCustomersPosts.map((post) => ({
     slug: post.slug,
-  }))
+  }));
 }
 
 export async function generateMetadata({
   params,
 }: {
-  params: { slug: string }
+  params: { slug: string };
 }): Promise<Metadata | undefined> {
-  const { slug } = await params
-  const post = allCustomersPosts.find((post) => post.slug === slug)
+  const { slug } = await params;
+  const post = allCustomersPosts.find((post) => post.slug === slug);
   if (!post) {
-    return
+    return;
   }
 
-  const { title, summary, image } = post
+  const { title, summary, image } = post;
 
   return constructMetadata({
-    title: `${title} – Propdock`,
+    title: `${title} – Advanti`,
     description: summary,
     image,
-  })
+  });
 }
 
 export default async function CustomerStory({
   params,
 }: {
   params: {
-    slug: string
-  }
+    slug: string;
+  };
 }) {
-  const { slug } = await params
-  const data = allCustomersPosts.find((post) => post.slug === slug)
+  const { slug } = await params;
+  const data = allCustomersPosts.find((post) => post.slug === slug);
   if (!data) {
-    notFound()
+    notFound();
   }
 
   const [thumbnailBlurhash, images] = await Promise.all([
@@ -54,9 +54,9 @@ export default async function CustomerStory({
       data.images.map(async (src: string) => ({
         src,
         blurDataURL: await getBlurDataURL(src),
-      })),
+      }))
     ),
-  ])
+  ]);
 
   return (
     <>
@@ -165,7 +165,7 @@ export default async function CustomerStory({
         </MaxWidthWrapper>
       </div>
     </>
-  )
+  );
 }
 
 const sidebarContent = [
@@ -186,7 +186,7 @@ const sidebarContent = [
     value: "companyFounded",
   },
   {
-    title: "Propdock-plan",
+    title: "Tjeneste levert",
     value: "plan",
   },
-]
+];
