@@ -1,37 +1,37 @@
-"use server"
+"use server";
 
-import { cookies } from "next/headers"
+import { cookies } from "next/headers";
 
 interface DiscordMessage {
-  content: string
+  content: string;
   embeds: {
-    title: string
-    description: string
-    color: number
-    fields: { name: string; value: string }[]
-  }[]
+    title: string;
+    description: string;
+    color: number;
+    fields: { name: string; value: string }[];
+  }[];
 }
 
 interface OnboardingData {
-  purpose: string
+  purpose: string;
   company: {
-    name: string
-    orgNumber: string
-    address: string
-  }
+    name: string;
+    orgNumber: string;
+    address: string;
+  };
   contact: {
-    name: string
-    email: string
-    phone: string
-  }
+    name: string;
+    email: string;
+    phone: string;
+  };
 }
 
 export async function submitOnboarding(data: OnboardingData) {
   try {
     // Send to Discord
-    const webhookUrl = process.env.DISCORD_WEBHOOK_URL
+    const webhookUrl = process.env.DISCORD_WEBHOOK_URL;
     if (!webhookUrl) {
-      throw new Error("Discord webhook URL not configured")
+      throw new Error("Discord webhook URL not configured");
     }
 
     const message: DiscordMessage = {
@@ -69,7 +69,7 @@ export async function submitOnboarding(data: OnboardingData) {
           ],
         },
       ],
-    }
+    };
 
     const response = await fetch(webhookUrl, {
       method: "POST",
@@ -77,24 +77,90 @@ export async function submitOnboarding(data: OnboardingData) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(message),
-    })
+    });
 
     if (!response.ok) {
-      throw new Error("Failed to send Discord notification")
+      throw new Error("Failed to send Discord notification");
     }
 
     // Set completion cookie
-    const cookieStore = await cookies()
+    const cookieStore = await cookies();
     cookieStore.set("onboarding-completed", "true", {
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
       httpOnly: true,
       maxAge: 60 * 60 * 24 * 30, // 30 days
-    })
+    });
 
-    return { success: true }
+    return { success: true };
   } catch (error) {
-    console.error("Error submitting onboarding:", error)
-    return { success: false, error: "Failed to submit onboarding" }
+    console.error("Error submitting onboarding:", error);
+    return { success: false, error: "Failed to submit onboarding" };
+  }
+}
+
+// Interface for the new contact inquiry data
+interface ContactInquiryData {
+  name: string;
+  email: string;
+  phone: string;
+}
+
+export async function submitContactInquiry(data: ContactInquiryData) {
+  try {
+    const webhookUrl = process.env.DISCORD_WEBHOOK_URL;
+    if (!webhookUrl) {
+      throw new Error("Discord webhook URL not configured");
+    }
+
+    const message: DiscordMessage = {
+      content: "📬 New Contact Form Inquiry!",
+      embeds: [
+        {
+          title: "New Contact Form Submission",
+          description: `${data.name} has submitted a contact inquiry.`,
+          color: 0x00aaff, // A different blue color
+          fields: [
+            {
+              name: "Contact Name",
+              value: data.name,
+            },
+            {
+              name: "Contact Email",
+              value: data.email,
+            },
+            {
+              name: "Contact Phone",
+              value: data.phone,
+            },
+            {
+              name: "Timestamp",
+              value: new Date().toISOString(),
+            },
+          ],
+        },
+      ],
+    };
+
+    const response = await fetch(webhookUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(message),
+    });
+
+    if (!response.ok) {
+      const errorBody = await response.text();
+      console.error("Discord API Error:", errorBody);
+      throw new Error(
+        "Failed to send Discord notification for contact inquiry"
+      );
+    }
+
+    return { success: true };
+  } catch (error) {
+    console.error("Error submitting contact inquiry:", error);
+    return { success: false, error: "Failed to submit contact inquiry" };
   }
 }

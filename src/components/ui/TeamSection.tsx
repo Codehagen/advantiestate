@@ -54,7 +54,7 @@ const members = [
 
 export default function TeamSection() {
   return (
-    <section className="bg-gray-50 py-16 md:py-32 dark:bg-transparent">
+    <section className="bg-gray-50 py-6 md:py-6 dark:bg-transparent">
       <div className="mx-auto max-w-5xl  px-6">
         <FeatureDivider />
         <div className="mt-12 gap-4 sm:grid sm:grid-cols-2 md:mt-24">
