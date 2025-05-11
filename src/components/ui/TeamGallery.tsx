@@ -1,4 +1,4 @@
-import { InstaxImage } from "./InstaxImage"
+import { InstaxImage } from "./InstaxImage";
 
 export default function TeamGallery() {
   return (
@@ -16,52 +16,52 @@ export default function TeamGallery() {
           <InstaxImage
             className="w-[25rem] -rotate-6 sm:-ml-10"
             src="/images/working.webp"
-            alt="To utviklere som jobber med kode"
+            alt="Advanti-teamet i samarbeid om en analyse"
             width={640}
             height={427}
-            caption="Her hos oss bruker vi datamaskiner"
+            caption="Grundige analyser legger grunnlaget"
           />
           <InstaxImage
             className="w-[15rem] rotate-3"
             src="/images/workplace.webp"
-            alt="Kontor med telefonboks"
+            alt="Moderne og funksjonelle kontorlokaler"
             width={640}
             height={853}
-            caption="Våre telefonbokser er helt rå"
+            caption="Et inspirerende arbeidsmiljø"
           />
           <InstaxImage
             className="-mr-10 w-[15rem] rotate-1"
             src="/images/home.webp"
-            alt="Bilde av kontoret vårt"
+            alt="Advanti sitt hovedkontor i Nord-Norge"
             width={640}
             height={960}
-            caption="Hjemme kjære hjemme"
+            caption="Strategisk plassert for våre kunder"
           />
         </div>
         <div className="mt-8 hidden w-full justify-between gap-4 md:flex">
           <InstaxImage
             className="-ml-16 w-[25rem] rotate-1"
             src="/images/break.webp"
-            alt="Team som tar en pause"
+            alt="Advanti-teamet diskuterer markedstrender"
             width={640}
             height={360}
-            caption="Noen ganger tar vi en pause"
+            caption="Kunnskapsdeling og faglig utvikling"
           />
           <InstaxImage
             className="-mt-10 w-[15rem] -rotate-3"
             src="/images/cool.webp"
-            alt="Person med hodetelefoner"
+            alt="En Advanti-rådgiver i dyp konsentrasjon"
             width={640}
             height={965}
-            caption="Christer styrer spillelista"
+            caption="Dedikert til våre klienters suksess"
           />
           <InstaxImage
             className="-mr-20 -mt-2 w-[30rem] rotate-[8deg]"
             src="/images/release.webp"
-            alt="Bilde av fest med konfetti"
+            alt="Feiring av en vellykket transaksjon for Advanti"
             width={1920}
             height={1281}
-            caption="v1.0 Lanseringsfest. Vår praktikant fikk sin første alkoholfrie øl"
+            caption="Milepæler feires – alltid med fokus på neste mål"
           />
         </div>
       </div>
@@ -70,13 +70,13 @@ export default function TeamGallery() {
           <InstaxImage
             className="w-full rotate-1"
             src="/images/founders.webp"
-            alt="Bli med i Propdock, vær deg selv"
+            alt="Hele Advanti-teamet samlet"
             width={1819}
             height={998}
-            caption="Bli med i Propdock, vær deg selv"
+            caption="Sammen skaper vi verdier i Nord-Norge"
           />
         </div>
       </div>
     </section>
-  )
+  );
 }
