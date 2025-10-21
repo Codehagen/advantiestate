@@ -104,6 +104,7 @@ interface ContactInquiryData {
   name: string;
   email: string;
   phone: string;
+  service: string;
 }
 
 export async function submitContactInquiry(data: ContactInquiryData) {
@@ -118,7 +119,7 @@ export async function submitContactInquiry(data: ContactInquiryData) {
       embeds: [
         {
           title: "New Contact Form Submission",
-          description: `${data.name} has submitted a contact inquiry.`,
+          description: `${data.name} has submitted a contact inquiry regarding ${data.service}.`,
           color: 0x00aaff, // A different blue color
           fields: [
             {
@@ -132,6 +133,10 @@ export async function submitContactInquiry(data: ContactInquiryData) {
             {
               name: "Contact Phone",
               value: data.phone,
+            },
+            {
+              name: "Service Interest",
+              value: data.service,
             },
             {
               name: "Timestamp",

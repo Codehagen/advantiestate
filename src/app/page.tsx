@@ -18,10 +18,10 @@ export default function Home() {
   return (
     <main className="flex flex-col overflow-hidden">
       <Hero2 />
-      <LogoCloud />
+      {/* <LogoCloud /> */}
       <FeatureDivider />
-      <AnalycitsDashboard />
       <CtaMiddle />
+      {/* <AnalycitsDashboard /> */}
       <FeatureDivider />
       {/* <ContentSection /> */}
       <Features2 />
