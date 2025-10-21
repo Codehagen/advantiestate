@@ -32,10 +32,10 @@ const valuationServices = [
     icon: RiBarChartBoxLine,
   },
   {
-    title: "Teknisk Gjennomgang",
+    title: "Sensitivitetsanalyse",
     description:
-      "Vurdering av bygningens tekniske tilstand, vedlikeholdsbehov og potensielle oppgraderinger.",
-    icon: RiFileSearchLine,
+      "Detaljerte sensitivitetsanalyser som viser hvordan endringer i markedsforhold, leienivåer og finansiering påvirker eiendommens verdi og risiko.",
+    icon: RiFocus3Line,
   },
 ];
 

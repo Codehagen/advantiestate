@@ -3,6 +3,7 @@
 import { Badge } from "@/components/Badge";
 import { Button } from "@/components/Button";
 import { RiArrowRightUpLine, RiPlayCircleLine } from "@remixicon/react";
+import Image from "next/image";
 import Link from "next/link";
 import { Balancer } from "react-wrap-balancer";
 
@@ -43,14 +44,32 @@ export default function CtaMiddle() {
           </div>
         </div>
         <div className="grid grid-cols-2 gap-8">
-          <div className="aspect-square rounded-xl bg-warm-grey/5 shadow-lg shadow-light-blue/10 ring-1 ring-warm-grey/5 dark:bg-warm-grey/20 dark:shadow-light-blue/10 dark:ring-warm-white/5">
-            {/* DCF Analysis Chart Placeholder */}
+          <div className="relative aspect-square overflow-hidden rounded-xl shadow-lg shadow-light-blue/10 ring-1 ring-warm-grey/5 dark:shadow-light-blue/10 dark:ring-warm-white/5">
+            <Image
+              src="/building/pexels-pixabay-248877.jpg"
+              alt="Moderne næringseiendom"
+              fill
+              className="object-cover"
+              sizes="(max-width: 768px) 100vw, 50vw"
+            />
           </div>
-          <div className="row-span-2 rounded-xl bg-warm-grey/5 shadow-lg shadow-light-blue/10 ring-1 ring-warm-grey/5 dark:bg-warm-grey/20 dark:shadow-light-blue/10 dark:ring-warm-white/5">
-            {/* Portfolio Overview Dashboard Placeholder */}
+          <div className="relative row-span-2 overflow-hidden rounded-xl shadow-lg shadow-light-blue/10 ring-1 ring-warm-grey/5 dark:shadow-light-blue/10 dark:ring-warm-white/5">
+            <Image
+              src="/building/pexels-abshky-18566965.jpg"
+              alt="Kontorbygg og næringslokaler"
+              fill
+              className="object-cover"
+              sizes="(max-width: 768px) 100vw, 50vw"
+            />
           </div>
-          <div className="aspect-square rounded-xl bg-warm-grey/5 shadow-lg shadow-light-blue/10 ring-1 ring-warm-grey/5 dark:bg-warm-grey/20 dark:shadow-light-blue/10 dark:ring-warm-white/5">
-            {/* Market Analysis Graph Placeholder */}
+          <div className="relative aspect-square overflow-hidden rounded-xl shadow-lg shadow-light-blue/10 ring-1 ring-warm-grey/5 dark:shadow-light-blue/10 dark:ring-warm-white/5">
+            <Image
+              src="/building/pexels-expect-best-79873-351262.jpg"
+              alt="Næringseiendom i Nord-Norge"
+              fill
+              className="object-cover"
+              sizes="(max-width: 768px) 100vw, 50vw"
+            />
           </div>
         </div>
       </div>
