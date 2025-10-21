@@ -79,31 +79,31 @@ export default function TjenesterPage() {
 
 const mainFeatures = [
   {
-    title: "Verdivurdering og Analyse",
-    description:
-      "Grundige verdivurderinger og markedsanalyser gir et solid beslutningsgrunnlag.",
-    icon: RiLineChartLine,
-    href: "/tjenester/verdsettelse",
-  },
-  {
-    title: "Kjøp og Salg",
+    title: "Transaksjoner",
     description:
       "Ekspertise gjennom hele transaksjonsprosessen, fra verdivurdering til overtakelse.",
     icon: RiBarChartBoxLine,
-    href: "/tjenester/verdsettelse",
+    href: "/tjenester/transaksjoner",
   },
   {
-    title: "Utleie av Næringseiendom",
+    title: "Utleie",
     description:
       "Effektiv utleieformidling og rådgivning for kontor, handel og logistikk.",
     icon: RiDatabaseLine,
     href: "/tjenester/utleie",
   },
   {
-    title: "Strategisk Rådgivning",
+    title: "Verdivurdering",
     description:
-      "Skreddersydde råd for å maksimere verdien og potensialet i din eiendomsportefølje.",
+      "Grundige verdivurderinger og markedsanalyser gir et solid beslutningsgrunnlag.",
+    icon: RiLineChartLine,
+    href: "/tjenester/verdivurdering",
+  },
+  {
+    title: "Rådgivning",
+    description:
+      "Verdioptimaliserende råd for å sikre størst mulig avkastning på investert kapital.",
     icon: RiPieChartLine,
-    href: "/tjenester/strategisk-radgivning",
+    href: "/tjenester/radgivning",
   },
 ];
