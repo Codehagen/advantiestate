@@ -584,10 +584,9 @@ interface MDXProps {
 
 export function MDX({ code, images, className }: MDXProps) {
   const MDXImage = (props: any) => {
-    if (!images) return null
-    const blurDataURL = images.find(
-      (image) => image.src === props.src,
-    )?.blurDataURL
+    const blurDataURL = images
+      ? images.find((image) => image.src === props.src)?.blurDataURL
+      : undefined
 
     return <ZoomImage {...props} blurDataURL={blurDataURL} />
   }
@@ -612,6 +611,7 @@ export function MDX({ code, images, className }: MDXProps) {
         components={{
           ...components,
           Image: MDXImage,
+          img: (props: any) => <MDXImage {...props} />,
         }}
       />
     </article>

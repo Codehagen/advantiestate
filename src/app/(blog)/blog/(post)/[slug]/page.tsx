@@ -52,10 +52,12 @@ export default async function BlogArticle({
     notFound();
   }
 
+  const imageSources = Array.isArray(data.images) ? data.images : [];
+
   const [thumbnailBlurhash, images] = await Promise.all([
     getBlurDataURL(data.image),
-    await Promise.all(
-      (data.images || []).map(async (src: string) => ({
+    Promise.all(
+      imageSources.map(async (src: string) => ({
         src,
         blurDataURL: await getBlurDataURL(src),
       }))
@@ -116,21 +118,24 @@ export default async function BlogArticle({
         <div className="absolute top-52 h-[calc(100%-13rem)] w-full border border-warm-grey/20 shadow-[inset_10px_-50px_94px_0_rgb(199,199,199,0.2)] backdrop-blur-lg" />
         <MaxWidthWrapper className="grid grid-cols-4 gap-5 px-0 pt-10 lg:gap-10">
           <div className="relative col-span-4 flex flex-col space-y-8 sm:rounded-t-xl sm:border sm:border-warm-grey/20 md:col-span-3">
-            <BlurImage
-              className="aspect-[1200/630] rounded-t-xl object-cover"
-              src={data.image}
-              blurDataURL={thumbnailBlurhash}
-              width={1200}
-              height={630}
-              alt={data.title}
-              priority
-            />
-            <MDX
-              code={data.mdx}
-              images={images}
-              className="px-5 pb-20 pt-4 sm:px-10"
-            />
-          </div>
+          <BlurImage
+            className="aspect-[1200/630] rounded-t-xl object-cover"
+            src={data.image}
+            blurDataURL={thumbnailBlurhash}
+            width={1200}
+            height={630}
+            alt={data.title}
+            priority
+          />
+          <MDX
+            code={data.mdx}
+            images={images.map((image) => ({
+              ...image,
+              alt: data.title,
+            }))}
+            className="px-5 pb-20 pt-4 sm:px-10"
+          />
+        </div>
           <div className="sticky top-20 col-span-1 mt-48 hidden flex-col divide-y divide-warm-grey/20 self-start sm:flex">
             <div className="flex flex-col space-y-4 py-5">
               <p className="text-sm text-warm-white/60">Skrevet av</p>
