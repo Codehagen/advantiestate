@@ -14,15 +14,15 @@ export const metadata = constructMetadata({
 
 export default function PersonerPage() {
   // Filter to show only Christer Hagen and Daniel Adamsen, in this specific order
-  const displayedPeople = ['christer-hagen', 'daniel-adamsen']
-    .map(slug => allPersonPosts.find(p => p.slug === slug))
+  const displayedPeople = ["christer-hagen", "daniel-adamsen"]
+    .map((slug) => allPersonPosts.find((p) => p.slug === slug))
     .filter(Boolean);
 
   return (
     <div className="mt-36 flex flex-col overflow-hidden px-3">
       {/* Hero Section */}
       <section
-        aria-labelledby="team-hero"
+        aria-labelledby="about-overview"
         className="animate-slide-up-fade"
         style={{
           animationDuration: "600ms",
@@ -31,15 +31,17 @@ export default function PersonerPage() {
       >
         <Badge>Vårt Team</Badge>
         <h1
-          id="team-hero"
+          id="about-overview"
           className="mt-2 inline-block bg-gradient-to-t from-warm-grey to-warm-grey-3 bg-clip-text py-2 text-4xl font-bold tracking-tighter text-transparent sm:text-6xl md:text-6xl dark:from-warm-white dark:to-warm-grey-1"
         >
-          <Balancer>Erfarne Rådgivere for Din Suksess</Balancer>
+          <Balancer>
+            Erfarne rådgivere for din suksess innen næringseiendom
+          </Balancer>
         </h1>
         <p className="mt-6 max-w-2xl text-lg text-warm-grey-2 dark:text-warm-grey-1">
-          Bak Advanti står et dedikert team av erfarne rådgivere med lidenskap
-          for næringseiendom og et sterkt engasjement for å skape verdier for
-          våre kunder i Nord-Norge.
+          Med solid erfaring og lokal kunnskap er vi din naturlige partner for
+          kjøp, salg og utleie av næringseiendom. Vi leverer profesjonell
+          rådgivning og skreddersydde løsninger for din virksomhet.
         </p>
       </section>
 
@@ -69,9 +71,7 @@ export default function PersonerPage() {
                   <span className="text-xs">_0{index + 1}</span>
                 </div>
                 <div className="mt-1 space-y-0.5 translate-y-6 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
-                  <p className="text-muted-foreground text-sm">
-                    {person.role}
-                  </p>
+                  <p className="text-muted-foreground text-sm">{person.role}</p>
                   <p className="text-sm text-warm-grey-2 dark:text-warm-grey-1">
                     {person.yearsExperience} års erfaring
                   </p>
