@@ -138,6 +138,9 @@ importers:
       mapbox-gl:
         specifier: ^3.9.4
         version: 3.15.0
+      mdx-bundler:
+        specifier: ^10.1.1
+        version: 10.1.1(esbuild@0.25.11)
       motion:
         specifier: ^12.3.1
         version: 12.23.24(react-dom@19.0.0(react@19.0.0))(react@19.0.0)

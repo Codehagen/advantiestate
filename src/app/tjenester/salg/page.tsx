@@ -2,6 +2,7 @@ import { Badge } from "@/components/Badge";
 import { AnimatedCTA } from "@/components/ui/AnimatedCTA";
 import FeatureDivider from "@/components/ui/FeatureDivider";
 import { constructMetadata } from "@/lib/utils";
+import Image from "next/image";
 import {
   RiAuctionLine,
   RiClipboardLine,
@@ -110,8 +111,16 @@ export default function SalgPage() {
             </p>
           </div>
           <div className="mt-8 lg:mt-0">
-            {/* Placeholder for an image relevant to property sales or successful deals */}
-            <div className="aspect-[4/3] rounded-2xl bg-warm-grey/5 shadow-lg shadow-light-blue/10 ring-1 ring-warm-grey/5 dark:bg-warm-grey/20 dark:shadow-light-blue/10 dark:ring-warm-white/5" />
+            <div className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-warm-grey/5 shadow-lg shadow-light-blue/10 ring-1 ring-warm-grey/5 dark:bg-warm-grey/20 dark:shadow-light-blue/10 dark:ring-warm-white/5">
+              <Image
+                src="/building/pexels-abshky-18566965.jpg"
+                alt="Meglere som forhandler salg av næringseiendom"
+                fill
+                className="object-cover"
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                priority
+              />
+            </div>
           </div>
         </div>
       </section>

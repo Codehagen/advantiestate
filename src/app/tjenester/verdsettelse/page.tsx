@@ -4,6 +4,7 @@ import { FeatureShowcase } from "@/components/propdock/FeatureShowcase";
 import { AnimatedCTA } from "@/components/ui/AnimatedCTA";
 import FeatureDivider from "@/components/ui/FeatureDivider";
 import { constructMetadata } from "@/lib/utils";
+import Image from "next/image";
 import Balancer from "react-wrap-balancer";
 
 export const metadata = constructMetadata({
@@ -39,7 +40,16 @@ export default function VerdsettelsePage() {
             </p>
           </div>
           <div className="mt-8 lg:mt-0">
-            <div className="aspect-[4/3] rounded-2xl bg-warm-grey/5 shadow-lg shadow-light-blue/10 ring-1 ring-warm-grey/5 dark:bg-warm-grey/20 dark:shadow-light-blue/10 dark:ring-warm-white/5" />
+            <div className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-warm-grey/5 shadow-lg shadow-light-blue/10 ring-1 ring-warm-grey/5 dark:bg-warm-grey/20 dark:shadow-light-blue/10 dark:ring-warm-white/5">
+              <Image
+                src="/building/pexels-pixabay-248877.jpg"
+                alt="Næringseiendom som analyseres for verdsettelse"
+                fill
+                className="object-cover"
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                priority
+              />
+            </div>
           </div>
         </div>
       </section>

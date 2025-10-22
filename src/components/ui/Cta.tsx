@@ -2,8 +2,47 @@
 import { Button } from "@/components/Button";
 import { Input } from "@/components/Input";
 import { Balancer } from "react-wrap-balancer";
+import { useState } from "react";
 
 export default function Cta() {
+  const [email, setEmail] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle");
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (!email) return;
+
+    setIsSubmitting(true);
+    setSubmitStatus("idle");
+
+    try {
+      const response = await fetch("/api/discord-notification", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          pageUrl: window.location.href,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to submit");
+      }
+
+      setSubmitStatus("success");
+      setEmail("");
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      setSubmitStatus("error");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <section
       aria-labelledby="cta-title"
@@ -48,7 +87,7 @@ export default function Cta() {
               <div className="rounded-xl bg-warm-white p-4 shadow-lg shadow-light-blue/10 ring-1 ring-warm-grey/5 dark:bg-warm-grey dark:shadow-light-blue/10 dark:ring-warm-white/5">
                 <form
                   className="flex flex-col items-center gap-3 sm:flex-row"
-                  onSubmit={(e) => e.preventDefault()}
+                  onSubmit={handleSubmit}
                 >
                   <label htmlFor="email" className="sr-only">
                     E-postadresse
@@ -62,15 +101,29 @@ export default function Cta() {
                     className="h-10 w-full min-w-0 flex-auto"
                     inputClassName="h-full"
                     placeholder="Din e-postadresse"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    disabled={isSubmitting}
                   />
                   <Button
                     className="h-10 w-full sm:w-fit sm:flex-none"
                     type="submit"
                     variant="primary"
+                    disabled={isSubmitting}
                   >
-                    Kontakt meg
+                    {isSubmitting ? "Sender..." : "Oppdater meg"}
                   </Button>
                 </form>
+                {submitStatus === "success" && (
+                  <p className="mt-3 text-center text-sm text-green-600 dark:text-green-400">
+                    Takk! Vi kontakter deg snart.
+                  </p>
+                )}
+                {submitStatus === "error" && (
+                  <p className="mt-3 text-center text-sm text-red-600 dark:text-red-400">
+                    Noe gikk galt. Vennligst prøv igjen.
+                  </p>
+                )}
               </div>
             </div>
             <div className="mt-6 flex items-center gap-2 text-sm">
