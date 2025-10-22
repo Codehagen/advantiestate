@@ -63,7 +63,7 @@ export function FeatureComparison({
               </div>
               <div className="flex items-center gap-2">
                 <span className="text-sm font-medium text-warm-grey-2 dark:text-warm-grey-1">
-                  Propdock (Moderne plattform)
+                  Advanti (Moderne plattform)
                 </span>
                 <div className="h-2 w-2 rounded-full bg-warm-grey-2/50" />
               </div>
@@ -114,10 +114,10 @@ export function FeatureComparison({
                 }}
               />
 
-              {/* Dark Mode Image (Propdock) */}
+              {/* Dark Mode Image (Advanti) */}
               <Image
                 src={darkImage}
-                alt="Propdock verdsettelse"
+                alt="Advanti verdsettelse"
                 width={1920}
                 height={1080}
                 priority

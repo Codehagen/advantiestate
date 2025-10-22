@@ -1,6 +1,6 @@
 export const siteConfig = {
-  name: "Propdock - Intelligent verdsettelse av næringseiendom",
-  url: "https://www.propdock.no",
+  name: "Advanti - Intelligent verdsettelse av næringseiendom",
+  url: "https://www.advanti.no",
   description:
     "Avansert plattform for verdivurdering og verdsettelse av næringseiendom. Få innsikt med DCF-analyser, yield-beregninger og markedsdata for bedre investeringsbeslutninger.",
   baseLinks: {

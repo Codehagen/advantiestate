@@ -59,7 +59,7 @@ export const columns = [
       // We're using stopPropagation to prevent the row selection when clicking the link
       return (
         <Link
-          href={`/propdock/eiendom?name=${encodeURIComponent(String(propertyName))}`}
+          href={`/advanti/eiendom?name=${encodeURIComponent(String(propertyName))}`}
           className="hover:underline"
           onClick={(e) => e.stopPropagation()}
         >

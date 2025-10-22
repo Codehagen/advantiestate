@@ -54,7 +54,7 @@ src/
 │   └── robots.ts                 # Robots.txt configuration
 ├── components/
 │   ├── ui/                       # Base UI components (shadcn-style)
-│   ├── propdock/                 # Domain-specific components
+│   ├── advanti/                 # Domain-specific components
 │   │   ├── eiendom/              # Property-related components (PropertyMap)
 │   │   ├── exit-strategi/        # Exit strategy components
 │   │   ├── finansiering/         # Financing components
@@ -178,8 +178,8 @@ Remote image patterns allowed:
 1. **Adding New Service Pages**: Create under `src/app/tjenester/[service-name]/page.tsx`
 2. **Creating Blog Content**: Add MDX files to `src/content/blog/` with required frontmatter (title, categories, publishedAt, image, author, summary)
 3. **Building Charts**: Extend chart components in `src/components/` using existing patterns (DcfChart, YieldLineChart)
-4. **Map Features**: Use Mapbox GL components in `src/components/propdock/eiendom/PropertyMap.tsx`
-5. **Market Analysis**: Components in `src/components/markedsinnsikt/` and `src/components/propdock/marked/`
+4. **Map Features**: Use Mapbox GL components in `src/components/advanti/eiendom/PropertyMap.tsx`
+5. **Market Analysis**: Components in `src/components/markedsinnsikt/` and `src/components/advanti/marked/`
 
 ## Key Technical Patterns
 
@@ -191,13 +191,13 @@ Remote image patterns allowed:
 
 ### Component Organization
 - UI primitives in `components/ui/`
-- Domain logic in `components/propdock/` (organized by feature)
+- Domain logic in `components/advanti/` (organized by feature)
 - Shared utilities in `lib/`
 - Server actions in `app/actions/`
 
 ### Mapbox Integration
 - Coordinate transformations in `lib/coordinateUtils.ts`
-- Property visualization in `components/propdock/eiendom/PropertyMap.tsx`
+- Property visualization in `components/advanti/eiendom/PropertyMap.tsx`
 
 ### Financial Modeling
 - DCF analysis charts in `DcfChart.tsx`

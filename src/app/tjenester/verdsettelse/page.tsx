@@ -1,6 +1,6 @@
 import { Badge } from "@/components/Badge";
-import { FeatureComparison } from "@/components/propdock/FeatureComparison";
-import { FeatureShowcase } from "@/components/propdock/FeatureShowcase";
+import { FeatureComparison } from "@/components/advanti/FeatureComparison";
+import { FeatureShowcase } from "@/components/advanti/FeatureShowcase";
 import { AnimatedCTA } from "@/components/ui/AnimatedCTA";
 import FeatureDivider from "@/components/ui/FeatureDivider";
 import { constructMetadata } from "@/lib/utils";

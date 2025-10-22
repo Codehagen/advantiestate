@@ -66,7 +66,7 @@ const dataSources = [
   // {
   //   slug: "poweroffice",
   //   description:
-  //     "Vi har brukt PowerOffice i Propdock siden lanseringen for over et år siden for alle våre eiendomskampanjer, og vårt team elsker det absolutt!",
+  //     "Vi har brukt PowerOffice i Advanti siden lanseringen for over et år siden for alle våre eiendomskampanjer, og vårt team elsker det absolutt!",
   // },
   // {
   //   slug: "tripletex",

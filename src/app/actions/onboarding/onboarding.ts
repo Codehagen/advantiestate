@@ -35,7 +35,7 @@ export async function submitOnboarding(data: OnboardingData) {
     }
 
     const message: DiscordMessage = {
-      content: "🎉 New PropDock User!",
+      content: "🎉 New Advanti User!",
       embeds: [
         {
           title: "New Onboarding Submission",

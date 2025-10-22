@@ -730,7 +730,7 @@ export default function TableAccounting({ data }: TableAccountingProps) {
               Utvidet firma- og kredittinformasjon
             </h3>
             <p className="mt-1 text-sm text-warm-grey-2 dark:text-warm-grey-1">
-              Vår Premium tjeneste Propdock Premium gir deg komplett oversikt
+              Vår Premium tjeneste Advanti Premium gir deg komplett oversikt
               over firmaer og roller i norsk næringsliv:
             </p>
             <ul className="mt-4 space-y-3">

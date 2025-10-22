@@ -3,7 +3,7 @@ import TopKpiCard from "@/components/markedsinnsikt/Top-kpi-card"
 import { constructMetadata } from "@/lib/utils"
 
 export const metadata = constructMetadata({
-  title: "Markedsinnsikt for næringseiendom | Propdock",
+  title: "Markedsinnsikt for næringseiendom | Advanti",
   description:
     "Få tilgang til omfattende markedsdata og analyser for næringseiendom. Utforsk sanntids markedstrender og yield-analyser for smarte investeringer..",
 })

@@ -24,7 +24,7 @@ import BlurImage from "@/lib/blog/blur-image"
 import { HELP_CATEGORIES, POPULAR_ARTICLES } from "@/lib/blog/content"
 import { cx, formatDate } from "@/lib/utils"
 
-import { DcfChart } from "@/components/propdock/DcfChart"
+import { DcfChart } from "@/components/advanti/DcfChart"
 import { AnimatedGridPattern } from "@/components/ui/Animated-Grid-Background"
 import "katex/dist/katex.min.css"
 import { BlockMath, InlineMath } from "react-katex"

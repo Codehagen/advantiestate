@@ -13,11 +13,11 @@ interface NavigationItem {
 
 const navigationItems: NavigationItem[] = [
   {
-    href: "/propdock/dashboard",
+    href: "/advanti/dashboard",
     label: "Alle eiendommer",
   },
   {
-    href: "/propdock/dashboard/map",
+    href: "/advanti/dashboard/map",
     label: "Kart",
   },
 ]
@@ -48,8 +48,8 @@ export function TablePageNavigation() {
                 asChild
                 active={
                   pathname === item.href ||
-                  (item.href === "/propdock/table" &&
-                    pathname === "/propdock/table/")
+                  (item.href === "/advanti/table" &&
+                    pathname === "/advanti/table/")
                 }
               >
                 <Link href={item.href}>{item.label}</Link>

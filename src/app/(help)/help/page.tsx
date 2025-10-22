@@ -6,7 +6,7 @@ import { getPopularArticles, HELP_CATEGORIES } from "@/lib/blog/content"
 import { constructMetadata } from "@/lib/utils"
 
 export const metadata = constructMetadata({
-  title: "Kunnskapssenter – Propdock",
+  title: "Kunnskapssenter – Advanti",
   description:
     "Et sentralt knutepunkt for alle dine næringseiendoms-relaterte spørsmål. Finn svar på vanlige spørsmål, lær hvordan du bruker plattformen, og få ekspertråd.",
 })

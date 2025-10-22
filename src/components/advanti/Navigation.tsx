@@ -13,53 +13,53 @@ interface NavigationItem {
 
 const navigationItems: NavigationItem[] = [
   {
-    href: "/propdock/eiendom",
+    href: "/advanti/eiendom",
     label: "Eiendom",
     description: "Eiendomsinformasjon",
   },
   {
-    href: "/propdock/marked",
+    href: "/advanti/marked",
     label: "Marked",
     description: "Markedsanalyse og områdeinformasjon",
   },
   {
-    href: "/propdock/regnskap",
+    href: "/advanti/regnskap",
     label: "Regnskap",
     description: "Oversikt over inntekter og kostnader",
   },
   {
-    href: "/propdock/leietakere",
+    href: "/advanti/leietakere",
     label: "Leietakeroversikt",
     description: "Oversikt over leietakere og kontrakter",
   },
   {
-    href: "/propdock/selskap",
+    href: "/advanti/selskap",
     label: "Selskap",
     description: "Selskapsinformasjon og roller",
   },
   {
-    href: "/propdock/verdivurdering",
+    href: "/advanti/verdivurdering",
     label: "Verdivurdering",
     description: "Verdivurdering av eiendom",
   },
   {
-    href: "/propdock/finansiering",
+    href: "/advanti/finansiering",
     label: "Finansiering",
     description: "Finansieringsverktøy og gjeldstrukturering",
   },
   {
-    href: "/propdock/simulering",
+    href: "/advanti/simulering",
     label: "Simulering",
     description: "Investeringsscenarioer og simuleringer",
   },
   {
-    href: "/propdock/exit-strategi",
+    href: "/advanti/exit-strategi",
     label: "Exit Strategi",
     description: "Exit strategi og realiseringsanalyse",
   },
 ]
 
-export function PropdockNavigation() {
+export function AdvantiNavigation() {
   const pathname = usePathname()
   const currentPage = navigationItems.find((item) => item.href === pathname)
 

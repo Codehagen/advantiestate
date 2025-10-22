@@ -8,7 +8,7 @@ export function Hero2() {
       <FadeContainer className="relative flex flex-col items-center justify-center">
         <FadeDiv className="mx-auto">
           <a
-            aria-label="Utforsk Propdock"
+            aria-label="Utforsk Advanti"
             href="/tjenester"
             className="mx-auto w-full"
           >

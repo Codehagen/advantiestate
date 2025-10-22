@@ -1,10 +1,10 @@
-<a href="https://github.com/Codehagen/Propdock">
-  <!-- <img alt="Propdock" src="public/og.jpg"> -->
-  <h1 align="center">Propdock</h1>
+<a href="https://github.com/Codehagen/advantiestate">
+  <!-- <img alt="Advanti" src="public/og.jpg"> -->
+  <h1 align="center">Advanti</h1>
 </a>
 
 <p align="center">
-  Start at full speed with Propdock !
+  Start at full speed with Advanti!
 </p>
 
 
@@ -19,20 +19,20 @@
 
 ## Introduction
 
-Welcome to Propdock, where we're revolutionizing property management and real estate analytics. Our platform offers comprehensive solutions for monitoring, tracking, and analyzing property-related data in real-time. Whether you're a property manager, real estate investor, or developer, Propdock provides the tools you need to make informed decisions and optimize your property portfolio.
+Welcome to Advanti, where we're revolutionizing property management and real estate analytics. Our platform offers comprehensive solutions for monitoring, tracking, and analyzing property-related data in real-time. Whether you're a property manager, real estate investor, or developer, Advanti provides the tools you need to make informed decisions and optimize your property portfolio.
 
-Key features of Propdock include:
+Key features of Advanti include:
 - Real-time property monitoring
 - Event tracking for property-related activities
 - Advanced data analytics for real estate insights
 - Integration with various property management tools
 - Customizable dashboards for at-a-glance information
 
-With Propdock, you'll have all the information you need at your fingertips to streamline your property management processes and maximize your real estate investments.
+With Advanti, you'll have all the information you need at your fingertips to streamline your property management processes and maximize your real estate investments.
 
 ## Directory Structure
 
-Propdock is a monorepo managed by [Turborepo](https://turbo.build/repo). The monorepo is split between `apps` and `packages` directories.
+Advantiestate is a monorepo managed by [Turborepo](https://turbo.build/repo). The monorepo is split between `apps` and `packages` directories.
 
     .
     ├── apps                         # Its app workspace which contains
@@ -55,7 +55,7 @@ Propdock is a monorepo managed by [Turborepo](https://turbo.build/repo). The mon
 Clone & create this repo locally with the following command:
 
 ```bash
-git clone https://github.com/Codehagen/Propdock
+git clone https://github.com/Codehagen/advantiestate
 ```
 
 1. Install dependencies using pnpm:
@@ -106,11 +106,11 @@ pnpm --filter=db db:push
 
 We love our contributors! Here's how you can contribute:
 
-- [Open an issue](https://github.com/Codehagen/Propdock/issues) if you believe you've encountered a bug.
-- Make a [pull request](https://github.com/Codehagen/Propdock/pull) to add new features/make quality-of-life improvements/fix bugs.
+- [Open an issue](https://github.com/Codehagen/advantiestate/issues) if you believe you've encountered a bug.
+- Make a [pull request](https://github.com/Codehagen/advantiestate/pull) to add new features/make quality-of-life improvements/fix bugs.
 
-<a href="https://github.com/codehagen/propdock/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=codehagen/propdock" />
+<a href="https://github.com/codehagen/advantiestate/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=codehagen/advantiestate" />
 </a>
 
 ## Repo Activity
