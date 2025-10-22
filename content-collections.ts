@@ -337,6 +337,65 @@ export const IntegrationsPost = defineCollection({
   },
 })
 
+export const PersonPost = defineCollection({
+  name: "PersonPost",
+  directory: "src/content/people",
+  include: "*.mdx",
+  schema: (z) => ({
+    name: z.string(),
+    role: z.string(),
+    avatar: z.string(),
+    email: z.string().email(),
+    phone: z.string(),
+    startedAt: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+    education: z.array(
+      z.object({
+        degree: z.string(),
+        school: z.string(),
+        year: z.number(),
+      })
+    ),
+    certifications: z.array(z.string()).optional(),
+    specializations: z.array(z.string()),
+    notableProjects: z.array(
+      z.object({
+        title: z.string(),
+        description: z.string(),
+        year: z.number(),
+      })
+    ).optional(),
+    slug: z.string().optional(),
+  }),
+  transform: async (document, context) => {
+    try {
+      const mdx = await compileMDX(context, document, {
+        rehypePlugins: [rehypeSlug, rehypeAutolinkHeadings],
+        remarkPlugins: [remarkGfm],
+      })
+      console.log("MDX compilation successful for:", document.name)
+      const slugger = new GithubSlugger()
+
+      // Calculate years of experience
+      const startDate = new Date(document.startedAt)
+      const now = new Date()
+      const yearsExperience = Math.floor(
+        (now.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24 * 365.25)
+      )
+
+      return {
+        ...document,
+        slug: document.slug || slugger.slug(document.name),
+        mdx,
+        yearsExperience,
+      }
+    } catch (error) {
+      console.error("Error compiling MDX for:", document.name, error)
+      console.error("Error details:", error.stack)
+      throw error
+    }
+  },
+})
+
 export default defineConfig({
   collections: [
     BlogPost,
@@ -345,5 +404,6 @@ export default defineConfig({
     HelpPost,
     LegalPost,
     IntegrationsPost,
+    PersonPost,
   ],
 })

@@ -7,7 +7,7 @@ const members = [
     role: "Partner - Næringsmegler",
     avatar:
       "https://imagedelivery.net/r-6-yk-gGPtjfbIST9-8uA/d08a8e8b-0285-4107-bc2c-973f93b27100/public",
-    link: "#",
+    slug: "christer-hagen",
     email: "christer.hagen@partners.no",
     phone: "+47 984 53 571",
   },
@@ -16,40 +16,28 @@ const members = [
     role: "Partner - Næringsmegler",
     avatar:
       "https://imagedelivery.net/r-6-yk-gGPtjfbIST9-8uA/bcc072c4-c35b-443b-cbc1-968474964800/public",
-    link: "#",
+    slug: "daniel-adamsen",
     email: "daniel.adamsen@partners.no",
     phone: "+47 950 26 764",
   },
-  {
-    name: "Tobias Bronder",
-    role: "Partner - Næringsmegler",
-    avatar:
-      "https://imagedelivery.net/r-6-yk-gGPtjfbIST9-8uA/e90fc23f-2f41-4f6b-302e-d83335f5bc00/public",
-    link: "#",
-    email: "tobias.bronder@partners.no",
-    phone: "+47 951 66 805",
-  },
-  {
-    name: "Ole Østensen",
-    role: "Partner - Fagansvarlig",
-    avatar:
-      "https://imagedelivery.net/r-6-yk-gGPtjfbIST9-8uA/17f3e8e3-3c1f-4a8e-1717-0cd273c13a00/public",
-    link: "#",
-    email: "ole.ostensen@partners.no",
-    phone: "+47 975 27 721",
-  },
-  //   {
-  //     name: "Ava Williams",
-  //     role: "Interaction Designer",
-  //     avatar: "https://alt.tailus.io/images/team/member-five.webp",
-  //     link: "#",
-  //   },
-  //   {
-  //     name: "Olivia Miller",
-  //     role: "Visual Designer",
-  //     avatar: "https://alt.tailus.io/images/team/member-six.webp",
-  //     link: "#",
-  //   },
+  // {
+  //   name: "Tobias Bronder",
+  //   role: "Partner - Næringsmegler",
+  //   avatar:
+  //     "https://imagedelivery.net/r-6-yk-gGPtjfbIST9-8uA/e90fc23f-2f41-4f6b-302e-d83335f5bc00/public",
+  //   slug: "tobias-bronder",
+  //   email: "tobias.bronder@partners.no",
+  //   phone: "+47 951 66 805",
+  // },
+  // {
+  //   name: "Ole Østensen",
+  //   role: "Partner - Fagansvarlig",
+  //   avatar:
+  //     "https://imagedelivery.net/r-6-yk-gGPtjfbIST9-8uA/17f3e8e3-3c1f-4a8e-1717-0cd273c13a00/public",
+  //   slug: "ole-ostensen",
+  //   email: "ole.ostensen@partners.no",
+  //   phone: "+47 975 27 721",
+  // },
 ];
 
 export default function TeamSection() {
@@ -72,11 +60,15 @@ export default function TeamSection() {
         <div className="mt-12 md:mt-24">
           <div className="grid gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
             {members.map((member, index) => (
-              <div key={index} className="group overflow-hidden">
+              <Link
+                key={index}
+                href={`/personer/${member.slug}`}
+                className="group overflow-hidden"
+              >
                 <img
                   className="h-96 w-full rounded-md object-cover object-top grayscale transition-all duration-500 hover:grayscale-0 group-hover:h-[22.5rem] group-hover:rounded-xl"
                   src={member.avatar}
-                  alt="team member"
+                  alt={`${member.name} - ${member.role}`}
                   width="826"
                   height="1239"
                 />
@@ -92,24 +84,18 @@ export default function TeamSection() {
                       {member.role}
                     </p>
                     <p className="text-sm">
-                      <a
-                        href={`mailto:${member.email}`}
-                        className="text-gray-700 hover:text-primary-600 hover:underline dark:text-gray-300 dark:hover:text-primary-400"
-                      >
+                      <span className="text-gray-700 hover:text-primary-600 hover:underline dark:text-gray-300 dark:hover:text-primary-400">
                         {member.email}
-                      </a>
+                      </span>
                     </p>
                     <p className="text-sm">
-                      <a
-                        href={`tel:${member.phone}`}
-                        className="text-gray-700 hover:text-primary-600 hover:underline dark:text-gray-300 dark:hover:text-primary-400"
-                      >
+                      <span className="text-gray-700 hover:text-primary-600 hover:underline dark:text-gray-300 dark:hover:text-primary-400">
                         {member.phone}
-                      </a>
+                      </span>
                     </p>
                   </div>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         </div>

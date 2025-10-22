@@ -7,6 +7,7 @@ export const siteConfig = {
     home: "/",
     about: "/om-oss",
     tjenester: "/tjenester",
+    personer: "/personer",
     privacy: "/privacy",
     terms: "/terms",
     markedsinnsikt: "/markedsinnsikt",
