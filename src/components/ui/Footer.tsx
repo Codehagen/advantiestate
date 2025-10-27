@@ -36,6 +36,7 @@ const navigationSections = [
         external: false,
       },
       { name: "Kunnskapsbase", href: "/help", external: false },
+      { name: "Verktøy", href: "/verktoy", external: false },
       { name: "Integrasjoner", href: "/integrasjoner", external: false },
       { name: "Blogg", href: "/blog", external: false },
     ],

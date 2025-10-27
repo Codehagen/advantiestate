@@ -75,12 +75,12 @@ export function Navigation() {
               >
                 Kunnskapsbase
               </Link>
-              {/* <Link
+              <Link
                 className="whitespace-nowrap px-2 py-1 text-warm-grey hover:text-warm-grey-3 dark:text-warm-white dark:hover:text-warm-grey-1"
-                href={siteConfig.baseLinks.markedsinnsikt}
+                href={siteConfig.baseLinks.verktoy}
               >
-                Markedsinnsikt
-              </Link> */}
+                Verktøy
+              </Link>
             </div>
           </nav>
           <Link href={siteConfig.baseLinks.kontakt}>
@@ -140,6 +140,14 @@ export function Navigation() {
                 href={siteConfig.baseLinks.blog}
               >
                 Artikler
+              </Link>
+            </li>
+            <li onClick={() => setOpen(false)}>
+              <Link
+                className="hover:text-warm-grey-3 dark:hover:text-warm-grey-1"
+                href={siteConfig.baseLinks.verktoy}
+              >
+                Verktøy
               </Link>
             </li>
           </ul>

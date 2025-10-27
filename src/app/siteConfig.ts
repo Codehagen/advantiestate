@@ -14,6 +14,7 @@ export const siteConfig = {
     help: "/help",
     kontakt: "/kontakt",
     blog: "/blog",
+    verktoy: "/verktoy",
   },
 };
 
