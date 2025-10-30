@@ -16,7 +16,7 @@ export default function CtaMiddle() {
             <Badge>Din ekspert innen næringseiendom i Nord-Norge</Badge>
           </div>
           <div className="flex flex-col gap-6">
-            <h2 className="mb-2 text-balance bg-gradient-to-t from-warm-grey to-warm-grey-3 bg-clip-text text-left text-4xl font-semibold tracking-tighter text-transparent md:text-6xl dark:from-warm-white dark:to-warm-grey-1">
+            <h2 className="mb-2 pb-2 leading-normal text-balance bg-gradient-to-t from-warm-grey to-warm-grey-3 bg-clip-text text-left text-4xl font-semibold tracking-tighter text-transparent md:text-6xl dark:from-warm-white dark:to-warm-grey-1">
               Strategisk innsikt
             </h2>
             <p className="text-grey-800 max-w-md text-left text-lg leading-relaxed tracking-tight dark:text-warm-grey-1">
