@@ -35,8 +35,8 @@ export default function About() {
           rådgivning og skreddersydde løsninger for din virksomhet.
         </p>
       </section>
-      <TeamGallery />
-      <Benefits />
+      {/* <TeamGallery />
+      <Benefits /> */}
       <section aria-labelledby="vision-title" className="mx-auto mt-40">
         <h2
           id="vision-title"

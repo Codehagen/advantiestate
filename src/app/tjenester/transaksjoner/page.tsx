@@ -114,7 +114,7 @@ export default function TransaksjonerPage() {
       <section className="mx-auto mt-24 w-full max-w-6xl">
         <div className="flex flex-col items-center gap-6 text-center">
           <Badge>Våre Transaksjonstjenester</Badge>
-          <h2 className="text-balance bg-gradient-to-t from-warm-grey to-warm-grey-3 bg-clip-text text-4xl font-semibold tracking-tighter text-transparent md:text-6xl dark:from-warm-white dark:to-warm-grey-1">
+          <h2 className="text-balance pb-2 leading-normal bg-gradient-to-t from-warm-grey to-warm-grey-3 bg-clip-text text-4xl font-semibold tracking-tighter text-transparent md:text-6xl dark:from-warm-white dark:to-warm-grey-1">
             Ekspertise Gjennom Hele Prosessen
           </h2>
           <p className="max-w-2xl text-lg text-warm-grey-2 dark:text-warm-grey-1">
@@ -150,7 +150,7 @@ export default function TransaksjonerPage() {
       <section className="mx-auto mt-24 w-full max-w-6xl">
         <div className="flex flex-col items-center gap-6 text-center">
           <Badge>Hvorfor Velge Advanti?</Badge>
-          <h2 className="text-balance bg-gradient-to-t from-warm-grey to-warm-grey-3 bg-clip-text text-4xl font-semibold tracking-tighter text-transparent md:text-6xl dark:from-warm-white dark:to-warm-grey-1">
+          <h2 className="text-balance pb-2 leading-normal bg-gradient-to-t from-warm-grey to-warm-grey-3 bg-clip-text text-4xl font-semibold tracking-tighter text-transparent md:text-6xl dark:from-warm-white dark:to-warm-grey-1">
             Din Pålitelige Partner i Transaksjoner
           </h2>
           <p className="max-w-2xl text-lg text-warm-grey-2 dark:text-warm-grey-1">
