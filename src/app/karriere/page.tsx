@@ -74,7 +74,7 @@ export default function KarrierePage() {
         </div>
       </section>
 
-      <TeamGallery />
+      {/* <TeamGallery /> */}
 
       <section className="mx-auto mt-12 w-full max-w-6xl py-12">
         <div className="text-center">
