@@ -3,6 +3,8 @@ import { Navigation } from "@/components/ui/Navbar";
 import { constructMetadata } from "@/lib/utils";
 import { ThemeProvider } from "next-themes";
 import { Inter } from "next/font/google";
+import StructuredData from "@/components/StructuredData";
+import FloatingCTA from "@/components/FloatingCTA";
 import "./globals.css";
 
 const inter = Inter({
@@ -23,7 +25,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="nb" suppressHydrationWarning>
+      <head>
+        <StructuredData type="organization" />
+        <StructuredData type="realEstateAgent" />
+        <StructuredData type="website" />
+      </head>
       <body
         className={`${inter.className} min-h-screen scroll-auto antialiased selection:bg-light-blue selection:text-warm-grey dark:bg-warm-grey dark:selection:bg-light-blue dark:selection:text-warm-grey`}
       >
@@ -35,6 +42,7 @@ export default function RootLayout({
           <Navigation />
           {children}
           <Footer />
+          <FloatingCTA />
         </ThemeProvider>
       </body>
     </html>
