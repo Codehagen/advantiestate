@@ -28,13 +28,13 @@ export default function Home() {
       <Features2 />
 
       {/* Newsletter Signup Section */}
-      <section className="mx-auto my-20 max-w-6xl px-4">
+      {/* <section className="mx-auto my-20 max-w-6xl px-4">
         <NewsletterSignup
           variant="card"
           title="Hold deg oppdatert"
           description="Få de nyeste markedsinnsiktene, verdivurderingstips og eksklusive analyser om næringseiendom i Nord-Norge direkte i innboksen din."
         />
-      </section>
+      </section> */}
 
       <Cta />
     </main>

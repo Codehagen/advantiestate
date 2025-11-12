@@ -11,7 +11,7 @@ import { allHelpPosts } from "content-collections";
 
 export const BLOG_CATEGORIES = [
   {
-    title: "Om Advanti",
+    title: "Advanti",
     slug: "company",
     description:
       "Hold deg oppdatert med de siste nyhetene og innsiktene fra Advanti. Bli kjent med vårt firma, våre verdier, og teamet av eksperter i Nord-Norge.",

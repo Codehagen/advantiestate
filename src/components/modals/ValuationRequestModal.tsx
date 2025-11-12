@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/Button"
 import { Input } from "@/components/Input"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/Select"
 import Modal from "@/components/blog/modal"
 import { RiCloseLine, RiCalculatorLine, RiCheckLine } from "@remixicon/react"
 import { useState } from "react"
@@ -27,11 +28,12 @@ export default function ValuationRequestModal({
       name: `${formData.get("firstname")} ${formData.get("lastname")}`,
       email: formData.get("email"),
       phone: formData.get("phone"),
+      address: formData.get("address"),
       propertyType: formData.get("propertyType"),
-      location: formData.get("location"),
       size: formData.get("size"),
-      message: formData.get("message"),
-      formType: "Verdivurdering",
+      income: formData.get("income"),
+      costs: formData.get("costs"),
+      formType: "Verdsettelse",
     }
 
     try {
@@ -74,10 +76,10 @@ export default function ValuationRequestModal({
             </div>
             <div>
               <h2 className="text-2xl font-semibold text-warm-grey dark:text-warm-white">
-                Få gratis verdivurdering
+                Gratis verdsettelse
               </h2>
               <p className="mt-1 text-sm text-warm-grey-2 dark:text-warm-grey-1">
-                Få en profesjonell vurdering av din næringseiendom
+                Få en profesjonell innledende verdsettelse av din næringseiendom
               </p>
             </div>
           </div>
@@ -169,46 +171,45 @@ export default function ValuationRequestModal({
                   </div>
                 </div>
 
-                {/* Property Type */}
+                {/* Address / Location */}
                 <div>
                   <label
-                    htmlFor="propertyType"
+                    htmlFor="address"
                     className="mb-2 block text-sm font-medium text-warm-grey dark:text-warm-white"
                   >
-                    Eiendomstype *
+                    Adresse / Sted *
                   </label>
-                  <select
-                    id="propertyType"
-                    name="propertyType"
+                  <Input
+                    id="address"
+                    name="address"
+                    type="text"
+                    placeholder="f.eks. Storgata 1, Bodø"
                     required
-                    className="w-full rounded-md border border-warm-grey-1 bg-warm-white px-3 py-2 text-warm-grey shadow-sm transition-colors placeholder:text-warm-grey-2 focus:border-warm-grey focus:outline-none focus:ring-2 focus:ring-light-blue/50 dark:border-warm-grey-2 dark:bg-warm-grey dark:text-warm-white dark:placeholder:text-warm-grey-1 dark:focus:border-warm-grey-1 dark:focus:ring-light-blue/30"
-                  >
-                    <option value="">Velg eiendomstype</option>
-                    <option value="kontor">Kontor</option>
-                    <option value="handel">Handel / Butikk</option>
-                    <option value="industri">Industri / Lager</option>
-                    <option value="bolig">Bolig (flermannsbolig)</option>
-                    <option value="hotell">Hotell / Overnatting</option>
-                    <option value="annet">Annet</option>
-                  </select>
+                  />
                 </div>
 
-                {/* Location & Size */}
+                {/* Property Type & Size */}
                 <div className="grid gap-4 sm:grid-cols-2">
                   <div>
                     <label
-                      htmlFor="location"
+                      htmlFor="propertyType"
                       className="mb-2 block text-sm font-medium text-warm-grey dark:text-warm-white"
                     >
-                      Sted / Kommune *
+                      Eiendomstype *
                     </label>
-                    <Input
-                      id="location"
-                      name="location"
-                      type="text"
-                      placeholder="f.eks. Bodø"
-                      required
-                    />
+                    <Select name="propertyType" required>
+                      <SelectTrigger id="propertyType">
+                        <SelectValue placeholder="Velg eiendomstype" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="kontor">Kontor</SelectItem>
+                        <SelectItem value="handel">Handel / Butikk</SelectItem>
+                        <SelectItem value="industri">Industri / Lager</SelectItem>
+                        <SelectItem value="bolig">Bolig (flermannsbolig)</SelectItem>
+                        <SelectItem value="hotell">Hotell / Overnatting</SelectItem>
+                        <SelectItem value="annet">Annet</SelectItem>
+                      </SelectContent>
+                    </Select>
                   </div>
                   <div>
                     <label
@@ -226,21 +227,36 @@ export default function ValuationRequestModal({
                   </div>
                 </div>
 
-                {/* Additional Message */}
-                <div>
-                  <label
-                    htmlFor="message"
-                    className="mb-2 block text-sm font-medium text-warm-grey dark:text-warm-white"
-                  >
-                    Tilleggsinformasjon
-                  </label>
-                  <textarea
-                    id="message"
-                    name="message"
-                    rows={3}
-                    className="w-full rounded-md border border-warm-grey-1 bg-warm-white px-3 py-2 text-warm-grey shadow-sm transition-colors placeholder:text-warm-grey-2 focus:border-warm-grey focus:outline-none focus:ring-2 focus:ring-light-blue/50 dark:border-warm-grey-2 dark:bg-warm-grey dark:text-warm-white dark:placeholder:text-warm-grey-1 dark:focus:border-warm-grey-1 dark:focus:ring-light-blue/30"
-                    placeholder="Fortell oss mer om eiendommen eller dine ønsker..."
-                  />
+                {/* Income & Costs */}
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <div>
+                    <label
+                      htmlFor="income"
+                      className="mb-2 block text-sm font-medium text-warm-grey dark:text-warm-white"
+                    >
+                      Årlige inntekter (kr)
+                    </label>
+                    <Input
+                      id="income"
+                      name="income"
+                      type="number"
+                      placeholder="1 000 000"
+                    />
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="costs"
+                      className="mb-2 block text-sm font-medium text-warm-grey dark:text-warm-white"
+                    >
+                      Årlige kostnader (kr)
+                    </label>
+                    <Input
+                      id="costs"
+                      name="costs"
+                      type="number"
+                      placeholder="500 000"
+                    />
+                  </div>
                 </div>
               </div>
 

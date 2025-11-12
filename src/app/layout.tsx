@@ -42,7 +42,7 @@ export default function RootLayout({
           <Navigation />
           {children}
           <Footer />
-          <FloatingCTA />
+          {/* <FloatingCTA /> */}
         </ThemeProvider>
       </body>
     </html>
