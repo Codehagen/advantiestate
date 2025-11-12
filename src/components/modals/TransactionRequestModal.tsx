@@ -2,19 +2,20 @@
 
 import { Button } from "@/components/Button"
 import { Input } from "@/components/Input"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/Select"
 import Modal from "@/components/blog/modal"
-import { RiCloseLine, RiTeamLine, RiCheckLine } from "@remixicon/react"
+import { RiCloseLine, RiExchangeLine, RiCheckLine } from "@remixicon/react"
 import { useState } from "react"
 
-interface ConsultationModalProps {
+interface TransactionRequestModalProps {
   showModal: boolean
   setShowModal: (show: boolean) => void
 }
 
-export default function ConsultationModal({
+export default function TransactionRequestModal({
   showModal,
   setShowModal,
-}: ConsultationModalProps) {
+}: TransactionRequestModalProps) {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSuccess, setIsSuccess] = useState(false)
 
@@ -27,14 +28,16 @@ export default function ConsultationModal({
       name: `${formData.get("firstname")} ${formData.get("lastname")}`,
       email: formData.get("email"),
       phone: formData.get("phone"),
-      company: formData.get("company"),
-      serviceType: formData.get("serviceType"),
-      preferredDate: formData.get("preferredDate"),
+      propertyAddress: formData.get("propertyAddress"),
+      transactionType: formData.get("transactionType"),
+      timeline: formData.get("timeline"),
+      estimatedValue: formData.get("estimatedValue"),
       message: formData.get("message"),
-      formType: "Konsultasjon",
+      formType: "Transaksjonshjelp",
     }
 
     try {
+      // Send to Discord webhook or your backend
       const response = await fetch("/api/discord-notification", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -69,14 +72,14 @@ export default function ConsultationModal({
 
           <div className="flex items-center gap-3">
             <div className="rounded-xl bg-light-blue/20 p-3">
-              <RiTeamLine className="h-6 w-6 text-warm-grey dark:text-warm-white" />
+              <RiExchangeLine className="h-6 w-6 text-warm-grey dark:text-warm-white" />
             </div>
             <div>
               <h2 className="text-2xl font-semibold text-warm-grey dark:text-warm-white">
-                Bli kontaktet
+                Be om transaksjonshjelp
               </h2>
               <p className="mt-1 text-sm text-warm-grey-2 dark:text-warm-grey-1">
-                La oss diskutere hvordan vi kan hjelpe deg
+                Vi hjelper deg med kjøp og salg av næringseiendom
               </p>
             </div>
           </div>
@@ -89,10 +92,10 @@ export default function ConsultationModal({
               <RiCheckLine className="h-8 w-8 text-green-600 dark:text-green-400" />
             </div>
             <h3 className="text-xl font-semibold text-warm-grey dark:text-warm-white">
-              Takk for din interesse!
+              Takk for din henvendelse!
             </h3>
             <p className="mt-2 text-center text-warm-grey-2 dark:text-warm-grey-1">
-              Vi vil kontakte deg snarest for å avtale en tid som passer deg.
+              Vi vil kontakte deg innen 24 timer for å diskutere din transaksjon.
             </p>
           </div>
         ) : (
@@ -168,60 +171,72 @@ export default function ConsultationModal({
                   </div>
                 </div>
 
-                {/* Company & Service Type */}
+                {/* Property Address */}
+                <div>
+                  <label
+                    htmlFor="propertyAddress"
+                    className="mb-2 block text-sm font-medium text-warm-grey dark:text-warm-white"
+                  >
+                    Eiendomsadresse *
+                  </label>
+                  <Input
+                    id="propertyAddress"
+                    name="propertyAddress"
+                    type="text"
+                    placeholder="f.eks. Storgata 1, Bodø"
+                    required
+                  />
+                </div>
+
+                {/* Transaction Type & Timeline */}
                 <div className="grid gap-4 sm:grid-cols-2">
                   <div>
                     <label
-                      htmlFor="company"
+                      htmlFor="transactionType"
                       className="mb-2 block text-sm font-medium text-warm-grey dark:text-warm-white"
                     >
-                      Selskap
+                      Transaksjonstype *
                     </label>
-                    <Input
-                      id="company"
-                      name="company"
-                      type="text"
-                      placeholder="Ditt selskap AS"
-                    />
+                    <Select name="transactionType" required>
+                      <SelectTrigger id="transactionType">
+                        <SelectValue placeholder="Velg type" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="kjop">Kjøp</SelectItem>
+                        <SelectItem value="salg">Salg</SelectItem>
+                        <SelectItem value="begge">Begge deler</SelectItem>
+                      </SelectContent>
+                    </Select>
                   </div>
                   <div>
                     <label
-                      htmlFor="serviceType"
+                      htmlFor="timeline"
                       className="mb-2 block text-sm font-medium text-warm-grey dark:text-warm-white"
                     >
-                      Hva kan vi hjelpe med? *
+                      Tidsramme
                     </label>
-                    <select
-                      id="serviceType"
-                      name="serviceType"
-                      required
-                      className="w-full rounded-md border border-warm-grey-1 bg-warm-white px-3 py-2 text-warm-grey shadow-sm transition-colors placeholder:text-warm-grey-2 focus:border-warm-grey focus:outline-none focus:ring-2 focus:ring-light-blue/50 dark:border-warm-grey-2 dark:bg-warm-grey dark:text-warm-white dark:placeholder:text-warm-grey-1 dark:focus:border-warm-grey-1 dark:focus:ring-light-blue/30"
-                    >
-                      <option value="">Velg tjeneste</option>
-                      <option value="salg">Salg av eiendom</option>
-                      <option value="kjop">Kjøp av eiendom</option>
-                      <option value="utleie">Utleie</option>
-                      <option value="verdivurdering">Verdivurdering</option>
-                      <option value="strategisk">Strategisk rådgivning</option>
-                      <option value="transaksjoner">Transaksjonsrådgivning</option>
-                      <option value="annet">Annet</option>
-                    </select>
+                    <Input
+                      id="timeline"
+                      name="timeline"
+                      type="text"
+                      placeholder="f.eks. Innen 6 måneder"
+                    />
                   </div>
                 </div>
 
-                {/* Preferred Date */}
+                {/* Estimated Value */}
                 <div>
                   <label
-                    htmlFor="preferredDate"
+                    htmlFor="estimatedValue"
                     className="mb-2 block text-sm font-medium text-warm-grey dark:text-warm-white"
                   >
-                    Ønsket tidspunkt (valgfritt)
+                    Estimert verdi (kr)
                   </label>
                   <Input
-                    id="preferredDate"
-                    name="preferredDate"
-                    type="date"
-                    min={new Date().toISOString().split("T")[0]}
+                    id="estimatedValue"
+                    name="estimatedValue"
+                    type="number"
+                    placeholder="10 000 000"
                   />
                 </div>
 
@@ -231,14 +246,14 @@ export default function ConsultationModal({
                     htmlFor="message"
                     className="mb-2 block text-sm font-medium text-warm-grey dark:text-warm-white"
                   >
-                    Fortell oss mer
+                    Tilleggsinformasjon
                   </label>
                   <textarea
                     id="message"
                     name="message"
                     rows={3}
                     className="w-full rounded-md border border-warm-grey-1 bg-warm-white px-3 py-2 text-warm-grey shadow-sm transition-colors placeholder:text-warm-grey-2 focus:border-warm-grey focus:outline-none focus:ring-2 focus:ring-light-blue/50 dark:border-warm-grey-2 dark:bg-warm-grey dark:text-warm-white dark:placeholder:text-warm-grey-1 dark:focus:border-warm-grey-1 dark:focus:ring-light-blue/30"
-                    placeholder="Beskriv ditt behov eller spørsmål..."
+                    placeholder="Fortell oss mer om transaksjonen..."
                   />
                 </div>
               </div>
@@ -255,7 +270,7 @@ export default function ConsultationModal({
               </div>
 
               <p className="mt-4 text-center text-xs text-warm-grey-2 dark:text-warm-grey-1">
-                Gratis og uforpliktende konsultasjon. Vi kontakter deg innen 24 timer.
+                Ved å sende inn dette skjemaet godtar du at vi kontakter deg om din transaksjon.
               </p>
             </form>
           </>

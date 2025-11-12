@@ -2,19 +2,20 @@
 
 import { Button } from "@/components/Button"
 import { Input } from "@/components/Input"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/Select"
 import Modal from "@/components/blog/modal"
-import { RiCloseLine, RiTeamLine, RiCheckLine } from "@remixicon/react"
+import { RiCloseLine, RiBuilding4Line, RiCheckLine } from "@remixicon/react"
 import { useState } from "react"
 
-interface ConsultationModalProps {
+interface LeaseRequestModalProps {
   showModal: boolean
   setShowModal: (show: boolean) => void
 }
 
-export default function ConsultationModal({
+export default function LeaseRequestModal({
   showModal,
   setShowModal,
-}: ConsultationModalProps) {
+}: LeaseRequestModalProps) {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSuccess, setIsSuccess] = useState(false)
 
@@ -27,14 +28,17 @@ export default function ConsultationModal({
       name: `${formData.get("firstname")} ${formData.get("lastname")}`,
       email: formData.get("email"),
       phone: formData.get("phone"),
-      company: formData.get("company"),
-      serviceType: formData.get("serviceType"),
-      preferredDate: formData.get("preferredDate"),
-      message: formData.get("message"),
-      formType: "Konsultasjon",
+      intent: formData.get("intent"),
+      propertyType: formData.get("propertyType"),
+      location: formData.get("location"),
+      desiredArea: formData.get("desiredArea"),
+      budgetRange: formData.get("budgetRange"),
+      moveInDate: formData.get("moveInDate"),
+      formType: "Utleie",
     }
 
     try {
+      // Send to Discord webhook or your backend
       const response = await fetch("/api/discord-notification", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -69,14 +73,14 @@ export default function ConsultationModal({
 
           <div className="flex items-center gap-3">
             <div className="rounded-xl bg-light-blue/20 p-3">
-              <RiTeamLine className="h-6 w-6 text-warm-grey dark:text-warm-white" />
+              <RiBuilding4Line className="h-6 w-6 text-warm-grey dark:text-warm-white" />
             </div>
             <div>
               <h2 className="text-2xl font-semibold text-warm-grey dark:text-warm-white">
-                Bli kontaktet
+                Finn lokaler
               </h2>
               <p className="mt-1 text-sm text-warm-grey-2 dark:text-warm-grey-1">
-                La oss diskutere hvordan vi kan hjelpe deg
+                Vi hjelper deg med å finne eller leie ut næringslokaler
               </p>
             </div>
           </div>
@@ -89,10 +93,10 @@ export default function ConsultationModal({
               <RiCheckLine className="h-8 w-8 text-green-600 dark:text-green-400" />
             </div>
             <h3 className="text-xl font-semibold text-warm-grey dark:text-warm-white">
-              Takk for din interesse!
+              Takk for din henvendelse!
             </h3>
             <p className="mt-2 text-center text-warm-grey-2 dark:text-warm-grey-1">
-              Vi vil kontakte deg snarest for å avtale en tid som passer deg.
+              Vi vil kontakte deg innen 24 timer for å diskutere dine behov.
             </p>
           </div>
         ) : (
@@ -168,77 +172,109 @@ export default function ConsultationModal({
                   </div>
                 </div>
 
-                {/* Company & Service Type */}
+                {/* Intent */}
+                <div>
+                  <label
+                    htmlFor="intent"
+                    className="mb-2 block text-sm font-medium text-warm-grey dark:text-warm-white"
+                  >
+                    Jeg ønsker å *
+                  </label>
+                  <Select name="intent" required>
+                    <SelectTrigger id="intent">
+                      <SelectValue placeholder="Velg alternativ" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="looking">Leie lokaler</SelectItem>
+                      <SelectItem value="leasing">Leie ut lokaler</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {/* Property Type & Location */}
                 <div className="grid gap-4 sm:grid-cols-2">
                   <div>
                     <label
-                      htmlFor="company"
+                      htmlFor="propertyType"
                       className="mb-2 block text-sm font-medium text-warm-grey dark:text-warm-white"
                     >
-                      Selskap
+                      Eiendomstype *
+                    </label>
+                    <Select name="propertyType" required>
+                      <SelectTrigger id="propertyType">
+                        <SelectValue placeholder="Velg type" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="kontor">Kontor</SelectItem>
+                        <SelectItem value="handel">Handel / Butikk</SelectItem>
+                        <SelectItem value="industri">Industri / Lager</SelectItem>
+                        <SelectItem value="restaurant">Restaurant / Servering</SelectItem>
+                        <SelectItem value="annet">Annet</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="location"
+                      className="mb-2 block text-sm font-medium text-warm-grey dark:text-warm-white"
+                    >
+                      Sted / Kommune *
                     </label>
                     <Input
-                      id="company"
-                      name="company"
+                      id="location"
+                      name="location"
                       type="text"
-                      placeholder="Ditt selskap AS"
+                      placeholder="f.eks. Bodø"
+                      required
+                    />
+                  </div>
+                </div>
+
+                {/* Desired Area & Budget */}
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <div>
+                    <label
+                      htmlFor="desiredArea"
+                      className="mb-2 block text-sm font-medium text-warm-grey dark:text-warm-white"
+                    >
+                      Ønsket areal (m²)
+                    </label>
+                    <Input
+                      id="desiredArea"
+                      name="desiredArea"
+                      type="number"
+                      placeholder="500"
                     />
                   </div>
                   <div>
                     <label
-                      htmlFor="serviceType"
+                      htmlFor="budgetRange"
                       className="mb-2 block text-sm font-medium text-warm-grey dark:text-warm-white"
                     >
-                      Hva kan vi hjelpe med? *
+                      Budsjett / Leie (kr/mnd)
                     </label>
-                    <select
-                      id="serviceType"
-                      name="serviceType"
-                      required
-                      className="w-full rounded-md border border-warm-grey-1 bg-warm-white px-3 py-2 text-warm-grey shadow-sm transition-colors placeholder:text-warm-grey-2 focus:border-warm-grey focus:outline-none focus:ring-2 focus:ring-light-blue/50 dark:border-warm-grey-2 dark:bg-warm-grey dark:text-warm-white dark:placeholder:text-warm-grey-1 dark:focus:border-warm-grey-1 dark:focus:ring-light-blue/30"
-                    >
-                      <option value="">Velg tjeneste</option>
-                      <option value="salg">Salg av eiendom</option>
-                      <option value="kjop">Kjøp av eiendom</option>
-                      <option value="utleie">Utleie</option>
-                      <option value="verdivurdering">Verdivurdering</option>
-                      <option value="strategisk">Strategisk rådgivning</option>
-                      <option value="transaksjoner">Transaksjonsrådgivning</option>
-                      <option value="annet">Annet</option>
-                    </select>
+                    <Input
+                      id="budgetRange"
+                      name="budgetRange"
+                      type="number"
+                      placeholder="50 000"
+                    />
                   </div>
                 </div>
 
-                {/* Preferred Date */}
+                {/* Move-in Date */}
                 <div>
                   <label
-                    htmlFor="preferredDate"
+                    htmlFor="moveInDate"
                     className="mb-2 block text-sm font-medium text-warm-grey dark:text-warm-white"
                   >
-                    Ønsket tidspunkt (valgfritt)
+                    Ønsket innflyttingsdato
                   </label>
                   <Input
-                    id="preferredDate"
-                    name="preferredDate"
-                    type="date"
-                    min={new Date().toISOString().split("T")[0]}
-                  />
-                </div>
-
-                {/* Additional Message */}
-                <div>
-                  <label
-                    htmlFor="message"
-                    className="mb-2 block text-sm font-medium text-warm-grey dark:text-warm-white"
-                  >
-                    Fortell oss mer
-                  </label>
-                  <textarea
-                    id="message"
-                    name="message"
-                    rows={3}
-                    className="w-full rounded-md border border-warm-grey-1 bg-warm-white px-3 py-2 text-warm-grey shadow-sm transition-colors placeholder:text-warm-grey-2 focus:border-warm-grey focus:outline-none focus:ring-2 focus:ring-light-blue/50 dark:border-warm-grey-2 dark:bg-warm-grey dark:text-warm-white dark:placeholder:text-warm-grey-1 dark:focus:border-warm-grey-1 dark:focus:ring-light-blue/30"
-                    placeholder="Beskriv ditt behov eller spørsmål..."
+                    id="moveInDate"
+                    name="moveInDate"
+                    type="text"
+                    placeholder="f.eks. August 2025"
                   />
                 </div>
               </div>
@@ -255,7 +291,7 @@ export default function ConsultationModal({
               </div>
 
               <p className="mt-4 text-center text-xs text-warm-grey-2 dark:text-warm-grey-1">
-                Gratis og uforpliktende konsultasjon. Vi kontakter deg innen 24 timer.
+                Ved å sende inn dette skjemaet godtar du at vi kontakter deg om dine behov.
               </p>
             </form>
           </>

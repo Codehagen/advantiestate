@@ -1,5 +1,6 @@
 import { Badge } from "@/components/Badge";
 import { AnimatedCTA } from "@/components/ui/AnimatedCTA";
+import { TransactionCTAButtonGroup } from "@/components/CTAButtons";
 import FeatureDivider from "@/components/ui/FeatureDivider";
 import { constructMetadata } from "@/lib/utils";
 import Image from "next/image";
@@ -92,6 +93,9 @@ export default function TransaksjonerPage() {
               Vi sikrer at du tar de beste beslutningene og oppnår optimale
               resultater i dine eiendomstransaksjoner.
             </p>
+            <div className="mt-8">
+              <TransactionCTAButtonGroup />
+            </div>
           </div>
           <div className="mt-8 lg:mt-0">
             <div className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-warm-grey/5 shadow-lg shadow-light-blue/10 ring-1 ring-warm-grey/5 dark:bg-warm-grey/20 dark:shadow-light-blue/10 dark:ring-warm-white/5">
