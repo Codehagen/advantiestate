@@ -6,6 +6,7 @@ import FeatureDivider from "@/components/ui/FeatureDivider";
 import Features2 from "@/components/ui/Features2";
 import { Hero2 } from "@/components/ui/Hero2";
 import LogoCloud from "@/components/ui/LogoCloud";
+import NewsletterSignup from "@/components/NewsletterSignup";
 import { constructMetadata } from "@/lib/utils";
 
 export const metadata = constructMetadata({
@@ -25,6 +26,16 @@ export default function Home() {
       <FeatureDivider />
       {/* <ContentSection /> */}
       <Features2 />
+
+      {/* Newsletter Signup Section */}
+      {/* <section className="mx-auto my-20 max-w-6xl px-4">
+        <NewsletterSignup
+          variant="card"
+          title="Hold deg oppdatert"
+          description="Få de nyeste markedsinnsiktene, verdivurderingstips og eksklusive analyser om næringseiendom i Nord-Norge direkte i innboksen din."
+        />
+      </section> */}
+
       <Cta />
     </main>
   );
