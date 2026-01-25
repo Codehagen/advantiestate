@@ -18,9 +18,9 @@ import {
 import Balancer from "react-wrap-balancer";
 
 export const metadata = constructMetadata({
-  title: "Salg av Næringseiendom | Advanti",
+  title: "Salg av Næringseiendom i Nord-Norge | Advanti",
   description:
-    "Advanti bistår deg gjennom hele salgsprosessen for næringseiendom, fra forberedelser og markedsføring til forhandlinger og oppgjør.",
+    "Planlegger du salg av næringseiendom? Advanti bistår deg gjennom hele salgsprosessen, fra verdivurdering og markedsføring til forhandlinger og oppgjør.",
 });
 
 const salesProcessSteps = [
@@ -102,7 +102,7 @@ export default function SalgPage() {
               id="salg-hero"
               className="mt-2 inline-block bg-gradient-to-t from-warm-grey to-warm-grey-3 bg-clip-text py-2 text-4xl font-bold tracking-tighter text-transparent sm:text-6xl md:text-6xl dark:from-warm-white dark:to-warm-grey-1"
             >
-              <Balancer>Optimaliser Ditt Eiendomssalg</Balancer>
+              <Balancer>Salg av Næringseiendom i Nord-Norge</Balancer>
             </h1>
             <p className="mt-6 max-w-2xl text-lg text-warm-grey-2 dark:text-warm-grey-1">
               Advanti er din strategiske partner for salg av næringseiendom i

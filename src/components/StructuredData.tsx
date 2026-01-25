@@ -1,11 +1,14 @@
 interface StructuredDataProps {
-  type?: "organization" | "realEstateAgent" | "website" | "article" | "faq"
-  data?: any
+  type?: "organization" | "realEstateAgent" | "website" | "article" | "faq";
+  data?: any;
 }
 
-export default function StructuredData({ type = "organization", data }: StructuredDataProps) {
+export default function StructuredData({
+  type = "organization",
+  data,
+}: StructuredDataProps) {
   const getSchemaData = () => {
-    const baseUrl = "https://www.advantiestate.no"
+    const baseUrl = "https://www.advantiestate.no";
 
     switch (type) {
       case "organization":
@@ -50,7 +53,7 @@ export default function StructuredData({ type = "organization", data }: Structur
             "@type": "QuantitativeValue",
             value: "4",
           },
-        }
+        };
 
       case "realEstateAgent":
         return {
@@ -74,12 +77,18 @@ export default function StructuredData({ type = "organization", data }: Structur
             latitude: "67.2804",
             longitude: "14.4049",
           },
-          telephone: "+47-XXX-XX-XXX",
-          email: "kontakt@advantiestate.no",
+          telephone: "+47 984 53 571",
+          email: "Christer@advanti.no",
           openingHoursSpecification: [
             {
               "@type": "OpeningHoursSpecification",
-              dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+              dayOfWeek: [
+                "Monday",
+                "Tuesday",
+                "Wednesday",
+                "Thursday",
+                "Friday",
+              ],
               opens: "08:00",
               closes: "16:00",
             },
@@ -96,6 +105,10 @@ export default function StructuredData({ type = "organization", data }: Structur
             {
               "@type": "City",
               name: "Narvik",
+            },
+            {
+              "@type": "City",
+              name: "Alta",
             },
             {
               "@type": "State",
@@ -143,7 +156,7 @@ export default function StructuredData({ type = "organization", data }: Structur
               },
             },
           ],
-        }
+        };
 
       case "website":
         return {
@@ -170,7 +183,7 @@ export default function StructuredData({ type = "organization", data }: Structur
             "query-input": "required name=search_term_string",
           },
           inLanguage: "nb-NO",
-        }
+        };
 
       case "article":
         return data
@@ -179,7 +192,9 @@ export default function StructuredData({ type = "organization", data }: Structur
               "@type": "Article",
               headline: data.title,
               description: data.summary || data.description,
-              image: data.image ? `${baseUrl}${data.image}` : `${baseUrl}/opengraph-image.png`,
+              image: data.image
+                ? `${baseUrl}${data.image}`
+                : `${baseUrl}/opengraph-image.png`,
               datePublished: data.publishedAt,
               dateModified: data.updatedAt || data.publishedAt,
               author: {
@@ -196,48 +211,58 @@ export default function StructuredData({ type = "organization", data }: Structur
               },
               mainEntityOfPage: {
                 "@type": "WebPage",
-                "@id": data.url || baseUrl,
+                "@id": data.url
+                  ? data.url.startsWith("http")
+                    ? data.url
+                    : `${baseUrl}${data.url}`
+                  : baseUrl,
               },
               inLanguage: "nb-NO",
             }
-          : null
+          : null;
 
       case "faq":
         return data
           ? {
               "@context": "https://schema.org",
               "@type": "FAQPage",
-              mainEntity: data.faqs.map((faq: { question: string; answer: string }) => ({
-                "@type": "Question",
-                name: faq.question,
-                acceptedAnswer: {
-                  "@type": "Answer",
-                  text: faq.answer,
-                },
-              })),
+              mainEntity: data.faqs.map(
+                (faq: { question: string; answer: string }) => ({
+                  "@type": "Question",
+                  name: faq.question,
+                  acceptedAnswer: {
+                    "@type": "Answer",
+                    text: faq.answer,
+                  },
+                }),
+              ),
             }
-          : null
+          : null;
 
       default:
-        return null
+        return null;
     }
-  }
+  };
 
-  const schemaData = getSchemaData()
+  const schemaData = getSchemaData();
 
-  if (!schemaData) return null
+  if (!schemaData) return null;
 
   return (
     <script
       type="application/ld+json"
       dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaData) }}
     />
-  )
+  );
 }
 
 // Breadcrumb component for navigation paths
-export function BreadcrumbStructuredData({ items }: { items: { name: string; url: string }[] }) {
-  const baseUrl = "https://www.advantiestate.no"
+export function BreadcrumbStructuredData({
+  items,
+}: {
+  items: { name: string; url: string }[];
+}) {
+  const baseUrl = "https://www.advantiestate.no";
 
   const schemaData = {
     "@context": "https://schema.org",
@@ -248,12 +273,12 @@ export function BreadcrumbStructuredData({ items }: { items: { name: string; url
       name: item.name,
       item: `${baseUrl}${item.url}`,
     })),
-  }
+  };
 
   return (
     <script
       type="application/ld+json"
       dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaData) }}
     />
-  )
+  );
 }

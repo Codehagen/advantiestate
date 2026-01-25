@@ -32,6 +32,7 @@ export async function generateMetadata({
     title: `${title} – Advanti Datakilder`,
     description: summary,
     image,
+    canonical: `/integrasjoner/${slug}`,
   });
 }
 

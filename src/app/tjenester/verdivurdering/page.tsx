@@ -1,6 +1,8 @@
 import { Badge } from "@/components/Badge";
 import { AnimatedCTA } from "@/components/ui/AnimatedCTA";
 import { CTAButtonGroup } from "@/components/CTAButtons";
+import { FeatureComparison } from "@/components/advanti/FeatureComparison";
+import { FeatureShowcase } from "@/components/advanti/FeatureShowcase";
 import FeatureDivider from "@/components/ui/FeatureDivider";
 import { constructMetadata } from "@/lib/utils";
 import Image from "next/image";
@@ -15,9 +17,9 @@ import {
 import Balancer from "react-wrap-balancer";
 
 export const metadata = constructMetadata({
-  title: "Verdivurdering Næringseiendom | Advanti",
+  title: "Verdivurdering av Næringseiendom | Advanti",
   description:
-    "Advanti tilbyr profesjonelle verdivurderinger og analyser av næringseiendom i Nord-Norge. Få et solid beslutningsgrunnlag for dine eiendomsinvesteringer.",
+    "Trenger du verdivurdering av næringseiendom? Advanti tilbyr profesjonelle analyser og verdivurderinger i Nord-Norge for et solid beslutningsgrunnlag.",
 });
 
 const valuationServices = [
@@ -81,7 +83,7 @@ export default function VerdivurderingPage() {
               id="verdivurdering-hero"
               className="mt-2 inline-block bg-gradient-to-t from-warm-grey to-warm-grey-3 bg-clip-text py-2 text-4xl font-bold tracking-tighter text-transparent sm:text-6xl md:text-6xl dark:from-warm-white dark:to-warm-grey-1"
             >
-              <Balancer>Profesjonell Verdivurdering av Næringseiendom</Balancer>
+              <Balancer>Verdivurdering av Næringseiendom</Balancer>
             </h1>
             <p className="mt-6 max-w-2xl text-lg text-warm-grey-2 dark:text-warm-grey-1">
               Advanti tilbyr grundige og profesjonelle verdivurderinger av
@@ -151,6 +153,37 @@ export default function VerdivurderingPage() {
       <FeatureDivider className="mx-auto mt-24 max-w-6xl" />
 
       {/* Why Choose Advanti for Valuation Section */}
+      <section className="mx-auto mt-24 w-full max-w-6xl">
+        <div className="flex flex-col items-center gap-6 text-center">
+          <Badge>Vår Metode</Badge>
+          <h2 className="text-balance bg-gradient-to-t from-warm-grey to-warm-grey-3 bg-clip-text text-4xl font-semibold tracking-tighter text-transparent md:text-6xl dark:from-warm-white dark:to-warm-grey-1">
+            Metoder for presis verdivurdering
+          </h2>
+          <p className="max-w-2xl text-lg text-warm-grey-2 dark:text-warm-grey-1">
+            <Balancer>
+              Advanti benytter anerkjente metoder for verdivurdering av
+              næringseiendom, inkludert DCF-analyser og yield-betraktninger.
+              Dette sikrer at alle relevante verdidrivere blir grundig vurdert.
+            </Balancer>
+          </p>
+        </div>
+        <div className="mt-12">
+          <FeatureShowcase />
+        </div>
+      </section>
+
+      <FeatureDivider className="mx-auto mt-24 max-w-6xl" />
+
+      <FeatureComparison
+        badge="Fra Data til Innsikt"
+        title="Solid Beslutningsgrunnlag"
+        description="Advanti transformerer kompleks data til klar innsikt. Vi systematiserer informasjon og leverer analyser som gir deg et trygt og godt fundament for dine eiendomsbeslutninger."
+        lightImage="/images/hero-light.webp"
+        darkImage="/images/hero-dark.webp"
+      />
+
+      <FeatureDivider className="mx-auto mt-24 max-w-6xl" />
+
       <section className="mx-auto mt-24 w-full max-w-6xl">
         <div className="flex flex-col items-center gap-6 text-center">
           <Badge>Hvorfor Velge Advanti?</Badge>

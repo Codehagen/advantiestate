@@ -9,6 +9,8 @@ import { allBlogPosts } from "content-collections";
 import { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { AnimatedCTA } from "@/components/ui/AnimatedCTA";
+import StructuredData from "@/components/StructuredData";
 
 export async function generateStaticParams() {
   return allBlogPosts.map((post) => ({
@@ -33,6 +35,7 @@ export async function generateMetadata({
     title: `${seoTitle || title} – Advanti`,
     description: seoDescription || summary,
     image,
+    canonical: `/blog/${slug}`,
   });
 }
 
@@ -91,6 +94,17 @@ export default async function BlogArticle({
 
   return (
     <>
+      <StructuredData
+        type="article"
+        data={{
+          title: data.title,
+          summary: data.summary,
+          publishedAt: data.publishedAt,
+          image: data.image,
+          author: data.author,
+          url: `/blog/${data.slug}`,
+        }}
+      />
       <MaxWidthWrapper>
         <div className="flex max-w-screen-sm flex-col space-y-4 pt-32 md:pt-40">
           <div className="flex items-center space-x-4">
@@ -133,8 +147,24 @@ export default async function BlogArticle({
               ...image,
               alt: data.title,
             }))}
-            className="px-5 pb-20 pt-4 sm:px-10"
+            className="px-5 pb-10 pt-4 sm:px-10"
           />
+          <div className="px-5 pb-20 sm:px-10">
+            <AnimatedCTA
+              badge="Næringsmegling i Nord-Norge"
+              title="Planlegger du salg eller utleie av næringseiendom?"
+              description="Advanti kombinerer lokal kunnskap med avansert teknologi for å gi deg de beste resultatene i markedet."
+              primaryAction={{
+                label: "Kontakt oss",
+                href: "/kontakt",
+              }}
+              secondaryAction={{
+                label: "Våre tjenester",
+                href: "/tjenester",
+              }}
+              size="default"
+            />
+          </div>
         </div>
           <div className="sticky top-20 col-span-1 mt-48 hidden flex-col divide-y divide-warm-grey/20 self-start sm:flex">
             <div className="flex flex-col space-y-4 py-5">

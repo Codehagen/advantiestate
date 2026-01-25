@@ -4,6 +4,9 @@ import {
   allCustomersPosts,
   allHelpPosts,
   allIntegrationsPosts,
+  allPersonPosts,
+  allLegalPosts,
+  allChangelogPosts,
 } from "content-collections";
 import { MetadataRoute } from "next";
 import { headers } from "next/headers";
@@ -15,11 +18,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = `${protocol}://${domain}`;
 
   // Core static pages
+  const lastModifiedStatic = new Date("2025-01-25");
   const staticPages = [
     "",
     "/om-oss",
     "/tjenester",
-    "/tjenester/verdsettelse",
+    "/tjenester/verdivurdering",
     "/tjenester/salg",
     "/tjenester/utleie",
     "/tjenester/strategisk-radgivning",
@@ -28,9 +32,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "/help",
     "/blog",
     "/kunder",
+    "/integrasjoner",
+    "/personer",
   ].map((route) => ({
     url: `${baseUrl}${route}`,
-    lastModified: new Date(),
+    lastModified: lastModifiedStatic,
     changeFrequency: "daily" as const,
     priority: route === "" ? 1.0 : 0.8,
   }));
@@ -83,6 +89,30 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.7,
   }));
 
+  // Dynamic person pages
+  const personPages = allPersonPosts.map((post) => ({
+    url: `${baseUrl}/personer/${post.slug}`,
+    lastModified: new Date(post.startedAt),
+    changeFrequency: "monthly" as const,
+    priority: 0.6,
+  }));
+
+  // Dynamic legal pages
+  const legalPages = allLegalPosts.map((post) => ({
+    url: `${baseUrl}/legal/${post.slug}`,
+    lastModified: new Date(post.updatedAt),
+    changeFrequency: "monthly" as const,
+    priority: 0.5,
+  }));
+
+  // Dynamic changelog pages
+  const changelogPages = allChangelogPosts.map((post) => ({
+    url: `${baseUrl}/changelog/${post.slug}`,
+    lastModified: new Date(post.publishedAt),
+    changeFrequency: "monthly" as const,
+    priority: 0.5,
+  }));
+
   return [
     ...staticPages,
     ...blogCategories,
@@ -91,5 +121,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...blogPages,
     ...customerPages,
     ...integrationPages,
+    ...personPages,
+    ...legalPages,
+    ...changelogPages,
   ];
 }

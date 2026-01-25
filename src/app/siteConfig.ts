@@ -1,6 +1,6 @@
 export const siteConfig = {
   name: "Advanti - Intelligent verdsettelse av næringseiendom",
-  url: "https://www.advanti.no",
+  url: "https://www.advantiestate.no",
   description:
     "Avansert plattform for verdivurdering og verdsettelse av næringseiendom. Få innsikt med DCF-analyser, yield-beregninger og markedsdata for bedre investeringsbeslutninger.",
   baseLinks: {

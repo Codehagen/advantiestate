@@ -14,6 +14,8 @@ import { HELP_CATEGORIES } from "@/lib/blog/content";
 import { getBlurDataURL } from "@/lib/blog/images";
 import { constructMetadata } from "@/lib/utils";
 import { RiArrowRightSLine } from "@remixicon/react";
+import { AnimatedCTA } from "@/components/ui/AnimatedCTA";
+import StructuredData from "@/components/StructuredData";
 
 export async function generateStaticParams() {
   return allHelpPosts.map((post) => ({
@@ -40,6 +42,7 @@ export async function generateMetadata({
     image: `/api/og/help?title=${encodeURIComponent(
       title
     )}&summary=${encodeURIComponent(summary)}`,
+    canonical: `/help/article/${slug}`,
   });
 }
 
@@ -76,6 +79,17 @@ export default async function HelpArticle({
 
   return (
     <>
+      <StructuredData
+        type="article"
+        data={{
+          title: data.title,
+          summary: data.summary,
+          publishedAt: data.updatedAt,
+          updatedAt: data.updatedAt,
+          author: data.author,
+          url: `/help/article/${data.slug}`,
+        }}
+      />
       <MaxWidthWrapper className="flex max-w-screen-lg flex-col py-10 pt-32 md:pt-40">
         <SearchButton />
       </MaxWidthWrapper>
@@ -129,6 +143,22 @@ export default async function HelpArticle({
               </div>
             )}
             <Feedback />
+            <div className="mt-12 border-t border-warm-grey-2/20 pt-12">
+              <AnimatedCTA
+                badge="Eksperthjelp"
+                title="Behov for rådgivning om næringseiendom?"
+                description="Våre rådgivere har dyp kunnskap om markedet i Nord-Norge og kan bistå deg med alt fra verdivurdering til salg og utleie."
+                primaryAction={{
+                  label: "Kontakt oss for en prat",
+                  href: "/kontakt",
+                }}
+                secondaryAction={{
+                  label: "Se alle våre tjenester",
+                  href: "/tjenester",
+                }}
+                size="default"
+              />
+            </div>
           </div>
           <div className="sticky top-32 col-span-1 hidden flex-col space-y-10 divide-y divide-warm-grey-2/20 self-start sm:flex">
             {data.tableOfContents.length > 0 && (

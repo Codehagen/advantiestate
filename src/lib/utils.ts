@@ -55,6 +55,14 @@ export function constructMetadata({
   image?: string;
   icons?: string;
   noIndex?: boolean;
+  canonical?: string;
+}: {
+  title?: string;
+  description?: string;
+  image?: string;
+  icons?: string;
+  noIndex?: boolean;
+  canonical?: string;
 } = {}): Metadata {
   const siteUrl = "https://www.advantiestate.no";
   const siteName = "Advanti";
@@ -63,6 +71,9 @@ export function constructMetadata({
   return {
     title,
     description,
+    alternates: {
+      canonical: canonical || siteUrl,
+    },
     openGraph: {
       title,
       description,
