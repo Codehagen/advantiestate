@@ -14,7 +14,7 @@ export const metadata = constructMetadata({
 
 export default function PersonerPage() {
   // Filter to show only Christer Hagen and Daniel Adamsen, in this specific order
-  const displayedPeople = ["christer-hagen", "daniel-adamsen"]
+  const displayedPeople = ["christer-hagen", "daniel-adamsen", "havard-nome"]
     .map((slug) => allPersonPosts.find((p) => p.slug === slug))
     .filter(Boolean);
 

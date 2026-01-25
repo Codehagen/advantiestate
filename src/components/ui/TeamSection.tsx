@@ -20,6 +20,14 @@ const members = [
     email: "daniel.adamsen@partners.no",
     phone: "+47 950 26 764",
   },
+  {
+    name: "Håvard Nome",
+    role: "Næringseiendomskonsulent",
+    avatar: "/havard.jpg",
+    slug: "havard-nome",
+    email: "havard@advanti.no",
+    phone: "+47 980 38 737",
+  },
   // {
   //   name: "Tobias Bronder",
   //   role: "Partner - Næringsmegler",
