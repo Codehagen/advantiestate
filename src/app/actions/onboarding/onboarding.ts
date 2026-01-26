@@ -105,6 +105,7 @@ interface ContactInquiryData {
   email: string;
   phone: string;
   service: string;
+  message?: string;
 }
 
 export async function submitContactInquiry(data: ContactInquiryData) {
@@ -114,6 +115,37 @@ export async function submitContactInquiry(data: ContactInquiryData) {
       throw new Error("Discord webhook URL not configured");
     }
 
+    const fields = [
+      {
+        name: "Contact Name",
+        value: data.name,
+      },
+      {
+        name: "Contact Email",
+        value: data.email,
+      },
+      {
+        name: "Contact Phone",
+        value: data.phone,
+      },
+      {
+        name: "Service Interest",
+        value: data.service,
+      },
+    ];
+
+    if (data.message) {
+      fields.push({
+        name: "Message",
+        value: data.message.length > 1024 ? data.message.substring(0, 1021) + "..." : data.message,
+      });
+    }
+
+    fields.push({
+      name: "Timestamp",
+      value: new Date().toISOString(),
+    });
+
     const message: DiscordMessage = {
       content: "📬 New Contact Form Inquiry!",
       embeds: [
@@ -121,28 +153,7 @@ export async function submitContactInquiry(data: ContactInquiryData) {
           title: "New Contact Form Submission",
           description: `${data.name} has submitted a contact inquiry regarding ${data.service}.`,
           color: 0x00aaff, // A different blue color
-          fields: [
-            {
-              name: "Contact Name",
-              value: data.name,
-            },
-            {
-              name: "Contact Email",
-              value: data.email,
-            },
-            {
-              name: "Contact Phone",
-              value: data.phone,
-            },
-            {
-              name: "Service Interest",
-              value: data.service,
-            },
-            {
-              name: "Timestamp",
-              value: new Date().toISOString(),
-            },
-          ],
+          fields,
         },
       ],
     };

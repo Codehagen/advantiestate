@@ -1,5 +1,5 @@
 export const siteConfig = {
-  name: "Advanti | Salg av næringseiendom & Verdivurdering i Nord-Norge",
+  name: "Advanti Estate | Salg av næringseiendom & Verdivurdering i Nord-Norge",
   url: "https://www.advantiestate.no",
   description:
     "Din lokale næringsmegler i Nord-Norge. Vi er eksperter på salg og verdivurdering av næringseiendom. Vi kombinerer lokal markedsinnsikt med avansert analyse for å sikre deg det beste resultatet.",

@@ -24,6 +24,7 @@ export default function ContactUsForm() {
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [service, setService] = useState<string | undefined>(undefined);
+  const [message, setMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -55,6 +56,7 @@ export default function ContactUsForm() {
         phone,
         email,
         service: selectedService,
+        message: message.trim() || undefined,
       });
       if (result.success) {
         setIsSubmitted(true);
@@ -62,6 +64,7 @@ export default function ContactUsForm() {
         setPhone("");
         setEmail("");
         setService(undefined);
+        setMessage("");
       } else {
         setError(result.error || "Innsending feilet. Vennligst prøv igjen.");
       }
@@ -178,12 +181,33 @@ export default function ContactUsForm() {
                 </SelectContent>
               </Select>
             </div>
+            <div className="col-span-full">
+              <label
+                htmlFor="message"
+                className="text-tremor-default font-medium text-tremor-content-strong dark:text-dark-tremor-content-strong"
+              >
+                Melding (valgfritt)
+              </label>
+              <textarea
+                id="message"
+                name="message"
+                rows={4}
+                className="mt-2 w-full rounded-md border border-warm-grey-1 bg-warm-white text-warm-grey placeholder:text-warm-grey-2 focus:border-warm-grey focus:ring-2 focus:ring-light-blue/50 dark:border-warm-grey-2 dark:bg-warm-grey dark:text-warm-white dark:placeholder:text-warm-grey-1 dark:focus:border-warm-grey-1 dark:focus:ring-light-blue/30 px-3 py-2 shadow-sm"
+                placeholder="Fortell oss litt om din situasjon eller spørsmål..."
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                disabled={isSubmitting}
+              />
+            </div>
           </div>
           {error && (
             <p className="mt-4 text-center text-sm text-red-500">{error}</p>
           )}
           <Divider className="mt-8" />
-          <div className="mt-6 flex items-center justify-end space-x-4">
+          <div className="mt-6 flex flex-col items-end space-y-3">
+            <p className="text-sm text-warm-grey-2 dark:text-warm-grey-1 text-right">
+              Vi tar kontakt med deg innen 24 timer for en kort, uforpliktende avklaring.
+            </p>
             <button
               type="submit"
               className="whitespace-nowrap rounded-tremor-default border border-tremor-brand bg-tremor-brand px-4 py-2.5 text-tremor-default font-medium text-tremor-brand-inverted shadow-tremor-input ring-1 ring-inset ring-tremor-brand/40 hover:bg-tremor-brand-emphasis focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tremor-brand dark:border-dark-tremor-brand dark:bg-dark-tremor-brand dark:text-dark-tremor-brand-inverted dark:shadow-dark-tremor-input dark:ring-dark-tremor-brand/40 dark:hover:bg-dark-tremor-brand-emphasis"
