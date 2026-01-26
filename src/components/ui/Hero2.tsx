@@ -18,7 +18,7 @@ export function Hero2() {
               </span>
               <span className="flex items-center gap-1 truncate">
                 <span className="w-full truncate bg-gradient-to-b from-warm-grey-2 to-warm-grey-3 bg-clip-text text-transparent dark:from-warm-grey-1 dark:to-warm-grey-2">
-                  Din ledende næringsmegler
+                  Salg & Verdivurdering
                 </span>
                 <RiArrowRightUpLine className="size-4 shrink-0 text-warm-grey-2" />
               </span>
@@ -26,14 +26,15 @@ export function Hero2() {
           </a>
         </FadeDiv>
         <h1 className="mt-8 text-center text-5xl font-semibold tracking-tighter text-warm-grey sm:text-8xl sm:leading-[5.5rem] dark:text-warm-white">
-          <FadeSpan>Din ledende</FadeSpan> <FadeSpan>næringsmegler i</FadeSpan>
+          <FadeSpan>Salg og Verdivurdering</FadeSpan>{" "}
+          <FadeSpan>av Næringseiendom</FadeSpan>
           <br />
-          <FadeSpan>Nord-Norge</FadeSpan>
+          <FadeSpan>i Nord-Norge</FadeSpan>
         </h1>
         <p className="mt-5 max-w-xl text-balance text-center text-base text-warm-grey-2 sm:mt-8 sm:text-xl">
-          <FadeSpan>Advanti er din ekspertise med spisskompetanse</FadeSpan>{" "}
-          <FadeSpan>innen kjøp, salg og utleie av</FadeSpan>{" "}
-          <FadeSpan>næringseiendommer.</FadeSpan>
+          <FadeSpan>Vi hjelper eiendomsbesittere med å oppnå</FadeSpan>{" "}
+          <FadeSpan>best mulig pris ved salg og nøyaktige</FadeSpan>{" "}
+          <FadeSpan>verdivurderinger basert på lokal markedsinnsikt.</FadeSpan>
         </p>
         <FadeDiv className="mt-8 flex flex-col gap-4 sm:flex-row">
           <a

@@ -10,9 +10,9 @@ import {
 import Link from "next/link";
 
 export const metadata = constructMetadata({
-  title: "Tjenester innen Næringseiendom - Advanti",
+  title: "Salg og Verdivurdering av Næringseiendom - Tjenester | Advanti",
   description:
-    "Advanti tilbyr ekspertise innen verdivurdering, kjøp & salg, utleie og strategisk rådgivning for næringseiendom i Nord-Norge.",
+    "Profesjonell salg og verdivurdering av næringseiendom i Nord-Norge. Vi tilbyr også utleie, transaksjoner og strategisk rådgivning for eiendomsbesittere.",
 });
 
 export default function TjenesterPage() {
@@ -21,18 +21,18 @@ export default function TjenesterPage() {
       <section aria-label="hero">
         <FadeContainer className="relative mx-auto flex max-w-6xl flex-col items-center justify-center">
           <h1 className="mt-8 text-center text-5xl font-semibold tracking-tighter text-warm-grey sm:text-8xl sm:leading-[5.5rem] dark:text-warm-white">
-            <FadeSpan>Din partner for</FadeSpan>{" "}
-            <FadeSpan>næringseiendom i</FadeSpan>
+            <FadeSpan>Salg og Verdivurdering</FadeSpan>{" "}
+            <FadeSpan>av Næringseiendom</FadeSpan>
             <br />
-            <FadeSpan>Nord-Norge</FadeSpan>
+            <FadeSpan>i Nord-Norge</FadeSpan>
           </h1>
 
           <p className="mt-5 max-w-xl text-balance text-center text-base text-warm-grey-2 sm:mt-8 sm:text-xl">
             <FadeSpan>
-              Fra grundig analyse og verdivurdering til strategisk
+              Vi hjelper eiendomsbesittere med salg, verdivurdering,
             </FadeSpan>{" "}
-            <FadeSpan>rådgivning og effektive transaksjoner – vi</FadeSpan>{" "}
-            <FadeSpan>bistår deg med å realisere dine mål.</FadeSpan>
+            <FadeSpan>utleie og strategisk rådgivning. Lokal ekspertise</FadeSpan>{" "}
+            <FadeSpan>for å sikre deg det beste resultatet.</FadeSpan>
           </p>
 
           <div className="absolute inset-0 -z-10 flex items-center justify-center overflow-hidden">

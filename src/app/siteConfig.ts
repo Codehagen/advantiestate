@@ -1,8 +1,8 @@
 export const siteConfig = {
-  name: "Advanti - Intelligent verdsettelse av næringseiendom",
+  name: "Advanti | Salg av næringseiendom & Verdivurdering i Nord-Norge",
   url: "https://www.advantiestate.no",
   description:
-    "Avansert plattform for verdivurdering og verdsettelse av næringseiendom. Få innsikt med DCF-analyser, yield-beregninger og markedsdata for bedre investeringsbeslutninger.",
+    "Din lokale næringsmegler i Nord-Norge. Vi er eksperter på salg og verdivurdering av næringseiendom. Vi kombinerer lokal markedsinnsikt med avansert analyse for å sikre deg det beste resultatet.",
   contact: {
     email: "Christer@advanti.no",
     phone: "+47 984 53 571",

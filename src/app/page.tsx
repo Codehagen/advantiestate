@@ -10,9 +10,9 @@ import NewsletterSignup from "@/components/NewsletterSignup";
 import { constructMetadata } from "@/lib/utils";
 
 export const metadata = constructMetadata({
-  title: "Advanti | Din ledende næringsmegler i Nord-Norge",
+  title: "Salg og Verdivurdering av Næringseiendom i Nord-Norge | Advanti",
   description:
-    "Advanti - Din ekspert innen kjøp, salg og utleie av næringseiendom i Nord-Norge. Få profesjonell rådgivning og lokal markedskunnskap.",
+    "Din lokale ekspert på salg og verdivurdering av næringseiendom i Nord-Norge. Vi hjelper eiendomsbesittere med å oppnå best mulig pris og nøyaktige verdivurderinger. Kontakt oss for en uforpliktende samtale.",
 });
 
 export default function Home() {
