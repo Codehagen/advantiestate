@@ -2,6 +2,9 @@ import { Badge } from "@/components/Badge";
 import { AnimatedCTA } from "@/components/ui/AnimatedCTA";
 import FeatureDivider from "@/components/ui/FeatureDivider";
 import { CTAButtonGroup } from "@/components/CTAButtons";
+import StructuredData, {
+  BreadcrumbStructuredData,
+} from "@/components/StructuredData";
 import { constructMetadata } from "@/lib/utils";
 import Image from "next/image";
 import {
@@ -86,6 +89,21 @@ const whyAdvantiFeatures = [
 export default function SalgPage() {
   return (
     <div className="mt-36 flex flex-col overflow-hidden px-3">
+      <BreadcrumbStructuredData
+        items={[
+          { name: "Hjem", url: "/" },
+          { name: "Tjenester", url: "/tjenester" },
+          { name: "Salg", url: "/tjenester/salg" },
+        ]}
+      />
+      <StructuredData
+        type="service"
+        data={{
+          name: "Salg av Næringseiendom i Nord-Norge",
+          description:
+            "Profesjonell bistand ved salg av næringseiendom i Nord-Norge, fra verdivurdering til oppgjør.",
+        }}
+      />
       {/* Hero Section */}
       <section
         aria-labelledby="salg-hero"

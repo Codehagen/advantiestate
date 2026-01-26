@@ -4,6 +4,9 @@ import { CTAButtonGroup } from "@/components/CTAButtons";
 import { FeatureComparison } from "@/components/advanti/FeatureComparison";
 import { FeatureShowcase } from "@/components/advanti/FeatureShowcase";
 import FeatureDivider from "@/components/ui/FeatureDivider";
+import StructuredData, {
+  BreadcrumbStructuredData,
+} from "@/components/StructuredData";
 import { constructMetadata } from "@/lib/utils";
 import Image from "next/image";
 import {
@@ -67,6 +70,21 @@ const whyAdvantiValuation = [
 export default function VerdivurderingPage() {
   return (
     <div className="mt-36 flex flex-col overflow-hidden px-3">
+      <BreadcrumbStructuredData
+        items={[
+          { name: "Hjem", url: "/" },
+          { name: "Tjenester", url: "/tjenester" },
+          { name: "Verdivurdering", url: "/tjenester/verdivurdering" },
+        ]}
+      />
+      <StructuredData
+        type="service"
+        data={{
+          name: "Verdivurdering av Næringseiendom",
+          description:
+            "Profesjonell verdivurdering og analyse av næringseiendom i Nord-Norge.",
+        }}
+      />
       {/* Hero Section */}
       <section
         aria-labelledby="verdivurdering-hero"

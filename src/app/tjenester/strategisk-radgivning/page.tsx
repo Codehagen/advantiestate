@@ -2,6 +2,9 @@ import { Badge } from "@/components/Badge";
 import { AnimatedCTA } from "@/components/ui/AnimatedCTA";
 import { StrategicAdvisoryCTAButtonGroup } from "@/components/CTAButtons";
 import FeatureDivider from "@/components/ui/FeatureDivider";
+import StructuredData, {
+  BreadcrumbStructuredData,
+} from "@/components/StructuredData";
 import { constructMetadata } from "@/lib/utils";
 import Image from "next/image";
 import {
@@ -79,6 +82,24 @@ const whyAdvantiStrategic = [
 export default function StrategiskRadgivningPage() {
   return (
     <div className="mt-36 flex flex-col overflow-hidden px-3">
+      <BreadcrumbStructuredData
+        items={[
+          { name: "Hjem", url: "/" },
+          { name: "Tjenester", url: "/tjenester" },
+          {
+            name: "Strategisk Rådgivning",
+            url: "/tjenester/strategisk-radgivning",
+          },
+        ]}
+      />
+      <StructuredData
+        type="service"
+        data={{
+          name: "Strategisk Rådgivning Næringseiendom",
+          description:
+            "Strategisk rådgivning for eiendomsinvestorer og utviklere i Nord-Norge.",
+        }}
+      />
       {/* Hero Section */}
       <section
         aria-labelledby="strategisk-radgivning-hero"

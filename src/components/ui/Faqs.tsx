@@ -1,4 +1,5 @@
 "use client"
+import StructuredData from "../StructuredData"
 import {
   Accordion,
   AccordionContent,
@@ -41,6 +42,7 @@ const faqs = [
 export function Faqs() {
   return (
     <section className="mt-20 sm:mt-36" aria-labelledby="faq-title">
+      <StructuredData type="faq" data={{ faqs }} />
       <div className="grid grid-cols-1 lg:grid-cols-12 lg:gap-14">
         <div className="col-span-full sm:col-span-5">
           <h2

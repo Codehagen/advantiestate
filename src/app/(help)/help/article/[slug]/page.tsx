@@ -15,7 +15,9 @@ import { getBlurDataURL } from "@/lib/blog/images";
 import { constructMetadata } from "@/lib/utils";
 import { RiArrowRightSLine } from "@remixicon/react";
 import { AnimatedCTA } from "@/components/ui/AnimatedCTA";
-import StructuredData from "@/components/StructuredData";
+import StructuredData, {
+  BreadcrumbStructuredData,
+} from "@/components/StructuredData";
 
 export async function generateStaticParams() {
   return allHelpPosts.map((post) => ({
@@ -79,6 +81,14 @@ export default async function HelpArticle({
 
   return (
     <>
+      <BreadcrumbStructuredData
+        items={[
+          { name: "Hjem", url: "/" },
+          { name: "Kunnskapsbase", url: "/help" },
+          { name: category.title, url: `/help/category/${category.slug}` },
+          { name: data.title, url: `/help/article/${data.slug}` },
+        ]}
+      />
       <StructuredData
         type="article"
         data={{

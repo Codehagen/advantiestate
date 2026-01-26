@@ -2,6 +2,9 @@ import { Badge } from "@/components/Badge";
 import { AnimatedCTA } from "@/components/ui/AnimatedCTA";
 import { TransactionCTAButtonGroup } from "@/components/CTAButtons";
 import FeatureDivider from "@/components/ui/FeatureDivider";
+import StructuredData, {
+  BreadcrumbStructuredData,
+} from "@/components/StructuredData";
 import { constructMetadata } from "@/lib/utils";
 import Image from "next/image";
 import {
@@ -65,6 +68,21 @@ const whyAdvantiTransactions = [
 export default function TransaksjonerPage() {
   return (
     <div className="mt-36 flex flex-col overflow-hidden px-3">
+      <BreadcrumbStructuredData
+        items={[
+          { name: "Hjem", url: "/" },
+          { name: "Tjenester", url: "/tjenester" },
+          { name: "Transaksjoner", url: "/tjenester/transaksjoner" },
+        ]}
+      />
+      <StructuredData
+        type="service"
+        data={{
+          name: "Transaksjoner Næringseiendom",
+          description:
+            "Ekspertise gjennom hele transaksjonsprosessen for kjøp og salg av næringseiendom i Nord-Norge.",
+        }}
+      />
       {/* Hero Section */}
       <section
         aria-labelledby="transaksjoner-hero"

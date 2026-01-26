@@ -10,7 +10,9 @@ import { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { AnimatedCTA } from "@/components/ui/AnimatedCTA";
-import StructuredData from "@/components/StructuredData";
+import StructuredData, {
+  BreadcrumbStructuredData,
+} from "@/components/StructuredData";
 
 export async function generateStaticParams() {
   return allBlogPosts.map((post) => ({
@@ -94,6 +96,13 @@ export default async function BlogArticle({
 
   return (
     <>
+      <BreadcrumbStructuredData
+        items={[
+          { name: "Hjem", url: "/" },
+          { name: "Blogg", url: "/blog" },
+          { name: data.title, url: `/blog/${data.slug}` },
+        ]}
+      />
       <StructuredData
         type="article"
         data={{

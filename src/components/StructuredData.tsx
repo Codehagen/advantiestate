@@ -1,5 +1,14 @@
+import { siteConfig } from "@/app/siteConfig";
+
 interface StructuredDataProps {
-  type?: "organization" | "realEstateAgent" | "website" | "article" | "faq";
+  type?:
+    | "organization"
+    | "realEstateAgent"
+    | "website"
+    | "article"
+    | "faq"
+    | "person"
+    | "service";
   data?: any;
 }
 
@@ -8,9 +17,47 @@ export default function StructuredData({
   data,
 }: StructuredDataProps) {
   const getSchemaData = () => {
-    const baseUrl = "https://www.advantiestate.no";
+    const baseUrl = siteConfig.url;
+    const { contact } = siteConfig;
 
     switch (type) {
+      case "service":
+        return data
+          ? {
+              "@context": "https://schema.org",
+              "@type": "Service",
+              name: data.name,
+              provider: {
+                "@type": "LocalBusiness",
+                name: "Advanti",
+                url: baseUrl,
+              },
+              areaServed: {
+                "@type": "State",
+                name: "Nordland",
+              },
+              description: data.description,
+            }
+          : null;
+      case "person":
+        return data
+          ? {
+              "@context": "https://schema.org",
+              "@type": "Person",
+              name: data.name,
+              jobTitle: data.role,
+              image: data.avatar,
+              email: data.email,
+              telephone: data.phone,
+              url: `${baseUrl}/personer/${data.slug}`,
+              worksFor: {
+                "@type": "Organization",
+                name: "Advanti",
+                url: baseUrl,
+              },
+              description: data.description || data.role,
+            }
+          : null;
       case "organization":
         return {
           "@context": "https://schema.org",
@@ -21,12 +68,15 @@ export default function StructuredData({
           logo: `${baseUrl}/opengraph-image.png`,
           description:
             "Advanti tilbyr ekspertise innen kjøp, salg, utleie, verdivurdering og strategisk rådgivning for næringseiendom i Nord-Norge.",
-          email: "kontakt@advantiestate.no",
+          email: contact.email,
+          telephone: contact.phone,
           address: {
             "@type": "PostalAddress",
-            addressLocality: "Nord-Norge",
-            addressRegion: "Nordland",
-            addressCountry: "NO",
+            streetAddress: contact.address.streetAddress,
+            addressLocality: contact.address.addressLocality,
+            addressRegion: contact.address.addressRegion,
+            postalCode: contact.address.postalCode,
+            addressCountry: contact.address.addressCountry,
           },
           geo: {
             "@type": "GeoCoordinates",
@@ -44,10 +94,7 @@ export default function StructuredData({
               geoRadius: "500000",
             },
           ],
-          sameAs: [
-            "https://www.linkedin.com/company/advantiestate",
-            "https://twitter.com/advantiestate",
-          ],
+          sameAs: [contact.social.linkedin, contact.social.twitter],
           foundingDate: "2024",
           numberOfEmployees: {
             "@type": "QuantitativeValue",
@@ -62,23 +109,25 @@ export default function StructuredData({
           name: "Advanti",
           url: baseUrl,
           logo: `${baseUrl}/opengraph-image.png`,
-          image: `${baseUrl}/opengraph-image.png`,
+          image: [`${baseUrl}/opengraph-image.png`],
           description:
             "Profesjonell næringsmegler i Nord-Norge. Spesialisert på kjøp, salg, utleie og verdivurdering av næringseiendom.",
           priceRange: "Konsultasjon på forespørsel",
           address: {
             "@type": "PostalAddress",
-            addressLocality: "Nord-Norge",
-            addressRegion: "Nordland",
-            addressCountry: "NO",
+            streetAddress: contact.address.streetAddress,
+            addressLocality: contact.address.addressLocality,
+            addressRegion: contact.address.addressRegion,
+            postalCode: contact.address.postalCode,
+            addressCountry: contact.address.addressCountry,
           },
           geo: {
             "@type": "GeoCoordinates",
             latitude: "67.2804",
             longitude: "14.4049",
           },
-          telephone: "+47 984 53 571",
-          email: "Christer@advanti.no",
+          telephone: contact.phone,
+          email: contact.email,
           openingHoursSpecification: [
             {
               "@type": "OpeningHoursSpecification",
@@ -192,9 +241,11 @@ export default function StructuredData({
               "@type": "Article",
               headline: data.title,
               description: data.summary || data.description,
-              image: data.image
-                ? `${baseUrl}${data.image}`
-                : `${baseUrl}/opengraph-image.png`,
+              image: [
+                data.image
+                  ? `${baseUrl}${data.image}`
+                  : `${baseUrl}/opengraph-image.png`,
+              ],
               datePublished: data.publishedAt,
               dateModified: data.updatedAt || data.publishedAt,
               author: {
@@ -262,7 +313,7 @@ export function BreadcrumbStructuredData({
 }: {
   items: { name: string; url: string }[];
 }) {
-  const baseUrl = "https://www.advantiestate.no";
+  const baseUrl = siteConfig.url;
 
   const schemaData = {
     "@context": "https://schema.org",

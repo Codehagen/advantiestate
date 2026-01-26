@@ -1,3 +1,6 @@
+import StructuredData, {
+  BreadcrumbStructuredData,
+} from "@/components/StructuredData";
 import { constructMetadata } from "@/lib/utils";
 import { allPersonPosts } from "content-collections";
 import { notFound } from "next/navigation";
@@ -49,6 +52,25 @@ export default async function PersonPage({ params }: PersonPageProps) {
 
   return (
     <>
+      <BreadcrumbStructuredData
+        items={[
+          { name: "Hjem", url: "/" },
+          { name: "Team", url: "/personer" },
+          { name: person.name, url: `/personer/${person.slug}` },
+        ]}
+      />
+      <StructuredData
+        type="person"
+        data={{
+          name: person.name,
+          role: person.role,
+          avatar: person.avatar,
+          email: person.email,
+          phone: person.phone,
+          slug: person.slug,
+          description: `${person.name} er ${person.role} i Advanti med ${person.yearsExperience} års erfaring.`,
+        }}
+      />
       <MaxWidthWrapper className="flex max-w-screen-lg flex-col py-10 pt-32 md:pt-40">
         <div className="flex max-w-screen-md flex-col space-y-4">
           <Link

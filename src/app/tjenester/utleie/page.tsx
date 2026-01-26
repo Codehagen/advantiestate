@@ -2,6 +2,9 @@ import { Badge } from "@/components/Badge";
 import { AnimatedCTA } from "@/components/ui/AnimatedCTA";
 import { LeaseCTAButtonGroup } from "@/components/CTAButtons";
 import FeatureDivider from "@/components/ui/FeatureDivider";
+import StructuredData, {
+  BreadcrumbStructuredData,
+} from "@/components/StructuredData";
 import { constructMetadata } from "@/lib/utils";
 import Image from "next/image";
 import {
@@ -79,6 +82,21 @@ const whyAdvantiLeasing = [
 export default function UtleiePage() {
   return (
     <div className="mt-36 flex flex-col overflow-hidden px-3">
+      <BreadcrumbStructuredData
+        items={[
+          { name: "Hjem", url: "/" },
+          { name: "Tjenester", url: "/tjenester" },
+          { name: "Utleie", url: "/tjenester/utleie" },
+        ]}
+      />
+      <StructuredData
+        type="service"
+        data={{
+          name: "Utleie av Næringseiendom",
+          description:
+            "Skreddersydde løsninger for utleie av kontor, handel og logistikkeiendom i Nord-Norge.",
+        }}
+      />
       {/* Hero Section */}
       <section
         aria-labelledby="utleie-hero"

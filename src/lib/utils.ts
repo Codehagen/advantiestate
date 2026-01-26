@@ -49,13 +49,7 @@ export function constructMetadata({
   image = "/opengraph-image.png",
   icons = "/favicon.ico",
   noIndex = false,
-}: {
-  title?: string;
-  description?: string;
-  image?: string;
-  icons?: string;
-  noIndex?: boolean;
-  canonical?: string;
+  canonical,
 }: {
   title?: string;
   description?: string;
