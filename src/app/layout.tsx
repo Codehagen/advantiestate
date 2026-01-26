@@ -1,10 +1,11 @@
+import { GoogleTagManager } from "@/components/analytics/GoogleTagManager";
+import { TrackingListener } from "@/components/analytics/TrackingListener";
 import Footer from "@/components/ui/Footer";
 import { Navigation } from "@/components/ui/Navbar";
 import { constructMetadata } from "@/lib/utils";
 import { ThemeProvider } from "next-themes";
 import { Inter } from "next/font/google";
 import StructuredData from "@/components/StructuredData";
-import FloatingCTA from "@/components/FloatingCTA";
 import "./globals.css";
 
 const inter = Inter({
@@ -34,15 +35,16 @@ export default function RootLayout({
       <body
         className={`${inter.className} min-h-screen scroll-auto antialiased selection:bg-light-blue selection:text-warm-grey dark:bg-warm-grey dark:selection:bg-light-blue dark:selection:text-warm-grey`}
       >
+        <GoogleTagManager />
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
           disableTransitionOnChange
         >
+          <TrackingListener />
           <Navigation />
           {children}
           <Footer />
-          {/* <FloatingCTA /> */}
         </ThemeProvider>
       </body>
     </html>

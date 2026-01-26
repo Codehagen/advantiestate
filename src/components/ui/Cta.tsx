@@ -133,6 +133,8 @@ export default function Cta() {
               <a
                 href="tel:+4798453571"
                 className="group inline-flex items-center gap-1 font-medium text-warm-grey hover:text-warm-grey-3 dark:text-warm-white dark:hover:text-warm-grey-1"
+                data-track="cta-ring-oss"
+                data-track-action="click"
               >
                 Ring oss direkte
                 <svg

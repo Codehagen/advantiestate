@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Input } from "./Input";
 import { Divider } from "./ui/Divider";
 import { submitContactInquiry } from "@/app/actions/onboarding/onboarding";
+import { trackContactSubmitted } from "@/lib/analytics";
 import {
   Select,
   SelectContent,
@@ -65,6 +66,7 @@ export default function ContactUsForm() {
         setEmail("");
         setService(undefined);
         setMessage("");
+        trackContactSubmitted();
       } else {
         setError(result.error || "Innsending feilet. Vennligst prøv igjen.");
       }
@@ -82,7 +84,7 @@ export default function ContactUsForm() {
           Takk for din henvendelse!
         </h3>
         <p className="mt-2 text-tremor-default text-tremor-content dark:text-dark-tremor-content">
-          Vi kontakter deg så snart som mulig.
+          Vi kontakter deg innen 24 timer for en uforpliktende avklaring.
         </p>
       </div>
     );
@@ -91,7 +93,12 @@ export default function ContactUsForm() {
   return (
     <>
       <div className="sm:mx-auto sm:max-w-2xl">
-        <form onSubmit={handleSubmit} className="mt-8">
+        <form
+          onSubmit={handleSubmit}
+          className="mt-8"
+          data-track="contact-form-submit"
+          data-track-action="submit"
+        >
           <div className="grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-2">
             <div className="col-span-full sm:col-span-2">
               <label

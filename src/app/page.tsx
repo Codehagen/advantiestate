@@ -5,6 +5,7 @@ import CtaMiddle from "@/components/ui/Cta-middle";
 import FeatureDivider from "@/components/ui/FeatureDivider";
 import Features2 from "@/components/ui/Features2";
 import { Hero2 } from "@/components/ui/Hero2";
+import { HvaSkjerVidereBlock } from "@/components/ui/HvaSkjerVidereBlock";
 import LogoCloud from "@/components/ui/LogoCloud";
 import NewsletterSignup from "@/components/NewsletterSignup";
 import { constructMetadata } from "@/lib/utils";
@@ -19,6 +20,7 @@ export default function Home() {
   return (
     <main className="flex flex-col overflow-hidden">
       <Hero2 />
+      <HvaSkjerVidereBlock />
       {/* <LogoCloud /> */}
       <FeatureDivider />
       <CtaMiddle />

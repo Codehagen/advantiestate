@@ -83,13 +83,25 @@ export function Navigation() {
               </Link> */}
             </div>
           </nav>
-          <Link href={siteConfig.baseLinks.kontakt}>
+          <Link
+            href={siteConfig.baseLinks.kontakt}
+            data-track="navbar-kontakt-cta"
+            data-track-action="click"
+          >
             <Button className="hidden h-10 font-semibold md:flex">
               Ta kontakt
             </Button>
           </Link>
           <div className="flex gap-x-2 md:hidden">
-            <Button>Ta kontakt</Button>
+            <Button asChild>
+              <Link
+                href={siteConfig.baseLinks.kontakt}
+                data-track="navbar-kontakt-cta"
+                data-track-action="click"
+              >
+                Ta kontakt
+              </Link>
+            </Button>
             <Button
               onClick={() => setOpen(!open)}
               variant="ghost"

@@ -29,19 +29,19 @@ export default function CtaMiddle() {
             </p>
           </div>
           <div className="flex flex-row gap-4">
-            <Link href="/tjenester">
-              {/* @next-codemod-error This Link previously used the now removed `legacyBehavior` prop, and has a child that might not be an anchor. The codemod bailed out of lifting the child props to the Link. Check that the child component does not render an anchor, and potentially move the props manually to Link. */
-              }
-              <Button variant="secondary" className="group gap-2">
-                Utforsk våre tjenester
+            <Link
+              href="/kontakt"
+              data-track="cta-middle-verdivurdering"
+              data-track-action="click"
+            >
+              <Button className="group gap-2">
+                Få uforpliktende verdivurdering
                 <RiArrowRightUpLine className="size-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
               </Button>
             </Link>
-            <Link href="/kontakt">
-              {/* @next-codemod-error This Link previously used the now removed `legacyBehavior` prop, and has a child that might not be an anchor. The codemod bailed out of lifting the child props to the Link. Check that the child component does not render an anchor, and potentially move the props manually to Link. */
-              }
-              <Button className="group gap-2">
-                Kontakt oss
+            <Link href="/tjenester">
+              <Button variant="secondary" className="group gap-2">
+                Utforsk våre tjenester
                 <RiPlayCircleLine className="size-4 transition-transform group-hover:scale-110" />
               </Button>
             </Link>

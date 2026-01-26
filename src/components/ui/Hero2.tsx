@@ -32,22 +32,25 @@ export function Hero2() {
           <FadeSpan>i Nord-Norge</FadeSpan>
         </h1>
         <p className="mt-5 max-w-xl text-balance text-center text-base text-warm-grey-2 sm:mt-8 sm:text-xl">
-          <FadeSpan>Vi hjelper eiendomsbesittere med å oppnå</FadeSpan>{" "}
-          <FadeSpan>best mulig pris ved salg og nøyaktige</FadeSpan>{" "}
-          <FadeSpan>verdivurderinger basert på lokal markedsinnsikt.</FadeSpan>
+          <FadeSpan>Vi hjelper deg med nøyaktige verdivurderinger og best mulig</FadeSpan>{" "}
+          <FadeSpan>pris ved salg – basert på lokal markedsinnsikt i Nord-Norge.</FadeSpan>
         </p>
         <FadeDiv className="mt-8 flex flex-col gap-4 sm:flex-row">
           <a
             className="inline-flex cursor-pointer flex-row items-center justify-center gap-1 whitespace-nowrap rounded-md bg-warm-grey px-6 py-3.5 font-medium leading-4 tracking-wide text-warm-white shadow-[0_0_0_2px_rgba(0,0,0,0.04),0_0_14px_0_rgba(255,255,255,0.19)] transition-all duration-200 ease-in-out hover:bg-warm-grey-3 hover:shadow-light-blue/30"
-            href="/tjenester"
+            href="/kontakt"
+            data-track="hero-verdivurdering-cta"
+            data-track-action="click"
           >
-            Våre tjenester
+            Få uforpliktende verdivurdering
           </a>
           <a
             className="inline-flex cursor-pointer flex-row items-center justify-center gap-1 whitespace-nowrap rounded-md border-2 border-warm-grey/20 bg-transparent px-6 py-3.5 font-medium leading-4 tracking-wide text-warm-grey transition-all duration-200 ease-in-out hover:border-warm-grey/40 hover:bg-warm-grey/5 dark:border-warm-white/20 dark:text-warm-white dark:hover:border-warm-white/40 dark:hover:bg-warm-white/5"
-            href="/kontakt"
+            href="/tjenester"
+            data-track="hero-tjenester-cta"
+            data-track-action="click"
           >
-            Kontakt oss
+            Våre tjenester
           </a>
         </FadeDiv>
 
