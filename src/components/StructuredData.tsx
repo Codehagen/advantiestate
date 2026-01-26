@@ -235,42 +235,80 @@ export default function StructuredData({
         };
 
       case "article":
-        return data
-          ? {
-              "@context": "https://schema.org",
-              "@type": "Article",
-              headline: data.title,
-              description: data.summary || data.description,
-              image: [
-                data.image
-                  ? `${baseUrl}${data.image}`
-                  : `${baseUrl}/opengraph-image.png`,
-              ],
-              datePublished: data.publishedAt,
-              dateModified: data.updatedAt || data.publishedAt,
-              author: {
-                "@type": "Person",
-                name: data.author || "Advanti",
-              },
-              publisher: {
-                "@type": "Organization",
-                name: "Advanti",
-                logo: {
-                  "@type": "ImageObject",
-                  url: `${baseUrl}/opengraph-image.png`,
-                },
-              },
-              mainEntityOfPage: {
-                "@type": "WebPage",
-                "@id": data.url
-                  ? data.url.startsWith("http")
-                    ? data.url
-                    : `${baseUrl}${data.url}`
-                  : baseUrl,
-              },
-              inLanguage: "nb-NO",
-            }
-          : null;
+        if (!data) return null;
+
+        const articleUrl = data.url
+          ? data.url.startsWith("http")
+            ? data.url
+            : `${baseUrl}${data.url}`
+          : baseUrl;
+
+        const articleImage = data.image
+          ? data.image.startsWith("http")
+            ? data.image
+            : `${baseUrl}${data.image}`
+          : `${baseUrl}/opengraph-image.png`;
+
+        // Get author name from author username if available
+        const authorName =
+          data.authorName || data.author || "Advanti Estate";
+
+        const schema: any = {
+          "@context": "https://schema.org",
+          "@type": "Article",
+          headline: data.title,
+          description: data.summary || data.description,
+          image: [articleImage],
+          datePublished: data.publishedAt,
+          dateModified: data.updatedAt || data.publishedAt,
+          author: {
+            "@type": "Person",
+            name: authorName,
+          },
+          publisher: {
+            "@type": "Organization",
+            name: "Advanti Estate",
+            logo: {
+              "@type": "ImageObject",
+              url: `${baseUrl}/opengraph-image.png`,
+              width: 1200,
+              height: 630,
+            },
+          },
+          mainEntityOfPage: {
+            "@type": "WebPage",
+            "@id": articleUrl,
+          },
+          url: articleUrl,
+          inLanguage: "nb-NO",
+        };
+
+        // Add articleBody if MDX content is available
+        if (data.articleBody) {
+          schema.articleBody = data.articleBody;
+        }
+
+        // Add wordCount if available
+        if (data.wordCount) {
+          schema.wordCount = data.wordCount;
+        }
+
+        // Add timeRequired (reading time) if available
+        if (data.timeRequired) {
+          schema.timeRequired = `PT${data.timeRequired}M`;
+        }
+
+        // Add keywords/categories if available
+        if (data.keywords && Array.isArray(data.keywords)) {
+          schema.keywords = data.keywords.join(", ");
+        }
+
+        // Add articleSection (category) if available
+        if (data.articleSection) {
+          schema.articleSection = data.articleSection;
+        }
+
+        return schema;
 
       case "faq":
         return data

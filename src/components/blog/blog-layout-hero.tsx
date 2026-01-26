@@ -24,10 +24,10 @@ export default function BlogLayoutHero() {
       <MaxWidthWrapper>
         <div className="md:pb-15 max-w-screen-sm pb-16 pt-32 md:pt-40">
           <h1 className="font-display text-3xl font-extrabold text-warm-white sm:text-4xl">
-            {data?.title || "Blog"}
+            {data?.title || "Artikler"}
           </h1>
           <p className="mt-4 text-xl text-warm-white/80">
-            {data?.description || "Siste innsikter og artikler fra Advanti."}
+            {data?.description || "Siste innsikter og artikler fra Advanti Estate."}
           </p>
           <nav className="mt-6 hidden w-fit items-center space-x-2 rounded-full border border-warm-grey/20 bg-warm-white/5 p-2 backdrop-blur-sm md:flex">
             <CategoryLink title="Oversikt" href="/blog" active={!slug} />

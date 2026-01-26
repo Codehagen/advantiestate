@@ -1,9 +1,13 @@
 import Author from "@/components/blog/author";
 import MaxWidthWrapper from "@/components/blog/max-width-wrapper";
 import { MDX } from "@/components/blog/mdx";
+import ScrollProgress from "@/components/blog/scroll-progress";
+import SocialShare from "@/components/blog/social-share";
+import TableOfContents from "@/components/blog/table-of-contents";
 import BlurImage from "@/lib/blog/blur-image";
 import { BLOG_CATEGORIES } from "@/lib/blog/content";
 import { getBlurDataURL } from "@/lib/blog/images";
+import { calculateReadingTime, formatReadingTime } from "@/lib/blog/utils";
 import { constructMetadata, formatDate } from "@/lib/utils";
 import { allBlogPosts } from "content-collections";
 import { Metadata } from "next";
@@ -13,6 +17,12 @@ import { AnimatedCTA } from "@/components/ui/AnimatedCTA";
 import StructuredData, {
   BreadcrumbStructuredData,
 } from "@/components/StructuredData";
+
+// Author name mapping
+const AUTHOR_NAMES: Record<string, string> = {
+  codehagen: "Christer Hagen",
+  vsoraas: "Vegard Søraas",
+};
 
 export async function generateStaticParams() {
   return allBlogPosts.map((post) => ({
@@ -34,7 +44,7 @@ export async function generateMetadata({
   const { title, seoTitle, summary, seoDescription, image } = post;
 
   return constructMetadata({
-    title: `${seoTitle || title} – Advanti`,
+    title: `${seoTitle || title} – Advanti Estate`,
     description: seoDescription || summary,
     image,
     canonical: `/blog/${slug}`,
@@ -96,10 +106,11 @@ export default async function BlogArticle({
 
   return (
     <>
+      <ScrollProgress />
       <BreadcrumbStructuredData
         items={[
           { name: "Hjem", url: "/" },
-          { name: "Blogg", url: "/blog" },
+          { name: "Artikler", url: "/blog" },
           { name: data.title, url: `/blog/${data.slug}` },
         ]}
       />
@@ -111,12 +122,24 @@ export default async function BlogArticle({
           publishedAt: data.publishedAt,
           image: data.image,
           author: data.author,
+          authorName: AUTHOR_NAMES[data.author] || data.author,
           url: `/blog/${data.slug}`,
+          articleBody: data.mdx?.code
+            ? data.mdx.code.replace(/<[^>]+>/g, "").substring(0, 5000)
+            : undefined,
+          wordCount: data.mdx?.code
+            ? data.mdx.code.replace(/<[^>]+>/g, "").split(/\s+/).length
+            : undefined,
+          timeRequired: data.mdx?.code
+            ? calculateReadingTime(data.mdx.code)
+            : undefined,
+          keywords: data.categories,
+          articleSection: category?.title,
         }}
       />
       <MaxWidthWrapper>
         <div className="flex max-w-screen-sm flex-col space-y-4 pt-32 md:pt-40">
-          <div className="flex items-center space-x-4">
+          <div className="flex flex-wrap items-center gap-3">
             <Link
               href={`/blog/category/${category.slug}`}
               className="rounded-full border border-warm-grey/20 bg-warm-white/80 px-4 py-1.5 text-sm font-semibold text-warm-grey shadow-[inset_10px_-50px_94px_0_rgb(199,199,199,0.1)] backdrop-blur transition-all hover:border-warm-grey/30 hover:bg-warm-white/50"
@@ -129,6 +152,14 @@ export default async function BlogArticle({
             >
               {formatDate(data.publishedAt)}
             </time>
+            {data.mdx?.code && (
+              <>
+                <span className="text-warm-white/40">•</span>
+                <span className="text-sm text-warm-white/60">
+                  {formatReadingTime(calculateReadingTime(data.mdx.code))}
+                </span>
+              </>
+            )}
           </div>
           <h1 className="font-display text-3xl font-extrabold text-warm-white sm:text-4xl sm:leading-snug">
             {data.title}
@@ -175,7 +206,19 @@ export default async function BlogArticle({
             />
           </div>
         </div>
-          <div className="sticky top-20 col-span-1 mt-48 hidden flex-col divide-y divide-warm-grey/20 self-start sm:flex">
+          <div className="sticky top-20 col-span-1 mt-48 hidden max-h-[calc(100vh-5rem)] flex-col divide-y divide-warm-grey/20 self-start overflow-y-auto sm:flex">
+            {data.tableOfContents && data.tableOfContents.length > 0 && (
+              <div className="flex flex-col space-y-4 py-5">
+                <TableOfContents items={data.tableOfContents} />
+              </div>
+            )}
+            <div className="flex flex-col space-y-4 py-5">
+              <SocialShare
+                title={data.title}
+                url={`/blog/${data.slug}`}
+                summary={data.summary}
+              />
+            </div>
             <div className="flex flex-col space-y-4 py-5">
               <p className="text-sm text-warm-white/60">Skrevet av</p>
               <Author username={data.author} />
