@@ -34,7 +34,7 @@ export function ValuationCTAButton({
         variant={variant}
       >
         <RiCalculatorLine className="mr-2 h-5 w-5" />
-        Få gratis verdivurdering
+        Få uforpliktende verdivurdering
       </Button>
       <ValuationRequestModal
         showModal={showModal}
@@ -77,7 +77,7 @@ export function CTAButtonGroup({ className = "" }: { className?: string }) {
       <div className={`flex flex-col gap-4 sm:flex-row ${className}`}>
         <Button onClick={() => setShowValuationModal(true)} className="flex-1">
           <RiCalculatorLine className="mr-2 h-5 w-5" />
-          Gratis verdsettelse
+          Få uforpliktende verdivurdering
         </Button>
         <Button
           onClick={() => setShowConsultationModal(true)}
@@ -117,7 +117,7 @@ export function TransactionCTAButtonGroup({
           className="flex-1"
         >
           <RiCalculatorLine className="mr-2 h-5 w-5" />
-          Gratis verdsettelse
+          Få uforpliktende verdivurdering
         </Button>
         <Button
           onClick={() => setShowConsultationModal(true)}

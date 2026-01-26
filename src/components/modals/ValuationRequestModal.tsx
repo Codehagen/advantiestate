@@ -76,10 +76,10 @@ export default function ValuationRequestModal({
             </div>
             <div>
               <h2 className="text-2xl font-semibold text-warm-grey dark:text-warm-white">
-                Gratis verdsettelse
+                Uforpliktende verdivurdering
               </h2>
               <p className="mt-1 text-sm text-warm-grey-2 dark:text-warm-grey-1">
-                Få en profesjonell innledende verdsettelse av din næringseiendom
+                Få en profesjonell innledende verdivurdering av din næringseiendom
               </p>
             </div>
           </div>

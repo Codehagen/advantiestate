@@ -20,7 +20,7 @@ export default function Home() {
   return (
     <main className="flex flex-col overflow-hidden">
       <Hero2 />
-      <HvaSkjerVidereBlock />
+      {/* <HvaSkjerVidereBlock /> */}
       {/* <LogoCloud /> */}
       <FeatureDivider />
       <CtaMiddle />

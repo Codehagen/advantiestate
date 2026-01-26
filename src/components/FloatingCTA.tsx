@@ -57,7 +57,7 @@ export default function FloatingCTA() {
               <RiCalculatorLine className="h-5 w-5" />
             </div>
             <div className="text-left">
-              <div className="text-sm font-semibold">Gratis Verdivurdering</div>
+              <div className="text-sm font-semibold">Uforpliktende Verdivurdering</div>
               <div className="text-xs opacity-90">Få svar innen 24 timer</div>
             </div>
           </button>

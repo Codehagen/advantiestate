@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
   try {
-    const { email, pageUrl } = await request.json();
+    const { email, pageUrl, formType } = await request.json();
 
     // Validate required fields
     if (!email || !pageUrl) {
@@ -65,6 +65,15 @@ export async function POST(request: NextRequest) {
                 value: pageUrl,
                 inline: false,
               },
+              ...(formType
+                ? [
+                    {
+                      name: "📋 Type",
+                      value: formType,
+                      inline: true,
+                    },
+                  ]
+                : []),
             ],
             footer: {
               text: "Advanti CTA Form",

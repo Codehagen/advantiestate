@@ -20,12 +20,20 @@ export const metadata = constructMetadata({
 
 const calculators = [
   {
+    title: "Pris på Verdivurdering",
+    description:
+      "Beregn estimert pris for verdivurdering basert på størrelse, kompleksitet og formål.",
+    icon: RiCalculatorLine,
+    href: "/verktoy/pris-verdivurdering",
+    color: "text-light-blue",
+  },
+  {
     title: "Yield Kalkulator",
     description:
       "Beregn brutto og netto yield for næringseiendom basert på leieinntekter og driftskostnader.",
     icon: RiPieChartLine,
     href: "/verktoy/yield-kalkulator",
-    color: "text-light-blue",
+    color: "text-warm-grey-3",
   },
   {
     title: "ROI Kalkulator",
@@ -33,13 +41,13 @@ const calculators = [
       "Estimer total avkastning på investering over tid med verdiøkning og kontantstrøm.",
     icon: RiLineChartLine,
     href: "/verktoy/roi-kalkulator",
-    color: "text-warm-grey-3",
+    color: "text-warm-grey-2",
   },
   {
     title: "Boliglån Kalkulator",
     description:
       "Beregn månedlige kostnader, total rentekostnad og nedbetalingsplan for næringslån.",
-    icon: RiCalculatorLine,
+    icon: RiBarChartBoxLine,
     href: "/verktoy/boliglan-kalkulator",
     color: "text-warm-grey-2",
   },
