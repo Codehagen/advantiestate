@@ -103,7 +103,7 @@ export default function StructuredData({
         };
 
       case "realEstateAgent":
-        return {
+        const defaultAgent = {
           "@context": "https://schema.org",
           "@type": "RealEstateAgent",
           name: "Advanti",
@@ -205,7 +205,36 @@ export default function StructuredData({
               },
             },
           ],
+          sameAs: [contact.social.linkedin, contact.social.twitter],
         };
+
+        if (!data) {
+          return defaultAgent;
+        }
+
+        const mergedAgent = {
+          ...defaultAgent,
+          ...data,
+          image: data.image ?? defaultAgent.image,
+          address: data.address ?? defaultAgent.address,
+          geo: data.geo ?? defaultAgent.geo,
+          openingHoursSpecification:
+            data.openingHoursSpecification ??
+            defaultAgent.openingHoursSpecification,
+          areaServed: data.areaServed ?? defaultAgent.areaServed,
+          makesOffer: data.makesOffer ?? defaultAgent.makesOffer,
+          sameAs: data.sameAs ?? defaultAgent.sameAs,
+        };
+
+        if (data.address === null) {
+          delete mergedAgent.address;
+        }
+
+        if (data.geo === null) {
+          delete mergedAgent.geo;
+        }
+
+        return mergedAgent;
 
       case "website":
         return {

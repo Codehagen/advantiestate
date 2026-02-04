@@ -396,6 +396,89 @@ export const PersonPost = defineCollection({
   },
 })
 
+export const LocationPost = defineCollection({
+  name: "LocationPost",
+  directory: "src/content/locations",
+  include: "**/*.mdx",
+  schema: (z) => ({
+    name: z.string(),
+    order: z.number(),
+    region: z.string(),
+    serviceArea: z.enum(["City", "Region"]).default("City"),
+    hero: z.object({
+      title: z.string(),
+      description: z.string(),
+      image: z.string(),
+    }),
+    officeAddress: z
+      .object({
+        streetAddress: z.string(),
+        addressLocality: z.string(),
+        addressRegion: z.string(),
+        postalCode: z.string(),
+        addressCountry: z.string(),
+      })
+      .optional(),
+    phone: z.string(),
+    geo: z.object({
+      latitude: z.string(),
+      longitude: z.string(),
+    }),
+    marketStats: z.array(
+      z.object({
+        label: z.string(),
+        value: z.string(),
+        detail: z.string().optional(),
+      }),
+    ),
+    localCaseStudy: z.object({
+      title: z.string(),
+      summary: z.string(),
+      href: z.string(),
+    }),
+    localTeam: z
+      .array(
+        z.object({
+          name: z.string(),
+          role: z.string(),
+          slug: z.string().optional(),
+          image: z.string().optional(),
+        }),
+      )
+      .optional(),
+    faqs: z.array(
+      z.object({
+        question: z.string(),
+        answer: z.string(),
+      }),
+    ),
+    nearbyLocations: z.array(z.string()).optional(),
+    seoTitle: z.string().optional(),
+    seoDescription: z.string().optional(),
+    slug: z.string().optional(),
+  }),
+  transform: async (document, context) => {
+    try {
+      const mdx = await compileMDX(context, document, {
+        rehypePlugins: [rehypeSlug, rehypeAutolinkHeadings],
+        remarkPlugins: [remarkGfm],
+      })
+      console.log("MDX compilation successful for:", document.name)
+      const slugger = new GithubSlugger()
+
+      return {
+        ...document,
+        slug: document.slug || slugger.slug(document.name),
+        mdx,
+      }
+    } catch (error) {
+      console.error("Error compiling MDX for:", document.name, error)
+      console.error("Error details:", error.stack)
+      throw error
+    }
+  },
+})
+
 export default defineConfig({
   collections: [
     BlogPost,
@@ -405,5 +488,6 @@ export default defineConfig({
     LegalPost,
     IntegrationsPost,
     PersonPost,
+    LocationPost,
   ],
 })

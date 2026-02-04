@@ -7,6 +7,7 @@ import FeatureDivider from "@/components/ui/FeatureDivider";
 import StructuredData, {
   BreadcrumbStructuredData,
 } from "@/components/StructuredData";
+import CoveredCities from "@/components/locations/CoveredCities";
 import { constructMetadata } from "@/lib/utils";
 import Image from "next/image";
 import {
@@ -234,6 +235,14 @@ export default function VerdivurderingPage() {
           ))}
         </div>
       </section>
+
+      <FeatureDivider className="mx-auto mt-24 max-w-6xl" />
+
+      <CoveredCities
+        className="mt-24"
+        title="Verdivurdering med lokal presisjon"
+        description="Vi leverer verdivurderinger basert på lokale markedsdata og erfaring i byene vi dekker."
+      />
 
       <section className="mx-auto mt-24 w-full max-w-6xl">
         <AnimatedCTA

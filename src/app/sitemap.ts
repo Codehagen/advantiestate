@@ -7,6 +7,7 @@ import {
   allPersonPosts,
   allLegalPosts,
   allChangelogPosts,
+  allLocationPosts,
 } from "content-collections";
 import { MetadataRoute } from "next";
 import { headers } from "next/headers";
@@ -34,6 +35,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "/kunder",
     "/integrasjoner",
     "/personer",
+    "/naringsmegler",
   ].map((route) => ({
     url: `${baseUrl}${route}`,
     lastModified: lastModifiedStatic,
@@ -113,6 +115,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.5,
   }));
 
+  // Dynamic location pages
+  const locationPages = allLocationPosts.map((location) => ({
+    url: `${baseUrl}/naringsmegler/${location.slug}`,
+    lastModified: new Date(),
+    changeFrequency: "weekly" as const,
+    priority: 0.85,
+  }));
+
   return [
     ...staticPages,
     ...blogCategories,
@@ -124,5 +134,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...personPages,
     ...legalPages,
     ...changelogPages,
+    ...locationPages,
   ];
 }

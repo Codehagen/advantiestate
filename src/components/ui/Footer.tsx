@@ -26,15 +26,20 @@ const navigationSections = [
       },
     ],
   },
-  {
-    title: "Ressurser",
-    ariaLabel: "Hurtiglenker Ressurser",
-    links: [
       {
-        name: "Markedsinnsikt",
-        href: "/markedsinnsikt",
-        external: false,
-      },
+        title: "Ressurser",
+        ariaLabel: "Hurtiglenker Ressurser",
+        links: [
+          {
+            name: "Næringsmegler i Nord-Norge",
+            href: "/naringsmegler",
+            external: false,
+          },
+          {
+            name: "Markedsinnsikt",
+            href: "/markedsinnsikt",
+            external: false,
+          },
       { name: "Kunnskapsbase", href: "/help", external: false },
       { name: "Verktøy", href: "/verktoy", external: false },
       { name: "Integrasjoner", href: "/integrasjoner", external: false },

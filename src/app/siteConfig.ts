@@ -30,6 +30,7 @@ export const siteConfig = {
     kontakt: "/kontakt",
     blog: "/blog",
     verktoy: "/verktoy",
+    naringsmegler: "/naringsmegler",
   },
 };
 

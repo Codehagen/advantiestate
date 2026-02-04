@@ -5,6 +5,7 @@ import { CTAButtonGroup } from "@/components/CTAButtons";
 import StructuredData, {
   BreadcrumbStructuredData,
 } from "@/components/StructuredData";
+import CoveredCities from "@/components/locations/CoveredCities";
 import { constructMetadata } from "@/lib/utils";
 import Image from "next/image";
 import {
@@ -219,6 +220,14 @@ export default function SalgPage() {
           ))}
         </div>
       </section>
+
+      <FeatureDivider className="mx-auto mt-24 max-w-6xl" />
+
+      <CoveredCities
+        className="mt-24"
+        title="Lokale salgsprosesser i hele Nord‑Norge"
+        description="Vi gjennomfører salgsprosesser i sentrale byer og regioner med lokal markedskunnskap og profesjonell oppfølging."
+      />
 
       <section className="mx-auto mt-24 w-full max-w-6xl">
         <AnimatedCTA

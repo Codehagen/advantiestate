@@ -59,6 +59,12 @@ export function Navigation() {
               </Link>
               <Link
                 className="whitespace-nowrap px-2 py-1 text-warm-grey hover:text-warm-grey-3 dark:text-warm-white dark:hover:text-warm-grey-1"
+                href={siteConfig.baseLinks.naringsmegler}
+              >
+                Næringsmegler
+              </Link>
+              <Link
+                className="whitespace-nowrap px-2 py-1 text-warm-grey hover:text-warm-grey-3 dark:text-warm-white dark:hover:text-warm-grey-1"
                 href={siteConfig.baseLinks.personer}
               >
                 Team
@@ -136,6 +142,14 @@ export function Navigation() {
                 href={siteConfig.baseLinks.tjenester}
               >
                 Tjenester
+              </Link>
+            </li>
+            <li onClick={() => setOpen(false)}>
+              <Link
+                className="hover:text-warm-grey-3 dark:hover:text-warm-grey-1"
+                href={siteConfig.baseLinks.naringsmegler}
+              >
+                Næringsmegler
               </Link>
             </li>
             <li onClick={() => setOpen(false)}>

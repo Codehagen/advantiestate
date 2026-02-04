@@ -5,6 +5,7 @@ import FeatureDivider from "@/components/ui/FeatureDivider";
 import StructuredData, {
   BreadcrumbStructuredData,
 } from "@/components/StructuredData";
+import CoveredCities from "@/components/locations/CoveredCities";
 import { constructMetadata } from "@/lib/utils";
 import Image from "next/image";
 import {
@@ -211,6 +212,14 @@ export default function UtleiePage() {
           ))}
         </div>
       </section>
+
+      <FeatureDivider className="mx-auto mt-24 max-w-6xl" />
+
+      <CoveredCities
+        className="mt-24"
+        title="Utleiekompetanse i lokale markeder"
+        description="Vi finner riktige leietakere og strukturerer leieavtaler i byer og regioner vi kjenner godt."
+      />
 
       <section className="mx-auto mt-24 w-full max-w-6xl">
         <AnimatedCTA
