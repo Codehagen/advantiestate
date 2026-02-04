@@ -41,7 +41,7 @@ export default function CoveredCities({
           <Link
             key={location.slug}
             href={`/naringsmegler/${location.slug}`}
-            className="group rounded-2xl border border-warm-grey/10 bg-warm-white/70 p-6 shadow-lg shadow-warm-grey/5 transition hover:-translate-y-1 hover:border-warm-grey/20 hover:shadow-warm-grey/10 dark:border-warm-white/10 dark:bg-warm-grey/30"
+            className="group rounded-2xl border border-warm-grey/10 bg-warm-white/70 p-6 shadow-lg shadow-warm-grey/5 ring-1 ring-transparent transition hover:-translate-y-1 hover:border-warm-grey/20 hover:ring-warm-grey/20 hover:shadow-warm-grey/10 dark:border-warm-white/10 dark:bg-warm-grey/30 dark:hover:ring-warm-white/20"
           >
             <div className="flex items-start justify-between">
               <div>

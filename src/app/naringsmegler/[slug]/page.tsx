@@ -23,9 +23,10 @@ export async function generateStaticParams() {
 export async function generateMetadata({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }): Promise<Metadata | undefined> {
-  const location = allLocationPosts.find((post) => post.slug === params.slug);
+  const { slug } = await params;
+  const location = allLocationPosts.find((post) => post.slug === slug);
   if (!location) {
     return;
   }
@@ -40,21 +41,20 @@ export async function generateMetadata({
   });
 }
 
-export default function LocationPage({ params }: { params: { slug: string } }) {
-  const location = allLocationPosts.find((post) => post.slug === params.slug);
+export default async function LocationPage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
+  const location = allLocationPosts.find((post) => post.slug === slug);
   if (!location) {
     notFound();
   }
 
-  const nearbyLocations = (location.nearbyLocations ?? [])
-    .map((slug) => allLocationPosts.find((post) => post.slug === slug))
-    .filter((post): post is NonNullable<typeof post> => post != null);
-
-  const fallbackNearby = allLocationPosts
+  const suggestedNearby = [...allLocationPosts]
     .filter((post) => post.slug !== location.slug)
-    .slice(0, 3);
-
-  const suggestedNearby = nearbyLocations.length > 0 ? nearbyLocations : fallbackNearby;
+    .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
 
   const areaServed = {
     "@type": location.serviceArea === "Region" ? "AdministrativeArea" : "City",
@@ -183,7 +183,7 @@ export default function LocationPage({ params }: { params: { slug: string } }) {
       <section className="mx-auto mt-24 w-full max-w-6xl">
         <div className="grid gap-12 lg:grid-cols-[1.2fr_0.8fr]">
           <div>
-            <LocationMdx code={location.mdx.code} />
+            <LocationMdx code={location.mdx} />
           </div>
           <div className="space-y-6">
             {hasOfficeAddress && (
@@ -309,12 +309,13 @@ export default function LocationPage({ params }: { params: { slug: string } }) {
 
       <section className="mx-auto mt-24 w-full max-w-6xl">
         <div className="flex flex-col items-center gap-6 text-center">
-          <Badge>Andre byer i nærheten</Badge>
+          <Badge>Utforsk flere markeder</Badge>
           <h2 className="text-balance bg-gradient-to-t from-warm-grey to-warm-grey-3 bg-clip-text text-4xl font-semibold tracking-tighter text-transparent md:text-6xl dark:from-warm-white dark:to-warm-grey-1">
-            Utforsk flere lokale markeder
+            Se alle byer vi dekker
           </h2>
           <p className="max-w-2xl text-lg text-warm-grey-2 dark:text-warm-grey-1">
-            Se markedsinnsikt og tjenester i nærliggende byer og regioner.
+            Utforsk markedsinnsikt og tjenester i alle byer og regioner vi
+            jobber med.
           </p>
         </div>
         <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">

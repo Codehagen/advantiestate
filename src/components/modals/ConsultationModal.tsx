@@ -209,22 +209,6 @@ export default function ConsultationModal({
                   </div>
                 </div>
 
-                {/* Preferred Date */}
-                <div>
-                  <label
-                    htmlFor="preferredDate"
-                    className="mb-2 block text-sm font-medium text-warm-grey dark:text-warm-white"
-                  >
-                    Ønsket tidspunkt (valgfritt)
-                  </label>
-                  <Input
-                    id="preferredDate"
-                    name="preferredDate"
-                    type="date"
-                    min={new Date().toISOString().split("T")[0]}
-                  />
-                </div>
-
                 {/* Additional Message */}
                 <div>
                   <label

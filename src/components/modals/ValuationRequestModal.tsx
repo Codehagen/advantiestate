@@ -59,8 +59,12 @@ export default function ValuationRequestModal({
   }
 
   return (
-    <Modal showModal={showModal} setShowModal={setShowModal}>
-      <div className="relative overflow-hidden bg-warm-white dark:bg-warm-grey">
+    <Modal
+      showModal={showModal}
+      setShowModal={setShowModal}
+      className="max-h-[85vh] overflow-y-auto"
+    >
+      <div className="relative bg-warm-white dark:bg-warm-grey">
         {/* Header */}
         <div className="border-b border-warm-grey-1/20 bg-gradient-to-br from-light-blue/10 to-warm-white px-6 py-6 dark:border-warm-grey-2/20 dark:from-light-blue/5 dark:to-warm-grey">
           <button
