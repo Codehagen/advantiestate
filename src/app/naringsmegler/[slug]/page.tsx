@@ -96,6 +96,7 @@ export default function LocationPage({ params }: { params: { slug: string } }) {
             longitude: location.geo.longitude,
           },
           telephone: location.phone,
+          email: location.email,
           areaServed: [areaServed],
         }}
       />
@@ -185,6 +186,25 @@ export default function LocationPage({ params }: { params: { slug: string } }) {
             <LocationMdx code={location.mdx.code} />
           </div>
           <div className="space-y-6">
+            {hasOfficeAddress && (
+              <div className="rounded-2xl border border-warm-grey/10 bg-warm-white/70 p-6 shadow-lg shadow-warm-grey/5 dark:border-warm-white/10 dark:bg-warm-grey/30">
+                <h3 className="text-lg font-semibold text-warm-grey dark:text-warm-white">
+                  Kontor i {location.name}
+                </h3>
+                <div className="mt-4 space-y-2 text-sm text-warm-grey-2 dark:text-warm-grey-1">
+                  <p className="font-medium text-warm-grey dark:text-warm-white">
+                    {location.officeAddress?.streetAddress}
+                  </p>
+                  <p>
+                    {location.officeAddress?.postalCode}{" "}
+                    {location.officeAddress?.addressLocality}
+                  </p>
+                  <p>{location.officeAddress?.addressRegion}</p>
+                  <p>{location.phone}</p>
+                  {location.email && <p>{location.email}</p>}
+                </div>
+              </div>
+            )}
             <div className="rounded-2xl border border-warm-grey/10 bg-warm-white/70 p-6 shadow-lg shadow-warm-grey/5 dark:border-warm-white/10 dark:bg-warm-grey/30">
               <h3 className="text-lg font-semibold text-warm-grey dark:text-warm-white">
                 Lokalt team

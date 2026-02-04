@@ -347,6 +347,7 @@ export const PersonPost = defineCollection({
     avatar: z.string(),
     email: z.string().email(),
     phone: z.string(),
+    email: z.string().optional(),
     startedAt: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
     education: z.array(
       z.object({

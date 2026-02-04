@@ -216,6 +216,8 @@ export default function StructuredData({
           ...defaultAgent,
           ...data,
           image: data.image ?? defaultAgent.image,
+          telephone: data.telephone ?? defaultAgent.telephone,
+          email: data.email ?? defaultAgent.email,
           address: data.address ?? defaultAgent.address,
           geo: data.geo ?? defaultAgent.geo,
           openingHoursSpecification:
