@@ -84,6 +84,12 @@ const nextConfig = {
       },
       {
         source:
+          "/kunder/hvordan-vi-hjalp-en-investor-realisere-25-h%C3%B8yere-avkastning",
+        destination: "/kunder/investor-avkastning",
+        permanent: true,
+      },
+      {
+        source:
           "/kunder/hvordan-vi-hjalp-en-investor-realisere-25-hoyere-avkastning",
         destination: "/kunder/investor-avkastning",
         permanent: true,

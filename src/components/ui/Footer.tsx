@@ -58,6 +58,11 @@ const navigationSections = [
         href: "/help/article/tjene-mer-pa-naringseiendom",
         external: false,
       },
+      {
+        name: "Hva er næringseiendom?",
+        href: "/help/article/hva-er-naringseiendom",
+        external: false,
+      },
       { name: "Verktøy", href: "/verktoy", external: false },
       {
         name: "Yield-kalkulator",

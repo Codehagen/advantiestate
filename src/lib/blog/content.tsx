@@ -37,6 +37,7 @@ export const BLOG_CATEGORIES = [
 ];
 
 export const POPULAR_ARTICLES = [
+  "hva-er-naringseiendom",
   "hva-er-advanti",
   "hva-er-yield",
   "netto-leieinntekter",

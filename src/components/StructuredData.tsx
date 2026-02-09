@@ -78,11 +78,6 @@ export default function StructuredData({
             postalCode: contact.address.postalCode,
             addressCountry: contact.address.addressCountry,
           },
-          geo: {
-            "@type": "GeoCoordinates",
-            latitude: 67.2804,
-            longitude: 14.4049,
-          },
           areaServed: [
             {
               "@type": "GeoCircle",
