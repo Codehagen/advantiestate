@@ -9,13 +9,10 @@ import {
   allLocationPosts,
 } from "content-collections";
 import { MetadataRoute } from "next";
-import { headers } from "next/headers";
+import { siteConfig } from "./siteConfig";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const headersList = await headers();
-  const domain = headersList.get("host") ?? "www.advantiestate.no";
-  const protocol = process.env.NODE_ENV === "development" ? "http" : "https";
-  const baseUrl = `${protocol}://${domain}`;
+  const baseUrl = siteConfig.url;
 
   // Core static pages
   const lastModifiedStatic = new Date("2025-01-25");

@@ -61,13 +61,16 @@ export function constructMetadata({
   const siteUrl = "https://www.advantiestate.no";
   const siteName = "Advanti";
   const twitterHandle = "@advantiestate";
+  const canonicalUrl = canonical
+    ? canonical.startsWith("http")
+      ? canonical
+      : `${siteUrl}${canonical.startsWith("/") ? canonical : `/${canonical}`}`
+    : undefined;
 
   return {
     title,
     description,
-    alternates: {
-      canonical: canonical || siteUrl,
-    },
+    alternates: canonicalUrl ? { canonical: canonicalUrl } : undefined,
     openGraph: {
       title,
       description,
@@ -82,7 +85,7 @@ export function constructMetadata({
       locale: "nb_NO",
       type: "website",
       siteName: siteName,
-      url: siteUrl,
+      ...(canonicalUrl ? { url: canonicalUrl } : {}),
     },
     twitter: {
       card: "summary_large_image",
@@ -131,7 +134,7 @@ export const timeAgo = (
     withAgo,
   }: {
     withAgo?: boolean;
-  } = {}
+  } = {},
 ): string => {
   if (!timestamp) return "Never";
   const diff = Date.now() - new Date(timestamp).getTime();

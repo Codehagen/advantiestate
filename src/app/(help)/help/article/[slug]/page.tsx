@@ -19,10 +19,27 @@ import StructuredData, {
   BreadcrumbStructuredData,
 } from "@/components/StructuredData";
 
+const HELP_ARTICLE_ALIASES: Record<string, string> = {
+  "hva-er-næringseiendom-en-komplett-guide": "hva-er-naringseiendom",
+  "hva-er-naringseiendom-en-komplett-guide": "hva-er-naringseiendom",
+};
+
+function resolveHelpArticleSlug(slug: string) {
+  return HELP_ARTICLE_ALIASES[slug] ?? slug;
+}
+
 export async function generateStaticParams() {
-  return allHelpPosts.map((post) => ({
-    slug: post.slug,
-  }));
+  return [
+    ...allHelpPosts.map((post) => ({
+      slug: post.slug,
+    })),
+    {
+      slug: "hva-er-næringseiendom-en-komplett-guide",
+    },
+    {
+      slug: "hva-er-naringseiendom-en-komplett-guide",
+    },
+  ];
 }
 
 export async function generateMetadata({
@@ -31,7 +48,8 @@ export async function generateMetadata({
   params: { slug: string };
 }): Promise<Metadata | undefined> {
   const { slug } = await params;
-  const post = allHelpPosts.find((post) => post.slug === slug);
+  const resolvedSlug = resolveHelpArticleSlug(slug);
+  const post = allHelpPosts.find((post) => post.slug === resolvedSlug);
   if (!post) {
     return;
   }
@@ -42,9 +60,9 @@ export async function generateMetadata({
     title: `${title} – Advanti Kunnskapsbase`,
     description: summary,
     image: `/api/og/help?title=${encodeURIComponent(
-      title
+      title,
     )}&summary=${encodeURIComponent(summary)}`,
-    canonical: `/help/article/${slug}`,
+    canonical: `/help/article/${post.slug}`,
   });
 }
 
@@ -56,12 +74,13 @@ export default async function HelpArticle({
   };
 }) {
   const { slug } = await params;
-  const data = allHelpPosts.find((post) => post.slug === slug);
+  const resolvedSlug = resolveHelpArticleSlug(slug);
+  const data = allHelpPosts.find((post) => post.slug === resolvedSlug);
   if (!data) {
     notFound();
   }
   const category = HELP_CATEGORIES.find(
-    (category) => data.categories[0] === category.slug
+    (category) => data.categories[0] === category.slug,
   )!;
 
   const [images] = await Promise.all([
@@ -69,7 +88,7 @@ export default async function HelpArticle({
       data.images.map(async (src: string) => ({
         src,
         blurDataURL: await getBlurDataURL(src),
-      }))
+      })),
     ),
   ]);
 

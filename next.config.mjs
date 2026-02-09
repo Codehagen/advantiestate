@@ -11,6 +11,17 @@ const nextConfig = {
   async redirects() {
     return [
       {
+        source: "/:path*",
+        has: [
+          {
+            type: "host",
+            value: "advantiestate.no",
+          },
+        ],
+        destination: "https://www.advantiestate.no/:path*",
+        permanent: true,
+      },
+      {
         source: "/tjenester/verdsettelse",
         destination: "/tjenester/verdivurdering",
         permanent: true,

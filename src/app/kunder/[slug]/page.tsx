@@ -9,10 +9,29 @@ import BlurImage from "@/lib/blog/blur-image";
 import { getBlurDataURL } from "@/lib/blog/images";
 import { constructMetadata } from "@/lib/utils";
 
+const CUSTOMER_STORY_ALIASES: Record<string, string> = {
+  "hvordan-vi-hjalp-en-investor-realisere-25-høyere-avkastning":
+    "investor-avkastning",
+  "hvordan-vi-hjalp-en-investor-realisere-25-hoyere-avkastning":
+    "investor-avkastning",
+};
+
+function resolveCustomerSlug(slug: string) {
+  return CUSTOMER_STORY_ALIASES[slug] ?? slug;
+}
+
 export async function generateStaticParams() {
-  return allCustomersPosts.map((post) => ({
-    slug: post.slug,
-  }));
+  return [
+    ...allCustomersPosts.map((post) => ({
+      slug: post.slug,
+    })),
+    {
+      slug: "hvordan-vi-hjalp-en-investor-realisere-25-høyere-avkastning",
+    },
+    {
+      slug: "hvordan-vi-hjalp-en-investor-realisere-25-hoyere-avkastning",
+    },
+  ];
 }
 
 export async function generateMetadata({
@@ -21,7 +40,8 @@ export async function generateMetadata({
   params: { slug: string };
 }): Promise<Metadata | undefined> {
   const { slug } = await params;
-  const post = allCustomersPosts.find((post) => post.slug === slug);
+  const resolvedSlug = resolveCustomerSlug(slug);
+  const post = allCustomersPosts.find((post) => post.slug === resolvedSlug);
   if (!post) {
     return;
   }
@@ -32,7 +52,7 @@ export async function generateMetadata({
     title: `${title} – Advanti`,
     description: summary,
     image,
-    canonical: `/kunder/${slug}`,
+    canonical: `/kunder/${post.slug}`,
   });
 }
 
@@ -44,7 +64,8 @@ export default async function CustomerStory({
   };
 }) {
   const { slug } = await params;
-  const data = allCustomersPosts.find((post) => post.slug === slug);
+  const resolvedSlug = resolveCustomerSlug(slug);
+  const data = allCustomersPosts.find((post) => post.slug === resolvedSlug);
   if (!data) {
     notFound();
   }
@@ -55,7 +76,7 @@ export default async function CustomerStory({
       data.images.map(async (src: string) => ({
         src,
         blurDataURL: await getBlurDataURL(src),
-      }))
+      })),
     ),
   ]);
 
