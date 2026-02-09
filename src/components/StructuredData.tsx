@@ -33,7 +33,7 @@ export default function StructuredData({
                 url: baseUrl,
               },
               areaServed: {
-                "@type": "State",
+                "@type": "AdministrativeArea",
                 name: "Nordland",
               },
               description: data.description,
@@ -80,25 +80,25 @@ export default function StructuredData({
           },
           geo: {
             "@type": "GeoCoordinates",
-            latitude: "67.2804",
-            longitude: "14.4049",
+            latitude: 67.2804,
+            longitude: 14.4049,
           },
           areaServed: [
             {
               "@type": "GeoCircle",
               geoMidpoint: {
                 "@type": "GeoCoordinates",
-                latitude: "67.2804",
-                longitude: "14.4049",
+                latitude: 67.2804,
+                longitude: 14.4049,
               },
-              geoRadius: "500000",
+              geoRadius: 500000,
             },
           ],
           sameAs: [contact.social.linkedin, contact.social.twitter],
           foundingDate: "2024",
           numberOfEmployees: {
             "@type": "QuantitativeValue",
-            value: "4",
+            value: 4,
           },
         };
 
@@ -123,8 +123,8 @@ export default function StructuredData({
           },
           geo: {
             "@type": "GeoCoordinates",
-            latitude: "67.2804",
-            longitude: "14.4049",
+            latitude: 67.2804,
+            longitude: 14.4049,
           },
           telephone: contact.phone,
           email: contact.email,
@@ -160,11 +160,11 @@ export default function StructuredData({
               name: "Alta",
             },
             {
-              "@type": "State",
+              "@type": "AdministrativeArea",
               name: "Nordland",
             },
             {
-              "@type": "State",
+              "@type": "AdministrativeArea",
               name: "Troms",
             },
           ],
@@ -281,8 +281,7 @@ export default function StructuredData({
           : `${baseUrl}/opengraph-image.png`;
 
         // Get author name from author username if available
-        const authorName =
-          data.authorName || data.author || "Advanti Estate";
+        const authorName = data.authorName || data.author || "Advanti Estate";
 
         const schema: any = {
           "@context": "https://schema.org",

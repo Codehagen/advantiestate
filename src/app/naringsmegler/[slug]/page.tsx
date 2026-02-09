@@ -101,8 +101,8 @@ export default async function LocationPage({
             : null,
           geo: {
             "@type": "GeoCoordinates",
-            latitude: location.geo.latitude,
-            longitude: location.geo.longitude,
+            latitude: Number.parseFloat(location.geo.latitude),
+            longitude: Number.parseFloat(location.geo.longitude),
           },
           hasMap: mapUrl,
           telephone: location.phone,

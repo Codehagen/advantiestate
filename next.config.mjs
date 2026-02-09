@@ -35,6 +35,48 @@ const nextConfig = {
         destination: "/help/article/hva-er-naringseiendom",
         permanent: true,
       },
+      {
+        source: "/blog/handelslokaler-nord-norge",
+        destination: "/markedsinnsikt",
+        permanent: true,
+      },
+      {
+        source: "/blog/naringseiendomsmarkedet-narvik",
+        destination: "/markedsinnsikt",
+        permanent: true,
+      },
+      {
+        source: "/blog/naringseiendomsmarkedet-2025-nord-norge",
+        destination: "/markedsinnsikt",
+        permanent: true,
+      },
+      {
+        source: "/blog/markedspuls-nord-norge-2025-2026",
+        destination: "/markedsinnsikt",
+        permanent: true,
+      },
+      {
+        source: "/blog/utleie-naringseiendom-nord-norge",
+        destination: "/tjenester/utleie",
+        permanent: true,
+      },
+      {
+        source: "/blog/komplett-guide-verdivurdering-naringseiendom",
+        destination: "/help/article/verdivurdering-av-naringseiendom",
+        permanent: true,
+      },
+      {
+        source:
+          "/kunder/hvordan-vi-hjalp-en-investor-realisere-25-høyere-avkastning",
+        destination: "/kunder/investor-avkastning",
+        permanent: true,
+      },
+      {
+        source:
+          "/kunder/hvordan-vi-hjalp-en-investor-realisere-25-hoyere-avkastning",
+        destination: "/kunder/investor-avkastning",
+        permanent: true,
+      },
     ];
   },
   images: {
@@ -65,12 +107,11 @@ const nextConfig = {
       },
     ],
   },
-}
+};
 
 const withMDX = createMDX({
   // Add markdown plugins here, as desired
-})
+});
 
 // Merge MDX config with Next.js config and Content Collections
 export default withContentCollections(withMDX(nextConfig));
-

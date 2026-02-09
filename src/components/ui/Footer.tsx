@@ -28,20 +28,20 @@ const navigationSections = [
       },
     ],
   },
+  {
+    title: "Ressurser",
+    ariaLabel: "Hurtiglenker Ressurser",
+    links: [
       {
-        title: "Ressurser",
-        ariaLabel: "Hurtiglenker Ressurser",
-        links: [
-          {
-            name: "Næringsmegler i Nord-Norge",
-            href: "/naringsmegler",
-            external: false,
-          },
-          {
-            name: "Markedsinnsikt",
-            href: "/markedsinnsikt",
-            external: false,
-          },
+        name: "Næringsmegler i Nord-Norge",
+        href: "/naringsmegler",
+        external: false,
+      },
+      {
+        name: "Markedsinnsikt",
+        href: "/markedsinnsikt",
+        external: false,
+      },
       { name: "Kunnskapsbase", href: "/help", external: false },
       {
         name: "For investorer",
@@ -51,6 +51,11 @@ const navigationSections = [
       {
         name: "Markedsanalyse (help)",
         href: "/help/category/analysis",
+        external: false,
+      },
+      {
+        name: "Hvordan tjene mer",
+        href: "/help/article/tjene-mer-pa-naringseiendom",
         external: false,
       },
       { name: "Verktøy", href: "/verktoy", external: false },
@@ -75,6 +80,12 @@ const navigationSections = [
         external: false,
       },
       { name: "Integrasjoner", href: "/integrasjoner", external: false },
+      {
+        name: "Kartverket data",
+        href: "/integrasjoner/kartverket",
+        external: false,
+      },
+      { name: "Brreg data", href: "/integrasjoner/brreg", external: false },
       { name: "Artikler", href: "/blog", external: false },
     ],
   },
@@ -84,6 +95,8 @@ const navigationSections = [
     links: [
       { name: "Om Advanti", href: "/om-oss", external: false },
       { name: "Kundehistorier", href: "/kunder", external: false },
+      { name: "Case: Corponor", href: "/kunder/corponor", external: false },
+      { name: "Personvernpolicy", href: "/privacy", external: false },
       { name: "Karriere", href: "/karriere", external: false },
       { name: "Kontakt oss", href: "/kontakt", external: false },
     ],
