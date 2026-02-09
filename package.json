@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "indexnow:submit": "bash scripts/indexnow-submit.sh"
   },
   "dependencies": {
     "@atlaskit/pragmatic-drag-and-drop": "^1.5.0",
