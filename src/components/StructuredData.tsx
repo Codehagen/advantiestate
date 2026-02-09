@@ -31,6 +31,17 @@ export default function StructuredData({
                 "@type": "LocalBusiness",
                 name: "Advanti",
                 url: baseUrl,
+                telephone: contact.phone,
+                email: contact.email,
+                address: {
+                  "@type": "PostalAddress",
+                  streetAddress: contact.address.streetAddress,
+                  addressLocality: contact.address.addressLocality,
+                  addressRegion: contact.address.addressRegion,
+                  postalCode: contact.address.postalCode,
+                  addressCountry: contact.address.addressCountry,
+                },
+                sameAs: [contact.social.linkedin, contact.social.twitter],
               },
               areaServed: {
                 "@type": "AdministrativeArea",

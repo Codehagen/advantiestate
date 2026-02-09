@@ -101,7 +101,13 @@ const navigationSections = [
       { name: "Om Advanti", href: "/om-oss", external: false },
       { name: "Kundehistorier", href: "/kunder", external: false },
       { name: "Case: Corponor", href: "/kunder/corponor", external: false },
+      {
+        name: "Case: Investor avkastning",
+        href: "/kunder/investor-avkastning",
+        external: false,
+      },
       { name: "Personvernpolicy", href: "/privacy", external: false },
+      { name: "Vilkår for bruk", href: "/terms", external: false },
       { name: "Karriere", href: "/karriere", external: false },
       { name: "Kontakt oss", href: "/kontakt", external: false },
     ],

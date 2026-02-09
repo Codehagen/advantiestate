@@ -61,6 +61,8 @@ export function constructMetadata({
   const siteUrl = "https://www.advantiestate.no";
   const siteName = "Advanti";
   const twitterHandle = "@advantiestate";
+  const metaTitle = normalizeMetaTitle(title);
+  const metaDescription = normalizeMetaDescription(description);
   const canonicalUrl = canonical
     ? canonical.startsWith("http")
       ? canonical
@@ -68,12 +70,12 @@ export function constructMetadata({
     : undefined;
 
   return {
-    title,
-    description,
+    title: metaTitle,
+    description: metaDescription,
     alternates: canonicalUrl ? { canonical: canonicalUrl } : undefined,
     openGraph: {
-      title,
-      description,
+      title: metaTitle,
+      description: metaDescription,
       url: canonicalUrl ?? siteUrl,
       images: [
         {
@@ -89,8 +91,8 @@ export function constructMetadata({
     },
     twitter: {
       card: "summary_large_image",
-      title,
-      description,
+      title: metaTitle,
+      description: metaDescription,
       images: [image],
       creator: twitterHandle,
       site: twitterHandle,
@@ -126,6 +128,45 @@ export function constructMetadata({
       },
     }),
   };
+}
+
+const META_TITLE_MAX_LENGTH = 60;
+const META_TITLE_SOFT_MIN_WORD_BOUNDARY = 40;
+const META_DESCRIPTION_MAX_LENGTH = 160;
+const META_DESCRIPTION_SOFT_MIN_WORD_BOUNDARY = 110;
+
+function normalizeMetaTitle(title: string) {
+  const cleaned = title.replace(/\s+/g, " ").trim();
+
+  if (cleaned.length <= META_TITLE_MAX_LENGTH) {
+    return cleaned;
+  }
+
+  const hardTruncated = cleaned.slice(0, META_TITLE_MAX_LENGTH - 3);
+  const lastWordBoundary = hardTruncated.lastIndexOf(" ");
+  const truncated =
+    lastWordBoundary >= META_TITLE_SOFT_MIN_WORD_BOUNDARY
+      ? hardTruncated.slice(0, lastWordBoundary)
+      : hardTruncated;
+
+  return `${truncated}...`;
+}
+
+function normalizeMetaDescription(description: string) {
+  const cleaned = description.replace(/\s+/g, " ").trim();
+
+  if (cleaned.length <= META_DESCRIPTION_MAX_LENGTH) {
+    return cleaned;
+  }
+
+  const hardTruncated = cleaned.slice(0, META_DESCRIPTION_MAX_LENGTH - 3);
+  const lastWordBoundary = hardTruncated.lastIndexOf(" ");
+  const truncated =
+    lastWordBoundary >= META_DESCRIPTION_SOFT_MIN_WORD_BOUNDARY
+      ? hardTruncated.slice(0, lastWordBoundary)
+      : hardTruncated;
+
+  return `${truncated}...`;
 }
 
 export const timeAgo = (

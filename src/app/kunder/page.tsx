@@ -2,6 +2,7 @@ import { Customer } from "@/components/blog/customers";
 import { AnimatedGridPattern } from "@/components/ui/Animated-Grid-Background";
 import { FadeContainer, FadeSpan } from "@/components/ui/Fade";
 import { constructMetadata } from "@/lib/utils";
+import Link from "next/link";
 
 export const metadata = constructMetadata({
   title: "Våre Kunder og Prosjekter - Advanti",
@@ -50,6 +51,15 @@ export default function Customers() {
           {customers.map((customer) => (
             <Customer key={customer.slug} {...customer} />
           ))}
+        </div>
+        <div className="mt-10 rounded-xl border border-warm-grey/10 bg-warm-white/5 p-6 backdrop-blur-sm dark:border-warm-white/10 dark:bg-warm-grey-3/5">
+          <Link
+            href="/kunder/investor-avkastning"
+            className="text-sm font-medium text-warm-grey transition hover:text-warm-grey-3 dark:text-warm-white dark:hover:text-warm-grey-1"
+          >
+            Les kundecase: Hvordan vi hjalp en investor realisere 25% høyere
+            avkastning
+          </Link>
         </div>
       </section>
     </div>

@@ -19,15 +19,16 @@ export default function KontaktPage() {
     <div className="flex flex-col overflow-hidden">
       <section className="py-16 mt-12 md:mt-24">
         <div className="mx-auto max-w-2xl text-center">
-          <h2 className="text-3xl font-bold tracking-tight text-warm-grey sm:text-4xl dark:text-warm-white">
+          <h1 className="text-3xl font-bold tracking-tight text-warm-grey sm:text-4xl dark:text-warm-white">
             Få Hjelp med Salg eller Verdivurdering av Din Næringseiendom
-          </h2>
+          </h1>
           <p className="mt-4 text-lg leading-8 text-warm-grey-2 dark:text-warm-grey-1">
-            Planlegger du salg eller trenger en verdivurdering? Fyll ut skjemaet,
-            så tar vi kontakt med deg innen 24 timer for en uforpliktende samtale om hvordan vi
-            kan hjelpe deg oppnå best mulig resultat.
+            Planlegger du salg eller trenger en verdivurdering? Fyll ut
+            skjemaet, så tar vi kontakt med deg innen 24 timer for en
+            uforpliktende samtale om hvordan vi kan hjelpe deg oppnå best mulig
+            resultat.
           </p>
-          
+
           <div className="mt-8 flex flex-wrap items-center justify-center gap-6 text-sm text-warm-grey-2 dark:text-warm-grey-1">
             <div className="flex items-center gap-2">
               <RiShieldCheckLine className="size-4 text-warm-grey dark:text-warm-white" />
@@ -97,11 +98,11 @@ export default function KontaktPage() {
             </div>
           </div>
         </div>
-        
+
         <div className="mt-12">
           <ContactUsForm />
         </div>
-        
+
         <div className="mx-auto mt-16 max-w-2xl">
           <div className="rounded-xl bg-warm-grey/5 p-8 ring-1 ring-warm-grey/10 dark:bg-warm-grey/10 dark:ring-warm-white/10">
             <h3 className="text-xl font-semibold text-warm-grey dark:text-warm-white mb-6">
@@ -127,7 +128,7 @@ export default function KontaktPage() {
           </div>
         </div>
       </section>
-      
+
       <div className="mx-auto mt-16 w-full max-w-6xl px-4">
         <div className="flex flex-wrap items-center justify-center gap-8 py-8 opacity-60 grayscale transition-all hover:opacity-100 hover:grayscale-0 sm:gap-16">
           <div className="flex items-center gap-2">
@@ -150,7 +151,7 @@ export default function KontaktPage() {
           </div>
         </div>
       </div>
-      
+
       <TeamSection />
       <EarlyAccessCta />
     </div>
@@ -160,14 +161,17 @@ export default function KontaktPage() {
 const nextSteps = [
   {
     title: "Du sender inn henvendelsen",
-    description: "Fyll ut skjemaet med dine opplysninger og hvilken tjeneste du er interessert i.",
+    description:
+      "Fyll ut skjemaet med dine opplysninger og hvilken tjeneste du er interessert i.",
   },
   {
     title: "Vi tar kontakt",
-    description: "Vi kontakter deg innen 24 timer for en kort, uforpliktende avklaring av dine behov.",
+    description:
+      "Vi kontakter deg innen 24 timer for en kort, uforpliktende avklaring av dine behov.",
   },
   {
     title: "Vi lager et forslag",
-    description: "Basert på din situasjon lager vi et skreddersydd forslag for hvordan vi kan hjelpe deg.",
+    description:
+      "Basert på din situasjon lager vi et skreddersydd forslag for hvordan vi kan hjelpe deg.",
   },
 ];

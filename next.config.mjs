@@ -77,6 +77,11 @@ const nextConfig = {
         permanent: true,
       },
       {
+        source: "/blog/yield-naringseiendom-hva-det-er",
+        destination: "/help/article/hva-er-yield",
+        permanent: true,
+      },
+      {
         source:
           "/kunder/hvordan-vi-hjalp-en-investor-realisere-25-høyere-avkastning",
         destination: "/kunder/investor-avkastning",
