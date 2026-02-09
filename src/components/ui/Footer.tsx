@@ -10,9 +10,11 @@ const navigationSections = [
     links: [
       {
         name: "Verdivurdering",
-        href: "/tjenester/verdsettelse",
+        href: "/tjenester/verdivurdering",
         external: false,
       },
+      { name: "Salg", href: "/tjenester/salg", external: false },
+      { name: "Rådgivning", href: "/tjenester/radgivning", external: false },
       {
         name: "Transaksjoner",
         href: "/tjenester/transaksjoner",
@@ -41,7 +43,37 @@ const navigationSections = [
             external: false,
           },
       { name: "Kunnskapsbase", href: "/help", external: false },
+      {
+        name: "For investorer",
+        href: "/help/category/for-investors",
+        external: false,
+      },
+      {
+        name: "Markedsanalyse (help)",
+        href: "/help/category/analysis",
+        external: false,
+      },
       { name: "Verktøy", href: "/verktoy", external: false },
+      {
+        name: "Yield-kalkulator",
+        href: "/verktoy/yield-kalkulator",
+        external: false,
+      },
+      {
+        name: "ROI-kalkulator",
+        href: "/verktoy/roi-kalkulator",
+        external: false,
+      },
+      {
+        name: "Boliglån-kalkulator",
+        href: "/verktoy/boliglan-kalkulator",
+        external: false,
+      },
+      {
+        name: "Pris verdivurdering",
+        href: "/verktoy/pris-verdivurdering",
+        external: false,
+      },
       { name: "Integrasjoner", href: "/integrasjoner", external: false },
       { name: "Artikler", href: "/blog", external: false },
     ],

@@ -8,6 +8,35 @@ const nextConfig = {
   pageExtensions: ["js", "jsx", "md", "mdx", "ts", "tsx"],
   // Optionally, add any other Next.js config below
   typescript: { ignoreBuildErrors: true },
+  async redirects() {
+    return [
+      {
+        source: "/tjenester/verdsettelse",
+        destination: "/tjenester/verdivurdering",
+        permanent: true,
+      },
+      {
+        source: "/legal/terms",
+        destination: "/terms",
+        permanent: true,
+      },
+      {
+        source: "/legal/privacy",
+        destination: "/privacy",
+        permanent: true,
+      },
+      {
+        source: "/help/article/hva-er-næringseiendom-en-komplett-guide",
+        destination: "/help/article/hva-er-naringseiendom",
+        permanent: true,
+      },
+      {
+        source: "/help/article/hva-er-naringseiendom-en-komplett-guide",
+        destination: "/help/article/hva-er-naringseiendom",
+        permanent: true,
+      },
+    ];
+  },
   images: {
     remotePatterns: [
       {
@@ -44,5 +73,4 @@ const withMDX = createMDX({
 
 // Merge MDX config with Next.js config and Content Collections
 export default withContentCollections(withMDX(nextConfig));
-
 

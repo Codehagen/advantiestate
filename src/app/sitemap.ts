@@ -5,7 +5,6 @@ import {
   allHelpPosts,
   allIntegrationsPosts,
   allPersonPosts,
-  allLegalPosts,
   allChangelogPosts,
   allLocationPosts,
 } from "content-collections";
@@ -36,6 +35,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "/integrasjoner",
     "/personer",
     "/naringsmegler",
+    "/privacy",
+    "/terms",
   ].map((route) => ({
     url: `${baseUrl}${route}`,
     lastModified: lastModifiedStatic,
@@ -99,14 +100,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.6,
   }));
 
-  // Dynamic legal pages
-  const legalPages = allLegalPosts.map((post) => ({
-    url: `${baseUrl}/legal/${post.slug}`,
-    lastModified: new Date(post.updatedAt),
-    changeFrequency: "monthly" as const,
-    priority: 0.5,
-  }));
-
   // Dynamic changelog pages
   const changelogPages = allChangelogPosts.map((post) => ({
     url: `${baseUrl}/changelog/${post.slug}`,
@@ -132,7 +125,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...customerPages,
     ...integrationPages,
     ...personPages,
-    ...legalPages,
     ...changelogPages,
     ...locationPages,
   ];
