@@ -60,7 +60,7 @@ export const HELP_CATEGORIES: {
     title: "Om Advanti",
     slug: "overview",
     description:
-      "Advanti er din ekspertpartner for rådgivning innen næringseiendom i Nord-Norge.",
+      "Advanti er din ekspertpartner for næringseiendom i Nord-Norge, med rådgivning innen salg, utleie, verdivurdering og datadrevet analyse.",
     icon: <RiBuilding4Line className="h-6 w-6 text-gray-500" />,
   },
   {

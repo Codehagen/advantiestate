@@ -6,7 +6,7 @@ import { constructMetadata } from "@/lib/utils";
 export const metadata = constructMetadata({
   title: "Datakilder og Innsikt - Advanti",
   description:
-    "Advanti benytter pålitelige datakilder for å levere presis markedsanalyse og strategisk rådgivning.",
+    "Advanti bruker kvalitetssikrede datakilder som Kartverket og Brønnøysundregistrene for presis markedsanalyse, verdivurdering og strategisk rådgivning.",
 });
 
 export default function Integrations() {
