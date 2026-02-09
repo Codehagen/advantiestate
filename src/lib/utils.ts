@@ -74,6 +74,7 @@ export function constructMetadata({
     openGraph: {
       title,
       description,
+      url: canonicalUrl ?? siteUrl,
       images: [
         {
           url: image,
@@ -85,7 +86,6 @@ export function constructMetadata({
       locale: "nb_NO",
       type: "website",
       siteName: siteName,
-      ...(canonicalUrl ? { url: canonicalUrl } : {}),
     },
     twitter: {
       card: "summary_large_image",
