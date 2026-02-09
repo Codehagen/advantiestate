@@ -42,6 +42,60 @@ export default function KontaktPage() {
               <span>Uforpliktende samtale</span>
             </div>
           </div>
+
+          <div className="mt-10 grid gap-6 text-left sm:grid-cols-2">
+            <div className="rounded-xl bg-warm-grey/5 p-6 ring-1 ring-warm-grey/10 dark:bg-warm-grey/10 dark:ring-warm-white/10">
+              <h3 className="text-lg font-semibold text-warm-grey dark:text-warm-white">
+                Kontor Bodø
+              </h3>
+              <address className="mt-3 not-italic text-sm text-warm-grey-2 dark:text-warm-grey-1">
+                <p className="font-medium text-warm-grey dark:text-warm-white">
+                  Dronningens gate 18
+                </p>
+                <p>8006 Bodø</p>
+              </address>
+              <div className="mt-3 space-y-1 text-sm text-warm-grey-2 dark:text-warm-grey-1">
+                <a
+                  href="tel:+479843571"
+                  className="block font-medium text-warm-grey hover:text-warm-grey-3 dark:text-warm-white"
+                >
+                  +47 984 35 71
+                </a>
+                <a
+                  href="mailto:Christer@advanti.no"
+                  className="block text-warm-grey-2 hover:text-warm-grey-3 dark:text-warm-grey-1"
+                >
+                  Christer@advanti.no
+                </a>
+              </div>
+            </div>
+
+            <div className="rounded-xl bg-warm-grey/5 p-6 ring-1 ring-warm-grey/10 dark:bg-warm-grey/10 dark:ring-warm-white/10">
+              <h3 className="text-lg font-semibold text-warm-grey dark:text-warm-white">
+                Kontor Alta
+              </h3>
+              <address className="mt-3 not-italic text-sm text-warm-grey-2 dark:text-warm-grey-1">
+                <p className="font-medium text-warm-grey dark:text-warm-white">
+                  AMFI Alta, Markedsgata 21/25
+                </p>
+                <p>9510 Alta</p>
+              </address>
+              <div className="mt-3 space-y-1 text-sm text-warm-grey-2 dark:text-warm-grey-1">
+                <a
+                  href="tel:+4798038737"
+                  className="block font-medium text-warm-grey hover:text-warm-grey-3 dark:text-warm-white"
+                >
+                  +47 980 38 737
+                </a>
+                <a
+                  href="mailto:Havard@advanti.no"
+                  className="block text-warm-grey-2 hover:text-warm-grey-3 dark:text-warm-grey-1"
+                >
+                  Havard@advanti.no
+                </a>
+              </div>
+            </div>
+          </div>
         </div>
         
         <div className="mt-12">

@@ -11,6 +11,7 @@ import FeatureDivider from "@/components/ui/FeatureDivider";
 import StructuredData, {
   BreadcrumbStructuredData,
 } from "@/components/StructuredData";
+import { siteConfig } from "@/app/siteConfig";
 import { constructMetadata } from "@/lib/utils";
 import { LocationMdx } from "@/components/locations/LocationMdx";
 
@@ -56,6 +57,13 @@ export default async function LocationPage({
     .filter((post) => post.slug !== location.slug)
     .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
 
+  const locationUrl = `https://www.advantiestate.no/naringsmegler/${location.slug}`;
+  const mapUrl = `https://www.google.com/maps/search/?api=1&query=${location.geo.latitude},${location.geo.longitude}`;
+  const sameAs = [
+    siteConfig.contact.social.linkedin,
+    siteConfig.contact.social.twitter,
+  ].filter(Boolean);
+
   const areaServed = {
     "@type": location.serviceArea === "Region" ? "AdministrativeArea" : "City",
     name: location.name,
@@ -77,8 +85,9 @@ export default async function LocationPage({
       <StructuredData
         type="realEstateAgent"
         data={{
+          "@id": `${locationUrl}#realestateagent`,
           name: `Advanti – Næringsmegler i ${location.name}`,
-          url: `https://www.advantiestate.no/naringsmegler/${location.slug}`,
+          url: locationUrl,
           description: location.hero.description,
           address: hasOfficeAddress
             ? {
@@ -95,9 +104,11 @@ export default async function LocationPage({
             latitude: location.geo.latitude,
             longitude: location.geo.longitude,
           },
+          hasMap: mapUrl,
           telephone: location.phone,
           email: location.email,
           areaServed: [areaServed],
+          sameAs,
         }}
       />
       <StructuredData type="faq" data={{ faqs: location.faqs }} />

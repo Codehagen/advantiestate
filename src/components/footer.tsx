@@ -37,6 +37,61 @@ export default function Footer() {
             </div>
           ))}
         </div>
+
+        <div className="mt-10 grid gap-6 text-sm text-warm-grey-2 dark:text-warm-grey-1 sm:grid-cols-2">
+          <div>
+            <h2 className="font-semibold text-warm-grey dark:text-warm-white">
+              Kontakt Bodø
+            </h2>
+            <address className="mt-2 not-italic">
+              <div className="font-medium text-warm-grey dark:text-warm-white">
+                Dronningens gate 18
+              </div>
+              <div>8006 Bodø</div>
+            </address>
+            <div className="mt-2">
+              <a
+                href="tel:+479843571"
+                className="block text-warm-grey hover:text-warm-grey-3 dark:text-warm-white"
+              >
+                +47 984 35 71
+              </a>
+              <a
+                href="mailto:Christer@advanti.no"
+                className="block hover:text-warm-grey-3"
+              >
+                Christer@advanti.no
+              </a>
+            </div>
+          </div>
+
+          <div>
+            <h2 className="font-semibold text-warm-grey dark:text-warm-white">
+              Kontakt Alta
+            </h2>
+            <address className="mt-2 not-italic">
+              <div className="font-medium text-warm-grey dark:text-warm-white">
+                AMFI Alta, Markedsgata 21/25
+              </div>
+              <div>9510 Alta</div>
+            </address>
+            <div className="mt-2">
+              <a
+                href="tel:+4798038737"
+                className="block text-warm-grey hover:text-warm-grey-3 dark:text-warm-white"
+              >
+                +47 980 38 737
+              </a>
+              <a
+                href="mailto:Havard@advanti.no"
+                className="block hover:text-warm-grey-3"
+              >
+                Havard@advanti.no
+              </a>
+            </div>
+          </div>
+        </div>
+
         <div className="max-w-6xl mx-auto border-t py-2 grid md:grid-cols-2 h-full justify-between w-full grid-cols-1 gap-1">
           <span className="text-sm tracking-tight text-foreground">
             © {new Date().getFullYear()}{" "}
