@@ -14,7 +14,7 @@ export function Navigation() {
   const [open, setOpen] = React.useState(false);
 
   React.useEffect(() => {
-    const mediaQuery: MediaQueryList = window.matchMedia("(min-width: 768px)");
+    const mediaQuery: MediaQueryList = window.matchMedia("(min-width: 1024px)");
     const handleMediaQueryChange = () => {
       setOpen(false);
     };
@@ -37,13 +37,13 @@ export function Navigation() {
           : "bg-warm-white/0 dark:bg-warm-grey/0"
       )}
     >
-      <div className="w-full md:my-auto">
+      <div className="w-full lg:my-auto">
         <div className="relative flex items-center justify-between">
           <Link href={siteConfig.baseLinks.home} aria-label="Advanti Estate">
             <span className="sr-only">Advanti Estate</span>
-            <DatabaseLogo className="w-28 md:w-32" />
+            <DatabaseLogo className="w-28 lg:w-32" />
           </Link>
-          <nav className="hidden md:absolute md:left-1/2 md:top-1/2 md:block md:-translate-x-1/2 md:-translate-y-1/2 md:transform">
+          <nav className="hidden lg:absolute lg:left-1/2 lg:top-1/2 lg:block lg:-translate-x-1/2 lg:-translate-y-1/2 lg:transform">
             <div className="flex items-center gap-10 font-medium">
               <Link
                 className="whitespace-nowrap px-2 py-1 text-warm-grey hover:text-warm-grey-3 dark:text-warm-white dark:hover:text-warm-grey-1"
@@ -94,11 +94,11 @@ export function Navigation() {
             data-track="navbar-kontakt-cta"
             data-track-action="click"
           >
-            <Button className="hidden h-10 font-semibold md:flex">
+            <Button className="hidden h-10 font-semibold lg:flex">
               Ta kontakt
             </Button>
           </Link>
-          <div className="flex gap-x-2 md:hidden">
+          <div className="flex gap-x-2 lg:hidden">
             <Button asChild>
               <Link
                 href={siteConfig.baseLinks.kontakt}
@@ -123,7 +123,7 @@ export function Navigation() {
         </div>
         <nav
           className={cx(
-            "my-6 flex text-lg ease-in-out will-change-transform md:hidden",
+            "my-6 flex text-lg ease-in-out will-change-transform lg:hidden",
             open ? "" : "hidden"
           )}
         >
