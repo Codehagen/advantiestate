@@ -75,12 +75,14 @@ export function Navigation() {
               >
                 Artikler
               </Link>
-              <Link
-                className="whitespace-nowrap px-2 py-1 text-warm-grey hover:text-warm-grey-3 dark:text-warm-white dark:hover:text-warm-grey-1"
-                href={siteConfig.baseLinks.help}
-              >
-                Kunnskapsbase
-              </Link>
+              {!scrolled && (
+                <Link
+                  className="whitespace-nowrap px-2 py-1 text-warm-grey hover:text-warm-grey-3 dark:text-warm-white dark:hover:text-warm-grey-1"
+                  href={siteConfig.baseLinks.help}
+                >
+                  Kunnskapsbase
+                </Link>
+              )}
               {/* <Link
                 className="whitespace-nowrap px-2 py-1 text-warm-grey hover:text-warm-grey-3 dark:text-warm-white dark:hover:text-warm-grey-1"
                 href={siteConfig.baseLinks.verktoy}
