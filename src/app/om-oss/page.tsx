@@ -3,6 +3,7 @@ import { Button } from "@/components/Button";
 import Benefits from "@/components/ui/Benefits";
 import TeamGallery from "@/components/ui/TeamGallery";
 import { constructMetadata, cx } from "@/lib/utils";
+import Link from "next/link";
 import Balancer from "react-wrap-balancer";
 
 export const metadata = constructMetadata({
@@ -66,8 +67,11 @@ export default function About() {
             – Christer Hagen
           </p>
         </div>
-        <Button className="mt-16 h-10 w-full bg-warm-grey text-warm-white shadow-xl shadow-light-blue/20 hover:bg-warm-grey-3 dark:bg-warm-grey-2 dark:hover:bg-warm-grey-1">
-          Se ledige stillinger
+        <Button
+          asChild
+          className="mt-16 h-10 w-full bg-warm-grey text-warm-white shadow-xl shadow-light-blue/20 hover:bg-warm-grey-3 dark:bg-warm-grey-2 dark:hover:bg-warm-grey-1"
+        >
+          <Link href="/karriere">Se ledige stillinger</Link>
         </Button>
       </section>
     </div>

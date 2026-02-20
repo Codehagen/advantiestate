@@ -1,99 +1,77 @@
-import { AnimatedGridPattern } from "@/components/ui/Animated-Grid-Background";
-import { FadeContainer, FadeSpan } from "@/components/ui/Fade";
+import { Badge } from "@/components/Badge";
+import { Button } from "@/components/Button";
 import { constructMetadata } from "@/lib/utils";
-import TeamGallery from "@/components/ui/TeamGallery"; // Added for potential use
-// We might need a CTA component here later, e.g., for job applications
-// import CallToActionButton from "@/components/ui/CallToActionButton";
+import { RiMailLine, RiTeamLine } from "@remixicon/react";
+import Link from "next/link";
 
 export const metadata = constructMetadata({
-  title: "Karriere hos Advanti | Bli en del av vårt team i Nord-Norge",
+  title: "Ledige stillinger hos Advanti | Karriere i Nord-Norge",
   description:
-    "Utforsk karrieremuligheter hos Advanti. Vi ser etter engasjerte talenter som vil forme fremtidens næringseiendom i Nord-Norge. Søk i dag!",
+    "Vi er alltid på utkikk etter de rette menneskene. Ta kontakt med Advanti hvis du vil bli med og forme fremtidens næringseiendom i Nord-Norge.",
 });
 
 export default function KarrierePage() {
   return (
     <div className="mt-36 flex flex-col overflow-hidden px-3">
-      <section aria-label="hero">
-        <FadeContainer className="relative mx-auto flex max-w-6xl flex-col items-center justify-center">
-          <h1 className="mt-8 text-center text-5xl font-semibold tracking-tighter text-warm-grey sm:text-8xl sm:leading-[5.5rem] dark:text-warm-white">
-            <FadeSpan>Skap din</FadeSpan>
-            <br />
-            <FadeSpan>
-              <span className="bg-gradient-to-r from-warm-grey via-warm-grey-2 to-warm-grey bg-clip-text text-transparent dark:from-warm-white dark:via-warm-grey-1 dark:to-warm-white">
-                karriere
-              </span>
-            </FadeSpan>{" "}
-            <FadeSpan>hos Advanti</FadeSpan>
-          </h1>
-          <p className="mt-5 max-w-xl text-balance text-center text-base text-warm-grey-2 sm:mt-8 sm:text-xl">
-            <FadeSpan>
-              Bli med på laget hos en ledende aktør innen næringseiendom i
-            </FadeSpan>{" "}
-            <FadeSpan>
-              Nord-Norge. Vi tilbyr spennende utfordringer og et dynamisk
-            </FadeSpan>{" "}
-            <FadeSpan>arbeidsmiljø hvor du kan vokse og utvikle deg.</FadeSpan>
-          </p>
-
-          <div className="absolute inset-0 -z-10 flex items-center justify-center overflow-hidden">
-            <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-warm-white via-warm-white/80 to-transparent dark:from-warm-grey dark:via-warm-grey/80" />
-
-            <AnimatedGridPattern
-              width={50}
-              height={50}
-              className="-mt-24 scale-125 text-light-blue/20"
-              maxOpacity={0.3}
-              numSquares={30}
-              duration={3}
-            />
-
-            <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-warm-white via-warm-white/80 to-transparent dark:from-warm-grey dark:via-warm-grey/80" />
-          </div>
-        </FadeContainer>
+      <section aria-labelledby="careers-title" className="mx-auto w-full max-w-4xl">
+        <Badge>Karriere</Badge>
+        <h1
+          id="careers-title"
+          className="mt-3 inline-block bg-gradient-to-t from-warm-grey to-warm-grey-3 bg-clip-text py-2 text-4xl font-bold tracking-tighter text-transparent sm:text-6xl dark:from-warm-white dark:to-warm-grey-1"
+        >
+          Vi er alltid på jakt etter de rette menneskene
+        </h1>
+        <p className="mt-6 max-w-2xl text-lg text-warm-grey-2 dark:text-warm-grey-1">
+          Selv om vi ikke alltid har aktive utlysninger, ønsker vi å komme i
+          kontakt med personer som brenner for næringseiendom, analyse og gode
+          kundeopplevelser.
+        </p>
       </section>
-
-      {/* Placeholder for future content sections */}
-      <section className="mx-auto mt-24 w-full max-w-6xl py-12">
-        <div className="text-center">
-          <h2 className="text-3xl font-semibold text-warm-grey dark:text-warm-white">
-            Hvorfor Velge Advanti?
+      <section className="mx-auto mt-14 grid w-full max-w-4xl gap-6 sm:grid-cols-2">
+        <div className="rounded-xl border border-warm-grey/20 bg-warm-white/70 p-6 backdrop-blur dark:border-warm-white/10 dark:bg-warm-grey-3/30">
+          <div className="mb-4 inline-flex rounded-full bg-warm-grey/10 p-2 dark:bg-warm-white/10">
+            <RiTeamLine className="size-5 text-warm-grey dark:text-warm-white" />
+          </div>
+          <h2 className="text-xl font-semibold text-warm-grey dark:text-warm-white">
+            Hvem vi ser etter
           </h2>
-          <p className="mt-4 text-lg text-warm-grey-2 dark:text-warm-grey-1">
-            Vi er et team dedikert til faglig dyktighet, innovasjon og å skape
-            verdi for våre kunder og samfunnet i Nord-Norge. Hos oss får du:
+          <p className="mt-3 text-warm-grey-2 dark:text-warm-grey-1">
+            Du er faglig nysgjerrig, tar eierskap og ønsker å skape resultater
+            sammen med kunder og kolleger.
           </p>
-          {/* TODO: Add bullet points or feature cards for benefits */}
-          <ul className="mt-6 list-inside list-disc space-y-2 text-left sm:mx-auto sm:max-w-md">
-            <li>Spennende og varierte arbeidsoppgaver</li>
-            <li>Store muligheter for faglig og personlig utvikling</li>
-            <li>Et inkluderende og støttende arbeidsmiljø</li>
-            <li>Konkurransedyktige betingelser</li>
-            <li>Muligheten til å påvirke utviklingen i regionen</li>
-          </ul>
+        </div>
+        <div className="rounded-xl border border-warm-grey/20 bg-warm-white/70 p-6 backdrop-blur dark:border-warm-white/10 dark:bg-warm-grey-3/30">
+          <div className="mb-4 inline-flex rounded-full bg-warm-grey/10 p-2 dark:bg-warm-white/10">
+            <RiMailLine className="size-5 text-warm-grey dark:text-warm-white" />
+          </div>
+          <h2 className="text-xl font-semibold text-warm-grey dark:text-warm-white">
+            Ta kontakt
+          </h2>
+          <p className="mt-3 text-warm-grey-2 dark:text-warm-grey-1">
+            Send en kort introduksjon til{" "}
+            <a
+              href="mailto:Christer@advanti.no"
+              className="font-medium underline underline-offset-4 hover:text-warm-grey dark:hover:text-warm-white"
+            >
+              Christer@advanti.no
+            </a>{" "}
+            hvis du vil bli med på laget.
+          </p>
         </div>
       </section>
 
-      {/* <TeamGallery /> */}
-
-      <section className="mx-auto mt-12 w-full max-w-6xl py-12">
-        <div className="text-center">
-          <h2 className="text-3xl font-semibold text-warm-grey dark:text-warm-white">
-            Ledige Stillinger
-          </h2>
-          <p className="mt-4 text-lg text-warm-grey-2 dark:text-warm-grey-1">
-            Vi har for øyeblikket ingen konkrete utlysninger, men vi er alltid
-            interessert i å komme i kontakt med dyktige personer.
-          </p>
-          {/* TODO: Add link to contact page or email for open applications */}
-          <div className="mt-8">
-            <a
-              href="/kontakt" // Or mailto:karriere@advanti.no
-              className="inline-flex items-center justify-center rounded-md bg-tremor-brand px-6 py-3 text-base font-medium text-tremor-brand-inverted shadow-sm hover:bg-tremor-brand-emphasis dark:bg-dark-tremor-brand dark:hover:bg-dark-tremor-brand-emphasis"
-            >
-              Send Åpen Søknad
-            </a>
-          </div>
+      <section className="mx-auto mb-20 mt-10 w-full max-w-4xl rounded-xl border border-warm-grey/20 bg-warm-white/70 p-6 backdrop-blur dark:border-warm-white/10 dark:bg-warm-grey-3/30">
+        <p className="text-warm-grey-2 dark:text-warm-grey-1">
+          Vi vurderer åpne søknader fortløpende og tar kontakt når det er en
+          relevant mulighet.
+        </p>
+        <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+          <Button asChild>
+            <a href="mailto:Christer@advanti.no">Send åpen søknad</a>
+          </Button>
+          <Button asChild variant="secondary">
+            <Link href="/kontakt">Kontakt oss</Link>
+          </Button>
         </div>
       </section>
     </div>

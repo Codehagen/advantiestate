@@ -25,15 +25,14 @@ export function Hero2() {
             </div>
           </a>
         </FadeDiv>
-        <h1 className="mt-8 text-center text-5xl font-semibold tracking-tighter text-warm-grey sm:text-8xl sm:leading-[5.5rem] dark:text-warm-white">
-          <FadeSpan>Salg og Verdivurdering</FadeSpan>{" "}
-          <FadeSpan>av Næringseiendom</FadeSpan>
+        <h1 className="mt-8 max-w-6xl text-center text-5xl font-semibold tracking-tighter text-warm-grey sm:text-8xl sm:leading-[5.5rem] dark:text-warm-white">
+          <FadeSpan>Salg og verdivurdering</FadeSpan>
           <br />
-          <FadeSpan>i Nord-Norge</FadeSpan>
+          <FadeSpan>av næringseiendom i Nord-Norge</FadeSpan>
         </h1>
         <p className="mt-5 max-w-xl text-balance text-center text-base text-warm-grey-2 sm:mt-8 sm:text-xl">
-          <FadeSpan>Vi hjelper deg med nøyaktige verdivurderinger og best mulig</FadeSpan>{" "}
-          <FadeSpan>pris ved salg – basert på lokal markedsinnsikt i Nord-Norge.</FadeSpan>
+          <FadeSpan>Få en presis verdivurdering og riktig salgsstrategi</FadeSpan>{" "}
+          <FadeSpan>basert på lokal markedsinnsikt i Nord-Norge.</FadeSpan>
         </p>
         <FadeDiv className="mt-8 flex flex-col gap-4 sm:flex-row">
           <a
