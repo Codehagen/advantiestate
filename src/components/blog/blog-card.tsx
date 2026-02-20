@@ -41,8 +41,8 @@ export default function BlogCard({
     <Link
       href={`/blog/${data.slug}`}
       className={cx(
-        "group flex flex-col overflow-hidden rounded-lg border border-warm-grey-2/20 bg-warm-grey-2/5 text-warm-white transition-all duration-300",
-        "hover:border-warm-grey-2/30 hover:bg-warm-grey-2/10 hover:shadow-lg hover:shadow-warm-grey-2/10"
+        "group flex flex-col overflow-hidden rounded-lg border border-warm-grey/20 bg-white/80 text-warm-grey transition-all duration-300 dark:border-warm-grey-2/20 dark:bg-warm-grey-2/5 dark:text-warm-white",
+        "hover:border-warm-grey/30 hover:bg-white hover:shadow-lg hover:shadow-warm-grey/10 dark:hover:border-warm-grey-2/30 dark:hover:bg-warm-grey-2/10 dark:hover:shadow-warm-grey-2/10"
       )}
     >
       <div className="relative overflow-hidden">
@@ -68,10 +68,10 @@ export default function BlogCard({
       </div>
       <div className="flex flex-1 flex-col justify-between p-6">
         <div>
-          <h2 className="font-display line-clamp-2 text-xl font-bold text-warm-white transition-colors group-hover:text-warm-white/90 sm:text-2xl">
+          <h2 className="font-display line-clamp-2 text-xl font-bold text-warm-grey-2 transition-colors group-hover:text-warm-grey dark:text-warm-white dark:group-hover:text-warm-white/90 sm:text-2xl">
             {data.title}
           </h2>
-          <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-warm-white/70 sm:text-base">
+          <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-warm-grey/80 dark:text-warm-white/70 sm:text-base">
             {data.summary}
           </p>
         </div>
@@ -80,7 +80,7 @@ export default function BlogCard({
             <Author username={data.author} imageOnly />
             <time
               dateTime={data.publishedAt}
-              className="text-xs text-warm-white/60 sm:text-sm"
+              className="text-xs text-warm-grey/70 dark:text-warm-white/60 sm:text-sm"
             >
               {formatDate(data.publishedAt)}
             </time>

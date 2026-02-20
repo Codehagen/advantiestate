@@ -150,16 +150,16 @@ export default function CategoryCard({
       <CardPattern {...pattern} mouseX={mouseX} mouseY={mouseY} />
       <div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-warm-grey-2/20 group-hover:ring-warm-grey-2/30" />
       <div className="relative rounded-2xl p-6 pt-16">
-        <div className="[&>*]:text-warm-white/60 [&>*]:group-hover:text-warm-white/80">
+        <div className="[&>*]:text-warm-grey/60 [&>*]:group-hover:text-warm-grey/80 dark:[&>*]:text-warm-white/60 dark:[&>*]:group-hover:text-warm-white/80">
           {icon}
         </div>
-        <h3 className="mt-4 font-semibold leading-7 text-warm-white">
+        <h3 className="mt-4 font-semibold leading-7 text-warm-grey dark:text-warm-white">
           <Link href={href}>
             <span className="absolute inset-0 rounded-2xl" />
             {name}
           </Link>
         </h3>
-        <p className="mt-1 text-sm text-warm-white/80">{description}</p>
+        <p className="mt-1 text-sm text-warm-grey/80 dark:text-warm-white/80">{description}</p>
       </div>
     </div>
   )

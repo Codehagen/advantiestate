@@ -130,38 +130,38 @@ export default async function HelpArticle({
             <div className="flex items-center space-x-2">
               <Link
                 href="/help"
-                className="whitespace-nowrap text-sm font-medium text-warm-white/60 hover:text-warm-white/80"
+                className="whitespace-nowrap text-sm font-medium text-warm-grey/60 hover:text-warm-grey/80 dark:text-warm-white/60 dark:hover:text-warm-white/80"
               >
                 Alle kategorier
               </Link>
-              <RiArrowRightSLine className="h-4 w-4 text-warm-white/60" />
+              <RiArrowRightSLine className="h-4 w-4 text-warm-grey/60 dark:text-warm-white/60" />
               <Link
                 href={`/help/category/${category.slug}`}
-                className="whitespace-nowrap text-sm font-medium text-warm-white/60 hover:text-warm-white/80"
+                className="whitespace-nowrap text-sm font-medium text-warm-grey/60 hover:text-warm-grey/80 dark:text-warm-white/60 dark:hover:text-warm-white/80"
               >
                 {category.title}
               </Link>
-              <RiArrowRightSLine className="h-4 w-4 text-warm-white/60" />
+              <RiArrowRightSLine className="h-4 w-4 text-warm-grey/60 dark:text-warm-white/60" />
               <Link
                 href={`/help/article/${data.slug}`}
-                className="truncate text-sm font-medium text-warm-white/60 hover:text-warm-white/80"
+                className="truncate text-sm font-medium text-warm-grey/60 hover:text-warm-grey/80 dark:text-warm-white/60 dark:hover:text-warm-white/80"
               >
                 {data.title}
               </Link>
             </div>
             <div className="flex flex-col space-y-4">
               <Link href={`/help/article/${data.slug}`}>
-                <h1 className="font-display text-3xl font-bold !leading-snug text-warm-white sm:text-4xl">
+                <h1 className="font-display text-3xl font-bold !leading-snug text-warm-grey sm:text-4xl dark:text-warm-white">
                   {data.title}
                 </h1>
               </Link>
-              <p className="text-warm-white/80">{data.summary}</p>
+              <p className="text-warm-grey/80 dark:text-warm-white/80">{data.summary}</p>
               <Author username={data.author} updatedAt={data.updatedAt} />
             </div>
             <MDX code={data.mdx} images={images} />
             {relatedArticles.length > 0 && (
               <div className="flex flex-col space-y-4 border-t border-warm-grey-2/20 pt-8">
-                <h2 className="font-display text-xl font-bold text-warm-white sm:text-2xl">
+                <h2 className="font-display text-xl font-bold text-warm-grey sm:text-2xl dark:text-warm-white">
                   Relaterte artikler
                 </h2>
                 <div className="grid gap-2 rounded-xl border border-warm-grey-2/20 bg-warm-grey-2/10 p-4 backdrop-blur-sm">
@@ -198,7 +198,7 @@ export default async function HelpArticle({
                 href={`https://github.com/codehagen/leadhive/blob/main/app/content/help/${slug}.mdx`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-xs text-warm-white/60 transition-colors hover:text-warm-white/80"
+                className="text-xs text-warm-grey/60 transition-colors hover:text-warm-grey/80 dark:text-warm-white/60 dark:hover:text-warm-white/80"
               >
                 Fant du en skrivefeil? Rediger denne siden ↗
               </Link>

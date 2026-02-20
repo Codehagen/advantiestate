@@ -148,23 +148,23 @@ export default async function BlogArticle({
             </Link>
             <time
               dateTime={data.publishedAt}
-              className="text-sm text-warm-white/60"
+              className="text-sm text-warm-grey/60 dark:text-warm-white/60"
             >
               {formatDate(data.publishedAt)}
             </time>
             {data.mdx?.code && (
               <>
-                <span className="text-warm-white/40">•</span>
-                <span className="text-sm text-warm-white/60">
+                <span className="text-warm-grey/40 dark:text-warm-white/40">•</span>
+                <span className="text-sm text-warm-grey/60 dark:text-warm-white/60">
                   {formatReadingTime(calculateReadingTime(data.mdx.code))}
                 </span>
               </>
             )}
           </div>
-          <h1 className="font-display text-3xl font-extrabold text-warm-white sm:text-4xl sm:leading-snug">
+          <h1 className="font-display text-3xl font-extrabold text-warm-grey sm:text-4xl sm:leading-snug dark:text-warm-white">
             {data.title}
           </h1>
-          <p className="text-xl text-warm-white/80">{data.summary}</p>
+          <p className="text-xl text-warm-grey/80 dark:text-warm-white/80">{data.summary}</p>
         </div>
       </MaxWidthWrapper>
 
@@ -220,12 +220,12 @@ export default async function BlogArticle({
               />
             </div>
             <div className="flex flex-col space-y-4 py-5">
-              <p className="text-sm text-warm-white/60">Skrevet av</p>
+              <p className="text-sm text-warm-grey/60 dark:text-warm-white/60">Skrevet av</p>
               <Author username={data.author} />
             </div>
             {relatedArticles.length > 0 && (
               <div className="flex flex-col space-y-4 py-5">
-                <p className="text-sm text-warm-white/60">Les mer</p>
+                <p className="text-sm text-warm-grey/60 dark:text-warm-white/60">Les mer</p>
                 <ul className="flex flex-col space-y-4">
                   {relatedArticles.map((post) => (
                     <li key={post.slug}>
@@ -233,13 +233,13 @@ export default async function BlogArticle({
                         href={`/blog/${post.slug}`}
                         className="group flex flex-col space-y-2"
                       >
-                        <p className="font-semibold text-warm-white underline-offset-4 group-hover:underline">
+                        <p className="font-semibold text-warm-grey underline-offset-4 group-hover:underline dark:text-warm-white">
                           {post.title}
                         </p>
-                        <p className="line-clamp-2 text-sm text-warm-white/80 underline-offset-2 group-hover:underline">
+                        <p className="line-clamp-2 text-sm text-warm-grey/80 underline-offset-2 group-hover:underline dark:text-warm-white/80">
                           {post.summary}
                         </p>
-                        <p className="text-xs text-warm-white/60 underline-offset-2 group-hover:underline">
+                        <p className="text-xs text-warm-grey/60 underline-offset-2 group-hover:underline dark:text-warm-white/60">
                           {formatDate(post.publishedAt)}
                         </p>
                       </Link>

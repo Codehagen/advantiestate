@@ -66,12 +66,12 @@ export default async function Author({
         className="rounded-full"
       />
       <div className="flex flex-col">
-        <p className="text-sm text-warm-white/80">
+        <p className="text-sm text-warm-grey/80 dark:text-warm-white/80">
           Skrevet av {authors[username].name}
         </p>
         <time
           dateTime={updatedAt}
-          className="text-sm font-light text-warm-white/60"
+          className="text-sm font-light text-warm-grey/60 dark:text-warm-white/60"
         >
           Sist oppdatert {timeAgo(new Date(updatedAt))}
         </time>
@@ -88,11 +88,11 @@ export default async function Author({
           className="rounded-full"
         />
         <div className="flex flex-col">
-          <p className="font-semibold text-warm-white">
+          <p className="font-semibold text-warm-grey dark:text-warm-white">
             {authors[username].name}
           </p>
           {authors[username].bio && (
-            <p className="mt-1 text-sm leading-relaxed text-warm-white/70">
+            <p className="mt-1 text-sm leading-relaxed text-warm-grey/70 dark:text-warm-white/70">
               {authors[username].bio}
             </p>
           )}
@@ -106,8 +106,8 @@ export default async function Author({
               target="_blank"
               rel="noopener noreferrer"
               className={cx(
-                "flex items-center justify-center rounded-full border border-warm-grey-2/20 bg-warm-grey-2/10 p-2 text-warm-white/60 transition-colors",
-                "hover:border-warm-grey-2/30 hover:bg-warm-grey-2/20 hover:text-warm-white"
+                "flex items-center justify-center rounded-full border border-warm-grey/20 bg-warm-grey/10 p-2 text-warm-grey/60 transition-colors dark:border-warm-grey-2/20 dark:bg-warm-grey-2/10 dark:text-warm-white/60",
+                "hover:border-warm-grey/30 hover:bg-warm-grey/20 hover:text-warm-grey dark:hover:border-warm-grey-2/30 dark:hover:bg-warm-grey-2/20 dark:hover:text-warm-white"
               )}
               aria-label={`${authors[username].name} på Twitter`}
             >
@@ -120,8 +120,8 @@ export default async function Author({
               target="_blank"
               rel="noopener noreferrer"
               className={cx(
-                "flex items-center justify-center rounded-full border border-warm-grey-2/20 bg-warm-grey-2/10 p-2 text-warm-white/60 transition-colors",
-                "hover:border-warm-grey-2/30 hover:bg-warm-grey-2/20 hover:text-warm-white"
+                "flex items-center justify-center rounded-full border border-warm-grey/20 bg-warm-grey/10 p-2 text-warm-grey/60 transition-colors dark:border-warm-grey-2/20 dark:bg-warm-grey-2/10 dark:text-warm-white/60",
+                "hover:border-warm-grey/30 hover:bg-warm-grey/20 hover:text-warm-grey dark:hover:border-warm-grey-2/30 dark:hover:bg-warm-grey-2/20 dark:hover:text-warm-white"
               )}
               aria-label={`${authors[username].name} på LinkedIn`}
             >

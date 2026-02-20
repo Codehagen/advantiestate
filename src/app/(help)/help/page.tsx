@@ -17,7 +17,7 @@ export default function HelpCenter() {
     <>
       <MaxWidthWrapper className="max-w-screen-lg pt-32 md:pt-40">
         <div className="flex flex-col space-y-4 py-10">
-          <h1 className="font-display pb-4 text-xl font-bold text-warm-white sm:text-3xl">
+          <h1 className="font-display pb-4 text-xl font-bold text-warm-grey sm:text-3xl dark:text-warm-white">
             👋 Hvordan kan vi hjelpe deg i dag?
           </h1>
           <SearchButton />
@@ -28,7 +28,7 @@ export default function HelpCenter() {
         <div className="absolute top-28 h-full w-full border-t border-warm-grey-2/20" />
         <MaxWidthWrapper className="relative max-w-screen-lg pb-20">
           <div className="relative z-10 mb-10 rounded-xl border border-warm-grey-2/20 bg-warm-grey-2/10 p-6 backdrop-blur-sm">
-            <h2 className="font-display text-2xl font-bold text-warm-white">
+            <h2 className="font-display text-2xl font-bold text-warm-grey dark:text-warm-white">
               Populære artikler
             </h2>
             <div className="mt-4 grid gap-2 md:grid-cols-2">

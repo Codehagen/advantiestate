@@ -81,20 +81,20 @@ function AnimatedCTA(props: {
       />
       <div className="relative flex h-full flex-col items-center justify-center gap-6 text-center">
         {props.badge && (
-          <span className="inline-flex items-center rounded-full border border-warm-grey-2/20 bg-warm-grey-2/10 px-3 py-1 text-xs font-medium text-warm-white/80">
+          <span className="inline-flex items-center rounded-full border border-warm-grey-2/20 bg-warm-grey-2/10 px-3 py-1 text-xs font-medium text-warm-grey/80 dark:text-warm-white/80">
             {props.badge}
           </span>
         )}
-        <h3 className="text-2xl font-semibold tracking-tight text-warm-white">
+        <h3 className="text-2xl font-semibold tracking-tight text-warm-grey dark:text-warm-white">
           {props.title}
         </h3>
-        <p className="text-warm-white/80">{props.description}</p>
+        <p className="text-warm-grey/80 dark:text-warm-white/80">{props.description}</p>
         {(props.primaryAction || props.secondaryAction) && (
           <div className="flex gap-4">
             {props.primaryAction && (
               <Link
                 href={props.primaryAction.href}
-                className="inline-flex items-center justify-center rounded-full bg-warm-grey-2/20 px-6 py-2 font-medium text-warm-white transition-colors hover:bg-warm-grey-2/30"
+                className="inline-flex items-center justify-center rounded-full bg-warm-grey-2/20 px-6 py-2 font-medium text-warm-grey dark:text-warm-white transition-colors hover:bg-warm-grey-2/30"
               >
                 {props.primaryAction.label}
               </Link>
@@ -102,7 +102,7 @@ function AnimatedCTA(props: {
             {props.secondaryAction && (
               <Link
                 href={props.secondaryAction.href}
-                className="inline-flex items-center justify-center gap-2 rounded-full px-6 py-2 font-medium text-warm-white/80 ring-1 ring-warm-grey-2/20 transition-colors hover:bg-warm-grey-2/10 hover:text-warm-white"
+                className="inline-flex items-center justify-center gap-2 rounded-full px-6 py-2 font-medium text-warm-grey/80 dark:text-warm-white/80 ring-1 ring-warm-grey-2/20 transition-colors hover:bg-warm-grey-2/10 hover:text-warm-grey dark:hover:text-warm-white"
               >
                 {props.secondaryAction.label}
                 <RiArrowRightLine className="h-4 w-4" />
@@ -118,49 +118,49 @@ function AnimatedCTA(props: {
 const components = {
   h2: (props: any) => (
     <h2
-      className="mb-4 mt-8 text-2xl font-semibold text-warm-white underline-offset-4 hover:underline"
+      className="mb-4 mt-8 text-2xl font-semibold text-warm-grey dark:text-warm-white underline-offset-4 hover:underline"
       {...props}
     />
   ),
   h3: (props: any) => (
     <h3
-      className="mb-3 mt-6 text-xl font-medium text-warm-white underline-offset-4 hover:underline"
+      className="mb-3 mt-6 text-xl font-medium text-warm-grey dark:text-warm-white underline-offset-4 hover:underline"
       {...props}
     />
   ),
   a: (props: any) => (
     <CustomLink
-      className="font-medium text-warm-white/80 underline underline-offset-4 hover:text-warm-white"
+      className="font-medium text-warm-grey/80 dark:text-warm-white/80 underline underline-offset-4 hover:text-warm-grey dark:hover:text-warm-white"
       {...props}
     />
   ),
   code: (props: any) => (
     <code
-      className="rounded-md border border-warm-grey-2/20 bg-warm-grey-2/10 px-2 py-1 font-medium text-warm-white before:hidden after:hidden"
+      className="rounded-md border border-warm-grey-2/20 bg-warm-grey-2/10 px-2 py-1 font-medium text-warm-grey dark:text-warm-white before:hidden after:hidden"
       {...props}
     />
   ),
   thead: (props: any) => (
-    <thead className="text-lg text-warm-white" {...props} />
+    <thead className="text-lg text-warm-grey dark:text-warm-white" {...props} />
   ),
   th: (props: any) => (
-    <th className="p-4 text-left font-medium text-warm-white" {...props} />
+    <th className="p-4 text-left font-medium text-warm-grey dark:text-warm-white" {...props} />
   ),
   td: (props: any) => (
     <td
-      className="border-t border-warm-grey-2/20 p-4 text-warm-white/80"
+      className="border-t border-warm-grey-2/20 p-4 text-warm-grey/80 dark:text-warm-white/80"
       {...props}
     />
   ),
   p: (props: any) => (
     <p
-      className="my-4 text-base leading-relaxed text-warm-white/80"
+      className="my-4 text-base leading-relaxed text-warm-grey/80 dark:text-warm-white/80"
       {...props}
     />
   ),
   li: (props: any) => (
     <li
-      className="mb-2 text-base leading-relaxed text-warm-white/80 marker:text-warm-white/60"
+      className="mb-2 text-base leading-relaxed text-warm-grey/80 dark:text-warm-white/80 marker:text-warm-grey/60 dark:marker:text-warm-white/60"
       {...props}
     />
   ),
@@ -200,7 +200,7 @@ const components = {
               "text-green-500/80": props.variant === "success",
             })}
           />
-          <div className="flex-1 text-warm-white/80">{props.children}</div>
+          <div className="flex-1 text-warm-grey/80 dark:text-warm-white/80">{props.children}</div>
         </div>
       </div>
     )
@@ -223,7 +223,7 @@ const components = {
           height={80}
         />
       </div>
-      <p className="text-center text-lg leading-relaxed text-warm-white/80 [text-wrap:balance]">
+      <p className="text-center text-lg leading-relaxed text-warm-grey/80 dark:text-warm-white/80 [text-wrap:balance]">
         &ldquo;{props.text}&rdquo;
       </p>
       <div className="flex items-center justify-center space-x-4">
@@ -235,8 +235,8 @@ const components = {
           height={48}
         />
         <div className="flex flex-col">
-          <p className="font-semibold text-warm-white">{props.author}</p>
-          <p className="text-sm text-warm-white/80">{props.title}</p>
+          <p className="font-semibold text-warm-grey dark:text-warm-white">{props.author}</p>
+          <p className="text-sm text-warm-grey/80 dark:text-warm-white/80">{props.title}</p>
         </div>
       </div>
     </div>
@@ -244,8 +244,8 @@ const components = {
   Prerequisites: (props: { children: React.ReactNode }) => (
     <div className="my-8 rounded-xl border border-warm-grey-2/20 bg-warm-grey-2/10 p-6 backdrop-blur-sm">
       <div className="mb-4 flex items-center gap-3">
-        <RiListCheck2 className="h-5 w-5 text-warm-white/60" />
-        <h4 className="font-display text-lg font-semibold text-warm-white">
+        <RiListCheck2 className="h-5 w-5 text-warm-grey/60 dark:text-warm-white/60" />
+        <h4 className="font-display text-lg font-semibold text-warm-grey dark:text-warm-white">
           Forutsetninger
         </h4>
       </div>
@@ -298,33 +298,33 @@ const components = {
               className="group flex items-center justify-between rounded-lg px-2 py-3 transition-colors hover:bg-warm-grey-2/20 active:bg-warm-grey-2/30 sm:px-4"
             >
               <div>
-                <p className="text-xs font-medium text-warm-white/60 group-hover:text-warm-white/80">
+                <p className="text-xs font-medium text-warm-grey/60 dark:text-warm-white/60 group-hover:text-warm-grey/80 dark:group-hover:text-warm-white/80">
                   {formatDate(post.publishedAt)}
                 </p>
-                <h3 className="my-px text-base font-medium text-warm-white">
+                <h3 className="my-px text-base font-medium text-warm-grey dark:text-warm-white">
                   {post.title}
                 </h3>
-                <p className="line-clamp-1 text-sm text-warm-white/80 group-hover:text-warm-white">
+                <p className="line-clamp-1 text-sm text-warm-grey/80 dark:text-warm-white/80 group-hover:text-warm-grey dark:group-hover:text-warm-white">
                   {post.summary}
                 </p>
               </div>
-              <ExpandingArrow className="-ml-4 h-4 w-4 text-warm-white/60 group-hover:text-warm-white/80" />
+              <ExpandingArrow className="-ml-4 h-4 w-4 text-warm-grey/60 dark:text-warm-white/60 group-hover:text-warm-grey/80 dark:group-hover:text-warm-white/80" />
             </Link>
           </li>
         ))}
     </ul>
   ),
   strong: (props: any) => (
-    <strong className="font-semibold text-warm-white" {...props} />
+    <strong className="font-semibold text-warm-grey dark:text-warm-white" {...props} />
   ),
   Info: (props: any) => (
     <div className="my-6 flex items-start gap-4 rounded-lg border border-warm-grey-2/20 bg-warm-grey-2/10 p-6 backdrop-blur-sm">
       <div className="flex h-6 w-6 shrink-0 items-center justify-center">
-        <RiInformationLine className="h-6 w-6 text-warm-white/60" />
+        <RiInformationLine className="h-6 w-6 text-warm-grey/60 dark:text-warm-white/60" />
       </div>
       <div className="flex-1 text-[0.95rem] leading-relaxed">
-        <div className="font-medium text-warm-white">Fun fact:</div>
-        <div className="mt-1 text-warm-white/80">{props.children}</div>
+        <div className="font-medium text-warm-grey dark:text-warm-white">Fun fact:</div>
+        <div className="mt-1 text-warm-grey/80 dark:text-warm-white/80">{props.children}</div>
       </div>
     </div>
   ),
@@ -341,8 +341,8 @@ const components = {
       )}
     >
       <div className="flex items-center gap-3">
-        <RiFunctions className="h-5 w-5 text-warm-white/60" />
-        <div className="text-lg font-medium text-warm-white">Formel</div>
+        <RiFunctions className="h-5 w-5 text-warm-grey/60 dark:text-warm-white/60" />
+        <div className="text-lg font-medium text-warm-grey dark:text-warm-white">Formel</div>
       </div>
       <div className="w-full overflow-x-auto">
         <div
@@ -359,7 +359,7 @@ const components = {
         </div>
       </div>
       {props.description && (
-        <p className="text-sm text-warm-white/70">{props.description}</p>
+        <p className="text-sm text-warm-grey/70 dark:text-warm-white/70">{props.description}</p>
       )}
     </div>
   ),
@@ -382,8 +382,8 @@ const components = {
       )}
     >
       <div className="flex items-center gap-3">
-        <RiFunctions className="h-5 w-5 text-warm-white/60" />
-        <div className="text-lg font-medium text-warm-white">Formel</div>
+        <RiFunctions className="h-5 w-5 text-warm-grey/60 dark:text-warm-white/60" />
+        <div className="text-lg font-medium text-warm-grey dark:text-warm-white">Formel</div>
       </div>
       <div className="w-full overflow-x-auto">
         <div
@@ -400,7 +400,7 @@ const components = {
         </div>
       </div>
       {props.description && (
-        <p className="text-sm text-warm-white/70">{props.description}</p>
+        <p className="text-sm text-warm-grey/70 dark:text-warm-white/70">{props.description}</p>
       )}
     </div>
   ),
@@ -430,15 +430,15 @@ const components = {
         {props.items.map((item, idx) => (
           <div key={idx} className="flex gap-6">
             <div className="flex-none">
-              <div className="flex h-8 w-8 items-center justify-center rounded-full border border-warm-grey-2/20 bg-warm-grey-2/10 text-lg font-semibold text-warm-white">
+              <div className="flex h-8 w-8 items-center justify-center rounded-full border border-warm-grey-2/20 bg-warm-grey-2/10 text-lg font-semibold text-warm-grey dark:text-warm-white">
                 {idx + 1}
               </div>
             </div>
             <div className="flex-1 space-y-4">
-              <h3 className="text-xl font-semibold text-warm-white">
+              <h3 className="text-xl font-semibold text-warm-grey dark:text-warm-white">
                 {item.title}
               </h3>
-              <div className="text-base text-warm-white/80">{item.content}</div>
+              <div className="text-base text-warm-grey/80 dark:text-warm-white/80">{item.content}</div>
               {item.image && (
                 <div className="mt-4 overflow-hidden rounded-lg">
                   <MDXImage
@@ -475,7 +475,7 @@ const components = {
   }) => (
     <div className="my-8 rounded-xl border border-warm-grey-2/20 bg-warm-grey-2/10 p-6 backdrop-blur-sm">
       {props.title && (
-        <h4 className="font-display mb-4 text-lg font-semibold text-warm-white">
+        <h4 className="font-display mb-4 text-lg font-semibold text-warm-grey dark:text-warm-white">
           {props.title}
         </h4>
       )}
@@ -488,13 +488,13 @@ const components = {
             })}
           >
             <div className="flex items-baseline justify-between">
-              <span className="text-warm-white/80">{step.label}</span>
+              <span className="text-warm-grey/80 dark:text-warm-white/80">{step.label}</span>
               <span
                 className={cx(
                   "font-mono text-lg",
                   step.isResult
-                    ? "font-semibold text-warm-white"
-                    : "text-warm-white/80",
+                    ? "font-semibold text-warm-grey dark:text-warm-white"
+                    : "text-warm-grey/80 dark:text-warm-white/80",
                 )}
               >
                 {typeof step.value === "number"
@@ -503,7 +503,7 @@ const components = {
               </span>
             </div>
             {step.calculation && (
-              <div className="text-sm text-warm-white/60">
+              <div className="text-sm text-warm-grey/60 dark:text-warm-white/60">
                 {step.calculation}
               </div>
             )}
@@ -521,16 +521,16 @@ const components = {
     }[]
   }) => {
     const iconMap: { [key: string]: React.ReactNode } = {
-      barChart: <RiBarChartBoxLine className="h-5 w-5 text-warm-white/60" />,
-      scales: <RiScalesLine className="h-5 w-5 text-warm-white/60" />,
-      lineChart: <RiLineChartLine className="h-5 w-5 text-warm-white/60" />,
-      lightbulb: <RiLightbulbLine className="h-5 w-5 text-warm-white/60" />,
+      barChart: <RiBarChartBoxLine className="h-5 w-5 text-warm-grey/60 dark:text-warm-white/60" />,
+      scales: <RiScalesLine className="h-5 w-5 text-warm-grey/60 dark:text-warm-white/60" />,
+      lineChart: <RiLineChartLine className="h-5 w-5 text-warm-grey/60 dark:text-warm-white/60" />,
+      lightbulb: <RiLightbulbLine className="h-5 w-5 text-warm-grey/60 dark:text-warm-white/60" />,
     }
 
     return (
       <div className="my-8 rounded-xl border border-warm-grey-2/20 bg-warm-grey-2/10 p-6 backdrop-blur-sm">
         {props.title && (
-          <h4 className="font-display mb-6 text-xl font-semibold text-warm-white">
+          <h4 className="font-display mb-6 text-xl font-semibold text-warm-grey dark:text-warm-white">
             {props.title}
           </h4>
         )}
@@ -542,10 +542,10 @@ const components = {
             >
               <div className="flex items-center gap-3">
                 {point.iconName && iconMap[point.iconName]}
-                <h5 className="font-medium text-warm-white">{point.title}</h5>
+                <h5 className="font-medium text-warm-grey dark:text-warm-white">{point.title}</h5>
               </div>
               {point.description && (
-                <p className="text-sm leading-relaxed text-warm-white/70">
+                <p className="text-sm leading-relaxed text-warm-grey/70 dark:text-warm-white/70">
                   {point.description}
                 </p>
               )}
@@ -596,11 +596,11 @@ export function MDX({ code, images, className }: MDXProps) {
       data-mdx-container
       className={cx(
         "prose max-w-none transition-all",
-        "prose-headings:relative prose-headings:scroll-mt-20 prose-headings:font-display prose-headings:font-bold prose-headings:text-warm-white",
-        "prose-p:text-warm-white/80 prose-p:leading-relaxed prose-p:my-4",
-        "prose-a:text-warm-white/80 prose-a:underline prose-a:underline-offset-4 hover:prose-a:text-warm-white",
-        "prose-code:text-warm-white prose-code:bg-warm-grey-2/10 prose-code:px-2 prose-code:py-1",
-        "prose-li:text-warm-white/80 prose-li:leading-relaxed prose-li:mb-2",
+        "prose-headings:relative prose-headings:scroll-mt-20 prose-headings:font-display prose-headings:font-bold prose-headings:text-warm-grey dark:prose-headings:text-warm-white",
+        "prose-p:text-warm-grey/80 dark:prose-p:text-warm-white/80 prose-p:leading-relaxed prose-p:my-4",
+        "prose-a:text-warm-grey/80 dark:prose-a:text-warm-white/80 prose-a:underline prose-a:underline-offset-4 hover:prose-a:text-warm-grey dark:hover:prose-a:text-warm-white",
+        "prose-code:text-warm-grey dark:prose-code:text-warm-white prose-code:bg-warm-grey-2/10 prose-code:px-2 prose-code:py-1",
+        "prose-li:text-warm-grey/80 dark:prose-li:text-warm-white/80 prose-li:leading-relaxed prose-li:mb-2",
         "prose-ul:my-8 prose-ul:space-y-6",
         "prose-ol:my-4 prose-ol:space-y-2",
         className,

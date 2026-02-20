@@ -77,25 +77,25 @@ export default async function HelpCategory({
           <div className="flex items-center space-x-2">
             <Link
               href="/help"
-              className="text-sm font-medium text-warm-white/60 hover:text-warm-white/80"
+              className="text-sm font-medium text-warm-grey/60 hover:text-warm-grey/80 dark:text-warm-white/60 dark:hover:text-warm-white/80"
             >
               Alle kategorier
             </Link>
-            <RiArrowRightSLine className="h-4 w-4 text-warm-white/60" />
+            <RiArrowRightSLine className="h-4 w-4 text-warm-grey/60 dark:text-warm-white/60" />
             <Link
               href={`/help/category/${data.slug}`}
-              className="text-sm font-medium text-warm-white/60 hover:text-warm-white/80"
+              className="text-sm font-medium text-warm-grey/60 hover:text-warm-grey/80 dark:text-warm-white/60 dark:hover:text-warm-white/80"
             >
               {data.title}
             </Link>
           </div>
           <div className="my-8 flex flex-col space-y-4">
             <Link href={`/help/category/${data.slug}`}>
-              <h1 className="font-display text-2xl font-bold text-warm-white sm:text-4xl">
+              <h1 className="font-display text-2xl font-bold text-warm-grey sm:text-4xl dark:text-warm-white">
                 {data.title}
               </h1>
             </Link>
-            <p className="text-warm-white/80">{data.description}</p>
+            <p className="text-warm-grey/80 dark:text-warm-white/80">{data.description}</p>
           </div>
           <div className="grid gap-2 rounded-xl border border-warm-grey-2/20 bg-warm-grey-2/10 p-4 backdrop-blur-sm">
             {articles.map((article) => (

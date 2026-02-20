@@ -23,10 +23,10 @@ export default function BlogLayoutHero() {
     <>
       <MaxWidthWrapper>
         <div className="md:pb-15 max-w-screen-sm pb-16 pt-32 md:pt-40">
-          <h1 className="font-display text-3xl font-extrabold text-warm-white sm:text-4xl">
+          <h1 className="font-display text-3xl font-extrabold text-warm-grey sm:text-4xl dark:text-warm-white">
             {data?.title || "Artikler"}
           </h1>
-          <p className="mt-4 text-xl text-warm-white/80">
+          <p className="mt-4 text-xl text-warm-grey/80 dark:text-warm-white/80">
             {data?.description || "Siste innsikter og artikler fra Advanti Estate."}
           </p>
           <nav className="mt-6 hidden w-fit items-center space-x-2 rounded-full border border-warm-grey/20 bg-warm-white/5 p-2 backdrop-blur-sm md:flex">
@@ -86,9 +86,9 @@ export default function BlogLayoutHero() {
             onClick={() => {
               setOpenPopover(!openPopover);
             }}
-            className="flex w-full items-center space-x-2 border-t border-warm-grey/20 px-2.5 py-4 text-sm text-warm-white/80"
+            className="flex w-full items-center space-x-2 border-t border-warm-grey/20 px-2.5 py-4 text-sm text-warm-grey/80 dark:text-warm-white/80"
           >
-            <RiListUnordered size={16} className="text-warm-white/60" />
+            <RiListUnordered size={16} className="text-warm-grey/60 dark:text-warm-white/60" />
             <p>Kategorier</p>
           </button>
         </Popover>
@@ -117,10 +117,10 @@ const CategoryLink = ({
         {...(setOpenPopover && {
           onClick: () => setOpenPopover(false),
         })}
-        className="flex w-full items-center justify-between rounded-md p-2 text-warm-white/80 transition-colors hover:bg-warm-white/5 active:bg-warm-white/10"
+        className="flex w-full items-center justify-between rounded-md p-2 text-warm-grey/80 transition-colors hover:bg-warm-grey/5 active:bg-warm-grey/10 dark:text-warm-white/80 dark:hover:bg-warm-white/5 dark:active:bg-warm-white/10"
       >
         <p className="text-sm">{title}</p>
-        {active && <RiCheckLine size={16} className="text-warm-white/60" />}
+        {active && <RiCheckLine size={16} className="text-warm-grey/60 dark:text-warm-white/60" />}
       </Link>
     );
   }
@@ -130,8 +130,8 @@ const CategoryLink = ({
         className={cx(
           "rounded-full px-4 py-2 text-sm transition-all",
           active
-            ? "bg-warm-white/10 text-warm-white"
-            : "text-warm-white/80 hover:bg-warm-white/5 active:bg-warm-white/10"
+            ? "bg-warm-grey/10 text-warm-grey dark:bg-warm-white/10 dark:text-warm-white"
+            : "text-warm-grey/80 hover:bg-warm-grey/5 active:bg-warm-grey/10 dark:text-warm-white/80 dark:hover:bg-warm-white/5 dark:active:bg-warm-white/10"
         )}
       >
         {title}

@@ -37,7 +37,7 @@ export default function SocialShare({ title, url, summary }: SocialShareProps) {
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex items-center gap-2 text-warm-white/60">
+      <div className="flex items-center gap-2 text-warm-grey/60 dark:text-warm-white/60">
         <span className="text-sm font-medium">Del artikkel</span>
       </div>
       <div className="flex flex-wrap items-center gap-3">
@@ -46,8 +46,8 @@ export default function SocialShare({ title, url, summary }: SocialShareProps) {
           target="_blank"
           rel="noopener noreferrer"
           className={cx(
-            "flex items-center justify-center gap-2 rounded-full border border-warm-grey-2/20 bg-warm-grey-2/10 px-4 py-2 text-sm font-medium text-warm-white/80 transition-all",
-            "hover:border-warm-grey-2/30 hover:bg-warm-grey-2/20 hover:text-warm-white"
+            "flex items-center justify-center gap-2 rounded-full border border-warm-grey/20 bg-warm-grey/10 px-4 py-2 text-sm font-medium text-warm-grey/80 transition-all dark:border-warm-grey-2/20 dark:bg-warm-grey-2/10 dark:text-warm-white/80",
+            "hover:border-warm-grey/30 hover:bg-warm-grey/15 hover:text-warm-grey dark:hover:border-warm-grey-2/30 dark:hover:bg-warm-grey-2/20 dark:hover:text-warm-white"
           )}
           aria-label="Del på Twitter/X"
         >
@@ -59,8 +59,8 @@ export default function SocialShare({ title, url, summary }: SocialShareProps) {
           target="_blank"
           rel="noopener noreferrer"
           className={cx(
-            "flex items-center justify-center gap-2 rounded-full border border-warm-grey-2/20 bg-warm-grey-2/10 px-4 py-2 text-sm font-medium text-warm-white/80 transition-all",
-            "hover:border-warm-grey-2/30 hover:bg-warm-grey-2/20 hover:text-warm-white"
+            "flex items-center justify-center gap-2 rounded-full border border-warm-grey/20 bg-warm-grey/10 px-4 py-2 text-sm font-medium text-warm-grey/80 transition-all dark:border-warm-grey-2/20 dark:bg-warm-grey-2/10 dark:text-warm-white/80",
+            "hover:border-warm-grey/30 hover:bg-warm-grey/15 hover:text-warm-grey dark:hover:border-warm-grey-2/30 dark:hover:bg-warm-grey-2/20 dark:hover:text-warm-white"
           )}
           aria-label="Del på LinkedIn"
         >
@@ -70,8 +70,8 @@ export default function SocialShare({ title, url, summary }: SocialShareProps) {
         <button
           onClick={handleCopyLink}
           className={cx(
-            "flex items-center justify-center gap-2 rounded-full border border-warm-grey-2/20 bg-warm-grey-2/10 px-4 py-2 text-sm font-medium text-warm-white/80 transition-all",
-            "hover:border-warm-grey-2/30 hover:bg-warm-grey-2/20 hover:text-warm-white"
+            "flex items-center justify-center gap-2 rounded-full border border-warm-grey/20 bg-warm-grey/10 px-4 py-2 text-sm font-medium text-warm-grey/80 transition-all dark:border-warm-grey-2/20 dark:bg-warm-grey-2/10 dark:text-warm-white/80",
+            "hover:border-warm-grey/30 hover:bg-warm-grey/15 hover:text-warm-grey dark:hover:border-warm-grey-2/30 dark:hover:bg-warm-grey-2/20 dark:hover:text-warm-white"
           )}
           aria-label="Kopier lenke"
         >
