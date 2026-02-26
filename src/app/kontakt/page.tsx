@@ -57,10 +57,10 @@ export default function KontaktPage() {
               </address>
               <div className="mt-3 space-y-1 text-sm text-warm-grey-2 dark:text-warm-grey-1">
                 <a
-                  href="tel:+479843571"
+                  href="tel:+4798453571"
                   className="block font-medium text-warm-grey hover:text-warm-grey-3 dark:text-warm-white"
                 >
-                  +47 984 35 71
+                  +47 984 53 571
                 </a>
                 <a
                   href="mailto:Christer@advanti.no"

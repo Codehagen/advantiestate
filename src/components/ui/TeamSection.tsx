@@ -9,7 +9,7 @@ const members = [
       "https://imagedelivery.net/r-6-yk-gGPtjfbIST9-8uA/d08a8e8b-0285-4107-bc2c-973f93b27100/public",
     slug: "christer-hagen",
     email: "Christer@advanti.no",
-    phone: "+47 984 35 71",
+    phone: "+47 984 53 571",
   },
   {
     name: "Daniel Adamsen",

@@ -51,10 +51,10 @@ export default function Footer() {
             </address>
             <div className="mt-2">
               <a
-                href="tel:+479843571"
+                href="tel:+4798453571"
                 className="block text-warm-grey hover:text-warm-grey-3 dark:text-warm-white"
               >
-                +47 984 35 71
+                +47 984 53 571
               </a>
               <a
                 href="mailto:Christer@advanti.no"

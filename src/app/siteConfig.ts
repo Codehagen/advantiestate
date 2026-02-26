@@ -5,7 +5,7 @@ export const siteConfig = {
     "Din lokale næringsmegler i Nord-Norge. Vi er eksperter på salg og verdivurdering av næringseiendom. Vi kombinerer lokal markedsinnsikt med avansert analyse for å sikre deg det beste resultatet.",
   contact: {
     email: "Christer@advanti.no",
-    phone: "+47 984 35 71",
+    phone: "+47 984 53 571",
     address: {
       streetAddress: "Dronningens gate 18",
       addressLocality: "Bodø",
