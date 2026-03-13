@@ -348,6 +348,7 @@ export const PersonPost = defineCollection({
     email: z.string().email().optional(),
     phone: z.string(),
     startedAt: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+    yearsExperienceOverride: z.number().optional(),
     education: z.array(
       z.object({
         degree: z.string(),
@@ -380,9 +381,12 @@ export const PersonPost = defineCollection({
       // Calculate years of experience
       const startDate = new Date(document.startedAt);
       const now = new Date();
-      const yearsExperience = Math.floor(
-        (now.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24 * 365.25),
-      );
+      const yearsExperience =
+        document.yearsExperienceOverride ??
+        Math.floor(
+          (now.getTime() - startDate.getTime()) /
+            (1000 * 60 * 60 * 24 * 365.25),
+        );
 
       return {
         ...document,
