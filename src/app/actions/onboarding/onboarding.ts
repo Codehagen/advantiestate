@@ -108,75 +108,91 @@ interface ContactInquiryData {
   message?: string;
 }
 
+async function postToDiscordWebhook(
+  webhookUrl: string,
+  message: DiscordMessage,
+): Promise<boolean> {
+  try {
+    const response = await fetch(webhookUrl, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(message),
+    });
+    if (!response.ok) {
+      const body = await response.text();
+      console.error(`Discord webhook ${webhookUrl.slice(0, 50)}... error:`, body);
+    }
+    return response.ok;
+  } catch (err) {
+    console.error(`Discord webhook fetch failed:`, err);
+    return false;
+  }
+}
+
 export async function submitContactInquiry(data: ContactInquiryData) {
   try {
-    const webhookUrl = process.env.DISCORD_WEBHOOK_URL;
-    if (!webhookUrl) {
-      throw new Error("Discord webhook URL not configured");
-    }
-
+    // Build common embed fields
     const fields = [
-      {
-        name: "Contact Name",
-        value: data.name,
-      },
-      {
-        name: "Contact Email",
-        value: data.email,
-      },
-      {
-        name: "Contact Phone",
-        value: data.phone,
-      },
-      {
-        name: "Service Interest",
-        value: data.service,
-      },
+      { name: "Navn", value: data.name },
+      { name: "E-post", value: data.email },
+      { name: "Telefon", value: data.phone },
+      { name: "Ønsket tjeneste", value: data.service },
     ];
 
     if (data.message) {
       fields.push({
-        name: "Message",
+        name: "Melding",
         value: data.message.length > 1024 ? data.message.substring(0, 1021) + "..." : data.message,
       });
     }
 
-    fields.push({
-      name: "Timestamp",
-      value: new Date().toISOString(),
-    });
+    fields.push({ name: "Tidspunkt", value: new Date().toLocaleString("nb-NO") });
 
-    const message: DiscordMessage = {
-      content: "📬 New Contact Form Inquiry!",
+    const contactMessage: DiscordMessage = {
+      content: "",
       embeds: [
         {
-          title: "New Contact Form Submission",
-          description: `${data.name} has submitted a contact inquiry regarding ${data.service}.`,
-          color: 0x00aaff, // A different blue color
+          title: "📬 Ny henvendelse fra nettsiden",
+          description: `${data.name} har sendt inn en forespørsel om ${data.service.toLowerCase()}.`,
+          color: 0x00aaff,
           fields,
         },
       ],
     };
 
-    const response = await fetch(webhookUrl, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(message),
-    });
-
-    if (!response.ok) {
-      const errorBody = await response.text();
-      console.error("Discord API Error:", errorBody);
-      throw new Error(
-        "Failed to send Discord notification for contact inquiry"
+    // Send to primary webhook (existing — typically #team or onboarding)
+    const primaryUrl = process.env.DISCORD_WEBHOOK_URL;
+    if (primaryUrl) {
+      await postToDiscordWebhook(
+        primaryUrl,
+        contactMessage,
       );
+    }
+
+    // Send to secondary contact webhook (new — #nettside-henvendelser)
+    const nettsideUrl = process.env.DISCORD_NETTSIDE_WEBHOOK_URL;
+    if (nettsideUrl) {
+      const nettsideMessage: DiscordMessage = {
+        content: "",
+        embeds: [
+          {
+            title: "📬 Ny nettside-henvendelse",
+            description: `**${data.name}** — ${data.service}`,
+            color: 0x00ff88,
+            fields,
+          },
+        ],
+      };
+      await postToDiscordWebhook(nettsideUrl, nettsideMessage);
+    }
+
+    if (!primaryUrl && !nettsideUrl) {
+      throw new Error("Discord webhook URL not configured");
     }
 
     return { success: true };
   } catch (error) {
     console.error("Error submitting contact inquiry:", error);
-    return { success: false, error: "Failed to submit contact inquiry" };
+    return { success: false, error: "Innsending feilet. Vennligst prøv igjen." };
   }
 }
