@@ -14,6 +14,16 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - Mapbox GL for property visualization
 - pnpm package manager
 
+## Design System
+
+**Before any UI, styling, layout, or component work, read [`DESIGN.md`](./DESIGN.md) first.**
+It is the source of truth for the editorial design system: design tokens (colours,
+type, spacing), typography rules, layout primitives, the shared
+`src/components/site/` building blocks, and the conventions — semantic classes
+from `src/styles/advanti-design.css` over ad-hoc Tailwind, light-only (no dark
+mode), Norwegian copy. Do not introduce new colours, spacing values, or
+component patterns without checking `DESIGN.md` first.
+
 ## Development Commands
 
 ```bash
@@ -114,6 +124,8 @@ import { allBlogPosts, allHelpPosts } from "content-collections"
 ```
 
 ### Design System
+
+> Full reference: [`DESIGN.md`](./DESIGN.md). The summary below is a pointer only.
 
 **Color Palette** (Norwegian commercial real estate theme):
 - Primary: `warm-grey` (#2c2825), `warm-white` (#f3f1ef)
