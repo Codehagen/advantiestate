@@ -5,13 +5,21 @@
 // Holds the sector sidebar nav, sub-tabs, datasets and the six content views.
 
 import { Fragment, useEffect, useState } from "react"
+import dynamic from "next/dynamic"
 import Link from "next/link"
-import {
-  BarChart,
-  LineChart,
-  NordNorgeMap,
-  type MapCity,
-} from "./EditorialCharts"
+import { MarketBarChart } from "./charts/MarketBarChart"
+import { MarketLineChart } from "./charts/MarketLineChart"
+import { MapErrorBoundary } from "./MapErrorBoundary"
+import type { MapCity } from "./types"
+
+// Leaflet needs `window`, so the overview map loads browser-only. This
+// dynamic({ ssr: false }) call is legal here because MarkedsinnsiktShell is a
+// Client Component — Next 16 forbids ssr:false inside Server Components.
+const NordNorgeLeafletMap = dynamic(
+  () =>
+    import("./maps/NordNorgeLeafletMap").then((m) => m.NordNorgeLeafletMap),
+  { ssr: false, loading: () => <div className="mi-map-loading" /> },
+)
 
 // ════════════════════════════════════════════════════════════════════════
 // DATA — ported verbatim from markedsinnsikt.js
@@ -92,7 +100,11 @@ const CITIES: MapCity[] = [
 // HELPERS — ported from markedsinnsikt.js
 // ════════════════════════════════════════════════════════════════════════
 
-const SECTOR_COLORS = ["var(--warm-grey)", "var(--accent)", "var(--warm-grey-85)"]
+const SECTOR_COLORS = [
+  "var(--warm-grey)",
+  "var(--warm-grey-85)",
+  "var(--warm-grey-85)",
+]
 const fmtNoComma = (v: number) => v.toFixed(2).replace(".", ",")
 const fmtPct1 = (v: number) => `${v.toFixed(1).replace(".", ",")} %`
 const fmtNum = (v: number) => v.toLocaleString("no-NO")
@@ -203,7 +215,7 @@ function YieldView() {
             <span className="item">
               <span
                 className="swatch"
-                style={{ background: "var(--accent)" }}
+                style={{ background: "var(--warm-grey-85)" }}
               />
               5 år SWAP
             </span>
@@ -221,7 +233,8 @@ function YieldView() {
             </span>
           </div>
         </div>
-        <LineChart
+        <MarketLineChart
+          ariaLabel="Prime yield mot 5 år SWAP og 10 år statsobligasjon, kvartalsvis 2021–2025"
           labels={QUARTERS}
           yMin={0.5}
           yMax={7.5}
@@ -229,7 +242,11 @@ function YieldView() {
           yFormat={(v) => `${v.toFixed(1)} %`}
           series={[
             { name: "Prime yield", color: "var(--warm-grey)", values: yieldData },
-            { name: "5 år SWAP", color: "var(--accent)", values: RATES.swap5y },
+            {
+              name: "5 år SWAP",
+              color: "var(--warm-grey-85)",
+              values: RATES.swap5y,
+            },
             {
               name: "10 år statsobl.",
               color: "var(--warm-grey-85)",
@@ -397,19 +414,29 @@ function LeieView() {
               <span className="item" key={c}>
                 <span
                   className="swatch"
-                  style={{ background: SECTOR_COLORS[i] }}
+                  style={
+                    i === 2
+                      ? {
+                          borderTop: "2px dashed var(--warm-grey-85)",
+                          height: 0,
+                          background: "transparent",
+                        }
+                      : { background: SECTOR_COLORS[i] }
+                  }
                 />
                 {c}
               </span>
             ))}
           </div>
         </div>
-        <LineChart
+        <MarketLineChart
+          ariaLabel={`Prime markedsleie ${SEG_LABELS[sub]} per by, kvartalsvis 2021–2025`}
           labels={QUARTERS}
           yFormat={(v) => `${Math.round(v)} kr`}
           series={cities.map((c, i) => ({
             name: c,
             color: SECTOR_COLORS[i],
+            dashed: i === 2,
             values: cityData[c],
           }))}
         />
@@ -566,7 +593,20 @@ function TxView() {
             </span>
           </div>
         </div>
-        <BarChart labels={VOLUME.years} values={VOLUME.total} />
+        <MarketBarChart
+          ariaLabel="Totalt transaksjonsvolum i Nord-Norge per år, 2018–2025"
+          labels={VOLUME.years}
+          orientation="columns"
+          highlightLast
+          valueFormatter={(v) => `${v.toFixed(1)} mrd`}
+          series={[
+            {
+              name: "Transaksjonsvolum",
+              color: "var(--accent)",
+              values: VOLUME.total,
+            },
+          ]}
+        />
       </div>
 
       <h3
@@ -641,21 +681,67 @@ function LedighetView() {
         </div>
       </div>
 
-      <div className="mi-chart-card" style={{ paddingTop: 24 }}>
-        <div className="mi-chart-head" style={{ marginBottom: 0 }}>
+      <div className="mi-chart-card">
+        <div className="mi-chart-head">
           <div>
             <h3>Andel ledig næringsareal — Q4 2025</h3>
-            <div className="focus-val" style={{ fontSize: 32 }}>
-              By for by
+            <div className="focus-delta">
+              Lav ledighet &lt; 4 % indikerer et stramt marked.
             </div>
           </div>
           <div className="mi-chart-legend">
             <span className="item">
-              Lav ledighet &lt; 4 % indikerer stramt marked.
+              <span
+                className="swatch"
+                style={{ background: "var(--warm-grey)" }}
+              />
+              Kontor
+            </span>
+            <span className="item">
+              <span
+                className="swatch"
+                style={{ background: "var(--warm-grey-85)" }}
+              />
+              Handel
+            </span>
+            <span className="item">
+              <span
+                className="swatch"
+                style={{
+                  background: "var(--accent)",
+                  height: 8,
+                  border: "1px solid var(--warm-grey-75)",
+                }}
+              />
+              Logistikk
             </span>
           </div>
         </div>
-        <table className="mi-city-table">
+        <MarketBarChart
+          ariaLabel="Ledighet i prosent per by og segment, Q4 2025"
+          labels={VACANCY.map((r) => r.city)}
+          orientation="rows"
+          height={340}
+          valueFormatter={fmtPct1}
+          series={[
+            {
+              name: "Kontor",
+              color: "var(--warm-grey)",
+              values: VACANCY.map((r) => r.kontor),
+            },
+            {
+              name: "Handel",
+              color: "var(--warm-grey-85)",
+              values: VACANCY.map((r) => r.handel),
+            },
+            {
+              name: "Logistikk",
+              color: "var(--accent)",
+              values: VACANCY.map((r) => r.logistikk),
+            },
+          ]}
+        />
+        <table className="mi-city-table" style={{ marginTop: 24 }}>
           <thead>
             <tr>
               <th>By</th>
@@ -738,13 +824,27 @@ function KartView() {
 
       <div className="mi-map-card">
         <div className="mi-map">
-          <NordNorgeMap
-            cities={CITIES}
-            activeCityId={cityId}
-            onSelectCity={setCityId}
-          />
+          <MapErrorBoundary>
+            <NordNorgeLeafletMap
+              cities={CITIES}
+              activeCityId={cityId}
+              onSelectCity={setCityId}
+            />
+          </MapErrorBoundary>
         </div>
         <div className="mi-map-info">
+          <div className="mi-city-picker" role="group" aria-label="Velg by">
+            {CITIES.map((c) => (
+              <button
+                key={c.id}
+                type="button"
+                aria-pressed={c.id === cityId}
+                onClick={() => setCityId(c.id)}
+              >
+                {c.name}
+              </button>
+            ))}
+          </div>
           <div className="city-label">Marked · {city.name}</div>
           <h3>{city.name}</h3>
           <div
@@ -784,10 +884,15 @@ function KartView() {
 
       <div className="mi-footnote">
         <span className="source">
-          Kartet er stilisert. Geografisk nøyaktighet er forenklet for å fokusere
-          oppmerksomheten på markedsdataene.
+          Kartet viser Advantis seks dekningsbyer i Nord-Norge. Klikk en by for
+          yield, leie og ledighet — alle tall per Q4 2025.
         </span>
-        <span>6 byer dekket</span>
+        <Link
+          href="/markedsinnsikt/kart"
+          style={{ color: "var(--warm-grey)", borderBottom: "1px solid" }}
+        >
+          Detaljert sonekart for Bodø →
+        </Link>
       </div>
     </div>
   )

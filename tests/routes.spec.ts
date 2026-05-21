@@ -19,6 +19,7 @@ const STATIC_ROUTES = [
   "/kontakt",
   "/personer",
   "/markedsinnsikt",
+  "/markedsinnsikt/kart",
   "/blog",
   "/help",
   "/kunder",
