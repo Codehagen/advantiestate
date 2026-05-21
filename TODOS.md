@@ -54,15 +54,16 @@ Deferred work captured during the editorial redesign port (/plan-eng-review, 202
 
 ---
 
-## TODO 8 — Fix the stale Next.js version in CLAUDE.md
-
-- **What:** `CLAUDE.md` says "Next.js 15.3.2"; `package.json` is on `16.1.4`.
-- **Why:** Stale docs mislead. One-line fix.
-- **Context:** Noticed during the markedsinnsikt rebuild, 2026-05-21.
-
----
-
 ## Completed
+
+### TODO 8 — Fix the stale Next.js version in CLAUDE.md
+
+- **What:** `CLAUDE.md` said "Next.js 15.3.2"; `package.json` is on `16.1.4`.
+- **Outcome:** Done. Tech Stack section in `CLAUDE.md` updated to `Next.js 16.1.4`.
+  Same pass also corrected the now-stale Mapbox references — the Mapbox
+  integration section, the `eiendom/PropertyMap.tsx` mentions, and the chart/map
+  workflow notes — to match the Recharts + Leaflet rebuild.
+- **Completed:** 2026-05-21 (branch `design/markedsinnsikt-recharts-leaflet`).
 
 ### TODO 2 — Repo-wide dark-mode teardown
 
