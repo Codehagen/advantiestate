@@ -77,7 +77,9 @@ export function Footer() {
         </div>
 
         <div className="footer-bottom">
-          <span>© 2026 Advanti Estate AS · Org. nr. 932 814 502 MVA</span>
+          <span>
+            {`© ${new Date().getFullYear()} Eiendomsmegler Nord AS · Org. nr. 927 102 234 MVA`}
+          </span>
           <span>
             <Link href="/privacy">Personvern</Link> ·{" "}
             <Link href="/terms">Vilkår</Link>
