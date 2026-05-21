@@ -18,15 +18,19 @@ const PRESENTATION: Record<
 > = {
   "christer-hagen": {
     office: "Bodø",
-    specialty: "Salg · Verdivurdering · Strategi",
+    specialty: "Salg · Verdivurdering · Investeringsanalyse",
+  },
+  "mathias-nilssen": {
+    office: "Bodø",
+    specialty: "Strategisk rådgivning · Relasjonsbygging",
   },
   "daniel-adamsen": {
-    office: "Bodø",
-    specialty: "Finansiering · Investeringsanalyse",
+    office: "Alta",
+    specialty: "Salg · Verdivurdering",
   },
   "ole-ostensen": {
     office: "NHH · Bergen",
-    specialty: "Verdivurdering · Jus · DD",
+    specialty: "Jus · DD",
   },
   "havard-nome": {
     office: "Alta",
@@ -34,7 +38,7 @@ const PRESENTATION: Record<
   },
   "tobias-bronder": {
     office: "Bodø",
-    specialty: "Handel · Retail · Forhandling",
+    specialty: "Næringseiendom · Rådgivning",
   },
 };
 
@@ -42,6 +46,7 @@ export default function PersonerPage() {
   // Render all team members, in a stable, intentional order.
   const order = [
     "christer-hagen",
+    "mathias-nilssen",
     "daniel-adamsen",
     "ole-ostensen",
     "havard-nome",
@@ -60,14 +65,14 @@ export default function PersonerPage() {
     <>
       <SubHero
         crumb={[{ label: "Hjem", href: "/" }, { label: "Vårt team" }]}
-        eyebrow="Vårt team · 5 senior partnere"
+        eyebrow="Vårt team · 6 senior partnere"
         title={
           <>
             Erfarne rådgivere <br />
             <span className="italic">som svarer telefonen selv.</span>
           </>
         }
-        lede="Vi er et lite, dedikert team med 60+ års samlet erfaring fra næringseiendomsmarkedet. Hver klient møter senior rådgiver — fra første samtale til signert avtale."
+        lede="Vi er et lite, dedikert team med 70+ års samlet erfaring fra næringseiendomsmarkedet. Hver klient møter senior rådgiver — fra første samtale til signert avtale."
       />
 
       {/* TEAM GRID */}
@@ -181,7 +186,7 @@ export default function PersonerPage() {
             </div>
             <div className="body">
               <p>
-                Vi er ikke et meglerhus med titalls juniorrådgivere. Vi er fem
+                Vi er ikke et meglerhus med titalls juniorrådgivere. Vi er seks
                 partnere som tar oppdrag selv — og det er bevisst.{" "}
                 <strong>
                   Du møter ikke en juniorkonsulent i forhandlingen
@@ -189,7 +194,7 @@ export default function PersonerPage() {
                 , du møter den samme personen du snakket med på første samtale.
               </p>
               <p>
-                Det betyr at hvert oppdrag er begrenset til hva fem mennesker
+                Det betyr at hvert oppdrag er begrenset til hva seks mennesker
                 faktisk kan levere godt på samtidig. Vi takker nei til oppdrag
                 der vi ikke har kapasitet — eller der vi tror andre kan løse det
                 bedre.
@@ -216,7 +221,7 @@ export default function PersonerPage() {
             </span>
             <div>
               <h2 style={{ color: "var(--warm-white)" }}>
-                Hva 60 års samlet{" "}
+                Hva 70 års samlet{" "}
                 <span
                   style={{
                     fontStyle: "italic",
@@ -238,7 +243,7 @@ export default function PersonerPage() {
             style={{ gridTemplateColumns: "repeat(4, 1fr)" }}
           >
             <div className="stat">
-              <div className="num-big">5</div>
+              <div className="num-big">6</div>
               <p className="stat-label">Senior partnere</p>
             </div>
             <div
@@ -246,7 +251,7 @@ export default function PersonerPage() {
               style={{ borderLeft: "1px solid rgba(243,241,239,0.18)" }}
             >
               <div className="num-big">
-                60<span className="unit">år+</span>
+                70<span className="unit">år+</span>
               </div>
               <p className="stat-label">Samlet bransjeerfaring</p>
             </div>

@@ -18,7 +18,8 @@ interface PersonPageProps {
 // "Nord-Norge" for any person not listed here.
 const OFFICE: Record<string, string> = {
   "christer-hagen": "Bodø",
-  "daniel-adamsen": "Bodø",
+  "mathias-nilssen": "Bodø",
+  "daniel-adamsen": "Alta",
   "ole-ostensen": "Bergen",
   "havard-nome": "Alta",
   "tobias-bronder": "Bodø",
