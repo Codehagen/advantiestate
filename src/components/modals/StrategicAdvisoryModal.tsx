@@ -4,11 +4,11 @@ import { Button } from "@/components/Button"
 import { Input } from "@/components/Input"
 import Modal from "@/components/blog/modal"
 import { RiCloseLine, RiRoadMapLine, RiCheckLine } from "@remixicon/react"
-import { useState } from "react"
+import { useState, type Dispatch, type SetStateAction } from "react"
 
 interface StrategicAdvisoryModalProps {
   showModal: boolean
-  setShowModal: (show: boolean) => void
+  setShowModal: Dispatch<SetStateAction<boolean>>
 }
 
 export default function StrategicAdvisoryModal({

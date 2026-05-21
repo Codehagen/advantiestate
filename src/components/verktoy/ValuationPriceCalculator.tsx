@@ -177,7 +177,12 @@ export function ValuationPriceCalculator() {
           <div className="rounded-lg bg-warm-white p-4 ring-1 ring-warm-grey/10 dark:bg-warm-grey dark:ring-warm-white/10">
             <p className="text-sm text-warm-grey-2 dark:text-warm-grey-1">Estimert pris</p>
             <p className="mt-1 text-3xl font-bold text-warm-grey dark:text-warm-white">
-              <NumberFlow value={estimertPris} format={(v) => formatCurrency(v) + " kr"} />
+              <NumberFlow
+                value={estimertPris}
+                locales="no-NO"
+                format={{ minimumFractionDigits: 0, maximumFractionDigits: 0 }}
+                suffix=" kr"
+              />
             </p>
           </div>
 

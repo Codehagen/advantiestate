@@ -10,7 +10,6 @@ export const metadata = constructMetadata({
     "Din lokale ekspert på salg og verdivurdering av næringseiendom i Nord-Norge. Vi hjelper eiendomsbesittere med å oppnå best mulig pris og nøyaktige verdivurderinger. Kontakt oss for en uforpliktende samtale.",
 });
 
-const italic = { fontStyle: "italic", fontWeight: 300 } as const;
 const italicMuted = {
   fontStyle: "italic",
   fontWeight: 300,

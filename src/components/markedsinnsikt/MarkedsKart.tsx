@@ -10,23 +10,6 @@ import { useEffect, useRef, useState } from "react"
 // Initialize Mapbox
 mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN || ""
 
-interface ZoneProperties {
-  name: string
-  kontor: {
-    priceRange: string
-    averagePrice: number
-  }
-  handel: {
-    priceRange: string
-    averagePrice: number
-  }
-  logistikk: {
-    priceRange: string
-    averagePrice: number
-  }
-  fillColor: string
-}
-
 interface ZoneInfo {
   name: string
   kontor: {
@@ -216,7 +199,7 @@ export default function MarkedsKart() {
   }, [])
 
   // Function to log coordinates of drawn polygons
-  const logCoordinates = (e: any) => {
+  const logCoordinates = () => {
     const data = draw.current?.getAll()
     const polygons = data?.features.filter(
       (f): f is GeoJSON.Feature<GeoJSON.Polygon> =>

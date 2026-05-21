@@ -8,6 +8,7 @@ import {
   RiTeamLine,
 } from "@remixicon/react";
 import { allHelpPosts } from "content-collections";
+import type { JSX } from "react";
 
 export const BLOG_CATEGORIES = [
   {

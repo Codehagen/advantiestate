@@ -5,11 +5,11 @@ import { Input } from "@/components/Input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/Select"
 import Modal from "@/components/blog/modal"
 import { RiCloseLine, RiBuilding4Line, RiCheckLine } from "@remixicon/react"
-import { useState } from "react"
+import { useState, type Dispatch, type SetStateAction } from "react"
 
 interface LeaseRequestModalProps {
   showModal: boolean
-  setShowModal: (show: boolean) => void
+  setShowModal: Dispatch<SetStateAction<boolean>>
 }
 
 export default function LeaseRequestModal({

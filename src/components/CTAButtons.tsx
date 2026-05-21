@@ -5,7 +5,6 @@ import { Button } from "@/components/Button";
 import {
   RiCalculatorLine,
   RiTeamLine,
-  RiExchangeLine,
   RiBuilding4Line,
   RiLightbulbLine,
   RiRoadMapLine,
