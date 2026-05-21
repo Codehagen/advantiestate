@@ -62,11 +62,6 @@ const nextConfig = {
         permanent: true,
       },
       {
-        source: "/blog/markedspuls-nord-norge-2025-2026",
-        destination: "/markedsinnsikt",
-        permanent: true,
-      },
-      {
         source: "/blog/utleie-naringseiendom-nord-norge",
         destination: "/tjenester/utleie",
         permanent: true,
