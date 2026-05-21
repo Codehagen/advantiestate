@@ -1,6 +1,7 @@
 import { constructMetadata } from "@/lib/utils";
 import { SubHero } from "@/components/site/SubHero";
 import { CtaStrip } from "@/components/site/CtaStrip";
+import { PhotoBand } from "@/components/site/PhotoBand";
 import StructuredData, {
   BreadcrumbStructuredData,
 } from "@/components/StructuredData";
@@ -294,6 +295,8 @@ export default function UtleiePage() {
           </div>
         </div>
       </section>
+
+      <PhotoBand src="/building/pexels-expect-best-79873-351262.jpg" alt="Utleie av næringslokaler" caption="Utleie · Nord-Norge" />
 
       <CtaStrip
         eyebrow="Behov for utleiehjelp?"

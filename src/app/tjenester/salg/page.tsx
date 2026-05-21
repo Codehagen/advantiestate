@@ -1,6 +1,7 @@
 import { constructMetadata } from "@/lib/utils";
 import { SubHero } from "@/components/site/SubHero";
 import { CtaStrip } from "@/components/site/CtaStrip";
+import { PhotoBand } from "@/components/site/PhotoBand";
 import StructuredData, {
   BreadcrumbStructuredData,
 } from "@/components/StructuredData";
@@ -319,6 +320,8 @@ export default function SalgPage() {
           </div>
         </div>
       </section>
+
+      <PhotoBand src="/building/pexels-pixabay-248877.jpg" alt="Salg av næringseiendom i Nord-Norge" caption="Salg · Nord-Norge" />
 
       <CtaStrip
         eyebrow="Klar til å selge?"

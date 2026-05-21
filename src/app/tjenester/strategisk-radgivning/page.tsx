@@ -1,6 +1,7 @@
 import { constructMetadata } from "@/lib/utils";
 import { SubHero } from "@/components/site/SubHero";
 import { CtaStrip } from "@/components/site/CtaStrip";
+import { PhotoBand } from "@/components/site/PhotoBand";
 import StructuredData, {
   BreadcrumbStructuredData,
 } from "@/components/StructuredData";
@@ -292,6 +293,8 @@ export default function StrategiskRadgivningPage() {
           </div>
         </div>
       </section>
+
+      <PhotoBand src="/building/pexels-pixabay-248877.jpg" alt="Strategisk radgivning naeringseiendom" caption="Strategisk · Nord-Norge" />
 
       <CtaStrip
         eyebrow="Behov for sparring?"

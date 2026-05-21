@@ -93,3 +93,25 @@ a {
     animation: none !important;
   }
 }
+
+/* Full-bleed editorial photo band (PhotoBand component) */
+.photo-band {
+  position: relative;
+  width: 100%;
+  height: clamp(320px, 40vw, 560px);
+  overflow: hidden;
+  border-top: 1px solid var(--warm-grey-75);
+  border-bottom: 1px solid var(--warm-grey-75);
+}
+.photo-band-caption {
+  position: absolute;
+  left: var(--gutter);
+  bottom: 24px;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 500;
+  color: var(--warm-white);
+  background: rgba(44, 40, 37, 0.55);
+  padding: 7px 14px;
+}

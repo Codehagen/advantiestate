@@ -1,6 +1,7 @@
 import { constructMetadata } from "@/lib/utils";
 import { SubHero } from "@/components/site/SubHero";
 import { CtaStrip } from "@/components/site/CtaStrip";
+import { PhotoBand } from "@/components/site/PhotoBand";
 import StructuredData, {
   BreadcrumbStructuredData,
 } from "@/components/StructuredData";
@@ -297,6 +298,8 @@ export default function TransaksjonerPage() {
           </div>
         </div>
       </section>
+
+      <PhotoBand src="/building/pexels-abshky-18566965.jpg" alt="Transaksjonsradgivning naeringseiendom" caption="Transaksjoner · Nord-Norge" />
 
       <CtaStrip
         eyebrow="Behov for transaksjonshjelp?"

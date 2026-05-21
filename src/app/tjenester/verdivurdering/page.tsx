@@ -1,6 +1,7 @@
 import { constructMetadata } from "@/lib/utils";
 import { SubHero } from "@/components/site/SubHero";
 import { CtaStrip } from "@/components/site/CtaStrip";
+import { PhotoBand } from "@/components/site/PhotoBand";
 import StructuredData, {
   BreadcrumbStructuredData,
 } from "@/components/StructuredData";
@@ -299,6 +300,8 @@ export default function VerdivurderingPage() {
           </div>
         </div>
       </section>
+
+      <PhotoBand src="/building/pexels-abshky-18567185.jpg" alt="Verdivurdering av næringseiendom" caption="Verdivurdering · Nord-Norge" />
 
       <CtaStrip
         eyebrow="Behov for verdivurdering?"
