@@ -239,10 +239,7 @@ export default function KontaktPage() {
               <h2>
                 Foretrekker du å <span className="italic">ringe?</span>
               </h2>
-              <p>
-                Du kan også ringe oss direkte. Vi tar telefonen 08–17 på
-                virkedager.
-              </p>
+              <p>Du kan også ringe oss direkte.</p>
             </div>
           </div>
 
