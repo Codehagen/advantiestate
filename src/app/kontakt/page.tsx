@@ -213,7 +213,7 @@ export default function KontaktPage() {
                   lineHeight: 1,
                 }}
               >
-                NDA
+                Lokalt
               </div>
               <p
                 style={{
@@ -223,7 +223,7 @@ export default function KontaktPage() {
                   letterSpacing: "0.04em",
                 }}
               >
-                KONFIDENSIELT FRA DAG 1
+                EKSPERTER PÅ NORD-NORGE
               </p>
             </div>
           </div>
@@ -239,10 +239,7 @@ export default function KontaktPage() {
               <h2>
                 Foretrekker du å <span className="italic">ringe?</span>
               </h2>
-              <p>
-                Du kan også ringe oss direkte. Vi tar telefonen 08–17 på
-                virkedager.
-              </p>
+              <p>Du kan også ringe oss direkte.</p>
             </div>
           </div>
 
@@ -264,7 +261,8 @@ export default function KontaktPage() {
                   width: 140,
                   height: 175,
                   flexShrink: 0,
-                  backgroundImage: "url('/havard.jpg')",
+                  backgroundImage:
+                    "url('https://imagedelivery.net/r-6-yk-gGPtjfbIST9-8uA/d08a8e8b-0285-4107-bc2c-973f93b27100/public')",
                   backgroundSize: "cover",
                   backgroundPosition: "center",
                 }}
@@ -330,7 +328,9 @@ export default function KontaktPage() {
                   width: 140,
                   height: 175,
                   flexShrink: 0,
-                  background: "var(--warm-grey-75)",
+                  backgroundImage: "url('/havard.jpg')",
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
                 }}
               />
               <div
@@ -354,7 +354,7 @@ export default function KontaktPage() {
                     letterSpacing: "-0.018em",
                   }}
                 >
-                  Håvard Walgermo
+                  Håvard Nome
                 </h3>
                 <div
                   style={{
@@ -363,7 +363,7 @@ export default function KontaktPage() {
                     marginBottom: 12,
                   }}
                 >
-                  Partner · Næringsmegler
+                  Næringseiendomskonsulent
                 </div>
                 <a
                   href="tel:+4798038737"
