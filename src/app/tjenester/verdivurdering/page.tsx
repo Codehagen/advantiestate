@@ -1,24 +1,9 @@
-import { Badge } from "@/components/Badge";
-import { AnimatedCTA } from "@/components/ui/AnimatedCTA";
-import { CTAButtonGroup } from "@/components/CTAButtons";
-import { FeatureComparison } from "@/components/advanti/FeatureComparison";
-import { FeatureShowcase } from "@/components/advanti/FeatureShowcase";
-import FeatureDivider from "@/components/ui/FeatureDivider";
+import { constructMetadata } from "@/lib/utils";
+import { SubHero } from "@/components/site/SubHero";
+import { CtaStrip } from "@/components/site/CtaStrip";
 import StructuredData, {
   BreadcrumbStructuredData,
 } from "@/components/StructuredData";
-import CoveredCities from "@/components/locations/CoveredCities";
-import { constructMetadata } from "@/lib/utils";
-import Image from "next/image";
-import {
-  RiLineChartLine,
-  RiBarChartBoxLine,
-  RiFileSearchLine,
-  RiTeamLine,
-  RiFocus3Line,
-  RiMedalLine,
-} from "@remixicon/react";
-import Balancer from "react-wrap-balancer";
 
 export const metadata = constructMetadata({
   title: "Verdivurdering av Næringseiendom | Advanti",
@@ -26,51 +11,9 @@ export const metadata = constructMetadata({
     "Trenger du verdivurdering av næringseiendom? Advanti tilbyr profesjonelle analyser og verdivurderinger i Nord-Norge for et solid beslutningsgrunnlag.",
 });
 
-const valuationServices = [
-  {
-    title: "Markedsverdivurdering",
-    description:
-      "Grundige verdivurderinger basert på markedsanalyse, sammenlignbare transaksjoner og eiendomsspesifikke forhold.",
-    icon: RiLineChartLine,
-  },
-  {
-    title: "Investeringsanalyse",
-    description:
-      "Detaljerte analyser av avkastning, kontantstrøm og verdiutvikling for å vurdere investeringspotensialet.",
-    icon: RiBarChartBoxLine,
-  },
-  {
-    title: "Sensitivitetsanalyse",
-    description:
-      "Detaljerte sensitivitetsanalyser som viser hvordan endringer i markedsforhold, leienivåer og finansiering påvirker eiendommens verdi og risiko.",
-    icon: RiFocus3Line,
-  },
-];
-
-const whyAdvantiValuation = [
-  {
-    title: "Lokal Markedskunnskap",
-    description:
-      "Bred erfaring og dyp kunnskap om det nordnorske markedet for næringseiendom gir presise verdivurderinger.",
-    icon: RiTeamLine,
-  },
-  {
-    title: "Grundig Analyse",
-    description:
-      "Vi gjennomfører omfattende analyser som gir deg et solid og pålitelig grunnlag for beslutninger.",
-    icon: RiFocus3Line,
-  },
-  {
-    title: "Uavhengig Rådgivning",
-    description:
-      "Som uavhengige rådgivere sikrer vi objektive og profesjonelle verdivurderinger uten interessekonflikter.",
-    icon: RiMedalLine,
-  },
-];
-
 export default function VerdivurderingPage() {
   return (
-    <div className="mt-36 flex flex-col overflow-hidden px-3">
+    <>
       <BreadcrumbStructuredData
         items={[
           { name: "Hjem", url: "/" },
@@ -86,180 +29,292 @@ export default function VerdivurderingPage() {
             "Profesjonell verdivurdering og analyse av næringseiendom i Nord-Norge.",
         }}
       />
-      {/* Hero Section */}
+
+      <SubHero
+        crumb={[
+          { label: "Hjem", href: "/" },
+          { label: "Tjenester", href: "/tjenester" },
+          { label: "Verdivurdering" },
+        ]}
+        eyebrow="Tjeneste 01 · Verdivurdering"
+        title={
+          <>
+            Verdivurdering <br />
+            <span className="italic">av næringseiendom.</span>
+          </>
+        }
+        lede="Grundige verdivurderinger basert på markedsanalyse, DCF og sammenlignbare transaksjoner — et solid beslutningsgrunnlag for investering, finansiering, regnskap og strategi."
+        actions={[
+          { label: "Bestill verdivurdering", href: "/kontakt" },
+          { label: "Vår metode", href: "#metode", variant: "outline" },
+        ]}
+        metaRow={[
+          { value: "DCF", label: "Kontantstrøm-modell" },
+          { value: "Yield", label: "Markedsavkastning" },
+          { value: "±2 %", label: "Typisk avvik vs. transaksjon" },
+        ]}
+        photo={{
+          src: "/building/pexels-abshky-18567185.jpg",
+          alt: "Næringsbygg under verdivurdering",
+        }}
+      />
+
+      {/* VURDERINGSTYPER */}
+      <section className="section section-divider">
+        <div className="wrap">
+          <div className="head-compact">
+            <span className="eyebrow">01 — Tjenester</span>
+            <div>
+              <h2>
+                Solid grunnlag for <br />
+                <span className="italic">dine beslutninger.</span>
+              </h2>
+              <p>
+                Vi tilbyr tre hovedtyper verdivurdering. Hver leveres som en
+                skriftlig rapport med metodikk, forutsetninger, sensitivitet og
+                konklusjon — klar til bruk mot bank, revisor eller styre.
+              </p>
+            </div>
+          </div>
+
+          <div className="method-grid">
+            <div className="method">
+              <div className="pre">01 · Type</div>
+              <h3>Markedsverdivurdering</h3>
+              <p>
+                Grundig vurdering basert på sammenlignbare transaksjoner,
+                markedsanalyse og eiendomsspesifikke forhold. Standardrapporten
+                for eiere som vurderer salg eller refinansiering.
+              </p>
+              <div className="meta">
+                <span>3–4 uker</span>
+                <span>Skriftlig rapport</span>
+              </div>
+            </div>
+
+            <div className="method">
+              <div className="pre">02 · Type</div>
+              <h3>Investeringsanalyse</h3>
+              <p>
+                Detaljert analyse av avkastning, kontantstrøm og verdiutvikling
+                over tid. Til bruk for investorer som vurderer akkvisisjon,
+                eller eiere som vil forstå hold-vs-sell.
+              </p>
+              <div className="meta">
+                <span>2–3 uker</span>
+                <span>Modell + rapport</span>
+              </div>
+            </div>
+
+            <div className="method">
+              <div className="pre">03 · Type</div>
+              <h3>Sensitivitetsanalyse</h3>
+              <p>
+                Hvordan endringer i leienivå, ledighet, yield og rentekostnad
+                slår ut på verdien. Vi viser hvor robust eller skjør verdien er
+                — og hva som faktisk driver tallet.
+              </p>
+              <div className="meta">
+                <span>1–2 uker</span>
+                <span>Scenariomatrise</span>
+              </div>
+            </div>
+
+            <div className="method">
+              <div className="pre">04 · Type</div>
+              <h3>Porteføljeverdsettelse</h3>
+              <p>
+                Konsistent vurdering av hele eiendomsporteføljen i én rapport —
+                enten for IFRS-formål, oppgjør eller intern oppfølging av
+                verdiutvikling kvartal for kvartal.
+              </p>
+              <div className="meta">
+                <span>4–8 uker</span>
+                <span>Eiendom for eiendom</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* METODE */}
       <section
-        aria-labelledby="verdivurdering-hero"
-        className="mx-auto w-full max-w-6xl animate-slide-up-fade"
+        className="section"
+        id="metode"
         style={{
-          animationDuration: "600ms",
-          animationFillMode: "backwards",
+          background: "var(--accent-faint)",
+          borderTop: "var(--hairline)",
+          borderBottom: "var(--hairline)",
         }}
       >
-        <Badge>Verdivurdering</Badge>
-        <div className="lg:grid lg:grid-cols-2 lg:gap-16">
-          <div>
-            <h1
-              id="verdivurdering-hero"
-              className="mt-2 inline-block bg-gradient-to-t from-warm-grey to-warm-grey-3 bg-clip-text py-2 text-4xl font-bold tracking-tighter text-transparent sm:text-6xl md:text-6xl dark:from-warm-white dark:to-warm-grey-1"
-            >
-              <Balancer>Verdivurdering av Næringseiendom</Balancer>
-            </h1>
-            <p className="mt-6 max-w-2xl text-lg text-warm-grey-2 dark:text-warm-grey-1">
-              Advanti tilbyr grundige og profesjonelle verdivurderinger av
-              næringseiendom i Nord-Norge. Med vår markedskunnskap og
-              eiendomsfaglige kompetanse gir vi deg et solid
-              beslutningsgrunnlag.
-            </p>
-            <p className="mt-4 max-w-2xl text-lg text-warm-grey-2 dark:text-warm-grey-1">
-              Våre verdivurderinger er basert på grundige analyser av markedet,
-              eiendommens potensial og relevante sammenlignbare objekter.
-            </p>
-            <div className="mt-8">
-              <CTAButtonGroup />
-            </div>
-          </div>
-          <div className="mt-8 lg:mt-0">
-            <div className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-warm-grey/5 shadow-lg shadow-light-blue/10 ring-1 ring-warm-grey/5 dark:bg-warm-grey/20 dark:shadow-light-blue/10 dark:ring-warm-white/5">
-              <Image
-                src="/building/pexels-abshky-18567185.jpg"
-                alt="Analytiker som vurderer næringseiendom"
-                fill
-                className="object-cover"
-                sizes="(max-width: 1024px) 100vw, 50vw"
-                priority
-              />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <FeatureDivider className="mx-auto mt-24 max-w-6xl" />
-
-      {/* Valuation Services Section */}
-      <section className="mx-auto mt-24 w-full max-w-6xl">
-        <div className="flex flex-col items-center gap-6 text-center">
-          <Badge>Våre Verdivurderingstjenester</Badge>
-          <h2 className="text-balance bg-gradient-to-t from-warm-grey to-warm-grey-3 bg-clip-text text-4xl font-semibold tracking-tighter text-transparent md:text-6xl dark:from-warm-white dark:to-warm-grey-1">
-            Solid Grunnlag for Dine Beslutninger
-          </h2>
-          <p className="max-w-2xl text-lg text-warm-grey-2 dark:text-warm-grey-1">
-            <Balancer>
-              Vi tilbyr omfattende verdivurderinger og analyser som gir deg
-              innsikt i eiendommens verdi og potensial.
-            </Balancer>
-          </p>
-        </div>
-        <div className="mt-16 grid grid-cols-1 gap-x-8 gap-y-12 md:grid-cols-2 lg:grid-cols-3">
-          {valuationServices.map((service) => (
-            <div
-              key={service.title}
-              className="flex flex-col items-center gap-4 text-center md:items-start md:text-left"
-            >
-              <div className="flex size-12 items-center justify-center rounded-lg bg-warm-grey/5 ring-1 ring-warm-grey/5 dark:bg-warm-grey/20 dark:ring-warm-white/5">
-                <service.icon className="size-6 text-warm-grey dark:text-warm-white" />
-              </div>
-              <h3 className="text-lg font-semibold text-warm-grey dark:text-warm-white">
-                {service.title}
-              </h3>
-              <p className="text-sm text-warm-grey-2 dark:text-warm-grey-1">
-                {service.description}
+        <div className="wrap">
+          <div className="head-compact">
+            <span className="eyebrow">02 — Metode</span>
+            <div>
+              <h2>
+                Metoder for <br />
+                <span className="italic">presis verdivurdering.</span>
+              </h2>
+              <p>
+                Advanti benytter anerkjente metoder for verdivurdering av
+                næringseiendom — i kombinasjon, og avstemt mot reelle
+                transaksjoner i markedet.
               </p>
             </div>
-          ))}
-        </div>
-      </section>
+          </div>
 
-      <FeatureDivider className="mx-auto mt-24 max-w-6xl" />
-
-      {/* Why Choose Advanti for Valuation Section */}
-      <section className="mx-auto mt-24 w-full max-w-6xl">
-        <div className="flex flex-col items-center gap-6 text-center">
-          <Badge>Vår Metode</Badge>
-          <h2 className="text-balance bg-gradient-to-t from-warm-grey to-warm-grey-3 bg-clip-text text-4xl font-semibold tracking-tighter text-transparent md:text-6xl dark:from-warm-white dark:to-warm-grey-1">
-            Metoder for presis verdivurdering
-          </h2>
-          <p className="max-w-2xl text-lg text-warm-grey-2 dark:text-warm-grey-1">
-            <Balancer>
-              Advanti benytter anerkjente metoder for verdivurdering av
-              næringseiendom, inkludert DCF-analyser og yield-betraktninger.
-              Dette sikrer at alle relevante verdidrivere blir grundig vurdert.
-            </Balancer>
-          </p>
-        </div>
-        <div className="mt-12">
-          <FeatureShowcase />
-        </div>
-      </section>
-
-      <FeatureDivider className="mx-auto mt-24 max-w-6xl" />
-
-      <FeatureComparison
-        badge="Fra Data til Innsikt"
-        title="Solid Beslutningsgrunnlag"
-        description="Advanti transformerer kompleks data til klar innsikt. Vi systematiserer informasjon og leverer analyser som gir deg et trygt og godt fundament for dine eiendomsbeslutninger."
-        lightImage="/images/hero-light.webp"
-        darkImage="/images/hero-dark.webp"
-      />
-
-      <FeatureDivider className="mx-auto mt-24 max-w-6xl" />
-
-      <section className="mx-auto mt-24 w-full max-w-6xl">
-        <div className="flex flex-col items-center gap-6 text-center">
-          <Badge>Hvorfor Velge Advanti?</Badge>
-          <h2 className="text-balance bg-gradient-to-t from-warm-grey to-warm-grey-3 bg-clip-text text-4xl font-semibold tracking-tighter text-transparent md:text-6xl dark:from-warm-white dark:to-warm-grey-1">
-            Pålitelige og Profesjonelle Verdivurderinger
-          </h2>
-          <p className="max-w-2xl text-lg text-warm-grey-2 dark:text-warm-grey-1">
-            <Balancer>
-              Vår erfaring og metodikk sikrer at du får objektive og grundige
-              verdivurderinger du kan stole på.
-            </Balancer>
-          </p>
-        </div>
-        <div className="mt-16 grid grid-cols-1 gap-x-8 gap-y-12 md:grid-cols-3">
-          {whyAdvantiValuation.map((feature) => (
-            <div
-              key={feature.title}
-              className="flex flex-col items-center gap-4 rounded-xl p-6 text-center transition-all hover:bg-warm-grey/[2.5%] dark:hover:bg-warm-grey-3/50 md:items-start md:text-left"
-            >
-              <div className="flex size-12 items-center justify-center rounded-lg bg-warm-grey/5 ring-1 ring-warm-grey/5 dark:bg-warm-grey/20 dark:ring-warm-white/5">
-                <feature.icon className="size-6 text-warm-grey dark:text-warm-white" />
-              </div>
-              <h3 className="text-lg font-semibold text-warm-grey dark:text-warm-white">
-                {feature.title}
-              </h3>
-              <p className="text-sm text-warm-grey-2 dark:text-warm-grey-1">
-                {feature.description}
+          <div className="tc">
+            <div>
+              <h4>Diskontert kontantstrøm (DCF)</h4>
+              <p>
+                Vi prognoserer kontantstrømmen til eiendommen i et 10-års
+                perspektiv og diskonterer tilbake til nåverdi med et
+                avkastningskrav som reflekterer reell risiko i markedet.
+              </p>
+              <p>
+                Modellen tar høyde for leienivå, indeksregulering, ledighet,
+                drifts­kostnader, vedlikehold og en terminalverdi som typisk
+                utgjør 50–70 % av total verdi.
               </p>
             </div>
-          ))}
+            <div>
+              <h4>Yield-betraktning</h4>
+              <p>
+                Vi avstemmer DCF mot prime yield i sammenlignbare segmenter og
+                beliggenheter — basert på vår transaksjonsdatabase med +1 400
+                eiendommer i Nord-Norge.
+              </p>
+              <p>
+                Yield-betraktningen er en kvalitetssjekk: stemmer DCF-verdien
+                overens med hva markedet faktisk er villig til å betale per krone
+                netto leieinntekt? Hvis ikke — hvorfor?
+              </p>
+            </div>
+          </div>
         </div>
       </section>
 
-      <FeatureDivider className="mx-auto mt-24 max-w-6xl" />
+      {/* HVORFOR ADVANTI */}
+      <section className="section">
+        <div className="wrap">
+          <div className="head-compact">
+            <span className="eyebrow">03 — Hvorfor Advanti</span>
+            <div>
+              <h2>
+                Pålitelige og{" "}
+                <span className="italic">profesjonelle vurderinger.</span>
+              </h2>
+              <p>
+                Vår erfaring og metodikk sikrer at du får objektive og grundige
+                verdivurderinger du kan stole på — og som tåler kritisk
+                gjennomgang fra bank, revisor og kontraparter.
+              </p>
+            </div>
+          </div>
 
-      <CoveredCities
-        className="mt-24"
-        title="Verdivurdering med lokal presisjon"
-        description="Vi leverer verdivurderinger basert på lokale markedsdata og erfaring i byene vi dekker."
-      />
-
-      <section className="mx-auto mt-24 w-full max-w-6xl">
-        <AnimatedCTA
-          badge="Behov for Verdivurdering?"
-          title="Ønsker du en Profesjonell Verdivurdering?"
-          description="Kontakt Advanti for en samtale om hvordan vi kan bistå med verdivurdering av din næringseiendom."
-          primaryAction={{
-            label: "Kontakt oss om Verdivurdering",
-            href: "/kontakt",
-          }}
-          secondaryAction={{
-            label: "Se alle våre tjenester",
-            href: "/tjenester",
-          }}
-          size="default"
-        />
+          <div className="feat-3">
+            <div className="feat">
+              <div className="num">I</div>
+              <h3>Lokal markedskunnskap</h3>
+              <p>
+                Bred erfaring og dyp kunnskap om det nordnorske markedet gir
+                verdivurderinger som speiler reelle prismekanismer — ikke
+                generelle antakelser.
+              </p>
+            </div>
+            <div className="feat">
+              <div className="num">II</div>
+              <h3>Grundig analyse</h3>
+              <p>
+                Omfattende analyser med tydelig metodikk og forutsetninger. Vi
+                dokumenterer hvert valg, slik at andre kan etterprøve
+                resultatet.
+              </p>
+            </div>
+            <div className="feat">
+              <div className="num">III</div>
+              <h3>Uavhengig rådgivning</h3>
+              <p>
+                Som uavhengige rådgivere sikrer vi objektive vurderinger uten
+                interessekonflikter. Vår eneste lojalitet er mot oppdragsgiver
+                og tallene.
+              </p>
+            </div>
+          </div>
+        </div>
       </section>
-    </div>
+
+      {/* COVERAGE */}
+      <section className="coverage">
+        <div className="wrap">
+          <div className="head-compact">
+            <span className="eyebrow">04 — Dekning</span>
+            <div>
+              <h2>
+                Verdivurdering med{" "}
+                <span
+                  style={{
+                    fontStyle: "italic",
+                    fontWeight: 300,
+                    color: "rgba(243,241,239,0.7)",
+                  }}
+                >
+                  lokal presisjon.
+                </span>
+              </h2>
+              <p>
+                Vi leverer verdivurderinger basert på lokale markedsdata og
+                erfaring i byene vi dekker — ingen ekstern reise, ingen
+                forsinkelser.
+              </p>
+            </div>
+          </div>
+
+          <div className="cities">
+            <div className="city">
+              <div className="pn">01</div>
+              <h3>Bodø</h3>
+              <p>Hovedkontor. Kontor, handel, logistikk.</p>
+            </div>
+            <div className="city">
+              <div className="pn">02</div>
+              <h3>Tromsø</h3>
+              <p>Største kontormarkedet i landsdelen.</p>
+            </div>
+            <div className="city">
+              <div className="pn">03</div>
+              <h3>Alta</h3>
+              <p>Lokalkontor. Handel og næring i Finnmark.</p>
+            </div>
+            <div className="city">
+              <div className="pn">04</div>
+              <h3>Mo i Rana</h3>
+              <p>Industri- og logistikkbygg.</p>
+            </div>
+            <div className="city">
+              <div className="pn">05</div>
+              <h3>Narvik</h3>
+              <p>Transport, lager og næringspark.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <CtaStrip
+        eyebrow="Behov for verdivurdering?"
+        title={
+          <>
+            Bestill en{" "}
+            <span className="italic">profesjonell vurdering.</span>
+          </>
+        }
+        sub="Ta kontakt med Advanti for en samtale om hvordan vi kan bistå med verdivurdering av din næringseiendom — innen 24 timer."
+        primary={{
+          label: "Kontakt oss om verdivurdering",
+          href: "/kontakt",
+        }}
+        secondary={{ label: "Se alle våre tjenester", href: "/tjenester" }}
+      />
+    </>
   );
 }

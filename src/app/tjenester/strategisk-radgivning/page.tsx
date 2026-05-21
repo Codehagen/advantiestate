@@ -1,87 +1,19 @@
-import { Badge } from "@/components/Badge";
-import { AnimatedCTA } from "@/components/ui/AnimatedCTA";
-import { StrategicAdvisoryCTAButtonGroup } from "@/components/CTAButtons";
-import FeatureDivider from "@/components/ui/FeatureDivider";
+import { constructMetadata } from "@/lib/utils";
+import { SubHero } from "@/components/site/SubHero";
+import { CtaStrip } from "@/components/site/CtaStrip";
 import StructuredData, {
   BreadcrumbStructuredData,
 } from "@/components/StructuredData";
-import { constructMetadata } from "@/lib/utils";
-import Image from "next/image";
-import {
-  RiBrainLine, // For strategic thinking, portfolio analysis
-  RiBriefcaseLine, // For investment strategy
-  RiBarChartGroupedLine, // For market analysis, due diligence
-  RiToolsLine, // For property development
-  RiRecycleLine, // For repositioning / optimization
-  RiTeamLine, // For why Advanti - experience/team
-  RiFocus3Line, // For why Advanti - tailored solutions
-  RiMedalLine, // For why Advanti - results-driven
-} from "@remixicon/react";
-import Balancer from "react-wrap-balancer";
 
 export const metadata = constructMetadata({
   title: "Strategisk Rådgivning Næringseiendom | Advanti",
   description:
-    "Advanti tilbyr strategisk rådgivning for eiendomsinvestorer og -utviklere i Nord-Norge, inkludert porteføljeanalyse, investeringsstrategi og utviklingsprosjekter.",
+    "Advanti tilbyr strategisk rådgivning for eiendomsinvestorer og -utviklere i Nord-Norge, inkludert porteføljestrategi, akkvisisjon og exit-strategi.",
 });
-
-const strategicAdvisoryServices = [
-  {
-    title: "Porteføljeanalyse og -optimalisering",
-    description:
-      "Analyse av din eksisterende eiendomsportefølje for å identifisere muligheter for verdiskaping, risikoreduksjon og optimalisering.",
-    icon: RiBrainLine,
-  },
-  {
-    title: "Investeringsstrategi",
-    description:
-      "Utvikling av skreddersydde investeringsstrategier basert på dine mål, markedsinnsikt og risikoprofil.",
-    icon: RiBriefcaseLine,
-  },
-  {
-    title: "Markedsanalyse og Due Diligence",
-    description:
-      "Grundige markedsanalyser og due diligence-prosesser for å støtte investeringsbeslutninger og identifisere potensielle risikoer.",
-    icon: RiBarChartGroupedLine,
-  },
-  {
-    title: "Eiendomsutvikling",
-    description:
-      "Rådgivning gjennom alle faser av et utviklingsprosjekt, fra konsept og regulering til gjennomføring og salg/utleie.",
-    icon: RiToolsLine,
-  },
-  {
-    title: "Ombygging og Reposisjonering",
-    description:
-      "Strategier for ombygging og reposisjonering av eiendommer for å møte markedets behov og øke verdien.",
-    icon: RiRecycleLine,
-  },
-];
-
-const whyAdvantiStrategic = [
-  {
-    title: "Erfarent Team",
-    description:
-      "Vårt team har lang erfaring og bred kompetanse innen strategisk rådgivning for næringseiendom.",
-    icon: RiTeamLine,
-  },
-  {
-    title: "Skreddersydde Løsninger",
-    description:
-      "Vi tilpasser våre råd og strategier til dine spesifikke behov, mål og din unike situasjon.",
-    icon: RiFocus3Line,
-  },
-  {
-    title: "Resultatorientert Tilnærming",
-    description:
-      "Vi fokuserer på å levere konkrete, målbare resultater som skaper reell verdi for din virksomhet.",
-    icon: RiMedalLine,
-  },
-];
 
 export default function StrategiskRadgivningPage() {
   return (
-    <div className="mt-36 flex flex-col overflow-hidden px-3">
+    <>
       <BreadcrumbStructuredData
         items={[
           { name: "Hjem", url: "/" },
@@ -100,139 +32,279 @@ export default function StrategiskRadgivningPage() {
             "Strategisk rådgivning for eiendomsinvestorer og utviklere i Nord-Norge.",
         }}
       />
-      {/* Hero Section */}
+
+      <SubHero
+        crumb={[
+          { label: "Hjem", href: "/" },
+          { label: "Tjenester", href: "/tjenester" },
+          { label: "Strategisk rådgivning" },
+        ]}
+        eyebrow="Tjeneste 06 · Strategi"
+        title={
+          <>
+            Strategisk <span className="italic">rådgivning.</span>
+          </>
+        }
+        lede="Skreddersydd rådgivning for utvikling, akkvisisjon og optimalisering av eiendomsporteføljen — fra ett bygg til komplekse posisjoner."
+        actions={[
+          { label: "Avtal en samtale", href: "/kontakt" },
+          { label: "Fokusområder", href: "#fokus", variant: "outline" },
+        ]}
+        metaRow={[
+          { value: "Partner", label: "Sparringspartner" },
+          { value: "Langsiktig", label: "3–10 års horisont" },
+          { value: "Diskré", label: "NDA-styrt" },
+        ]}
+        photo={{
+          src: "/building/pexels-pixabay-248877.jpg",
+          alt: "Strategisk rådgivning næringseiendom",
+        }}
+      />
+
+      {/* FOKUSOMRÅDER */}
+      <section className="section section-divider" id="fokus">
+        <div className="wrap">
+          <div className="head-compact">
+            <span className="eyebrow">01 — Fokusområder</span>
+            <div>
+              <h2>
+                Beslutninger som har <span className="italic">vekt.</span>
+              </h2>
+              <p>
+                Strategisk rådgivning er ikke en transaksjon — det er en
+                relasjon. Vi blir sparringspartner for de viktigste
+                beslutningene knyttet til eiendomsporteføljen din over tid.
+              </p>
+            </div>
+          </div>
+
+          <div className="method-grid">
+            <div className="method">
+              <div className="pre">01 · Fokus</div>
+              <h3>Porteføljestrategi</h3>
+              <p>
+                Hva skal porteføljen være om 5–10 år? Hvilke eiendommer skal
+                beholdes, utvikles, eller avhendes? Vi setter strategien i tall
+                — og holder den oppe.
+              </p>
+              <div className="meta">
+                <span>3–10 års plan</span>
+                <span>Styre-nivå</span>
+              </div>
+            </div>
+
+            <div className="method">
+              <div className="pre">02 · Fokus</div>
+              <h3>Akkvisisjonsstrategi</h3>
+              <p>
+                Systematisk pipeline-bygging og kvalifisering av mulige
+                akkvisisjonsmål — basert på dine investeringskriterier og
+                markedsdynamikken.
+              </p>
+              <div className="meta">
+                <span>Buy-side</span>
+                <span>Pipeline</span>
+              </div>
+            </div>
+
+            <div className="method">
+              <div className="pre">03 · Fokus</div>
+              <h3>Eierskapsstrukturer</h3>
+              <p>
+                Holdco, SPV, single asset eller portefølje — hvordan strukturere
+                eierskapet for fleksibilitet ved exit, skattenøytralitet og
+                finansiering.
+              </p>
+              <div className="meta">
+                <span>Tidlig fase</span>
+                <span>Skatt + jus</span>
+              </div>
+            </div>
+
+            <div className="method">
+              <div className="pre">04 · Fokus</div>
+              <h3>Exit-strategi</h3>
+              <p>
+                Når og hvordan avhende. Markedstiming, valg av prosess,
+                kjøperprofil og prispåvirkning — uten emosjonelle beslutninger.
+              </p>
+              <div className="meta">
+                <span>Senior partner</span>
+                <span>Diskré</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* TILNÆRMING */}
       <section
-        aria-labelledby="strategisk-radgivning-hero"
-        className="mx-auto w-full max-w-6xl animate-slide-up-fade"
+        className="section"
+        id="metode"
         style={{
-          animationDuration: "600ms",
-          animationFillMode: "backwards",
+          background: "var(--accent-faint)",
+          borderTop: "var(--hairline)",
+          borderBottom: "var(--hairline)",
         }}
       >
-        <Badge>Strategisk Rådgivning</Badge>
-        <div className="lg:grid lg:grid-cols-2 lg:gap-16">
-          <div>
-            <h1
-              id="strategisk-radgivning-hero"
-              className="mt-2 inline-block bg-gradient-to-t from-warm-grey to-warm-grey-3 bg-clip-text py-2 text-4xl font-bold tracking-tighter text-transparent sm:text-6xl md:text-6xl dark:from-warm-white dark:to-warm-grey-1"
-            >
-              <Balancer>Maksimer Verdien av Din Eiendom</Balancer>
-            </h1>
-            <p className="mt-6 max-w-2xl text-lg text-warm-grey-2 dark:text-warm-grey-1">
-              Advanti tilbyr spesialisert strategisk rådgivning for
-              eiendomsinvestorer, utviklere og eiere i Nord-Norge. Vi hjelper
-              deg å navigere komplekse beslutninger og realisere det fulle
-              potensialet i dine eiendommer.
-            </p>
-            <div className="mt-8">
-              <StrategicAdvisoryCTAButtonGroup />
-            </div>
-          </div>
-          <div className="mt-8 lg:mt-0">
-            <div className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-warm-grey/5 shadow-lg shadow-light-blue/10 ring-1 ring-warm-grey/5 dark:bg-warm-grey/20 dark:shadow-light-blue/10 dark:ring-warm-white/5">
-              <Image
-                src="/building/pexels-abshky-18566965.jpg"
-                alt="Strategimøte i moderne møterom"
-                fill
-                className="object-cover"
-                sizes="(max-width: 1024px) 100vw, 50vw"
-                priority
-              />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <FeatureDivider className="mx-auto mt-24 max-w-6xl" />
-
-      {/* Strategic Advisory Services Section */}
-      <section className="mx-auto mt-24 w-full max-w-6xl">
-        <div className="flex flex-col items-center gap-6 text-center">
-          <Badge>Våre Rådgivningstjenester</Badge>
-          <h2 className="text-balance bg-gradient-to-t from-warm-grey to-warm-grey-3 bg-clip-text text-4xl font-semibold tracking-tighter text-transparent md:text-6xl dark:from-warm-white dark:to-warm-grey-1">
-            Strategisk Veiledning for Din Suksess
-          </h2>
-          <p className="max-w-2xl text-lg text-warm-grey-2 dark:text-warm-grey-1">
-            <Balancer>
-              Vi tilbyr et bredt spekter av strategiske rådgivningstjenester
-              designet for å hjelpe deg å ta informerte beslutninger og oppnå
-              dine langsiktige mål.
-            </Balancer>
-          </p>
-        </div>
-        <div className="mt-16 grid grid-cols-1 gap-x-8 gap-y-12 md:grid-cols-2 lg:grid-cols-3">
-          {strategicAdvisoryServices.map((service) => (
-            <div
-              key={service.title}
-              className="flex flex-col items-center gap-4 text-center md:items-start md:text-left"
-            >
-              <div className="flex size-12 items-center justify-center rounded-lg bg-warm-grey/5 ring-1 ring-warm-grey/5 dark:bg-warm-grey/20 dark:ring-warm-white/5">
-                <service.icon className="size-6 text-warm-grey dark:text-warm-white" />
-              </div>
-              <h3 className="text-lg font-semibold text-warm-grey dark:text-warm-white">
-                {service.title}
-              </h3>
-              <p className="text-sm text-warm-grey-2 dark:text-warm-grey-1">
-                {service.description}
+        <div className="wrap">
+          <div className="head-compact">
+            <span className="eyebrow">02 — Tilnærming</span>
+            <div>
+              <h2>
+                Vi er <span className="italic">sparringspartner.</span>
+              </h2>
+              <p>
+                Vi er ikke en innleid konsulent som leverer rapporter og
+                forsvinner. Vi er den du ringer når det er en viktig beslutning
+                på bordet.
               </p>
             </div>
-          ))}
-        </div>
-      </section>
+          </div>
 
-      <FeatureDivider className="mx-auto mt-24 max-w-6xl" />
-
-      {/* Why Choose Advanti for Strategic Advisory Section */}
-      <section className="mx-auto mt-24 w-full max-w-6xl">
-        <div className="flex flex-col items-center gap-6 text-center">
-          <Badge>Hvorfor Velge Advanti?</Badge>
-          <h2 className="text-balance bg-gradient-to-t from-warm-grey to-warm-grey-3 bg-clip-text text-4xl font-semibold tracking-tighter text-transparent md:text-6xl dark:from-warm-white dark:to-warm-grey-1">
-            Din Strategiske Partner innen Eiendom
-          </h2>
-          <p className="max-w-2xl text-lg text-warm-grey-2 dark:text-warm-grey-1">
-            <Balancer>
-              Vår ekspertise og dedikerte tilnærming gir deg tryggheten du
-              trenger for å ta gode strategiske valg for dine
-              eiendomsinvesteringer.
-            </Balancer>
-          </p>
-        </div>
-        <div className="mt-16 grid grid-cols-1 gap-x-8 gap-y-12 md:grid-cols-3">
-          {whyAdvantiStrategic.map((feature) => (
-            <div
-              key={feature.title}
-              className="flex flex-col items-center gap-4 rounded-xl p-6 text-center transition-all hover:bg-warm-grey/[2.5%] dark:hover:bg-warm-grey-3/50 md:items-start md:text-left"
-            >
-              <div className="flex size-12 items-center justify-center rounded-lg bg-warm-grey/5 ring-1 ring-warm-grey/5 dark:bg-warm-grey/20 dark:ring-warm-white/5">
-                <feature.icon className="size-6 text-warm-grey dark:text-warm-white" />
-              </div>
-              <h3 className="text-lg font-semibold text-warm-grey dark:text-warm-white">
-                {feature.title}
-              </h3>
-              <p className="text-sm text-warm-grey-2 dark:text-warm-grey-1">
-                {feature.description}
+          <div className="tc">
+            <div>
+              <h4>Tett relasjon</h4>
+              <p>
+                De aller fleste av våre strategiske oppdrag er løpende — med fast
+                rytme av møter, oppdaterte analyser og åpen kommunikasjon mellom
+                styremøtene.
+              </p>
+              <p>
+                Du får én senior partner som blir kjent med porteføljen,
+                ambisjonene og menneskene rundt — over tid.
               </p>
             </div>
-          ))}
+            <div>
+              <h4>Konfidensielt</h4>
+              <p>
+                Alt vi gjør under strategisk rådgivning er NDA-styrt. Vi
+                opplyser om eventuelle interessekonflikter før vi tar oppdrag, og
+                takker nei der det er nødvendig.
+              </p>
+              <p>
+                Resultatet er at klienter snakker fritt — også om de tunge
+                beslutningene som ikke skal ut.
+              </p>
+            </div>
+          </div>
         </div>
       </section>
 
-      <section className="mx-auto mt-24 w-full max-w-6xl">
-        <AnimatedCTA
-          badge="Behov for Strategisk Rådgivning?"
-          title="Ønsker du å Utvikle Din Eiendomsstrategi?"
-          description="Kontakt Advanti for en samtale om hvordan vår strategiske rådgivning kan bidra til å nå dine mål."
-          primaryAction={{
-            label: "Kontakt for Rådgivning",
-            href: "/kontakt",
-          }}
-          secondaryAction={{
-            label: "Se alle våre tjenester",
-            href: "/tjenester",
-          }}
-          size="default"
-        />
+      {/* HVORFOR ADVANTI */}
+      <section className="section">
+        <div className="wrap">
+          <div className="head-compact">
+            <span className="eyebrow">03 — Hvorfor Advanti</span>
+            <div>
+              <h2>
+                Strategisk innsikt,{" "}
+                <span className="italic">lokal forankring.</span>
+              </h2>
+              <p>
+                Vi forstår både porteføljedynamikken og markedet der eiendommene
+                står. Det er den kombinasjonen som gjør strategien
+                gjennomførbar.
+              </p>
+            </div>
+          </div>
+
+          <div className="feat-3">
+            <div className="feat">
+              <div className="num">I</div>
+              <h3>Partnerskapsmodell</h3>
+              <p>
+                Langsiktige relasjoner — ikke transaksjoner. De fleste
+                strategiske oppdrag løper i 3+ år.
+              </p>
+            </div>
+            <div className="feat">
+              <div className="num">II</div>
+              <h3>Faktabasert</h3>
+              <p>
+                Beslutningsgrunnlag bygget på reelle markedsdata, ikke generelle
+                antakelser eller bransje-narrativer.
+              </p>
+            </div>
+            <div className="feat">
+              <div className="num">III</div>
+              <h3>Senior involvering</h3>
+              <p>
+                Du har én partner som er på saken. Ingen overlevering, ingen
+                rotasjon, ingen junior-konsulent som gjør jobben din.
+              </p>
+            </div>
+          </div>
+        </div>
       </section>
-    </div>
+
+      {/* COVERAGE */}
+      <section className="coverage">
+        <div className="wrap">
+          <div className="head-compact">
+            <span className="eyebrow">04 — Dekning</span>
+            <div>
+              <h2>
+                Strategisk rådgivning{" "}
+                <span
+                  style={{
+                    fontStyle: "italic",
+                    fontWeight: 300,
+                    color: "rgba(243,241,239,0.7)",
+                  }}
+                >
+                  der eiendommene står.
+                </span>
+              </h2>
+              <p>
+                Vi dekker porteføljer i hele Nord-Norge — og kombinerer det med
+                metodikk og nettverk på nasjonalt nivå.
+              </p>
+            </div>
+          </div>
+
+          <div className="cities">
+            <div className="city">
+              <div className="pn">01</div>
+              <h3>Bodø</h3>
+              <p>Hovedkontor. Kontor, handel, logistikk.</p>
+            </div>
+            <div className="city">
+              <div className="pn">02</div>
+              <h3>Tromsø</h3>
+              <p>Største kontormarkedet i landsdelen.</p>
+            </div>
+            <div className="city">
+              <div className="pn">03</div>
+              <h3>Alta</h3>
+              <p>Lokalkontor. Handel og næring i Finnmark.</p>
+            </div>
+            <div className="city">
+              <div className="pn">04</div>
+              <h3>Mo i Rana</h3>
+              <p>Industri- og logistikkbygg.</p>
+            </div>
+            <div className="city">
+              <div className="pn">05</div>
+              <h3>Narvik</h3>
+              <p>Transport, lager og næringspark.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <CtaStrip
+        eyebrow="Behov for sparring?"
+        title={
+          <>
+            Ta en uforpliktende{" "}
+            <span className="italic">strategi-samtale.</span>
+          </>
+        }
+        sub="Vi setter av tid til en åpen samtale om hvor porteføljen står og hva som kan forbedres — uten forpliktelser."
+        primary={{ label: "Kontakt senior partner", href: "/kontakt" }}
+        secondary={{ label: "Se alle våre tjenester", href: "/tjenester" }}
+      />
+    </>
   );
 }

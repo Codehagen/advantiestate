@@ -1,21 +1,9 @@
-import { Badge } from "@/components/Badge";
-import { AnimatedCTA } from "@/components/ui/AnimatedCTA";
-import { TransactionCTAButtonGroup } from "@/components/CTAButtons";
-import FeatureDivider from "@/components/ui/FeatureDivider";
+import { constructMetadata } from "@/lib/utils";
+import { SubHero } from "@/components/site/SubHero";
+import { CtaStrip } from "@/components/site/CtaStrip";
 import StructuredData, {
   BreadcrumbStructuredData,
 } from "@/components/StructuredData";
-import { constructMetadata } from "@/lib/utils";
-import Image from "next/image";
-import {
-  RiBuilding2Line,
-  RiHandCoinLine,
-  RiFileList3Line,
-  RiShakeHandsLine,
-  RiLightbulbFlashLine,
-  RiMapPinUserLine,
-} from "@remixicon/react";
-import Balancer from "react-wrap-balancer";
 
 export const metadata = constructMetadata({
   title: "Transaksjoner Næringseiendom | Advanti",
@@ -23,51 +11,9 @@ export const metadata = constructMetadata({
     "Advanti bistår med kjøp og salg av næringseiendom i Nord-Norge. Ekspertise gjennom hele transaksjonsprosessen fra verdivurdering til overtakelse.",
 });
 
-const transactionServices = [
-  {
-    title: "Kjøp av Næringseiendom",
-    description:
-      "Vi bistår kjøpere med å identifisere, vurdere og forhandle kjøp av næringseiendom som møter deres investeringsmål.",
-    icon: RiBuilding2Line,
-  },
-  {
-    title: "Salg av Næringseiendom",
-    description:
-      "Profesjonell salgsprosess fra verdivurdering og markedsføring til forhandling og gjennomføring av transaksjonen.",
-    icon: RiHandCoinLine,
-  },
-  {
-    title: "Due Diligence",
-    description:
-      "Grundige undersøkelser og analyser av eiendom, kontrakter og økonomiske forhold for å sikre trygge transaksjoner.",
-    icon: RiFileList3Line,
-  },
-];
-
-const whyAdvantiTransactions = [
-  {
-    title: "Markedskunnskap",
-    description:
-      "Dyp innsikt i det nordnorske markedet for næringseiendom, verdier og utviklingstrender.",
-    icon: RiLightbulbFlashLine,
-  },
-  {
-    title: "Bredt Nettverk",
-    description:
-      "Omfattende nettverk av kjøpere, selgere, investorer og samarbeidspartnere i markedet.",
-    icon: RiMapPinUserLine,
-  },
-  {
-    title: "Trygg Gjennomføring",
-    description:
-      "Erfarne rådgivere som sikrer at hele transaksjonsprosessen gjennomføres på en trygg og effektiv måte.",
-    icon: RiShakeHandsLine,
-  },
-];
-
 export default function TransaksjonerPage() {
   return (
-    <div className="mt-36 flex flex-col overflow-hidden px-3">
+    <>
       <BreadcrumbStructuredData
         items={[
           { name: "Hjem", url: "/" },
@@ -83,141 +29,290 @@ export default function TransaksjonerPage() {
             "Ekspertise gjennom hele transaksjonsprosessen for kjøp og salg av næringseiendom i Nord-Norge.",
         }}
       />
-      {/* Hero Section */}
+
+      <SubHero
+        crumb={[
+          { label: "Hjem", href: "/" },
+          { label: "Tjenester", href: "/tjenester" },
+          { label: "Transaksjonsrådgivning" },
+        ]}
+        eyebrow="Tjeneste 03 · Transaksjoner"
+        title={
+          <>
+            Transaksjons- <br />
+            <span className="italic">rådgivning.</span>
+          </>
+        }
+        lede="Strukturert rådgivning gjennom hele kjøps- eller salgsprosessen — fra due diligence og verdidriver-analyse til forhandling og gjennomføring."
+        actions={[
+          { label: "Snakk med en rådgiver", href: "/kontakt" },
+          {
+            label: "Omfang og leveranser",
+            href: "#omfang",
+            variant: "outline",
+          },
+        ]}
+        metaRow={[
+          { value: "Senior", label: "Partner-ledet team" },
+          { value: "NDA", label: "Konfidensielt fra dag 1" },
+          { value: "M&A", label: "Erfaring fra store hus" },
+        ]}
+        photo={{
+          src: "/building/pexels-expect-best-79873-351262.jpg",
+          alt: "Næringseiendom under transaksjon",
+        }}
+      />
+
+      {/* OMFANG */}
+      <section className="section section-divider" id="omfang">
+        <div className="wrap">
+          <div className="head-compact">
+            <span className="eyebrow">01 — Omfang</span>
+            <div>
+              <h2>
+                Ekspertise gjennom{" "}
+                <span className="italic">hele prosessen.</span>
+              </h2>
+              <p>
+                Fra verdivurdering og strukturering til forhandling og
+                gjennomføring — Advanti tilbyr en helhetlig og profesjonell
+                tjeneste, uavhengig av om du er kjøper eller selger.
+              </p>
+            </div>
+          </div>
+
+          <div className="method-grid">
+            <div className="method">
+              <div className="pre">01 · Tjeneste</div>
+              <h3>Kjøp av næringseiendom</h3>
+              <p>
+                Vi bistår kjøpere med å identifisere, vurdere og forhandle kjøp
+                av næringseiendom som møter investeringsmålene — uten
+                emosjonelle blindsoner.
+              </p>
+              <div className="meta">
+                <span>Senior partner</span>
+                <span>Buy-side</span>
+              </div>
+            </div>
+
+            <div className="method">
+              <div className="pre">02 · Tjeneste</div>
+              <h3>Salg av næringseiendom</h3>
+              <p>
+                Profesjonell salgsprosess fra verdivurdering og markedsføring
+                til forhandling og gjennomføring av transaksjonen.
+              </p>
+              <div className="meta">
+                <span>Senior partner</span>
+                <span>Sell-side</span>
+              </div>
+            </div>
+
+            <div className="method">
+              <div className="pre">03 · Tjeneste</div>
+              <h3>Due diligence</h3>
+              <p>
+                Grundige undersøkelser og analyser av eiendom, kontrakter og
+                økonomiske forhold for å sikre trygge transaksjoner — vi finner
+                det som ellers blir oversett.
+              </p>
+              <div className="meta">
+                <span>4–6 uker</span>
+                <span>Rapport + funn</span>
+              </div>
+            </div>
+
+            <div className="method">
+              <div className="pre">04 · Tjeneste</div>
+              <h3>Strukturering og finansiering</h3>
+              <p>
+                Vi strukturerer transaksjonen optimalt — single asset,
+                portefølje, SPV eller eiendomsselskap — og koordinerer mot
+                finansiering og rådgivere.
+              </p>
+              <div className="meta">
+                <span>Tidlig fase</span>
+                <span>Skattenøytralt</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* TILNÆRMING */}
       <section
-        aria-labelledby="transaksjoner-hero"
-        className="mx-auto w-full max-w-6xl animate-slide-up-fade"
+        className="section"
+        id="metode"
         style={{
-          animationDuration: "600ms",
-          animationFillMode: "backwards",
+          background: "var(--accent-faint)",
+          borderTop: "var(--hairline)",
+          borderBottom: "var(--hairline)",
         }}
       >
-        <Badge>Transaksjoner</Badge>
-        <div className="lg:grid lg:grid-cols-2 lg:gap-16">
-          <div>
-            <h1
-              id="transaksjoner-hero"
-              className="mt-2 inline-block bg-gradient-to-t from-warm-grey to-warm-grey-3 bg-clip-text py-2 text-4xl font-bold tracking-tighter text-transparent sm:text-6xl md:text-6xl dark:from-warm-white dark:to-warm-grey-1"
-            >
-              <Balancer>Kjøp og Salg av Næringseiendom</Balancer>
-            </h1>
-            <p className="mt-6 max-w-2xl text-lg text-warm-grey-2 dark:text-warm-grey-1">
-              Advanti er din dedikerte partner for kjøp og salg av
-              næringseiendom i Nord-Norge. Med dyp markedskunnskap og bred
-              erfaring bistår vi både kjøpere og selgere gjennom hele
-              transaksjonsprosessen.
-            </p>
-            <p className="mt-4 max-w-2xl text-lg text-warm-grey-2 dark:text-warm-grey-1">
-              Vi sikrer at du tar de beste beslutningene og oppnår optimale
-              resultater i dine eiendomstransaksjoner.
-            </p>
-            <div className="mt-8">
-              <TransactionCTAButtonGroup />
-            </div>
-          </div>
-          <div className="mt-8 lg:mt-0">
-            <div className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-warm-grey/5 shadow-lg shadow-light-blue/10 ring-1 ring-warm-grey/5 dark:bg-warm-grey/20 dark:shadow-light-blue/10 dark:ring-warm-white/5">
-              <Image
-                src="/building/pexels-expect-best-79873-351262.jpg"
-                alt="Håndtrykk som markerer en vellykket eiendomstransaksjon"
-                fill
-                className="object-cover"
-                sizes="(max-width: 1024px) 100vw, 50vw"
-                priority
-              />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <FeatureDivider className="mx-auto mt-24 max-w-6xl" />
-
-      {/* Transaction Services Section */}
-      <section className="mx-auto mt-24 w-full max-w-6xl">
-        <div className="flex flex-col items-center gap-6 text-center">
-          <Badge>Våre Transaksjonstjenester</Badge>
-          <h2 className="text-balance pb-2 leading-normal bg-gradient-to-t from-warm-grey to-warm-grey-3 bg-clip-text text-4xl font-semibold tracking-tighter text-transparent md:text-6xl dark:from-warm-white dark:to-warm-grey-1">
-            Ekspertise Gjennom Hele Prosessen
-          </h2>
-          <p className="max-w-2xl text-lg text-warm-grey-2 dark:text-warm-grey-1">
-            <Balancer>
-              Fra verdivurdering og markedsføring til forhandling og
-              overtakelse – vi sikrer en trygg og effektiv transaksjonsprosess.
-            </Balancer>
-          </p>
-        </div>
-        <div className="mt-16 grid grid-cols-1 gap-x-8 gap-y-12 md:grid-cols-2 lg:grid-cols-3">
-          {transactionServices.map((service) => (
-            <div
-              key={service.title}
-              className="flex flex-col items-center gap-4 text-center md:items-start md:text-left"
-            >
-              <div className="flex size-12 items-center justify-center rounded-lg bg-warm-grey/5 ring-1 ring-warm-grey/5 dark:bg-warm-grey/20 dark:ring-warm-white/5">
-                <service.icon className="size-6 text-warm-grey dark:text-warm-white" />
-              </div>
-              <h3 className="text-lg font-semibold text-warm-grey dark:text-warm-white">
-                {service.title}
-              </h3>
-              <p className="text-sm text-warm-grey-2 dark:text-warm-grey-1">
-                {service.description}
+        <div className="wrap">
+          <div className="head-compact">
+            <span className="eyebrow">02 — Tilnærming</span>
+            <div>
+              <h2>
+                Hvert oppdrag har{" "}
+                <span className="italic">én senior partner.</span>
+              </h2>
+              <p>
+                Du blir aldri overlevert til en juniorrådgiver. Senior partner
+                som er på saken fra dag én, er der ved signering.
               </p>
             </div>
-          ))}
-        </div>
-      </section>
+          </div>
 
-      <FeatureDivider className="mx-auto mt-24 max-w-6xl" />
-
-      {/* Why Choose Advanti for Transactions Section */}
-      <section className="mx-auto mt-24 w-full max-w-6xl">
-        <div className="flex flex-col items-center gap-6 text-center">
-          <Badge>Hvorfor Velge Advanti?</Badge>
-          <h2 className="text-balance pb-2 leading-normal bg-gradient-to-t from-warm-grey to-warm-grey-3 bg-clip-text text-4xl font-semibold tracking-tighter text-transparent md:text-6xl dark:from-warm-white dark:to-warm-grey-1">
-            Din Pålitelige Partner i Transaksjoner
-          </h2>
-          <p className="max-w-2xl text-lg text-warm-grey-2 dark:text-warm-grey-1">
-            <Balancer>
-              Med vår erfaring og lokale forankring sikrer vi at du får best
-              mulig resultat i dine eiendomstransaksjoner.
-            </Balancer>
-          </p>
-        </div>
-        <div className="mt-16 grid grid-cols-1 gap-x-8 gap-y-12 md:grid-cols-3">
-          {whyAdvantiTransactions.map((feature) => (
-            <div
-              key={feature.title}
-              className="flex flex-col items-center gap-4 rounded-xl p-6 text-center transition-all hover:bg-warm-grey/[2.5%] dark:hover:bg-warm-grey-3/50 md:items-start md:text-left"
-            >
-              <div className="flex size-12 items-center justify-center rounded-lg bg-warm-grey/5 ring-1 ring-warm-grey/5 dark:bg-warm-grey/20 dark:ring-warm-white/5">
-                <feature.icon className="size-6 text-warm-grey dark:text-warm-white" />
-              </div>
-              <h3 className="text-lg font-semibold text-warm-grey dark:text-warm-white">
-                {feature.title}
-              </h3>
-              <p className="text-sm text-warm-grey-2 dark:text-warm-grey-1">
-                {feature.description}
+          <div className="tc">
+            <div>
+              <h4>Buy-side</h4>
+              <p>
+                Vi representerer kjøper i hele prosessen — fra screening av
+                mulige akkvisisjonsmål til signert kjøpekontrakt og overtagelse.
+                Lojaliteten er kun mot deg.
+              </p>
+              <p>
+                Typisk omfang: pipeline-bygging, kvalifisering, første
+                verdiindikasjon, due diligence-ledelse, forhandling og
+                finansieringskoordinering.
               </p>
             </div>
-          ))}
+            <div>
+              <h4>Sell-side</h4>
+              <p>
+                Vi representerer selger gjennom hele prosessen — fra strategivalg
+                og prospekt, via budrunde og forhandling, til oppgjør og
+                overtakelse.
+              </p>
+              <p>
+                Vi prioriterer pris, vilkår og gjennomføringssikkerhet — i den
+                rekkefølgen som er rett for ditt mandat.
+              </p>
+            </div>
+          </div>
         </div>
       </section>
 
-      <section className="mx-auto mt-24 w-full max-w-6xl">
-        <AnimatedCTA
-          badge="Behov for Transaksjonshjelp?"
-          title="Skal du Kjøpe eller Selge Næringseiendom?"
-          description="Ta kontakt med Advanti for en uforpliktende samtale om dine eiendomstransaksjoner."
-          primaryAction={{
-            label: "Kontakt oss om Transaksjoner",
-            href: "/kontakt",
-          }}
-          secondaryAction={{
-            label: "Utforsk andre tjenester",
-            href: "/tjenester",
-          }}
-          size="default"
-        />
+      {/* HVORFOR ADVANTI */}
+      <section className="section">
+        <div className="wrap">
+          <div className="head-compact">
+            <span className="eyebrow">03 — Hvorfor Advanti</span>
+            <div>
+              <h2>
+                Din pålitelige partner{" "}
+                <span className="italic">i transaksjoner.</span>
+              </h2>
+              <p>
+                Med vår erfaring og lokale forankring sikrer vi at du får best
+                mulig rådgivning gjennom alle faser av transaksjonen.
+              </p>
+            </div>
+          </div>
+
+          <div className="feat-3">
+            <div className="feat">
+              <div className="num">I</div>
+              <h3>Markedskunnskap</h3>
+              <p>
+                Dyp innsikt i det nordnorske markedet for næringseiendom —
+                verdier, segmenter, leietakere og utviklingstrender.
+              </p>
+            </div>
+            <div className="feat">
+              <div className="num">II</div>
+              <h3>Bredt nettverk</h3>
+              <p>
+                Omfattende nettverk av kjøpere, selgere, investorer og
+                samarbeidspartnere i regionalt, nasjonalt og internasjonalt
+                marked.
+              </p>
+            </div>
+            <div className="feat">
+              <div className="num">III</div>
+              <h3>Trygg gjennomføring</h3>
+              <p>
+                Erfarne rådgivere sikrer at hele transaksjonsprosessen
+                gjennomføres trygt og effektivt — ingen overraskelser ved
+                signering.
+              </p>
+            </div>
+          </div>
+        </div>
       </section>
-    </div>
+
+      {/* COVERAGE */}
+      <section className="coverage">
+        <div className="wrap">
+          <div className="head-compact">
+            <span className="eyebrow">04 — Dekning</span>
+            <div>
+              <h2>
+                Transaksjoner med{" "}
+                <span
+                  style={{
+                    fontStyle: "italic",
+                    fontWeight: 300,
+                    color: "rgba(243,241,239,0.7)",
+                  }}
+                >
+                  lokal kjennskap.
+                </span>
+              </h2>
+              <p>
+                Vi gjennomfører transaksjoner i sentrale byer og regioner i
+                landsdelen — basert på reelle markedsdata.
+              </p>
+            </div>
+          </div>
+
+          <div className="cities">
+            <div className="city">
+              <div className="pn">01</div>
+              <h3>Bodø</h3>
+              <p>Hovedkontor. Kontor, handel, logistikk.</p>
+            </div>
+            <div className="city">
+              <div className="pn">02</div>
+              <h3>Tromsø</h3>
+              <p>Største kontormarkedet i landsdelen.</p>
+            </div>
+            <div className="city">
+              <div className="pn">03</div>
+              <h3>Alta</h3>
+              <p>Lokalkontor. Handel og næring i Finnmark.</p>
+            </div>
+            <div className="city">
+              <div className="pn">04</div>
+              <h3>Mo i Rana</h3>
+              <p>Industri- og logistikkbygg.</p>
+            </div>
+            <div className="city">
+              <div className="pn">05</div>
+              <h3>Narvik</h3>
+              <p>Transport, lager og næringspark.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <CtaStrip
+        eyebrow="Behov for transaksjonshjelp?"
+        title={
+          <>
+            Skal du kjøpe eller{" "}
+            <span className="italic">selge næringseiendom?</span>
+          </>
+        }
+        sub="Ta kontakt med Advanti for en uforpliktende samtale om dine eiendomstransaksjoner."
+        primary={{
+          label: "Kontakt oss om transaksjoner",
+          href: "/kontakt",
+        }}
+        secondary={{ label: "Se alle våre tjenester", href: "/tjenester" }}
+      />
+    </>
   );
 }

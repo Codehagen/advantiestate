@@ -1,14 +1,12 @@
-import { Badge } from "@/components/Badge";
-import { CTAButtonGroup } from "@/components/CTAButtons";
-import { AnimatedCTA } from "@/components/ui/AnimatedCTA";
-import FeatureDivider from "@/components/ui/FeatureDivider";
+import { allLocationPosts } from "content-collections";
+import Link from "next/link";
+
 import StructuredData, {
   BreadcrumbStructuredData,
 } from "@/components/StructuredData";
-import CoveredCities from "@/components/locations/CoveredCities";
+import { CtaStrip } from "@/components/site/CtaStrip";
+import { SubHero } from "@/components/site/SubHero";
 import { constructMetadata } from "@/lib/utils";
-import Image from "next/image";
-import Balancer from "react-wrap-balancer";
 
 export const metadata = constructMetadata({
   title: "Næringsmegler i Nord-Norge | Advanti",
@@ -17,9 +15,25 @@ export const metadata = constructMetadata({
   canonical: "/naringsmegler",
 });
 
+/** Picks the value of the first marketStat whose label matches a keyword. */
+function findStat(
+  stats: { label: string; value: string }[],
+  keyword: string,
+) {
+  return stats.find((s) =>
+    s.label.toLowerCase().includes(keyword.toLowerCase()),
+  )?.value;
+}
+
 export default function NaringsmeglerHubPage() {
+  // Data-driven city grid — ordered by the `order` field from the content
+  // collection.
+  const locations = [...allLocationPosts].sort(
+    (a, b) => (a.order ?? 0) - (b.order ?? 0),
+  );
+
   return (
-    <div className="mt-36 flex flex-col overflow-hidden px-3">
+    <>
       <BreadcrumbStructuredData
         items={[
           { name: "Hjem", url: "/" },
@@ -28,79 +42,175 @@ export default function NaringsmeglerHubPage() {
       />
       <StructuredData type="realEstateAgent" />
 
-      <section
-        aria-labelledby="naringsmegler-hero"
-        className="mx-auto w-full max-w-6xl animate-slide-up-fade"
-        style={{
-          animationDuration: "600ms",
-          animationFillMode: "backwards",
+      <SubHero
+        crumb={[{ label: "Hjem", href: "/" }, { label: "Næringsmegler" }]}
+        eyebrow={`Næringsmegler · ${locations.length} markeder`}
+        title={
+          <>
+            Lokal næringsmegler <br />
+            <span className="italic">i hele Nord-Norge.</span>
+          </>
+        }
+        lede="Advanti kombinerer lokal tilstedeværelse med datadrevet markedskompetanse. Vi bistår eiendomsbesittere, investorer og utviklere med salg, utleie og verdivurdering — i de viktigste byene fra Bodø til Alta."
+        actions={[
+          { label: "Få lokal vurdering", href: "/kontakt" },
+          { label: "Velg din by", href: "#byer", variant: "outline" },
+        ]}
+        metaRow={[
+          { value: String(locations.length), label: "Markeder dekket" },
+          { value: "2", label: "Kontorer · Bodø & Alta" },
+          { value: "+1 400", label: "Eiendommer i database" },
+        ]}
+        photo={{
+          src: "/building/pexels-pixabay-248877.jpg",
+          alt: "Næringseiendom Nord-Norge",
         }}
-      >
-        <Badge>Næringsmegler i Nord-Norge</Badge>
-        <div className="lg:grid lg:grid-cols-2 lg:gap-16">
-          <div>
-            <h1
-              id="naringsmegler-hero"
-              className="mt-2 inline-block bg-gradient-to-t from-warm-grey to-warm-grey-3 bg-clip-text py-2 text-4xl font-bold tracking-tighter text-transparent sm:text-6xl md:text-6xl dark:from-warm-white dark:to-warm-grey-1"
-            >
-              <Balancer>
-                Lokal næringsmegler med datadrevet markedskompetanse
-              </Balancer>
-            </h1>
-            <p className="mt-6 max-w-2xl text-lg text-warm-grey-2 dark:text-warm-grey-1">
-              Advanti kombinerer lokal tilstedeværelse i Nord-Norge med avansert
-              analyse for å sikre optimal prising, riktig markedsføring og
-              profesjonell gjennomføring.
-            </p>
-            <p className="mt-4 max-w-2xl text-lg text-warm-grey-2 dark:text-warm-grey-1">
-              Vi bistår eiendomsbesittere, investorer og utviklere med salg,
-              utleie og verdivurdering i sentrale byer og regioner.
-            </p>
-            <div className="mt-8">
-              <CTAButtonGroup />
+      />
+
+      {/* BY-GRID */}
+      <section className="section section-divider" id="byer">
+        <div className="wrap">
+          <div className="head-compact">
+            <span className="eyebrow">01 — Velg din by</span>
+            <div>
+              <h2>
+                Lokal markedsinnsikt, <br />
+                <span className="italic">by for by.</span>
+              </h2>
+              <p>
+                Hver by har sin egen markedsdynamikk, sine leietakere og sine
+                yield-nivåer. Klikk på en by for å se lokale markedsdata,
+                hvilket Advanti-team du møter, og hvordan vi jobber lokalt.
+              </p>
             </div>
           </div>
-          <div className="mt-8 lg:mt-0">
-            <div className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-warm-grey/5 shadow-lg shadow-light-blue/10 ring-1 ring-warm-grey/5 dark:bg-warm-grey/20 dark:shadow-light-blue/10 dark:ring-warm-white/5">
-              <Image
-                src="/building/pexels-abshky-18566965.jpg"
-                alt="Næringsmegler som planlegger salgsprosess"
-                fill
-                className="object-cover"
-                sizes="(max-width: 1024px) 100vw, 50vw"
-                priority
-              />
+
+          <div className="cy-grid">
+            {locations.map((location, index) => {
+              const num = `_0${index + 1}`;
+              const primeYield = findStat(
+                location.marketStats,
+                "prime yield",
+              );
+              const vacancy = findStat(location.marketStats, "ledighet");
+              return (
+                <Link
+                  key={location.slug}
+                  className="cy-card"
+                  href={`/naringsmegler/${location.slug}`}
+                >
+                  <div className="cy-image">
+                    <span className="label">
+                      {num} · {location.region}
+                    </span>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={location.hero.image}
+                      alt={`${location.name} næringseiendom`}
+                    />
+                  </div>
+                  <div>
+                    <span className="reg">
+                      {location.serviceArea === "Region"
+                        ? "Region"
+                        : location.region}
+                    </span>
+                    <h3>{location.name}</h3>
+                  </div>
+                  <p className="summary">{location.hero.description}</p>
+                  {(primeYield || vacancy) && (
+                    <div className="stats">
+                      {primeYield && (
+                        <div>
+                          <span className="v">{primeYield}</span>
+                          <span className="l">Prime yield</span>
+                        </div>
+                      )}
+                      {vacancy && (
+                        <div>
+                          <span className="v">{vacancy}</span>
+                          <span className="l">Ledighet</span>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* HVORDAN VI JOBBER */}
+      <section
+        className="section"
+        style={{
+          background: "var(--accent-faint)",
+          borderTop: "var(--hairline)",
+          borderBottom: "var(--hairline)",
+        }}
+      >
+        <div className="wrap">
+          <div className="head-compact">
+            <span className="eyebrow">02 — Lokal tilnærming</span>
+            <div>
+              <h2>
+                Lokal kunnskap. <br />
+                <span className="italic">Nasjonal metodikk.</span>
+              </h2>
+              <p>
+                Vi bor i regionen. Det betyr at vi forstår nyansene mellom
+                kontormarkedet i Tromsø og Bodø, og hvorfor en
+                logistikkeiendom i Narvik ikke prises som én i Harstad.
+                Samtidig bringer vi metodikk fra de største transaksjonshusene.
+              </p>
+            </div>
+          </div>
+
+          <div className="feat-3">
+            <div className="feat">
+              <div className="num">I</div>
+              <h3>To kontorer · flere byer</h3>
+              <p>
+                Hovedkontor i Bodø og lokalkontor i Alta gir oss permanent
+                tilstedeværelse i landsdelen — og vi dekker resten av byene
+                digitalt og gjennom regelmessige reiser.
+              </p>
+            </div>
+            <div className="feat">
+              <div className="num">II</div>
+              <h3>Lokal data, kvartalsvis</h3>
+              <p>
+                Vi sporer over 1 400 eiendommer på tvers av landsdelen,
+                oppdatert hvert kvartal. Det gjør at hver verdivurdering er
+                fundert i reelle tall — ikke nasjonale gjennomsnitt.
+              </p>
+            </div>
+            <div className="feat">
+              <div className="num">III</div>
+              <h3>Senior partner på hver sak</h3>
+              <p>
+                Du møter aldri en juniorkonsulent. Senior partner som starter
+                oppdraget er den samme som lukker det — uavhengig av hvilken by
+                eiendommen ligger i.
+              </p>
             </div>
           </div>
         </div>
       </section>
 
-      <FeatureDivider className="mx-auto mt-24 max-w-6xl" />
-
-      <CoveredCities
-        className="mt-24"
-        title="Byer og regioner vi dekker"
-        description="Velg din by eller region for å se lokal markedsinnsikt, team og tjenester fra Advanti."
+      <CtaStrip
+        eyebrow="Vil du ha lokal vurdering?"
+        title={
+          <>
+            Få profesjonell vurdering <br />
+            <span className="italic">basert på lokale data.</span>
+          </>
+        }
+        sub="Ta kontakt for en lokal vurdering av eiendommen din. Vi setter sammen et team som dekker byen og segmentet ditt."
+        primary={{ label: "Få uforpliktende vurdering", href: "/kontakt" }}
+        secondary={{ label: "Se våre tjenester", href: "/tjenester" }}
       />
-
-      <FeatureDivider className="mx-auto mt-24 max-w-6xl" />
-
-      <section className="mx-auto mt-24 w-full max-w-6xl">
-        <AnimatedCTA
-          badge="Næringsmegler i ditt område"
-          title="Vil du ha en lokal vurdering av eiendommen din?"
-          description="Få en profesjonell vurdering basert på lokal markedsinnsikt og konkrete data."
-          primaryAction={{
-            label: "Få uforpliktende verdivurdering",
-            href: "/kontakt",
-          }}
-          secondaryAction={{
-            label: "Se våre tjenester",
-            href: "/tjenester",
-          }}
-          size="default"
-        />
-      </section>
-    </div>
+    </>
   );
 }

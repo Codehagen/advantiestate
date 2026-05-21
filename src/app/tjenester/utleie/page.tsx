@@ -1,24 +1,9 @@
-import { Badge } from "@/components/Badge";
-import { AnimatedCTA } from "@/components/ui/AnimatedCTA";
-import { LeaseCTAButtonGroup } from "@/components/CTAButtons";
-import FeatureDivider from "@/components/ui/FeatureDivider";
+import { constructMetadata } from "@/lib/utils";
+import { SubHero } from "@/components/site/SubHero";
+import { CtaStrip } from "@/components/site/CtaStrip";
 import StructuredData, {
   BreadcrumbStructuredData,
 } from "@/components/StructuredData";
-import CoveredCities from "@/components/locations/CoveredCities";
-import { constructMetadata } from "@/lib/utils";
-import Image from "next/image";
-import {
-  RiBuilding2Line, // For office
-  RiStore2Line, // For retail/hospitality
-  RiLuggageCartLine, // For logistics/warehouse
-  RiUserSearchLine, // For tenant representation
-  RiBuilding4Line, // For landlord representation (or general property)
-  RiLightbulbFlashLine, // For why Advanti - insights
-  RiShakeHandsLine, // For why Advanti - negotiation/deals
-  RiMapPinUserLine, // For why Advanti - local knowledge
-} from "@remixicon/react";
-import Balancer from "react-wrap-balancer";
 
 export const metadata = constructMetadata({
   title: "Utleie av Næringseiendom | Advanti",
@@ -26,63 +11,9 @@ export const metadata = constructMetadata({
     "Advanti tilbyr skreddersydde løsninger for utleie av kontor, handel- og logistikkeiendom, samt leietaker- og gårdeierrådgivning i Nord-Norge.",
 });
 
-const leasingServices = [
-  {
-    title: "Kontorutleie",
-    description:
-      "Vi bistår gårdeiere med utleie og reforhandling av kontorlokaler, og hjelper bedrifter med å finne de rette kontorarealene.",
-    icon: RiBuilding2Line,
-  },
-  {
-    title: "Handel og Bevertning",
-    description:
-      "Spesialisert rådgivning for utleie av butikklokaler, kjøpesenterenheter og serveringssteder.",
-    icon: RiStore2Line,
-  },
-  {
-    title: "Lager og Logistikk",
-    description:
-      "Effektiv formidling av lager-, logistikk- og kombinasjonseiendommer tilpasset bedriftens behov.",
-    icon: RiLuggageCartLine,
-  },
-  {
-    title: "Leietakerrådgivning",
-    description:
-      "Vi representerer leietakere i søk etter nye lokaler, reforhandling av avtaler og flytteprosesser.",
-    icon: RiUserSearchLine,
-  },
-  {
-    title: "Gårdeierrådgivning",
-    description:
-      "Strategisk rådgivning for gårdeiere for å optimalisere utleie, minimere tomgang og øke eiendommens verdi.",
-    icon: RiBuilding4Line,
-  },
-];
-
-const whyAdvantiLeasing = [
-  {
-    title: "Markedsinnsikt",
-    description:
-      "Dybdegående kunnskap om leiemarkedet i Nord-Norge, trender og leietakerpreferanser.",
-    icon: RiLightbulbFlashLine,
-  },
-  {
-    title: "Bredt Nettverk",
-    description:
-      "Et omfattende nettverk av gårdeiere, leietakere og samarbeidspartnere for effektiv matching.",
-    icon: RiMapPinUserLine,
-  },
-  {
-    title: "Forhandlingsstyrke",
-    description:
-      "Erfarne rådgivere som sikrer de beste betingelsene for deg, enten du er leietaker eller gårdeier.",
-    icon: RiShakeHandsLine,
-  },
-];
-
 export default function UtleiePage() {
   return (
-    <div className="mt-36 flex flex-col overflow-hidden px-3">
+    <>
       <BreadcrumbStructuredData
         items={[
           { name: "Hjem", url: "/" },
@@ -98,145 +29,284 @@ export default function UtleiePage() {
             "Skreddersydde løsninger for utleie av kontor, handel og logistikkeiendom i Nord-Norge.",
         }}
       />
-      {/* Hero Section */}
-      <section
-        aria-labelledby="utleie-hero"
-        className="mx-auto w-full max-w-6xl animate-slide-up-fade"
-        style={{
-          animationDuration: "600ms",
-          animationFillMode: "backwards",
+
+      <SubHero
+        crumb={[
+          { label: "Hjem", href: "/" },
+          { label: "Tjenester", href: "/tjenester" },
+          { label: "Utleie" },
+        ]}
+        eyebrow="Tjeneste 04 · Utleie"
+        title={
+          <>
+            Utleie <span className="italic">av næringslokaler.</span>
+          </>
+        }
+        lede="Effektiv utleieformidling og reforhandling for kontor, handel, bevertning og logistikk. Vi kjenner aktørene som søker areal i Nord-Norge."
+        actions={[
+          { label: "Snakk om dine lokaler", href: "/kontakt" },
+          {
+            label: "Våre segmenter",
+            href: "#segmenter",
+            variant: "outline",
+          },
+        ]}
+        metaRow={[
+          { value: "+38", label: "Leieavtaler · 2025" },
+          { value: "12 år", label: "Snittlengde WAULT" },
+          { value: "100 %", label: "Utleiegrad nye bygg" },
+        ]}
+        photo={{
+          src: "/building/pexels-abshky-18567185.jpg",
+          alt: "Næringslokaler til utleie",
         }}
-      >
-        <Badge>Utleie av Næringseiendom</Badge>
-        <div className="lg:grid lg:grid-cols-2 lg:gap-16">
-          <div>
-            <h1
-              id="utleie-hero"
-              className="mt-2 inline-block bg-gradient-to-t from-warm-grey to-warm-grey-3 bg-clip-text py-2 text-4xl font-bold tracking-tighter text-transparent sm:text-6xl md:text-6xl dark:from-warm-white dark:to-warm-grey-1"
-            >
-              <Balancer>Finn Rette Leietaker eller Lokale</Balancer>
-            </h1>
-            <p className="mt-6 max-w-2xl text-lg text-warm-grey-2 dark:text-warm-grey-1">
-              Advanti er din dedikerte partner for utleie av næringseiendom i
-              Nord-Norge. Vi forstår markedet og jobber målrettet for å
-              sammenkoble gårdeiere med solide leietakere, og bedrifter med
-              lokaler som fremmer vekst.
-            </p>
-            <div className="mt-8">
-              <LeaseCTAButtonGroup />
-            </div>
-          </div>
-          <div className="mt-8 lg:mt-0">
-            <div className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-warm-grey/5 shadow-lg shadow-light-blue/10 ring-1 ring-warm-grey/5 dark:bg-warm-grey/20 dark:shadow-light-blue/10 dark:ring-warm-white/5">
-              <Image
-                src="/building/pexels-abshky-18567185.jpg"
-                alt="Moderne kontorbygg med fleksible lokaler"
-                fill
-                className="object-cover"
-                sizes="(max-width: 1024px) 100vw, 50vw"
-                priority
-              />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <FeatureDivider className="mx-auto mt-24 max-w-6xl" />
-
-      {/* Leasing Services Section */}
-      <section className="mx-auto mt-24 w-full max-w-6xl">
-        <div className="flex flex-col items-center gap-6 text-center">
-          <Badge>Våre Utleietjenester</Badge>
-          <h2 className="text-balance bg-gradient-to-t from-warm-grey to-warm-grey-3 bg-clip-text text-4xl font-semibold tracking-tighter text-transparent md:text-6xl dark:from-warm-white dark:to-warm-grey-1">
-            Skreddersydd for Dine Behov
-          </h2>
-          <p className="max-w-2xl text-lg text-warm-grey-2 dark:text-warm-grey-1">
-            <Balancer>
-              Vi tilbyr et bredt spekter av utleietjenester, enten du skal leie
-              ut egne lokaler eller ser etter nye for din virksomhet.
-            </Balancer>
-          </p>
-        </div>
-        <div className="mt-16 grid grid-cols-1 gap-x-8 gap-y-12 md:grid-cols-2 lg:grid-cols-3">
-          {leasingServices.map((service) => (
-            <div
-              key={service.title}
-              className="flex flex-col items-center gap-4 text-center md:items-start md:text-left"
-            >
-              <div className="flex size-12 items-center justify-center rounded-lg bg-warm-grey/5 ring-1 ring-warm-grey/5 dark:bg-warm-grey/20 dark:ring-warm-white/5">
-                <service.icon className="size-6 text-warm-grey dark:text-warm-white" />
-              </div>
-              <h3 className="text-lg font-semibold text-warm-grey dark:text-warm-white">
-                {service.title}
-              </h3>
-              <p className="text-sm text-warm-grey-2 dark:text-warm-grey-1">
-                {service.description}
-              </p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <FeatureDivider className="mx-auto mt-24 max-w-6xl" />
-
-      {/* Why Choose Advanti for Leasing Section */}
-      <section className="mx-auto mt-24 w-full max-w-6xl">
-        <div className="flex flex-col items-center gap-6 text-center">
-          <Badge>Hvorfor Velge Advanti?</Badge>
-          <h2 className="text-balance bg-gradient-to-t from-warm-grey to-warm-grey-3 bg-clip-text text-4xl font-semibold tracking-tighter text-transparent md:text-6xl dark:from-warm-white dark:to-warm-grey-1">
-            Din Partner i Utleiemarkedet
-          </h2>
-          <p className="max-w-2xl text-lg text-warm-grey-2 dark:text-warm-grey-1">
-            <Balancer>
-              Med vår ekspertise og lokale forankring er vi godt posisjonert for
-              å levere optimale utleieløsninger.
-            </Balancer>
-          </p>
-        </div>
-        <div className="mt-16 grid grid-cols-1 gap-x-8 gap-y-12 md:grid-cols-3">
-          {whyAdvantiLeasing.map((feature) => (
-            <div
-              key={feature.title}
-              className="flex flex-col items-center gap-4 rounded-xl p-6 text-center transition-all hover:bg-warm-grey/[2.5%] dark:hover:bg-warm-grey-3/50 md:items-start md:text-left"
-            >
-              <div className="flex size-12 items-center justify-center rounded-lg bg-warm-grey/5 ring-1 ring-warm-grey/5 dark:bg-warm-grey/20 dark:ring-warm-white/5">
-                <feature.icon className="size-6 text-warm-grey dark:text-warm-white" />
-              </div>
-              <h3 className="text-lg font-semibold text-warm-grey dark:text-warm-white">
-                {feature.title}
-              </h3>
-              <p className="text-sm text-warm-grey-2 dark:text-warm-grey-1">
-                {feature.description}
-              </p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <FeatureDivider className="mx-auto mt-24 max-w-6xl" />
-
-      <CoveredCities
-        className="mt-24"
-        title="Utleiekompetanse i lokale markeder"
-        description="Vi finner riktige leietakere og strukturerer leieavtaler i byer og regioner vi kjenner godt."
       />
 
-      <section className="mx-auto mt-24 w-full max-w-6xl">
-        <AnimatedCTA
-          badge="Behov for Utleiehjelp?"
-          title="Skal du Leie ut eller Finne Nye Lokaler?"
-          description="Ta kontakt med Advanti for en uforpliktende prat om dine utfordringer og muligheter i leiemarkedet."
-          primaryAction={{
-            label: "Kontakt oss om Utleie",
-            href: "/kontakt",
-          }}
-          secondaryAction={{
-            label: "Utforsk andre tjenester",
-            href: "/tjenester",
-          }}
-          size="default"
-        />
+      {/* SEGMENTER */}
+      <section className="section section-divider" id="segmenter">
+        <div className="wrap">
+          <div className="head-compact">
+            <span className="eyebrow">01 — Segmenter</span>
+            <div>
+              <h2>
+                Skreddersydd for <span className="italic">dine behov.</span>
+              </h2>
+              <p>
+                Vi tilbyr et bredt spekter av utleietjenester — enten du skal
+                leie ut, finne nye lokaler eller reforhandle eksisterende
+                avtaler.
+              </p>
+            </div>
+          </div>
+
+          <div className="method-grid">
+            <div className="method">
+              <div className="pre">01 · Segment</div>
+              <h3>Kontorutleie</h3>
+              <p>
+                Vi bistår gårdeiere med utleie og reforhandling av
+                kontorlokaler, og hjelper bedrifter med å finne kontorarealer
+                som matcher faktisk arbeidsform og kostnadsramme.
+              </p>
+              <div className="meta">
+                <span>Klasse A–C</span>
+                <span>Sentrum + næringspark</span>
+              </div>
+            </div>
+
+            <div className="method">
+              <div className="pre">02 · Segment</div>
+              <h3>Handel og bevertning</h3>
+              <p>
+                Spesialisert rådgivning for utleie av butikklokaler,
+                kjøpesenter­enheter og serveringssteder — med kjennskap til
+                leietakerøkonomi og omsetningsmodeller.
+              </p>
+              <div className="meta">
+                <span>High street</span>
+                <span>Senter + sentrum</span>
+              </div>
+            </div>
+
+            <div className="method">
+              <div className="pre">03 · Segment</div>
+              <h3>Lager og logistikk</h3>
+              <p>
+                Effektiv formidling av lager-, logistikk- og
+                kombinasjons­eiendommer tilpasset bedriftens reelle behov for
+                høyde, last og rampe.
+              </p>
+              <div className="meta">
+                <span>Mod. terminaler</span>
+                <span>500–25 000 m²</span>
+              </div>
+            </div>
+
+            <div className="method">
+              <div className="pre">04 · Segment</div>
+              <h3>Spesialiserte formål</h3>
+              <p>
+                Helse, undervisning, kultur, produksjon — vi har erfaring med
+                utleie der standard ikke gjelder og hver kontrakt må
+                skreddersys.
+              </p>
+              <div className="meta">
+                <span>Skreddersydd</span>
+                <span>Lange kontrakter</span>
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
-    </div>
+
+      {/* ROLLER */}
+      <section
+        className="section"
+        id="metode"
+        style={{
+          background: "var(--accent-faint)",
+          borderTop: "var(--hairline)",
+          borderBottom: "var(--hairline)",
+        }}
+      >
+        <div className="wrap">
+          <div className="head-compact">
+            <span className="eyebrow">02 — Roller</span>
+            <div>
+              <h2>
+                Gårdeier eller <span className="italic">leietaker?</span>
+              </h2>
+              <p>
+                Vi tar én side av bordet om gangen. Lojaliteten er klar fra
+                første samtale, og vi opplyser åpent om eventuelle
+                interessekonflikter før vi tar oppdrag.
+              </p>
+            </div>
+          </div>
+
+          <div className="tc">
+            <div>
+              <h4>Gårdeierrådgivning</h4>
+              <p>
+                Strategisk rådgivning for å optimalisere utleie, minimere
+                tomgang og øke eiendommens netto driftsresultat. Vi designer
+                leieobjektet sammen med deg — fra arealplan til prising.
+              </p>
+              <p>
+                Typiske leveranser: utleiestrategi, prospekt og kampanje,
+                reforhandling av eksisterende kontrakter, og rådgivning ved
+                leietakerbytter.
+              </p>
+            </div>
+            <div>
+              <h4>Leietakerrådgivning</h4>
+              <p>
+                Vi representerer leietakere i søk etter nye lokaler,
+                reforhandling av eksisterende avtaler og flytteprosesser. Vi
+                forhandler på din side, mot et marked vi kjenner inngående.
+              </p>
+              <p>
+                Resultatet er ofte 10–20 % lavere kostnad sammenlignet med
+                direkte forhandling — eller bedre vilkår på samme kostnad.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* HVORFOR ADVANTI */}
+      <section className="section">
+        <div className="wrap">
+          <div className="head-compact">
+            <span className="eyebrow">03 — Hvorfor Advanti</span>
+            <div>
+              <h2>
+                Din partner i <span className="italic">utleiemarkedet.</span>
+              </h2>
+              <p>
+                Med vår ekspertise og lokale forankring er vi godt posisjonert
+                for å hjelpe deg å lykkes i leiemarkedet — fra første visning til
+                signert kontrakt.
+              </p>
+            </div>
+          </div>
+
+          <div className="feat-3">
+            <div className="feat">
+              <div className="num">I</div>
+              <h3>Markedsinnsikt</h3>
+              <p>
+                Dybdegående kunnskap om leiemarkedet i Nord-Norge, trender,
+                leietakerpreferanser og prising — kvartalsvis oppdatert.
+              </p>
+            </div>
+            <div className="feat">
+              <div className="num">II</div>
+              <h3>Bredt nettverk</h3>
+              <p>
+                Et omfattende nettverk av gårdeiere, leietakere og
+                samarbeidspartnere for effektiv og rask matching.
+              </p>
+            </div>
+            <div className="feat">
+              <div className="num">III</div>
+              <h3>Forhandlingsstyrke</h3>
+              <p>
+                Erfarne rådgivere som sikrer de beste betingelsene for deg,
+                enten du er leietaker eller gårdeier.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* COVERAGE */}
+      <section className="coverage">
+        <div className="wrap">
+          <div className="head-compact">
+            <span className="eyebrow">04 — Dekning</span>
+            <div>
+              <h2>
+                Utleiekompetanse{" "}
+                <span
+                  style={{
+                    fontStyle: "italic",
+                    fontWeight: 300,
+                    color: "rgba(243,241,239,0.7)",
+                  }}
+                >
+                  i lokale markeder.
+                </span>
+              </h2>
+              <p>
+                Vi finner riktige leietakere og strukturerer leieavtaler i byer
+                og regioner vi kjenner godt.
+              </p>
+            </div>
+          </div>
+
+          <div className="cities">
+            <div className="city">
+              <div className="pn">01</div>
+              <h3>Bodø</h3>
+              <p>Hovedkontor. Kontor, handel, logistikk.</p>
+            </div>
+            <div className="city">
+              <div className="pn">02</div>
+              <h3>Tromsø</h3>
+              <p>Største kontormarkedet i landsdelen.</p>
+            </div>
+            <div className="city">
+              <div className="pn">03</div>
+              <h3>Alta</h3>
+              <p>Lokalkontor. Handel og næring i Finnmark.</p>
+            </div>
+            <div className="city">
+              <div className="pn">04</div>
+              <h3>Mo i Rana</h3>
+              <p>Industri- og logistikkbygg.</p>
+            </div>
+            <div className="city">
+              <div className="pn">05</div>
+              <h3>Narvik</h3>
+              <p>Transport, lager og næringspark.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <CtaStrip
+        eyebrow="Behov for utleiehjelp?"
+        title={
+          <>
+            Skal du leie ut{" "}
+            <span className="italic">eller finne nye lokaler?</span>
+          </>
+        }
+        sub="Ta kontakt med Advanti for en uforpliktende prat om dine utfordringer og muligheter i leiemarkedet."
+        primary={{ label: "Kontakt oss om utleie", href: "/kontakt" }}
+        secondary={{ label: "Se alle våre tjenester", href: "/tjenester" }}
+      />
+    </>
   );
 }

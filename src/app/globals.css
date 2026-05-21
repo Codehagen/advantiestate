@@ -83,3 +83,13 @@ a {
 *:hover > .anchor-link {
   @apply visible;
 }
+
+/* PERF-4: respect reduced-motion for the marquee ticker + scroll cue */
+@media (prefers-reduced-motion: reduce) {
+  .ticker-track {
+    animation: none !important;
+  }
+  .scroll-cue::after {
+    animation: none !important;
+  }
+}

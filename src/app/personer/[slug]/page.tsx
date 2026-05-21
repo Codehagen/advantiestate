@@ -1,24 +1,48 @@
 import StructuredData, {
   BreadcrumbStructuredData,
 } from "@/components/StructuredData";
+import { CtaStrip } from "@/components/site/CtaStrip";
 import { constructMetadata } from "@/lib/utils";
 import { allPersonPosts } from "content-collections";
 import { notFound } from "next/navigation";
-import { PersonMDX } from "./person-mdx";
 import Link from "next/link";
-import MaxWidthWrapper from "@/components/blog/max-width-wrapper";
-import {
-  RiAwardLine,
-  RiBriefcaseLine,
-  RiGraduationCapLine,
-  RiMailLine,
-  RiPhoneLine,
-} from "@remixicon/react";
+import { PersonMDX } from "./person-mdx";
 
 interface PersonPageProps {
   params: Promise<{
     slug: string;
   }>;
+}
+
+// Per-person office label used by the editorial portrait badge. Falls back to
+// "Nord-Norge" for any person not listed here.
+const OFFICE: Record<string, string> = {
+  "christer-hagen": "Bodø",
+  "daniel-adamsen": "Bodø",
+  "ole-ostensen": "Bergen",
+  "havard-nome": "Alta",
+  "tobias-bronder": "Bodø",
+};
+
+const MONTHS = [
+  "januar",
+  "februar",
+  "mars",
+  "april",
+  "mai",
+  "juni",
+  "juli",
+  "august",
+  "september",
+  "oktober",
+  "november",
+  "desember",
+];
+
+function formatStarted(startedAt: string) {
+  const date = new Date(startedAt);
+  if (Number.isNaN(date.getTime())) return startedAt;
+  return `${MONTHS[date.getMonth()]} ${date.getFullYear()}`;
 }
 
 export async function generateStaticParams() {
@@ -50,6 +74,12 @@ export default async function PersonPage({ params }: PersonPageProps) {
     notFound();
   }
 
+  const office = OFFICE[person.slug ?? ""] ?? "Nord-Norge";
+  const firstName = person.name.split(" ")[0];
+
+  // Other team members for the "resten av teamet" rail.
+  const others = allPersonPosts.filter((p) => p.slug !== person.slug);
+
   return (
     <>
       <BreadcrumbStructuredData
@@ -71,158 +101,270 @@ export default async function PersonPage({ params }: PersonPageProps) {
           description: `${person.name} er ${person.role} i Advanti med ${person.yearsExperience} års erfaring.`,
         }}
       />
-      <MaxWidthWrapper className="flex max-w-screen-lg flex-col py-10 pt-32 md:pt-40">
-        <div className="flex max-w-screen-md flex-col space-y-4">
-          <Link
-            href="/personer"
-            className="text-sm text-warm-white/60 hover:text-warm-white/80"
-          >
-            ← Tilbake til teamet
-          </Link>
-          <h1 className="font-display text-3xl font-bold !leading-snug text-warm-white sm:text-4xl">
-            {person.name}
-          </h1>
-          <p className="text-xl text-warm-white/80">{person.role}</p>
-        </div>
-      </MaxWidthWrapper>
 
-      <div className="relative">
-        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-warm-grey-2/20 via-warm-grey-2/20 to-warm-grey-2/20" />
-        <MaxWidthWrapper className="grid max-w-screen-lg grid-cols-3 gap-10 py-10">
-          <div className="col-span-3 flex flex-col space-y-8 md:col-span-2">
-            <img
-              className="aspect-[4/5] rounded-xl object-cover"
-              src={person.avatar}
-              alt={person.name}
-              width={800}
-              height={1000}
-            />
+      <div className="page-pad" />
 
-            {/* Mobile sidebar */}
-            <div className="grid grid-cols-2 gap-5 rounded-xl border border-warm-grey-2/20 bg-warm-grey-2/10 p-5 backdrop-blur-sm md:hidden">
-              <div className="col-span-2 flex flex-col space-y-3 border-b border-warm-grey-2/20 pb-4">
-                <div className="flex items-center gap-2 text-warm-white/60">
-                  <RiMailLine className="size-4" />
-                  <a
-                    href={`mailto:${person.email}`}
-                    className="text-sm hover:text-warm-white/80 hover:underline"
-                  >
-                    {person.email}
-                  </a>
+      {/* HERO */}
+      <section className="subhero" style={{ paddingBottom: 0 }}>
+        <div className="wrap">
+          <nav className="crumb" aria-label="Brødsmuler">
+            <Link href="/">Hjem</Link>
+            <span className="sep">/</span>
+            <Link href="/personer">Vårt team</Link>
+            <span className="sep">/</span>
+            <span className="here">{person.name}</span>
+          </nav>
+
+          <div className="pe-hero">
+            <div className="portrait">
+              <span className="badge">{office}</span>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={person.avatar} alt={person.name} />
+            </div>
+
+            <div>
+              <span
+                className="eyebrow"
+                style={{ marginBottom: 24, display: "inline-flex" }}
+              >
+                {person.yearsExperience}+ års erfaring
+              </span>
+              <h1>{person.name}</h1>
+              <div className="role">{person.role}</div>
+
+              <div className="meta-strip">
+                <div>
+                  <div className="key">Telefon</div>
+                  <div className="val">
+                    <a href={`tel:${person.phone.replace(/\s/g, "")}`}>
+                      {person.phone}
+                    </a>
+                  </div>
                 </div>
-                <div className="flex items-center gap-2 text-warm-white/60">
-                  <RiPhoneLine className="size-4" />
-                  <a
-                    href={`tel:${person.phone}`}
-                    className="text-sm hover:text-warm-white/80 hover:underline"
-                  >
-                    {person.phone}
-                  </a>
+                {person.email && (
+                  <div>
+                    <div className="key">E-post</div>
+                    <div className="val">
+                      <a href={`mailto:${person.email}`}>{person.email}</a>
+                    </div>
+                  </div>
+                )}
+                <div>
+                  <div className="key">Kontor</div>
+                  <div className="val">{office}</div>
+                </div>
+                <div>
+                  <div className="key">Erfaring</div>
+                  <div className="val">{person.yearsExperience}+ år</div>
                 </div>
               </div>
-              {sidebarContent(person).map(({ title, value }) => (
-                <div
-                  key={title}
-                  className={`col-span-1 flex flex-col space-y-2 ${
-                    title === "Spesialiseringer" ? "col-span-2" : ""
-                  }`}
-                >
-                  <p className="font-medium text-warm-white">{title}</p>
-                  <div className="text-sm text-warm-white/60">{value}</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* BODY */}
+      <section className="section-tight" style={{ paddingTop: 0 }}>
+        <div className="wrap">
+          <div className="pe-body">
+            {/* MAIN */}
+            <article className="pe-main">
+              <PersonMDX code={person.mdx} />
+
+              {person.specializations.length > 0 && (
+                <>
+                  <h2>Fagområder.</h2>
+                  <ul className="pe-spec">
+                    {person.specializations.map((spec, index) => (
+                      <li key={spec}>
+                        <span className="sn">
+                          {String(index + 1).padStart(2, "0")}
+                        </span>
+                        <div>
+                          <div className="st">{spec}</div>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              )}
+
+              {person.notableProjects &&
+                person.notableProjects.length > 0 && (
+                  <>
+                    <h2>
+                      Utvalgte <span className="italic">oppdrag.</span>
+                    </h2>
+                    <div className="pe-projects">
+                      {person.notableProjects.map((project) => (
+                        <article className="pe-project" key={project.title}>
+                          <div className="year">{project.year}</div>
+                          <div>
+                            <h4>{project.title}</h4>
+                            <p>{project.description}</p>
+                          </div>
+                        </article>
+                      ))}
+                    </div>
+                  </>
+                )}
+
+              {/* Inline CTA */}
+              <div
+                style={{
+                  marginTop: 56,
+                  padding: 32,
+                  border: "var(--hairline)",
+                  background: "var(--accent-faint)",
+                  display: "flex",
+                  flexWrap: "wrap",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  gap: 24,
+                }}
+              >
+                <div>
+                  <div
+                    style={{
+                      fontFamily: "var(--font-display)",
+                      fontSize: 24,
+                      fontWeight: 400,
+                      letterSpacing: "-0.015em",
+                      marginBottom: 8,
+                    }}
+                  >
+                    Snakke direkte med {firstName}?
+                  </div>
+                  <p
+                    style={{
+                      fontSize: 14,
+                      color: "var(--warm-grey-85)",
+                      margin: 0,
+                    }}
+                  >
+                    Han svarer telefonen selv. Ingen sentralbord.
+                  </p>
                 </div>
+                <a
+                  href={`tel:${person.phone.replace(/\s/g, "")}`}
+                  className="btn btn-dark"
+                  style={{ fontSize: 13, padding: "14px 24px" }}
+                >
+                  Ring {person.phone} <span className="arrow">→</span>
+                </a>
+              </div>
+            </article>
+
+            {/* SIDEBAR */}
+            <aside className="pe-side">
+              {person.education.length > 0 && (
+                <div className="block">
+                  <div className="label">Utdanning</div>
+                  <div className="ed">
+                    {person.education.map((edu) => (
+                      <div key={`${edu.degree}-${edu.year}`}>
+                        <div className="degree">{edu.degree}</div>
+                        <div className="school">
+                          {edu.school} · {edu.year}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {person.certifications &&
+                person.certifications.length > 0 && (
+                  <div className="block">
+                    <div className="label">Sertifiseringer</div>
+                    <ul>
+                      {person.certifications.map((cert) => (
+                        <li key={cert}>{cert}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+              {person.specializations.length > 0 && (
+                <div className="block">
+                  <div className="label">Spesialiseringer</div>
+                  <ul>
+                    {person.specializations.map((spec) => (
+                      <li key={spec}>{spec}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              <div className="block" style={{ borderBottom: 0 }}>
+                <div className="label">I bransjen siden</div>
+                <div
+                  style={{
+                    fontFamily: "var(--font-display)",
+                    fontSize: 28,
+                    fontWeight: 400,
+                    letterSpacing: "-0.018em",
+                    color: "var(--warm-grey)",
+                  }}
+                >
+                  {formatStarted(person.startedAt)}
+                </div>
+              </div>
+            </aside>
+          </div>
+        </div>
+      </section>
+
+      {/* OTHER TEAM */}
+      {others.length > 0 && (
+        <section className="section-tight" style={{ paddingTop: 40 }}>
+          <div className="wrap">
+            <div className="head-compact">
+              <span className="eyebrow">Resten av teamet</span>
+              <div>
+                <h2>
+                  Møt de andre <span className="italic">partnerne.</span>
+                </h2>
+              </div>
+            </div>
+
+            <div className="pe-others">
+              {others.map((other) => (
+                <Link
+                  key={other.slug}
+                  className="pe-other"
+                  href={`/personer/${other.slug}`}
+                >
+                  <div className="ip">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={other.avatar} alt={other.name} />
+                  </div>
+                  <div>
+                    <h4>{other.name}</h4>
+                    <div className="r">{other.role}</div>
+                  </div>
+                </Link>
               ))}
             </div>
-
-            <PersonMDX code={person.mdx} />
           </div>
+        </section>
+      )}
 
-          {/* Desktop sidebar */}
-          <div className="sticky top-32 col-span-1 mt-0 hidden flex-col divide-y divide-warm-grey-2/20 self-start rounded-xl border border-warm-grey-2/20 bg-warm-grey-2/5 p-4 backdrop-blur-sm md:flex">
-            <div className="flex flex-col space-y-3 pb-4">
-              <div className="flex items-center gap-2 text-warm-white/60">
-                <RiMailLine className="size-4" />
-                <a
-                  href={`mailto:${person.email}`}
-                  className="text-sm hover:text-warm-white/80 hover:underline"
-                >
-                  {person.email}
-                </a>
-              </div>
-              <div className="flex items-center gap-2 text-warm-white/60">
-                <RiPhoneLine className="size-4" />
-                <a
-                  href={`tel:${person.phone}`}
-                  className="text-sm hover:text-warm-white/80 hover:underline"
-                >
-                  {person.phone}
-                </a>
-              </div>
-            </div>
-            {sidebarContent(person).map(({ title, value }) => (
-              <div
-                key={title}
-                className="flex flex-col space-y-1 py-4 first:pt-4 last:pb-0"
-              >
-                <p className="font-medium text-warm-white">{title}</p>
-                <div className="text-sm text-warm-white/60">{value}</div>
-              </div>
-            ))}
-          </div>
-        </MaxWidthWrapper>
-      </div>
+      <CtaStrip
+        eyebrow="Klar for en samtale?"
+        title={
+          <>
+            Få konkret rådgivning <br />
+            <span className="italic">på din eiendom.</span>
+          </>
+        }
+        sub={`${firstName} setter av tid til en uforpliktende samtale. Du beskriver kort hva det gjelder, så foreslår vi neste steg.`}
+        primary={{ label: "Send henvendelse", href: "/kontakt" }}
+        secondary={{
+          label: "Bestill verdivurdering",
+          href: "/tjenester/verdivurdering",
+        }}
+      />
     </>
   );
 }
-
-const sidebarContent = (person: any) => [
-  {
-    title: "Erfaring",
-    value: (
-      <div className="flex items-center gap-2">
-        <RiBriefcaseLine className="size-4" />
-        <span>{person.yearsExperience} år</span>
-      </div>
-    ),
-  },
-  {
-    title: "Utdanning",
-    value: (
-      <div className="space-y-2">
-        {person.education.map((edu: any, idx: number) => (
-          <div key={idx} className="flex items-start gap-2">
-            <RiGraduationCapLine className="size-4 mt-0.5 shrink-0" />
-            <div>
-              <div>{edu.degree}</div>
-              <div className="text-xs text-warm-white/40">
-                {edu.school}, {edu.year}
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
-    ),
-  },
-  {
-    title: "Sertifiseringer",
-    value: (
-      <div className="space-y-2">
-        {person.certifications?.map((cert: string) => (
-          <div key={cert} className="flex items-start gap-2">
-            <RiAwardLine className="size-4 mt-0.5 shrink-0" />
-            <span>{cert}</span>
-          </div>
-        )) || "Ingen"}
-      </div>
-    ),
-  },
-  {
-    title: "Spesialiseringer",
-    value: (
-      <ul className="space-y-1">
-        {person.specializations.map((spec: string) => (
-          <li key={spec}>• {spec}</li>
-        ))}
-      </ul>
-    ),
-  },
-];

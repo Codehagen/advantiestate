@@ -3,9 +3,9 @@ import { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import MaxWidthWrapper from "@/components/blog/max-width-wrapper";
 import { MDX } from "@/components/blog/mdx";
-import BlurImage from "@/lib/blog/blur-image";
+import { CtaStrip } from "@/components/site/CtaStrip";
+import { ProseShell } from "@/components/site/ProseShell";
 import { getBlurDataURL } from "@/lib/blog/images";
 import { constructMetadata } from "@/lib/utils";
 
@@ -19,6 +19,102 @@ const CUSTOMER_STORY_ALIASES: Record<string, string> = {
 function resolveCustomerSlug(slug: string) {
   return CUSTOMER_STORY_ALIASES[slug] ?? slug;
 }
+
+// Editorial presentation extras for the case study layout. Optional — any
+// customer not listed still renders fully from the content collection.
+const PRESENTATION: Record<
+  string,
+  {
+    eyebrow: string;
+    heroImage: string;
+    heroImageAlt: string;
+    metaPeriod: string;
+    metaService?: string;
+    metaProperty?: string;
+    metaLocation?: string;
+    results?: { value: string; unit?: string; label: string }[];
+    advisors?: { name: string; role: string; avatar: string; slug?: string }[];
+  }
+> = {
+  corponor: {
+    eyebrow: "Case study · 2024",
+    heroImage: "/building/pexels-pixabay-248877.jpg",
+    heroImageAlt: "Corponor utviklingsprosjekt, Bodø sentrum",
+    metaPeriod: "2024 · 4 måneder",
+    metaService: "Salg & Transaksjonsrådgivning",
+    metaProperty: "8 000 m² utviklingsprosjekt",
+    metaLocation: "Bodø sentrum",
+    results: [
+      {
+        value: "+15",
+        unit: "%",
+        label: "Over første tilbud — reflekterer prosjektets reelle verdi.",
+      },
+      {
+        value: "4",
+        unit: "mnd",
+        label: "Total prosesstid — mot estimerte 8 måneder.",
+      },
+      {
+        value: "200",
+        unit: "timer",
+        label: "Spart i intern arbeidstid for Corponor.",
+      },
+      {
+        value: "50",
+        unit: "mnok",
+        label: "Kapital frigjort for reinvestering i nye prosjekter.",
+      },
+    ],
+    advisors: [
+      {
+        name: "Christer Hagen",
+        role: "Partner · Lead",
+        avatar:
+          "https://imagedelivery.net/r-6-yk-gGPtjfbIST9-8uA/d08a8e8b-0285-4107-bc2c-973f93b27100/public",
+        slug: "christer-hagen",
+      },
+    ],
+  },
+  "investor-avkastning": {
+    eyebrow: "Case study · 2025",
+    heroImage: "/building/pexels-abshky-18566965.jpg",
+    heroImageAlt: "Investorportefølje av næringseiendom i Nord-Norge",
+    metaPeriod: "2025",
+    metaService: "Strategisk Rådgivning og Verdivurdering",
+    metaProperty: "Portefølje med 3 eiendommer",
+    metaLocation: "Nord-Norge",
+    results: [
+      {
+        value: "+25",
+        unit: "%",
+        label: "Høyere total avkastning på porteføljen.",
+      },
+      {
+        value: "+14",
+        unit: "%",
+        label: "Verdistigning gjennom strategisk optimalisering.",
+      },
+    ],
+  },
+  "tomgang-full-utleie": {
+    eyebrow: "Case study · 2025",
+    heroImage: "/building/pexels-abshky-18567185.jpg",
+    heroImageAlt: "Kontorbygg i Bodø sentrum",
+    metaPeriod: "2025 · 4 måneder",
+    metaService: "Utleieformidling og Markedsanalyse",
+    metaProperty: "1 200 m² kontorbygg",
+    metaLocation: "Bodø sentrum",
+    results: [
+      { value: "100", unit: "%", label: "Utleiegrad etter prosessen." },
+      {
+        value: "+50",
+        unit: "%",
+        label: "Verdistigning gjennom full utleie.",
+      },
+    ],
+  },
+};
 
 export async function generateStaticParams() {
   return [
@@ -70,7 +166,7 @@ export default async function CustomerStory({
     notFound();
   }
 
-  const [thumbnailBlurhash, images] = await Promise.all([
+  const [, images] = await Promise.all([
     getBlurDataURL(data.image),
     await Promise.all(
       data.images.map(async (src: string) => ({
@@ -80,135 +176,276 @@ export default async function CustomerStory({
     ),
   ]);
 
+  const pres = PRESENTATION[data.slug];
+  const companyInitial = data.company.charAt(0).toUpperCase();
+  const hasCompanyUrl =
+    !!data.companyUrl && data.companyUrl.trim().length > 0;
+  const companyUrlLabel = hasCompanyUrl
+    ? data.companyUrl.replace(/^https?:\/\//, "").replace(/\/$/, "")
+    : null;
+
   return (
     <>
-      <MaxWidthWrapper className="flex max-w-screen-lg flex-col py-10 pt-32 md:pt-40">
-        <div className="flex max-w-screen-md flex-col space-y-4">
-          <Link
-            href="/kunder"
-            className="text-sm text-warm-white/60 hover:text-warm-white/80"
-          >
-            ← Tilbake til kunder
-          </Link>
-          <h1 className="font-display text-3xl font-bold !leading-snug text-warm-white sm:text-4xl">
-            {data.title}
-          </h1>
-          <p className="text-xl text-warm-white/80">{data.summary}</p>
-        </div>
-      </MaxWidthWrapper>
+      <div className="page-pad" />
 
-      <div className="relative">
-        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-warm-grey-2/20 via-warm-grey-2/20 to-warm-grey-2/20" />
-        <MaxWidthWrapper className="grid max-w-screen-lg grid-cols-4 gap-10 py-10">
-          <div className="col-span-4 flex flex-col space-y-8 sm:col-span-3">
-            <BlurImage
-              className="aspect-[1200/630] rounded-xl object-cover"
-              src={data.image}
-              blurDataURL={thumbnailBlurhash}
-              width={1200}
-              height={630}
-              alt={data.title}
-              priority
-            />
-            <div className="grid grid-cols-2 gap-5 rounded-xl border border-warm-grey-2/20 bg-warm-grey-2/10 p-5 backdrop-blur-sm md:hidden">
-              <div className="col-span-2 flex items-center space-x-4 py-2">
-                <BlurImage
-                  className="h-12 w-12 rounded-full"
-                  src={data.companyLogo}
-                  alt={data.company}
-                  width={48}
-                  height={48}
-                />
-                <div className="flex flex-col">
-                  <p className="font-medium text-warm-white">{data.company}</p>
+      {/* HERO */}
+      <section className="subhero" style={{ paddingBottom: 0 }}>
+        <div className="wrap">
+          <nav className="crumb" aria-label="Brødsmuler">
+            <Link href="/">Hjem</Link>
+            <span className="sep">/</span>
+            <Link href="/kunder">Utvalgte oppdrag</Link>
+            <span className="sep">/</span>
+            <span className="here">{data.company}</span>
+          </nav>
+
+          <div className="op-hero">
+            <div>
+              <div className="company">
+                <div className="logo">{companyInitial}</div>
+                <div className="text">
+                  <strong>{data.company}</strong>
+                  <div>
+                    {data.companyIndustry}
+                    {pres?.metaLocation ? ` · ${pres.metaLocation}` : ""}
+                    {data.companyFounded
+                      ? ` · Etablert ${data.companyFounded}`
+                      : ""}
+                  </div>
+                </div>
+              </div>
+
+              {pres?.eyebrow && (
+                <span
+                  className="eyebrow"
+                  style={{ marginBottom: 24, display: "inline-flex" }}
+                >
+                  {pres.eyebrow}
+                </span>
+              )}
+              <h1>{data.title}</h1>
+              <p className="lead">{data.summary}</p>
+
+              <div
+                className="meta-strip"
+                style={{ gridTemplateColumns: "1fr 1fr" }}
+              >
+                <div>
+                  <div className="key">Tjeneste</div>
+                  <div className="val">{pres?.metaService ?? data.plan}</div>
+                </div>
+                {pres?.metaProperty && (
+                  <div>
+                    <div className="key">Eiendom</div>
+                    <div className="val">{pres.metaProperty}</div>
+                  </div>
+                )}
+                {pres?.metaLocation && (
+                  <div>
+                    <div className="key">Lokasjon</div>
+                    <div className="val">{pres.metaLocation}</div>
+                  </div>
+                )}
+                {pres?.metaPeriod && (
+                  <div>
+                    <div className="key">Periode</div>
+                    <div className="val">{pres.metaPeriod}</div>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {pres?.heroImage && (
+              <div className="img">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={pres.heroImage} alt={pres.heroImageAlt} />
+              </div>
+            )}
+          </div>
+        </div>
+      </section>
+
+      {/* RESULTS */}
+      {pres?.results && pres.results.length > 0 && (
+        <section className="op-results">
+          <div className="wrap">
+            <div className="head">
+              <div className="pre">Resultater</div>
+              <h2>
+                Oppnådd <span className="italic">resultat.</span>
+              </h2>
+            </div>
+            <div
+              className="kpis"
+              style={
+                pres.results.length < 4
+                  ? {
+                      gridTemplateColumns: `repeat(${pres.results.length}, 1fr)`,
+                    }
+                  : undefined
+              }
+            >
+              {pres.results.map((result) => (
+                <div className="k" key={result.label}>
+                  <div className="v">
+                    {result.value}
+                    {result.unit && (
+                      <span className="unit">{result.unit}</span>
+                    )}
+                  </div>
+                  <div className="l">{result.label}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* BODY */}
+      <section className="section-tight" style={{ paddingTop: 64 }}>
+        <div className="wrap">
+          <div className="ks-article">
+            <article className="ks-art-body" style={{ maxWidth: 760 }}>
+              <ProseShell>
+                <MDX code={data.mdx} images={images} />
+              </ProseShell>
+            </article>
+
+            {/* SIDEBAR */}
+            <aside className="ks-toc">
+              <div className="toc-label">Klient</div>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: 4,
+                  paddingBottom: 24,
+                  borderBottom: "var(--hairline)",
+                  marginBottom: 24,
+                }}
+              >
+                <strong style={{ fontWeight: 500 }}>{data.company}</strong>
+                <span
+                  style={{
+                    fontSize: 12.5,
+                    color: "var(--warm-grey-85)",
+                  }}
+                >
+                  {data.companyIndustry}
+                </span>
+                {hasCompanyUrl && (
                   <a
                     href={data.companyUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-sm text-warm-white/60 underline-offset-4 hover:text-warm-white/80 hover:underline"
+                    style={{ marginTop: 8, fontSize: 12 }}
                   >
-                    {data.companyUrl}
+                    {companyUrlLabel} →
                   </a>
-                </div>
+                )}
               </div>
-              {sidebarContent.map(({ title, value }) => (
-                <div
-                  key={title}
-                  className={`col-span-1 flex flex-col space-y-2 ${
-                    title === "Om bedriften" ? "col-span-2" : ""
-                  }`}
-                >
-                  <p className="font-medium text-warm-white">{title}</p>
-                  <p className="text-sm text-warm-white/60">
-                    {data[value as keyof typeof data]}
+
+              {data.companyFounded && (
+                <>
+                  <div className="toc-label">Etablert</div>
+                  <p
+                    style={{
+                      fontFamily: "var(--font-display)",
+                      fontSize: 28,
+                      fontWeight: 400,
+                      letterSpacing: "-0.018em",
+                      paddingBottom: 24,
+                      borderBottom: "var(--hairline)",
+                      marginBottom: 24,
+                    }}
+                  >
+                    {data.companyFounded}
                   </p>
-                </div>
-              ))}
-            </div>
-            <MDX
-              code={data.mdx}
-              images={images}
-              className="prose prose-invert prose-warm-grey max-w-none px-0 pb-20 pt-4"
-            />
-          </div>
-          <div className="sticky top-32 col-span-1 mt-0 hidden flex-col divide-y divide-warm-grey-2/20 self-start p-4 backdrop-blur-sm md:flex">
-            <div className="flex items-center space-x-4 pb-4">
-              <BlurImage
-                className="h-12 w-12 rounded-full"
-                src={data.companyLogo}
-                alt={data.company}
-                width={48}
-                height={48}
-              />
-              <div className="flex flex-col">
-                <p className="font-medium text-warm-white">{data.company}</p>
-                <a
-                  href={data.companyUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-sm text-warm-white/60 underline-offset-4 hover:text-warm-white/80 hover:underline"
-                >
-                  {data.companyUrl}
-                </a>
-              </div>
-            </div>
-            {sidebarContent.map(({ title, value }) => (
-              <div
-                key={title}
-                className="flex flex-col space-y-1 py-4 first:pt-4 last:pb-0"
+                </>
+              )}
+
+              <div className="toc-label">Selskapsstørrelse</div>
+              <p
+                style={{
+                  fontFamily: "var(--font-display)",
+                  fontSize: 28,
+                  fontWeight: 400,
+                  letterSpacing: "-0.018em",
+                  paddingBottom: 24,
+                  borderBottom: "var(--hairline)",
+                  marginBottom: 24,
+                }}
               >
-                <p className="font-medium text-warm-white">{title}</p>
-                <p className="text-sm text-warm-white/60">
-                  {data[value as keyof typeof data]}
-                </p>
-              </div>
-            ))}
+                {data.companySize}
+              </p>
+
+              <div className="toc-label">Tjeneste levert</div>
+              <p
+                style={{
+                  fontSize: 13,
+                  color: "var(--warm-grey-85)",
+                  lineHeight: 1.55,
+                  paddingBottom: 24,
+                  borderBottom: "var(--hairline)",
+                  marginBottom: 24,
+                }}
+              >
+                {data.plan}
+              </p>
+
+              {pres?.advisors && pres.advisors.length > 0 && (
+                <>
+                  <div className="toc-label">Rådgivere</div>
+                  <div className="cy-side-team">
+                    {pres.advisors.map((advisor) => {
+                      const card = (
+                        <>
+                          <div
+                            className="av"
+                            style={{
+                              backgroundImage: `url('${advisor.avatar}')`,
+                            }}
+                          />
+                          <div>
+                            <div className="name">{advisor.name}</div>
+                            <div className="role">{advisor.role}</div>
+                          </div>
+                        </>
+                      );
+                      return advisor.slug ? (
+                        <Link
+                          key={advisor.name}
+                          className="member"
+                          href={`/personer/${advisor.slug}`}
+                        >
+                          {card}
+                        </Link>
+                      ) : (
+                        <div key={advisor.name} className="member">
+                          {card}
+                        </div>
+                      );
+                    })}
+                  </div>
+                </>
+              )}
+            </aside>
           </div>
-        </MaxWidthWrapper>
-      </div>
+        </div>
+      </section>
+
+      <CtaStrip
+        eyebrow="Har du et lignende oppdrag?"
+        title={
+          <>
+            Snakk med en partner <br />
+            <span className="italic">om ditt prosjekt.</span>
+          </>
+        }
+        sub="Vi tar en konfidensiell samtale uten forpliktelser. Lever en kort beskrivelse av prosjektet, så foreslår vi neste steg."
+        primary={{ label: "Send henvendelse", href: "/kontakt" }}
+        secondary={{ label: "Se flere oppdrag", href: "/kunder" }}
+      />
     </>
   );
 }
-
-const sidebarContent = [
-  {
-    title: "Om bedriften",
-    value: "companyDescription",
-  },
-  {
-    title: "Bransje",
-    value: "companyIndustry",
-  },
-  {
-    title: "Selskapsstørrelse",
-    value: "companySize",
-  },
-  {
-    title: "Stiftet",
-    value: "companyFounded",
-  },
-  {
-    title: "Tjeneste levert",
-    value: "plan",
-  },
-];

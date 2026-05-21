@@ -1,8 +1,10 @@
-import CategoryCard from "@/components/blog/category-card"
-import HelpArticleLink from "@/components/blog/help-article-link"
-import MaxWidthWrapper from "@/components/blog/max-width-wrapper"
-import SearchButton from "@/components/blog/search-button"
+import { allHelpPosts } from "content-collections"
+import Link from "next/link"
+
+import { CtaStrip } from "@/components/site/CtaStrip"
+import { SubHero } from "@/components/site/SubHero"
 import { getPopularArticles, HELP_CATEGORIES } from "@/lib/blog/content"
+import { calculateReadingTime } from "@/lib/blog/utils"
 import { constructMetadata } from "@/lib/utils"
 
 export const metadata = constructMetadata({
@@ -11,52 +13,133 @@ export const metadata = constructMetadata({
     "Et sentralt knutepunkt for alle dine næringseiendoms-relaterte spørsmål. Finn svar på vanlige spørsmål, lær hvordan du bruker plattformen, og få ekspertråd.",
 })
 
+function categoryTitle(slug?: string) {
+  return HELP_CATEGORIES.find((c) => c.slug === slug)?.title ?? "Artikkel"
+}
+
 export default function HelpCenter() {
   const popularArticles = getPopularArticles()
+
   return (
     <>
-      <MaxWidthWrapper className="max-w-screen-lg pt-32 md:pt-40">
-        <div className="flex flex-col space-y-4 py-10">
-          <h1 className="font-display pb-4 text-xl font-bold text-warm-grey sm:text-3xl dark:text-warm-white">
-            👋 Hvordan kan vi hjelpe deg i dag?
-          </h1>
-          <SearchButton />
-        </div>
-      </MaxWidthWrapper>
+      <SubHero
+        crumb={[{ label: "Hjem", href: "/" }, { label: "Kunnskapssenter" }]}
+        eyebrow="Lær næringseiendom"
+        title={
+          <>
+            Forstå næringseiendom — <br />
+            <span className="italic">begrep, metode, marked.</span>
+          </>
+        }
+        lede="Et åpent kunnskapssenter for alle som jobber med næringseiendom i Nord-Norge. Konkrete forklaringer av yield, verdivurdering, DCF og leiemarkedet — uten faglig støy."
+      />
 
-      <div className="relative">
-        <div className="absolute top-28 h-full w-full border-t border-warm-grey-2/20" />
-        <MaxWidthWrapper className="relative max-w-screen-lg pb-20">
-          <div className="relative z-10 mb-10 rounded-xl border border-warm-grey-2/20 bg-warm-grey-2/10 p-6 backdrop-blur-sm">
-            <h2 className="font-display text-2xl font-bold text-warm-grey dark:text-warm-white">
-              Populære artikler
-            </h2>
-            <div className="mt-4 grid gap-2 md:grid-cols-2">
-              {popularArticles.map((article) => (
-                <HelpArticleLink key={article.slug} article={article} />
-              ))}
+      {/* POPULAR ARTICLES */}
+      <section
+        className="section-tight"
+        style={{ paddingTop: 16, paddingBottom: 48 }}
+      >
+        <div className="wrap">
+          <div className="ks-popular">
+            <div className="ribbon-head">
+              <h2>
+                Populære artikler <span className="italic">akkurat nå.</span>
+              </h2>
+              <span className="eyebrow" style={{ fontSize: 11 }}>
+                Mest leste
+              </span>
+            </div>
+
+            <div className="ks-popular-grid">
+              {popularArticles.map((article, idx) => {
+                const readingTime = article.mdx
+                  ? calculateReadingTime(article.mdx)
+                  : null
+                return (
+                  <Link
+                    key={article.slug}
+                    className="ks-popular-item"
+                    href={`/help/article/${article.slug}`}
+                  >
+                    <span className="num">
+                      {String(idx + 1).padStart(2, "0")}
+                    </span>
+                    <div>
+                      <h4>{article.title}</h4>
+                      <div className="meta">
+                        {categoryTitle(article.categories[0])}
+                        {readingTime ? ` · ${readingTime} min lesing` : ""}
+                      </div>
+                    </div>
+                    <span className="arrow">→</span>
+                  </Link>
+                )
+              })}
             </div>
           </div>
-          <div className="relative z-0 grid gap-4 sm:grid-cols-2 md:grid-cols-3">
-            {HELP_CATEGORIES.map((category) => (
-              <CategoryCard
-                key={category.slug}
-                href={`/help/category/${category.slug}`}
-                name={category.title}
-                description={category.description}
-                icon={category.icon}
-                pattern={{
-                  y: 16,
-                  squares: [
-                    [0, 1],
-                    [1, 3],
-                  ],
-                }}
-              />
-            ))}
+        </div>
+      </section>
+
+      {/* CATEGORIES */}
+      <section className="section" style={{ paddingTop: 48 }}>
+        <div className="wrap">
+          <div className="head-compact">
+            <span className="eyebrow">Kategorier</span>
+            <div>
+              <h2>
+                Utforsk etter <span className="italic">tema.</span>
+              </h2>
+              <p>
+                Vi har samlet alt vi vet om næringseiendom i tematiske
+                kategorier — fra grunnleggende begreper til avanserte
+                analysemetoder.
+              </p>
+            </div>
           </div>
-        </MaxWidthWrapper>
-      </div>
+
+          <div className="ks-cats">
+            {HELP_CATEGORIES.map((category, idx) => {
+              const count = allHelpPosts.filter((post) =>
+                (post.categories as string[]).includes(category.slug),
+              ).length
+              return (
+                <Link
+                  key={category.slug}
+                  className="ks-cat"
+                  href={`/help/category/${category.slug}`}
+                >
+                  <span className="pre">
+                    Kategori · {String(idx + 1).padStart(2, "0")}
+                  </span>
+                  <h3>{category.title}</h3>
+                  <p>{category.description}</p>
+                  <div className="cfoot">
+                    <span className="count">
+                      {count} {count === 1 ? "artikkel" : "artikler"}
+                    </span>
+                    <span className="more">
+                      Utforsk <span>→</span>
+                    </span>
+                  </div>
+                </Link>
+              )
+            })}
+          </div>
+        </div>
+      </section>
+
+      <CtaStrip
+        eyebrow="Fant du ikke svaret?"
+        title={
+          <>
+            Snakk med en <br />
+            <span className="italic">erfaren rådgiver.</span>
+          </>
+        }
+        sub="Vi setter av tid til en uforpliktende samtale. Ingen forpliktelser, og du får svar direkte fra en senior partner."
+        primary={{ label: "Ta kontakt", href: "/kontakt" }}
+        secondary={{ label: "Se våre tjenester", href: "/tjenester" }}
+      />
     </>
   )
 }

@@ -21,46 +21,10 @@ const CustomLink = (props: any) => {
   return <a target="_blank" rel="noopener noreferrer" {...props} />;
 };
 
+// Plain elements so the editorial `.pe-main` typography from the design
+// stylesheet applies (h2 / p / ul styling defined globally).
 const components = {
-  h2: (props: any) => (
-    <h2
-      className="mb-4 mt-8 text-2xl font-semibold text-warm-grey dark:text-warm-white"
-      {...props}
-    />
-  ),
-  h3: (props: any) => (
-    <h3
-      className="mb-3 mt-6 text-xl font-medium text-warm-grey dark:text-warm-white"
-      {...props}
-    />
-  ),
-  a: (props: any) => (
-    <CustomLink
-      className="font-medium text-warm-grey-2 underline underline-offset-4 hover:text-warm-grey dark:text-warm-grey-1 dark:hover:text-warm-white"
-      {...props}
-    />
-  ),
-  p: (props: any) => (
-    <p
-      className="my-4 text-base leading-relaxed text-warm-grey-2 dark:text-warm-grey-1"
-      {...props}
-    />
-  ),
-  li: (props: any) => (
-    <li
-      className="mb-2 text-base leading-relaxed text-warm-grey-2 dark:text-warm-grey-1"
-      {...props}
-    />
-  ),
-  ul: (props: any) => (
-    <ul className="my-2 list-disc space-y-2 pl-6" {...props} />
-  ),
-  ol: (props: any) => (
-    <ol className="my-2 list-decimal space-y-2 pl-6" {...props} />
-  ),
-  strong: (props: any) => (
-    <strong className="font-semibold text-warm-grey dark:text-warm-white" {...props} />
-  ),
+  a: (props: any) => <CustomLink {...props} />,
 };
 
 interface PersonMDXProps {
@@ -68,9 +32,5 @@ interface PersonMDXProps {
 }
 
 export function PersonMDX({ code }: PersonMDXProps) {
-  return (
-    <article className="prose prose-lg max-w-none dark:prose-invert">
-      <MDXContent code={code} components={components} />
-    </article>
-  );
+  return <MDXContent code={code} components={components} />;
 }
