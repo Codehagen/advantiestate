@@ -80,3 +80,4 @@ tsconfig.tsbuildinfo
 /playwright/.cache/
 .gstack/
 .agents/
+.vercel
