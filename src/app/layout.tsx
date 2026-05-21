@@ -1,16 +1,19 @@
 import { GoogleTagManager } from "@/components/analytics/GoogleTagManager";
 import { TrackingListener } from "@/components/analytics/TrackingListener";
-import Footer from "@/components/ui/Footer";
-import { Navigation } from "@/components/ui/Navbar";
+import { Footer } from "@/components/site/Footer";
+import { Nav } from "@/components/site/Nav";
 import { constructMetadata } from "@/lib/utils";
-import { ThemeProvider } from "next-themes";
 import { Inter } from "next/font/google";
 import StructuredData from "@/components/StructuredData";
 import "./globals.css";
 
+// D3: Inter for both body and display. The italic axis is mandatory — every
+// editorial heading uses an italic-flourish span. var(--font-inter) is read by
+// the design system's --font-display / --font-body tokens (advanti-design.css).
 const inter = Inter({
   subsets: ["latin"],
   display: "swap",
+  style: ["normal", "italic"],
   variable: "--font-inter",
 });
 
@@ -26,26 +29,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="nb" suppressHydrationWarning>
+    <html lang="nb" className={inter.variable}>
       <head>
         <StructuredData type="organization" />
         <StructuredData type="realEstateAgent" />
         <StructuredData type="website" />
       </head>
-      <body
-        className={`${inter.className} min-h-screen scroll-auto antialiased selection:bg-light-blue selection:text-warm-grey dark:bg-warm-grey dark:selection:bg-light-blue dark:selection:text-warm-grey`}
-      >
+      <body className="min-h-screen antialiased selection:bg-light-blue selection:text-warm-grey">
         <GoogleTagManager />
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="dark"
-          disableTransitionOnChange
-        >
-          <TrackingListener />
-          <Navigation />
-          {children}
-          <Footer />
-        </ThemeProvider>
+        <TrackingListener />
+        <Nav />
+        {children}
+        <Footer />
       </body>
     </html>
   );

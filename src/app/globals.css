@@ -1,3 +1,8 @@
+/* Advanti editorial design system — ported from Claude Design handoff.
+   Imported first so Tailwind base/components/utilities cascade after it;
+   page layout uses the design's semantic classes, utilities win one-off tweaks. */
+@import "../styles/advanti-design.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -8,13 +13,8 @@
     --foreground: 44 40 37;
   }
   
-  .dark {
-    --background: 44 40 37;
-    --foreground: 243 241 239;
-  }
-  
   body {
-    @apply bg-warm-white text-warm-grey dark:bg-warm-grey dark:text-warm-white;
+    @apply bg-warm-white text-warm-grey;
   }
 }
 

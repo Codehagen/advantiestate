@@ -24,8 +24,15 @@ const config: Config = {
         "warm-grey-1": "#d7d0c8",
         "light-blue-2": "#e7f5f7",
         "light-blue-1": "#f4fafb",
+
+        // Design-system aliases (match the editorial design's token vocabulary)
+        "warm-grey-85": "#57504a",
+        "warm-grey-75": "#d7d0c8",
       },
       fontFamily: {
+        // D3: Inter for both display and body. var(--font-inter) is set by next/font.
+        sans: ["var(--font-inter)", "Inter", "system-ui", "sans-serif"],
+        display: ["var(--font-inter)", "Inter", "system-ui", "sans-serif"],
         handwriting: ["NanumPenScript"],
       },
       keyframes: {
