@@ -383,10 +383,10 @@ h1, h2, h3 {
    ============================================================ */
 .section-head {
   display: grid;
-  grid-template-columns: 1fr 1.6fr;
-  gap: 80px;
+  grid-template-columns: 1fr;
+  gap: 28px;
   padding-bottom: 80px;
-  align-items: end;
+  align-items: start;
 }
 .section-head .left { display: flex; flex-direction: column; gap: 24px; }
 .section-head h2 {
@@ -403,7 +403,7 @@ h1, h2, h3 {
   max-width: 52ch;
 }
 @media (max-width: 880px) {
-  .section-head { grid-template-columns: 1fr; gap: 28px; padding-bottom: 48px; }
+  .section-head { padding-bottom: 48px; }
 }
 
 .services {
