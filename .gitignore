@@ -79,3 +79,4 @@ tsconfig.tsbuildinfo
 /blob-report/
 /playwright/.cache/
 .gstack/
+.vercel
