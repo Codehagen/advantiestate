@@ -1,3 +1,5 @@
+import { allPersonPosts } from "content-collections";
+
 import ContactUsForm from "@/components/ContactUsForm";
 import { SubHero } from "@/components/site/SubHero";
 import { constructMetadata } from "@/lib/utils";
@@ -8,7 +10,20 @@ export const metadata = constructMetadata({
     "Trenger du hjelp med salg eller verdivurdering av næringseiendom i Nord-Norge? Kontakt Advanti for en uforpliktende samtale. Vi hjelper eiendomsbesittere med å oppnå best mulig resultat.",
 });
 
+// Direkte kontaktpersoner. Navn, tittel, bilde, e-post og telefon hentes fra
+// people-samlingen (src/content/people) slik at kortene ikke kan drifte fra
+// /personer — kun kontoret er sidespesifikt.
+const CONTACT_PEOPLE = [
+  { slug: "christer-hagen", office: "Bodø" },
+  { slug: "havard-nome", office: "Alta" },
+];
+
 export default function KontaktPage() {
+  const team = CONTACT_PEOPLE.map(({ slug, office }) => {
+    const person = allPersonPosts.find((p) => p.slug === slug);
+    return person ? { ...person, office } : null;
+  }).filter((p): p is NonNullable<typeof p> => p !== null);
+
   return (
     <>
       <SubHero
@@ -247,138 +262,76 @@ export default function KontaktPage() {
             className="team"
             style={{ gridTemplateColumns: "repeat(2, 1fr)", gap: 48 }}
           >
-            <div
-              className="member"
-              style={{
-                flexDirection: "row",
-                gap: 24,
-                alignItems: "center",
-              }}
-            >
+            {team.map((person) => (
               <div
-                className="portrait"
+                key={person.slug}
+                className="member"
                 style={{
-                  width: 140,
-                  height: 175,
-                  flexShrink: 0,
-                  backgroundImage:
-                    "url('https://imagedelivery.net/r-6-yk-gGPtjfbIST9-8uA/d08a8e8b-0285-4107-bc2c-973f93b27100/public')",
-                  backgroundSize: "cover",
-                  backgroundPosition: "center",
+                  flexDirection: "row",
+                  gap: 24,
+                  alignItems: "center",
                 }}
-              />
-              <div
-                style={{ display: "flex", flexDirection: "column", gap: 6 }}
               >
-                <span
-                  style={{
-                    fontSize: 11,
-                    letterSpacing: "0.18em",
-                    textTransform: "uppercase",
-                    color: "var(--warm-grey-85)",
-                  }}
-                >
-                  Bodø
-                </span>
-                <h3
-                  style={{
-                    fontFamily: "var(--font-display)",
-                    fontSize: 28,
-                    fontWeight: 400,
-                    letterSpacing: "-0.018em",
-                  }}
-                >
-                  Christer Hagen
-                </h3>
                 <div
+                  className="portrait"
                   style={{
-                    fontSize: 14,
-                    color: "var(--warm-grey-85)",
-                    marginBottom: 12,
+                    width: 140,
+                    height: 175,
+                    flexShrink: 0,
+                    backgroundImage: `url('${person.avatar}')`,
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
                   }}
-                >
-                  Partner &amp; daglig leder
-                </div>
-                <a
-                  href="tel:+4798453571"
-                  style={{ fontSize: 15, fontWeight: 500 }}
-                >
-                  +47 984 53 571
-                </a>
-                <a
-                  href="mailto:Christer@advanti.no"
-                  style={{ fontSize: 14.5, color: "var(--warm-grey-85)" }}
-                >
-                  Christer@advanti.no
-                </a>
-              </div>
-            </div>
-
-            <div
-              className="member"
-              style={{
-                flexDirection: "row",
-                gap: 24,
-                alignItems: "center",
-              }}
-            >
-              <div
-                className="portrait"
-                style={{
-                  width: 140,
-                  height: 175,
-                  flexShrink: 0,
-                  backgroundImage: "url('/havard.jpg')",
-                  backgroundSize: "cover",
-                  backgroundPosition: "center",
-                }}
-              />
-              <div
-                style={{ display: "flex", flexDirection: "column", gap: 6 }}
-              >
-                <span
-                  style={{
-                    fontSize: 11,
-                    letterSpacing: "0.18em",
-                    textTransform: "uppercase",
-                    color: "var(--warm-grey-85)",
-                  }}
-                >
-                  Alta
-                </span>
-                <h3
-                  style={{
-                    fontFamily: "var(--font-display)",
-                    fontSize: 28,
-                    fontWeight: 400,
-                    letterSpacing: "-0.018em",
-                  }}
-                >
-                  Håvard Nome
-                </h3>
+                />
                 <div
-                  style={{
-                    fontSize: 14,
-                    color: "var(--warm-grey-85)",
-                    marginBottom: 12,
-                  }}
+                  style={{ display: "flex", flexDirection: "column", gap: 6 }}
                 >
-                  Næringseiendomskonsulent
+                  <span
+                    style={{
+                      fontSize: 11,
+                      letterSpacing: "0.18em",
+                      textTransform: "uppercase",
+                      color: "var(--warm-grey-85)",
+                    }}
+                  >
+                    {person.office}
+                  </span>
+                  <h3
+                    style={{
+                      fontFamily: "var(--font-display)",
+                      fontSize: 28,
+                      fontWeight: 400,
+                      letterSpacing: "-0.018em",
+                    }}
+                  >
+                    {person.name}
+                  </h3>
+                  <div
+                    style={{
+                      fontSize: 14,
+                      color: "var(--warm-grey-85)",
+                      marginBottom: 12,
+                    }}
+                  >
+                    {person.role}
+                  </div>
+                  <a
+                    href={`tel:${person.phone.replace(/\s+/g, "")}`}
+                    style={{ fontSize: 15, fontWeight: 500 }}
+                  >
+                    {person.phone}
+                  </a>
+                  {person.email && (
+                    <a
+                      href={`mailto:${person.email}`}
+                      style={{ fontSize: 14.5, color: "var(--warm-grey-85)" }}
+                    >
+                      {person.email}
+                    </a>
+                  )}
                 </div>
-                <a
-                  href="tel:+4798038737"
-                  style={{ fontSize: 15, fontWeight: 500 }}
-                >
-                  +47 980 38 737
-                </a>
-                <a
-                  href="mailto:Havard@advanti.no"
-                  style={{ fontSize: 14.5, color: "var(--warm-grey-85)" }}
-                >
-                  Havard@advanti.no
-                </a>
               </div>
-            </div>
+            ))}
           </div>
         </div>
       </section>

@@ -7,11 +7,12 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 **Advanti** - A commercial real estate platform for Northern Norway, specializing in property valuation, brokerage, market analysis, and transaction advisory. The platform provides sophisticated financial modeling (DCF analysis, yield calculations) and data-driven insights for commercial properties (næringseiendom).
 
 **Tech Stack:**
-- Next.js 15.3.2 (App Router) with TypeScript
+- Next.js 16.1.4 (App Router) with TypeScript
 - React 19.0.0
 - Tailwind CSS with custom design system
 - Content Collections for MDX content management
-- Mapbox GL for property visualization
+- Recharts for data visualization
+- Leaflet + react-leaflet (CartoDB tiles) for map visualization
 - pnpm package manager
 
 ## Design System
@@ -65,7 +66,6 @@ src/
 ├── components/
 │   ├── ui/                       # Base UI components (shadcn-style)
 │   ├── advanti/                 # Domain-specific components
-│   │   ├── eiendom/              # Property-related components (PropertyMap)
 │   │   ├── exit-strategi/        # Exit strategy components
 │   │   ├── finansiering/         # Financing components
 │   │   ├── leietakere/           # Tenant components
@@ -77,6 +77,8 @@ src/
 │   │   ├── YieldLineChart.tsx    # Yield calculation charts
 │   │   └── FeatureShowcase.tsx   # Feature display components
 │   ├── markedsinnsikt/           # Market insight components
+│   │   ├── charts/               # Recharts bar/line charts + shared theme
+│   │   └── maps/                 # Leaflet maps (CartoDB tiles), client-only loaded
 │   ├── blog/                     # Blog components
 │   ├── forms/                    # Form components
 │   └── data/                     # Data table components
@@ -189,9 +191,9 @@ Remote image patterns allowed:
 
 1. **Adding New Service Pages**: Create under `src/app/tjenester/[service-name]/page.tsx`
 2. **Creating Blog Content**: Add MDX files to `src/content/blog/` with required frontmatter (title, categories, publishedAt, image, author, summary)
-3. **Building Charts**: Extend chart components in `src/components/` using existing patterns (DcfChart, YieldLineChart)
-4. **Map Features**: Use Mapbox GL components in `src/components/advanti/eiendom/PropertyMap.tsx`
-5. **Market Analysis**: Components in `src/components/markedsinnsikt/` and `src/components/advanti/marked/`
+3. **Building Charts**: Extend chart components in `src/components/` using existing patterns (DcfChart, and the Recharts charts in `src/components/markedsinnsikt/charts/`)
+4. **Map Features**: Use the Leaflet map components in `src/components/markedsinnsikt/maps/` (client-only, CartoDB tiles)
+5. **Market Analysis**: Components in `src/components/markedsinnsikt/`
 
 ## Key Technical Patterns
 
@@ -207,9 +209,11 @@ Remote image patterns allowed:
 - Shared utilities in `lib/`
 - Server actions in `app/actions/`
 
-### Mapbox Integration
-- Coordinate transformations in `lib/coordinateUtils.ts`
-- Property visualization in `components/advanti/eiendom/PropertyMap.tsx`
+### Map Integration
+- Maps use Leaflet + react-leaflet with CartoDB tiles
+- Map components in `components/markedsinnsikt/maps/` (client-only loaded; see `MarkedsKartClient.tsx`)
+- Map failures are contained by `MapErrorBoundary.tsx` and a route-level `error.tsx`
+- Coordinate transformations in `lib/coordinateUtils.ts` (proj4)
 
 ### Financial Modeling
 - DCF analysis charts in `DcfChart.tsx`

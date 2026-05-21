@@ -21,7 +21,49 @@ Deferred work captured during the editorial redesign port (/plan-eng-review, 202
 
 ---
 
+## TODO 5 — Move markedsinnsikt data to content collections
+
+- **What:** The 20-quarter series, six cities and the two Bodø price zones are
+  hardcoded in `MarkedsinnsiktShell.tsx` / `MarkedsKartLeaflet.tsx`. Move them to
+  a typed Content Collection.
+- **Why:** Editing market data should not require a code change; a collection
+  makes the quarterly refresh a content edit.
+- **Context:** Deferred from the markedsinnsikt charts/maps rebuild
+  (/plan-eng-review, 2026-05-21). Separate body of work — the rebuild kept the
+  data in place.
+
+---
+
+## TODO 6 — Make /kart price-zone selection keyboard- and touch-accessible
+
+- **What:** On `/markedsinnsikt/kart` the zone-info panel opens on hover only
+  (`mouseover`/`mouseout`). Touch taps flicker it; keyboard users cannot reach it.
+- **Why:** Zone pricing is currently mouse-only. Add click/tap-to-select and a
+  keyboard path (e.g. a zone list).
+- **Context:** Carried over from the Mapbox version's hover-only pattern; flagged
+  by the ship adversarial review, 2026-05-21. Not a regression, but a real gap.
+
+---
+
+## TODO 7 — Refresh stale dated copy on markedsinnsikt
+
+- **What:** The page shows "OPPDATERT 14. JAN 2026" and "Neste utgave 15. april
+  2026" — both already past.
+- **Why:** Stale dates undercut the page whose whole purpose is data credibility.
+- **Context:** Content fix, owner's call. Flagged during the charts/maps rebuild.
+
+---
+
 ## Completed
+
+### TODO 8 — Fix the stale Next.js version in CLAUDE.md
+
+- **What:** `CLAUDE.md` said "Next.js 15.3.2"; `package.json` is on `16.1.4`.
+- **Outcome:** Done. Tech Stack section in `CLAUDE.md` updated to `Next.js 16.1.4`.
+  Same pass also corrected the now-stale Mapbox references — the Mapbox
+  integration section, the `eiendom/PropertyMap.tsx` mentions, and the chart/map
+  workflow notes — to match the Recharts + Leaflet rebuild.
+- **Completed:** 2026-05-21 (branch `design/markedsinnsikt-recharts-leaflet`).
 
 ### TODO 2 — Repo-wide dark-mode teardown
 
