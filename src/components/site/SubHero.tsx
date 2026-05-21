@@ -26,6 +26,8 @@ export interface SubHeroProps {
   metaRow?: SubHeroMeta[];
   photo?: { src: string; alt: string };
   actions?: SubHeroAction[];
+  /** Extra content rendered in the left column, just below the lede. */
+  children?: ReactNode;
 }
 
 /**
@@ -42,6 +44,7 @@ export function SubHero({
   metaRow,
   photo,
   actions,
+  children,
 }: SubHeroProps) {
   return (
     <>
@@ -73,6 +76,8 @@ export function SubHero({
               )}
               <h1>{title}</h1>
               {lede && <p className="lede">{lede}</p>}
+
+              {children}
 
               {actions && actions.length > 0 && (
                 <div className="hero-cta-row">

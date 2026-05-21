@@ -1,6 +1,7 @@
 import { allHelpPosts } from "content-collections"
 import Link from "next/link"
 
+import { HelpSearch } from "@/components/help/HelpSearch"
 import { CtaStrip } from "@/components/site/CtaStrip"
 import { SubHero } from "@/components/site/SubHero"
 import { getPopularArticles, HELP_CATEGORIES } from "@/lib/blog/content"
@@ -20,6 +21,15 @@ function categoryTitle(slug?: string) {
 export default function HelpCenter() {
   const popularArticles = getPopularArticles()
 
+  // Lightweight client-side search index — title/summary/category only, so the
+  // compiled MDX never ships to the browser.
+  const searchIndex = allHelpPosts.map((post) => ({
+    slug: post.slug ?? "",
+    title: post.title,
+    summary: post.summary,
+    category: categoryTitle(post.categories[0]),
+  }))
+
   return (
     <>
       <SubHero
@@ -32,7 +42,9 @@ export default function HelpCenter() {
           </>
         }
         lede="Et åpent kunnskapssenter for alle som jobber med næringseiendom i Nord-Norge. Konkrete forklaringer av yield, verdivurdering, DCF og leiemarkedet — uten faglig støy."
-      />
+      >
+        <HelpSearch index={searchIndex} />
+      </SubHero>
 
       {/* POPULAR ARTICLES */}
       <section

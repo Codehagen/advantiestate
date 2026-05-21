@@ -4,7 +4,7 @@
 // Ported from advanti/markedsinnsikt.html + markedsinnsikt.js.
 // Holds the sector sidebar nav, sub-tabs, datasets and the six content views.
 
-import { Fragment, useState } from "react"
+import { Fragment, useEffect, useState } from "react"
 import Link from "next/link"
 import {
   BarChart,
@@ -964,6 +964,27 @@ function RapporterView() {
 export function MarkedsinnsiktShell() {
   const [sector, setSector] = useState<SectorId>("yield")
 
+  // Deep-linking: honour /markedsinnsikt#<sector> on load and on back/forward
+  // navigation. The hash is kept in sync as the user switches sectors below.
+  useEffect(() => {
+    const isSector = (h: string): h is SectorId =>
+      SECTORS.some((s) => s.id === h)
+
+    const applyHash = () => {
+      const hash = window.location.hash.slice(1)
+      if (isSector(hash)) setSector(hash)
+    }
+
+    applyHash()
+    window.addEventListener("hashchange", applyHash)
+    return () => window.removeEventListener("hashchange", applyHash)
+  }, [])
+
+  const selectSector = (id: SectorId) => {
+    setSector(id)
+    window.history.replaceState(null, "", `#${id}`)
+  }
+
   return (
     <div className="mi-shell">
       <aside className="mi-nav" aria-label="Sektorer">
@@ -974,7 +995,7 @@ export function MarkedsinnsiktShell() {
             <button
               data-sector={s.id}
               aria-selected={sector === s.id}
-              onClick={() => setSector(s.id)}
+              onClick={() => selectSector(s.id)}
             >
               <span>{s.label}</span>
               <span className="pre">{s.pre}</span>

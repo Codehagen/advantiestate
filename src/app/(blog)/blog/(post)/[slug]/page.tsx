@@ -1,3 +1,4 @@
+import { ArticleToc } from "@/components/blog/ArticleToc";
 import { MDX } from "@/components/blog/mdx";
 import ScrollProgress from "@/components/blog/scroll-progress";
 import { CtaStrip } from "@/components/site/CtaStrip";
@@ -316,32 +317,7 @@ export default async function BlogArticle({
             </article>
 
             {/* TOC sidebar */}
-            <aside className="ks-toc">
-              <div className="toc-label">På denne siden</div>
-              {toc.map((item: { slug: string; title: string }) => (
-                <Link key={item.slug} href={`#${item.slug}`}>
-                  {item.title}
-                </Link>
-              ))}
-
-              <div className="toc-meta">
-                Skrevet av {authorName}.
-                <br />
-                <br />
-                Vil du diskutere?
-                <Link
-                  href="/kontakt"
-                  style={{
-                    color: "var(--warm-grey)",
-                    borderBottom: "1px solid",
-                    display: "block",
-                    marginTop: 6,
-                  }}
-                >
-                  Ta kontakt →
-                </Link>
-              </div>
-            </aside>
+            <ArticleToc toc={toc} authorName={authorName} />
           </div>
         </div>
       </section>
