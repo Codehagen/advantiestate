@@ -79,7 +79,7 @@ const STATS = [
     label: "Prime yield kontor, Tromsø sentrum",
   },
   {
-    big: "2 950",
+    big: "2 950",
     unit: "kr/m²",
     delta: "▲ 4,2 % YoY",
     down: false,
@@ -307,9 +307,9 @@ export default function Home() {
               ))}
             </div>
             <div className="market-photo">
-              <div className="img" style={{ position: "relative" }}>
+              <div className="img">
                 <Image
-                  src="/building/pexels-abshky-18567185.jpg"
+                  src="/building/pexels-abshky-18566965.jpg"
                   alt="Kontortårn i Tromsø"
                   fill
                   sizes="(max-width: 900px) 100vw, 40vw"

@@ -34,7 +34,12 @@ export function Nav() {
     }
     setScrolled(false);
     const io = new IntersectionObserver(
-      ([entry]) => setScrolled(!entry.isIntersecting),
+      // Solid only once the hero's base has scrolled up behind the nav.
+      // Reading the sentinel's own `top` (rather than just `isIntersecting`)
+      // keeps the nav transparent even when the hero is taller than the
+      // viewport — in that case the sentinel sits below the fold, which is
+      // "still on the hero", not "scrolled past it".
+      ([entry]) => setScrolled(entry.boundingClientRect.top <= 72),
       { rootMargin: "-72px 0px 0px 0px" },
     );
     io.observe(sentinel);
