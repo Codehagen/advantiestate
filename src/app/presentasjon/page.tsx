@@ -75,7 +75,7 @@ export default function PresentationPage() {
         >
           {/* Background gradient */}
           <div
-            className={`absolute inset-0 bg-gradient-to-br ${slide.accent} opacity-[0.03] dark:opacity-[0.06]`}
+            className={`absolute inset-0 bg-gradient-to-br ${slide.accent} opacity-[0.03]`}
           />
 
           {/* Animated background circles */}
@@ -104,7 +104,7 @@ export default function PresentationPage() {
 
           {/* Slide number */}
           <div
-            className="animate-slide-up-fade absolute left-8 top-8 text-sm font-mono text-warm-grey-2 dark:text-warm-grey-1/50"
+            className="animate-slide-up-fade absolute left-8 top-8 text-sm font-mono text-warm-grey-2"
             style={{
               animationDuration: "0.6s",
               animationFillMode: "backwards",
@@ -118,7 +118,7 @@ export default function PresentationPage() {
           <div className="relative z-10 mx-auto w-full max-w-4xl">
             {/* Title */}
             <h1
-              className="animate-slide-up-fade text-4xl font-bold tracking-tight text-warm-grey sm:text-6xl lg:text-7xl dark:text-warm-white"
+              className="animate-slide-up-fade text-4xl font-bold tracking-tight text-warm-grey sm:text-6xl lg:text-7xl"
               style={{
                 animationDuration: "0.8s",
                 animationFillMode: "backwards",
@@ -131,7 +131,7 @@ export default function PresentationPage() {
             {/* Subtitle */}
             {slide.subtitle && (
               <p
-                className="animate-slide-up-fade mt-4 max-w-2xl text-lg text-warm-grey-2 sm:text-xl dark:text-warm-grey-1"
+                className="animate-slide-up-fade mt-4 max-w-2xl text-lg text-warm-grey-2 sm:text-xl"
                 style={{
                   animationDuration: "0.8s",
                   animationFillMode: "backwards",
@@ -158,7 +158,7 @@ export default function PresentationPage() {
                     <span
                       className={`mt-1.5 block h-2.5 w-2.5 shrink-0 rounded-full bg-gradient-to-r ${slide.accent}`}
                     />
-                    <span className="text-warm-grey dark:text-warm-grey-1/90">
+                    <span className="text-warm-grey">
                       {item}
                     </span>
                   </li>
@@ -179,7 +179,7 @@ export default function PresentationPage() {
                 animationDelay: `${idx * 0.2 + 1}s`,
               }}
             >
-              <div className="flex flex-col items-center gap-2 text-xs text-warm-grey-2 dark:text-warm-grey-1/40">
+              <div className="flex flex-col items-center gap-2 text-xs text-warm-grey-2">
                 <svg
                   className="h-5 w-5 animate-bounce"
                   fill="none"

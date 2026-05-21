@@ -17,7 +17,7 @@ export const Integration = ({
     <Link
       href={site || `/integrasjoner/${slug}`}
       {...(site ? { target: "_blank", rel: "noreferrer noopener" } : {})}
-      className="group flex h-full flex-col items-center justify-between space-y-4 rounded-xl border border-warm-grey/10 bg-warm-white/5 p-8 backdrop-blur-sm transition-all hover:border-warm-grey/20 hover:bg-warm-white/10 sm:p-10 dark:border-warm-white/10 dark:bg-warm-grey-3/5 dark:hover:border-warm-white/20 dark:hover:bg-warm-grey-3/10"
+      className="group flex h-full flex-col items-center justify-between space-y-4 rounded-xl border border-warm-grey/10 bg-warm-white/5 p-8 backdrop-blur-sm transition-all hover:border-warm-grey/20 hover:bg-warm-white/10 sm:p-10"
     >
       <div className="flex flex-col items-center space-y-4">
         <BlurImage
@@ -29,18 +29,18 @@ export const Integration = ({
         />
         {description && (
           <>
-            <div className="h-px w-full bg-warm-grey/10 dark:bg-warm-white/10" />
-            <p className="text-center text-sm text-warm-grey-2 dark:text-warm-grey-1">
+            <div className="h-px w-full bg-warm-grey/10" />
+            <p className="text-center text-sm text-warm-grey-2">
               {description}
             </p>
           </>
         )}
       </div>
       <div className="flex space-x-1">
-        <p className="text-sm font-medium text-warm-grey-2 transition-colors group-hover:text-warm-grey dark:text-warm-grey-1 dark:group-hover:text-warm-white">
+        <p className="text-sm font-medium text-warm-grey-2 transition-colors group-hover:text-warm-grey">
           {site ? "Besøk nettside" : "Les mer"}
         </p>
-        <ExpandingArrow className="text-warm-grey-2 transition-colors group-hover:text-warm-grey dark:text-warm-grey-1 dark:group-hover:text-warm-white" />
+        <ExpandingArrow className="text-warm-grey-2 transition-colors group-hover:text-warm-grey" />
       </div>
     </Link>
   )

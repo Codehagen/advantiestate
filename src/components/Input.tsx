@@ -11,27 +11,26 @@ const inputStyles = tv({
     // base
     "relative block w-full appearance-none rounded-md border px-2.5 py-2 shadow-sm outline-none transition sm:text-sm",
     // border color
-    "border-warm-grey-1 dark:border-warm-grey-2",
+    "border-warm-grey-1",
     // text color
-    "text-warm-grey dark:text-warm-white",
+    "text-warm-grey",
     // placeholder color
-    "placeholder-warm-grey-2 dark:placeholder-warm-grey-1",
+    "placeholder-warm-grey-2",
     // background color
-    "bg-warm-white dark:bg-warm-grey",
+    "bg-warm-white",
     // disabled
     "disabled:border-warm-grey-1 disabled:bg-warm-grey-1 disabled:text-warm-grey-2",
-    "disabled:dark:border-warm-grey-2 disabled:dark:bg-warm-grey-3 disabled:dark:text-warm-grey-1",
     // file
     [
       "file:-my-2 file:-ml-2.5 file:cursor-pointer file:rounded-l-[5px] file:rounded-r-none file:border-0 file:px-3 file:py-2 file:outline-none focus:outline-none disabled:pointer-events-none file:disabled:pointer-events-none",
-      "file:border-warm-grey-1 file:bg-warm-white file:text-warm-grey-2 file:hover:bg-light-blue-1 file:dark:border-warm-grey-2 file:dark:bg-warm-grey file:hover:dark:bg-warm-grey-3 file:disabled:dark:border-warm-grey-2 file:border-solid",
+      "file:border-warm-grey-1 file:bg-warm-white file:text-warm-grey-2 file:hover:bg-light-blue-1 file:border-solid",
       "file:[border-inline-end-width:1px] file:[margin-inline-end:0.75rem]",
-      "file:disabled:bg-warm-grey-1 file:disabled:text-warm-grey-2 file:disabled:dark:bg-warm-grey-3",
+      "file:disabled:bg-warm-grey-1 file:disabled:text-warm-grey-2",
     ],
     // focus
     focusInput,
     // invalid (optional)
-    // "aria-[invalid=true]:dark:ring-red-400/20 aria-[invalid=true]:ring-2 aria-[invalid=true]:ring-red-200 aria-[invalid=true]:border-red-500 invalid:ring-2 invalid:ring-red-200 invalid:border-red-500"
+    // "aria-[invalid=true]:ring-2 aria-[invalid=true]:ring-red-200 aria-[invalid=true]:border-red-500 invalid:ring-2 invalid:ring-red-200 invalid:border-red-500"
     // remove search cancel button (optional)
     "[&::-webkit-search-cancel-button]:hidden [&::-webkit-search-decoration]:hidden",
   ],
@@ -91,7 +90,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
               // base
               "pointer-events-none absolute bottom-0 left-2 flex h-full items-center justify-center",
               // text color
-              "text-warm-grey-2 dark:text-warm-grey-1",
+              "text-warm-grey-2",
             )}
           >
             <RiSearchLine
@@ -112,9 +111,9 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
                 // base
                 "h-fit w-fit rounded-sm outline-none transition-all",
                 // text
-                "text-warm-grey-2 dark:text-warm-grey-1",
+                "text-warm-grey-2",
                 // hover
-                "hover:text-light-blue-1 hover:dark:text-light-blue-1",
+                "hover:text-light-blue-1",
                 focusRing,
               )}
               type="button"

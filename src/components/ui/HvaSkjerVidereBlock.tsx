@@ -26,7 +26,7 @@ export function HvaSkjerVidereBlock() {
     >
       <h2
         id="hva-skjer-videre-title"
-        className="text-center text-lg font-semibold text-warm-grey dark:text-warm-white sm:text-xl"
+        className="text-center text-lg font-semibold text-warm-grey sm:text-xl"
       >
         Hva skjer videre?
       </h2>
@@ -34,27 +34,27 @@ export function HvaSkjerVidereBlock() {
         {steps.map((step, index) => (
           <div
             key={step.title}
-            className="rounded-xl bg-warm-grey/[3%] p-4 ring-1 ring-warm-grey/5 dark:bg-warm-grey/10 dark:ring-warm-white/5"
+            className="rounded-xl bg-warm-grey/[3%] p-4 ring-1 ring-warm-grey/5"
           >
             <span
-              className="mb-2 inline-flex size-7 items-center justify-center rounded-full bg-warm-grey/10 text-xs font-semibold text-warm-grey dark:bg-warm-white/10 dark:text-warm-white"
+              className="mb-2 inline-flex size-7 items-center justify-center rounded-full bg-warm-grey/10 text-xs font-semibold text-warm-grey"
               aria-hidden
             >
               {index + 1}
             </span>
-            <h3 className="font-medium text-warm-grey dark:text-warm-white">
+            <h3 className="font-medium text-warm-grey">
               {step.title}
             </h3>
-            <p className="mt-1 text-sm text-warm-grey-2 dark:text-warm-grey-1">
+            <p className="mt-1 text-sm text-warm-grey-2">
               {step.description}
             </p>
           </div>
         ))}
       </div>
-      <p className="mt-6 text-center text-sm text-warm-grey-2 dark:text-warm-grey-1">
+      <p className="mt-6 text-center text-sm text-warm-grey-2">
         <Link
           href="/kontakt"
-          className="inline-flex items-center gap-1 font-medium text-warm-grey underline decoration-warm-grey/40 underline-offset-2 hover:decoration-warm-grey dark:text-warm-white dark:decoration-warm-white/40 dark:hover:decoration-warm-white"
+          className="inline-flex items-center gap-1 font-medium text-warm-grey underline decoration-warm-grey/40 underline-offset-2 hover:decoration-warm-grey"
           data-track="hva-skjer-videre-cta"
           data-track-action="click"
         >

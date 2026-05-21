@@ -64,8 +64,8 @@ export function MortgageCalculator() {
   return (
     <div className="grid gap-8 lg:grid-cols-2">
       {/* Input Section */}
-      <div className="rounded-xl border border-warm-grey-1/20 bg-warm-white p-6 dark:border-warm-white/10 dark:bg-warm-grey-2/20">
-        <h2 className="mb-6 text-xl font-semibold text-warm-grey dark:text-warm-white">
+      <div className="rounded-xl border border-warm-grey-1/20 bg-warm-white p-6">
+        <h2 className="mb-6 text-xl font-semibold text-warm-grey">
           Legg inn verdier
         </h2>
 
@@ -74,12 +74,12 @@ export function MortgageCalculator() {
           <div className="space-y-2">
             <label
               htmlFor="kjopesum"
-              className="flex items-center text-tremor-default font-medium text-tremor-content-strong dark:text-dark-tremor-content-strong"
+              className="flex items-center text-tremor-default font-medium text-tremor-content-strong"
             >
               Kjøpesum (NOK)
               <div className="group relative ml-2">
-                <RiInformationLine className="size-4 text-warm-grey-2 dark:text-warm-grey-1" />
-                <div className="pointer-events-none absolute bottom-full left-1/2 mb-2 hidden w-64 -translate-x-1/2 rounded-lg bg-warm-grey px-3 py-2 text-xs text-warm-white shadow-lg group-hover:block dark:bg-warm-white dark:text-warm-grey">
+                <RiInformationLine className="size-4 text-warm-grey-2" />
+                <div className="pointer-events-none absolute bottom-full left-1/2 mb-2 hidden w-64 -translate-x-1/2 rounded-lg bg-warm-grey px-3 py-2 text-xs text-warm-white shadow-lg group-hover:block">
                   Total kjøpesum for eiendommen
                 </div>
               </div>
@@ -106,12 +106,12 @@ export function MortgageCalculator() {
           <div className="space-y-2">
             <label
               htmlFor="egenkapital"
-              className="flex items-center text-tremor-default font-medium text-tremor-content-strong dark:text-dark-tremor-content-strong"
+              className="flex items-center text-tremor-default font-medium text-tremor-content-strong"
             >
               Egenkapital (NOK)
               <div className="group relative ml-2">
-                <RiInformationLine className="size-4 text-warm-grey-2 dark:text-warm-grey-1" />
-                <div className="pointer-events-none absolute bottom-full left-1/2 mb-2 hidden w-64 -translate-x-1/2 rounded-lg bg-warm-grey px-3 py-2 text-xs text-warm-white shadow-lg group-hover:block dark:bg-warm-white dark:text-warm-grey">
+                <RiInformationLine className="size-4 text-warm-grey-2" />
+                <div className="pointer-events-none absolute bottom-full left-1/2 mb-2 hidden w-64 -translate-x-1/2 rounded-lg bg-warm-grey px-3 py-2 text-xs text-warm-white shadow-lg group-hover:block">
                   Hvor mye skal du betale kontant?
                 </div>
               </div>
@@ -138,12 +138,12 @@ export function MortgageCalculator() {
           <div className="space-y-2">
             <label
               htmlFor="rentesats"
-              className="flex items-center text-tremor-default font-medium text-tremor-content-strong dark:text-dark-tremor-content-strong"
+              className="flex items-center text-tremor-default font-medium text-tremor-content-strong"
             >
               Rentesats (%)
               <div className="group relative ml-2">
-                <RiInformationLine className="size-4 text-warm-grey-2 dark:text-warm-grey-1" />
-                <div className="pointer-events-none absolute bottom-full left-1/2 mb-2 hidden w-64 -translate-x-1/2 rounded-lg bg-warm-grey px-3 py-2 text-xs text-warm-white shadow-lg group-hover:block dark:bg-warm-white dark:text-warm-grey">
+                <RiInformationLine className="size-4 text-warm-grey-2" />
+                <div className="pointer-events-none absolute bottom-full left-1/2 mb-2 hidden w-64 -translate-x-1/2 rounded-lg bg-warm-grey px-3 py-2 text-xs text-warm-white shadow-lg group-hover:block">
                   Årlig rentesats på lånet
                 </div>
               </div>
@@ -167,12 +167,12 @@ export function MortgageCalculator() {
           <div className="space-y-2">
             <label
               htmlFor="nedbetalingstid"
-              className="flex items-center text-tremor-default font-medium text-tremor-content-strong dark:text-dark-tremor-content-strong"
+              className="flex items-center text-tremor-default font-medium text-tremor-content-strong"
             >
               Nedbetalingstid (år)
               <div className="group relative ml-2">
-                <RiInformationLine className="size-4 text-warm-grey-2 dark:text-warm-grey-1" />
-                <div className="pointer-events-none absolute bottom-full left-1/2 mb-2 hidden w-64 -translate-x-1/2 rounded-lg bg-warm-grey px-3 py-2 text-xs text-warm-white shadow-lg group-hover:block dark:bg-warm-white dark:text-warm-grey">
+                <RiInformationLine className="size-4 text-warm-grey-2" />
+                <div className="pointer-events-none absolute bottom-full left-1/2 mb-2 hidden w-64 -translate-x-1/2 rounded-lg bg-warm-grey px-3 py-2 text-xs text-warm-white shadow-lg group-hover:block">
                   Hvor mange år skal du betale ned lånet?
                 </div>
               </div>
@@ -200,8 +200,8 @@ export function MortgageCalculator() {
       {/* Results Section */}
       <div className="space-y-4">
         {/* Lånebeløp */}
-        <div className="rounded-xl border border-light-blue/20 bg-gradient-to-br from-light-blue/5 to-transparent p-6 dark:border-light-blue/30 dark:from-light-blue/10">
-          <div className="mb-2 text-sm font-medium text-warm-grey-2 dark:text-warm-grey-1">
+        <div className="rounded-xl border border-light-blue/20 bg-gradient-to-br from-light-blue/5 to-transparent p-6">
+          <div className="mb-2 text-sm font-medium text-warm-grey-2">
             Lånebeløp
           </div>
           <div className="flex items-baseline">
@@ -214,17 +214,17 @@ export function MortgageCalculator() {
                 maximumFractionDigits: 0,
               }}
               locales="no-NO"
-              className="text-4xl font-bold text-warm-grey dark:text-warm-white"
+              className="text-4xl font-bold text-warm-grey"
             />
           </div>
-          <p className="mt-2 text-xs text-warm-grey-2 dark:text-warm-grey-1">
+          <p className="mt-2 text-xs text-warm-grey-2">
             Kjøpesum minus egenkapital
           </p>
         </div>
 
         {/* Månedlig kostnad */}
-        <div className="rounded-xl border border-light-blue/20 bg-gradient-to-br from-light-blue/5 to-transparent p-6 dark:border-light-blue/30 dark:from-light-blue/10">
-          <div className="mb-2 text-sm font-medium text-warm-grey-2 dark:text-warm-grey-1">
+        <div className="rounded-xl border border-light-blue/20 bg-gradient-to-br from-light-blue/5 to-transparent p-6">
+          <div className="mb-2 text-sm font-medium text-warm-grey-2">
             Månedlig kostnad
           </div>
           <div className="flex items-baseline">
@@ -237,17 +237,17 @@ export function MortgageCalculator() {
                 maximumFractionDigits: 0,
               }}
               locales="no-NO"
-              className="text-4xl font-bold text-warm-grey dark:text-warm-white"
+              className="text-4xl font-bold text-warm-grey"
             />
           </div>
-          <p className="mt-2 text-xs text-warm-grey-2 dark:text-warm-grey-1">
+          <p className="mt-2 text-xs text-warm-grey-2">
             Månedlig avdrag og renter
           </p>
         </div>
 
         {/* Total rentekostnad */}
-        <div className="rounded-xl border border-warm-grey-1/20 bg-warm-white p-6 dark:border-warm-white/10 dark:bg-warm-grey-2/20">
-          <div className="mb-2 text-sm font-medium text-warm-grey-2 dark:text-warm-grey-1">
+        <div className="rounded-xl border border-warm-grey-1/20 bg-warm-white p-6">
+          <div className="mb-2 text-sm font-medium text-warm-grey-2">
             Total rentekostnad
           </div>
           <div className="flex items-baseline">
@@ -260,17 +260,17 @@ export function MortgageCalculator() {
                 maximumFractionDigits: 0,
               }}
               locales="no-NO"
-              className="text-3xl font-bold text-warm-grey dark:text-warm-white"
+              className="text-3xl font-bold text-warm-grey"
             />
           </div>
-          <p className="mt-2 text-xs text-warm-grey-2 dark:text-warm-grey-1">
+          <p className="mt-2 text-xs text-warm-grey-2">
             Total rente over {nedbetalingstid} år
           </p>
         </div>
 
         {/* Total kostnad */}
-        <div className="rounded-xl border border-warm-grey-1/20 bg-warm-white p-6 dark:border-warm-white/10 dark:bg-warm-grey-2/20">
-          <div className="mb-2 text-sm font-medium text-warm-grey-2 dark:text-warm-grey-1">
+        <div className="rounded-xl border border-warm-grey-1/20 bg-warm-white p-6">
+          <div className="mb-2 text-sm font-medium text-warm-grey-2">
             Total kostnad
           </div>
           <div className="flex items-baseline">
@@ -283,17 +283,17 @@ export function MortgageCalculator() {
                 maximumFractionDigits: 0,
               }}
               locales="no-NO"
-              className="text-3xl font-bold text-warm-grey dark:text-warm-white"
+              className="text-3xl font-bold text-warm-grey"
             />
           </div>
-          <p className="mt-2 text-xs text-warm-grey-2 dark:text-warm-grey-1">
+          <p className="mt-2 text-xs text-warm-grey-2">
             Lånebeløp + total rente
           </p>
         </div>
 
         {/* Belåningsgrad */}
-        <div className="rounded-xl border border-warm-grey-1/20 bg-warm-white p-6 dark:border-warm-white/10 dark:bg-warm-grey-2/20">
-          <div className="mb-2 text-sm font-medium text-warm-grey-2 dark:text-warm-grey-1">
+        <div className="rounded-xl border border-warm-grey-1/20 bg-warm-white p-6">
+          <div className="mb-2 text-sm font-medium text-warm-grey-2">
             Belåningsgrad (LTV)
           </div>
           <div className="flex items-baseline">
@@ -303,13 +303,13 @@ export function MortgageCalculator() {
                 minimumFractionDigits: 1,
                 maximumFractionDigits: 1,
               }}
-              className="text-3xl font-bold text-warm-grey dark:text-warm-white"
+              className="text-3xl font-bold text-warm-grey"
             />
-            <span className="ml-2 text-xl font-semibold text-warm-grey-2 dark:text-warm-grey-1">
+            <span className="ml-2 text-xl font-semibold text-warm-grey-2">
               %
             </span>
           </div>
-          <p className="mt-2 text-xs text-warm-grey-2 dark:text-warm-grey-1">
+          <p className="mt-2 text-xs text-warm-grey-2">
             Lånebeløp i forhold til kjøpesum
           </p>
         </div>

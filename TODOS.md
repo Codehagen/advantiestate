@@ -21,42 +21,33 @@ Deferred work captured during the editorial redesign port (/plan-eng-review, 202
 
 ---
 
-## TODO 2 — Repo-wide dark-mode teardown
+## Completed
+
+### TODO 2 — Repo-wide dark-mode teardown
 
 - **What:** Remove `next-themes`, `ThemeProvider`, `ThemeSwitch`, and all `dark:`
-  Tailwind classes from the ~70 files outside the redesign scope.
-- **Why:** The redesign drops dark mode (decision D6) — the new pages are light-only.
-  The leftover theme machinery is dead weight: a provider, a hydration concern, and a
-  parallel set of styles that nothing uses once migration completes.
-- **Pros:** Smaller bundle, simpler components, no hydration-mismatch surface.
-- **Cons:** Touches many files; should be done in one pass to avoid a half-state.
-- **Context:** New redesign pages are already authored light-only. This TODO is the
-  cleanup of the OLD pages and shared components after all design routes have shipped.
-  Note: `src/components/blog/mdx.tsx` still carries ~23 inert `dark:` variants — a
-  good first file for this teardown.
-- **Depends on / blocked by:** All ~18 design routes ported (end of Phase 2).
+  Tailwind classes from the files outside the redesign scope.
+- **Outcome:** Done. `next-themes` removed — it was an unused dependency; no
+  `ThemeProvider`/`ThemeSwitch`/`useTheme` existed in the codebase. `darkMode:
+  "selector"` removed from `tailwind.config.ts`. All 723 `dark:` Tailwind variant
+  classes stripped across 40 files (every `dark:` was inert — nothing ever applied a
+  `.dark` class). `src/components/blog/mdx.tsx` was the first file, done in PR #5;
+  the remaining 39 files cleared in this pass. Production build clean, full Playwright
+  suite green.
+- **Completed:** 2026-05-21 (branch `chore/dark-mode-teardown`).
 
----
-
-## TODO 3 — Iconless treatment for tool pages
+### TODO 3 — Iconless treatment for tool pages
 
 - **What:** Decide whether the out-of-scope tool pages (verktoy calculators,
   data-tables, simulering, modals) should also drop icons to match the no-icon brand,
   or keep icons as functional UI.
-- **Why:** The brand direction mandates no icons. But calculators and data-tables may
-  legitimately need icons for usability (sort arrows, input affordances) — removing
-  them there is a usability cost, not just a brand win.
-- **Pros:** Full brand consistency if removed.
-- **Cons:** ~70 files import `@remixicon`; redesigning functional tool UI with no
-  mockup risks worse usability.
-- **Context:** Decision D8 scoped icon removal to redesigned pages only. This TODO is
-  the explicit brand-vs-usability call for the remaining tool surface.
-- **Depends on / blocked by:** Nothing — can be decided any time; best revisited once
-  the redesigned marketing pages set the visual bar.
-
----
-
-## Completed
+- **Outcome:** Decided — tool pages keep their icons. The 24 files importing
+  `@remixicon` are mostly functional UI (Select dropdown chevron, Input password/search
+  toggles, Button loading spinner, chart scroll arrows, copy button, modal close X,
+  calculator info tooltips). Stripping those risks worse usability with no design
+  mockup, and Decision D8 already scoped icon removal to the redesigned marketing
+  pages. Icons stay as functional UI on the tool surface.
+- **Completed:** 2026-05-21.
 
 ### TODO 4 — Clear the 179-error TypeScript baseline
 

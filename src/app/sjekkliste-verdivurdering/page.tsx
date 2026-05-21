@@ -128,15 +128,15 @@ export default function SjekklisteVerdiPage() {
           </FadeDiv>
 
           <h1 className="mt-8 text-4xl font-semibold tracking-tighter sm:text-5xl md:text-6xl">
-            <FadeSpan className="bg-gradient-to-t from-warm-grey to-warm-grey-3 bg-clip-text text-transparent dark:from-warm-white dark:to-warm-grey-1">
+            <FadeSpan className="bg-gradient-to-t from-warm-grey to-warm-grey-3 bg-clip-text text-transparent">
               Sjekkliste: Forbered deg
             </FadeSpan>{" "}
-            <FadeSpan className="bg-gradient-to-t from-warm-grey to-warm-grey-3 bg-clip-text text-transparent dark:from-warm-white dark:to-warm-grey-1">
+            <FadeSpan className="bg-gradient-to-t from-warm-grey to-warm-grey-3 bg-clip-text text-transparent">
               for Verdivurdering
             </FadeSpan>
           </h1>
 
-          <p className="mt-6 max-w-2xl text-balance text-center text-base text-warm-grey-2 sm:text-lg dark:text-warm-grey-1">
+          <p className="mt-6 max-w-2xl text-balance text-center text-base text-warm-grey-2 sm:text-lg">
             <FadeSpan>Last ned vår gratis sjekkliste for å sikre at du er godt forberedt</FadeSpan>{" "}
             <FadeSpan>når du skal få en profesjonell verdivurdering av din næringseiendom.</FadeSpan>{" "}
             <FadeSpan>Få innsikt i hva du trenger og hvordan du maksimerer verdien.</FadeSpan>
@@ -145,7 +145,7 @@ export default function SjekklisteVerdiPage() {
 
         {/* Background Pattern */}
         <div className="absolute inset-0 -z-10 flex items-center justify-center overflow-hidden">
-          <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-warm-white via-warm-white/80 to-transparent dark:from-warm-grey dark:via-warm-grey/80" />
+          <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-warm-white via-warm-white/80 to-transparent" />
           <AnimatedGridPattern
             width={50}
             height={50}
@@ -154,7 +154,7 @@ export default function SjekklisteVerdiPage() {
             numSquares={30}
             duration={3}
           />
-          <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-warm-white via-warm-white/80 to-transparent dark:from-warm-grey dark:via-warm-grey/80" />
+          <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-warm-white via-warm-white/80 to-transparent" />
         </div>
       </section>
 
@@ -163,21 +163,21 @@ export default function SjekklisteVerdiPage() {
         <section className="mx-auto mb-20 max-w-2xl px-4">
           <FadeContainer>
             <FadeDiv>
-              <div className="relative overflow-hidden rounded-2xl border border-warm-grey/10 bg-warm-white/80 p-8 shadow-lg backdrop-blur-sm dark:border-warm-white/10 dark:bg-warm-grey/80">
+              <div className="relative overflow-hidden rounded-2xl border border-warm-grey/10 bg-warm-white/80 p-8 shadow-lg backdrop-blur-sm">
                 {/* Decorative blobs */}
                 <div className="pointer-events-none absolute -right-20 -top-20 h-40 w-40 rounded-full bg-light-blue/30 blur-3xl" />
                 <div className="pointer-events-none absolute -bottom-20 -left-20 h-40 w-40 rounded-full bg-light-blue/20 blur-3xl" />
 
                 <div className="relative">
                   {/* Centered download icon */}
-                  <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-light-blue/20 dark:bg-light-blue/10">
-                    <RiDownloadLine className="h-8 w-8 text-warm-grey dark:text-warm-white" />
+                  <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-light-blue/20">
+                    <RiDownloadLine className="h-8 w-8 text-warm-grey" />
                   </div>
 
-                  <h2 className="mb-4 text-center text-2xl font-semibold text-warm-grey dark:text-warm-white">
+                  <h2 className="mb-4 text-center text-2xl font-semibold text-warm-grey">
                     Last ned sjekklisten
                   </h2>
-                  <p className="mb-6 text-center text-warm-grey-2 dark:text-warm-grey-1">
+                  <p className="mb-6 text-center text-warm-grey-2">
                     Fyll ut e-postadressen din for å få tilgang til sjekklisten. Vi sender deg også
                     nyttige tips om verdivurdering direkte i innboksen.
                   </p>
@@ -187,7 +187,7 @@ export default function SjekklisteVerdiPage() {
                       <label htmlFor="email" className="sr-only">
                         E-postadresse
                       </label>
-                      <RiMailLine className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-warm-grey-2 dark:text-warm-grey-1" />
+                      <RiMailLine className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-warm-grey-2" />
                       <Input
                         id="email"
                         name="email"
@@ -201,7 +201,7 @@ export default function SjekklisteVerdiPage() {
                       />
                     </div>
                     {error && (
-                      <p className="text-sm text-red-600 dark:text-red-400">{error}</p>
+                      <p className="text-sm text-red-600">{error}</p>
                     )}
                     <Button
                       type="submit"
@@ -213,7 +213,7 @@ export default function SjekklisteVerdiPage() {
                       <RiDownloadLine className="mr-2 h-5 w-5" />
                       Last ned sjekklisten
                     </Button>
-                    <p className="text-center text-xs text-warm-grey-2 dark:text-warm-grey-1">
+                    <p className="text-center text-xs text-warm-grey-2">
                       Ved å laste ned godtar du at vi kontakter deg med relevante tips og informasjon om
                       verdivurdering. Du kan når som helst avmelde deg.
                     </p>
@@ -235,11 +235,11 @@ export default function SjekklisteVerdiPage() {
                 Sjekkliste Låst Opp
               </Badge>
               <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">
-                <span className="bg-gradient-to-t from-warm-grey to-warm-grey-3 bg-clip-text text-transparent dark:from-warm-white dark:to-warm-grey-1">
+                <span className="bg-gradient-to-t from-warm-grey to-warm-grey-3 bg-clip-text text-transparent">
                   Din sjekkliste for verdivurdering
                 </span>
               </h2>
-              <p className="mx-auto mt-4 max-w-2xl text-warm-grey-2 dark:text-warm-grey-1">
+              <p className="mx-auto mt-4 max-w-2xl text-warm-grey-2">
                 Bruk denne sjekklisten for å sikre at du er godt forberedt. Jo bedre forberedt du er,
                 jo raskere og mer nøyaktig blir verdsettelsen.
               </p>
@@ -250,7 +250,7 @@ export default function SjekklisteVerdiPage() {
                 const IconComponent = category.icon;
                 return (
                   <FadeDiv key={categoryIndex}>
-                    <div className="group relative h-full overflow-hidden rounded-2xl border border-warm-grey/10 bg-warm-white p-6 transition-all duration-300 hover:border-light-blue/30 hover:shadow-lg hover:shadow-light-blue/10 dark:border-warm-white/10 dark:bg-warm-grey dark:hover:border-light-blue/30">
+                    <div className="group relative h-full overflow-hidden rounded-2xl border border-warm-grey/10 bg-warm-white p-6 transition-all duration-300 hover:border-light-blue/30 hover:shadow-lg hover:shadow-light-blue/10">
                       {/* Hover blob */}
                       <div className="pointer-events-none absolute -right-20 -top-20 h-40 w-40 rounded-full bg-light-blue/20 opacity-0 blur-3xl transition-opacity duration-300 group-hover:opacity-100" />
 
@@ -258,24 +258,24 @@ export default function SjekklisteVerdiPage() {
                         {/* Category header */}
                         <div className="mb-4 flex items-center justify-between">
                           <div className="flex items-center gap-3">
-                            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-light-blue/20 transition-transform duration-300 group-hover:scale-110 dark:bg-light-blue/10">
-                              <IconComponent className="h-5 w-5 text-warm-grey dark:text-warm-white" />
+                            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-light-blue/20 transition-transform duration-300 group-hover:scale-110">
+                              <IconComponent className="h-5 w-5 text-warm-grey" />
                             </div>
-                            <h3 className="text-xl font-semibold text-warm-grey dark:text-warm-white">
+                            <h3 className="text-xl font-semibold text-warm-grey">
                               {category.category}
                             </h3>
                           </div>
-                          <RiArrowRightLine className="h-5 w-5 text-warm-grey-2 opacity-0 transition-all duration-300 group-hover:translate-x-1 group-hover:opacity-100 dark:text-warm-grey-1" />
+                          <RiArrowRightLine className="h-5 w-5 text-warm-grey-2 opacity-0 transition-all duration-300 group-hover:translate-x-1 group-hover:opacity-100" />
                         </div>
 
                         {/* Items list */}
                         <ul className="space-y-3">
                           {category.items.map((item, itemIndex) => (
                             <li key={itemIndex} className="flex items-start gap-3">
-                              <div className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-light-blue/20 dark:bg-light-blue/10">
-                                <RiCheckLine className="h-4 w-4 text-warm-grey dark:text-warm-white" />
+                              <div className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-light-blue/20">
+                                <RiCheckLine className="h-4 w-4 text-warm-grey" />
                               </div>
-                              <span className="text-warm-grey-2 dark:text-warm-grey-1">{item}</span>
+                              <span className="text-warm-grey-2">{item}</span>
                             </li>
                           ))}
                         </ul>
@@ -288,7 +288,7 @@ export default function SjekklisteVerdiPage() {
 
             {/* CTA Section */}
             <FadeDiv className="mt-12">
-              <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-light-blue/20 via-warm-white to-light-blue/10 p-8 text-center ring-1 ring-warm-grey/10 sm:p-12 dark:from-light-blue/10 dark:via-warm-grey dark:to-light-blue/5 dark:ring-warm-white/10">
+              <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-light-blue/20 via-warm-white to-light-blue/10 p-8 text-center ring-1 ring-warm-grey/10 sm:p-12">
                 {/* Decorative blobs */}
                 <div className="pointer-events-none absolute -left-20 top-0 h-60 w-60 rounded-full bg-light-blue/30 blur-3xl" />
                 <div className="pointer-events-none absolute -right-20 bottom-0 h-60 w-60 rounded-full bg-light-blue/20 blur-3xl" />
@@ -297,11 +297,11 @@ export default function SjekklisteVerdiPage() {
                   <Badge className="mb-4">Neste Steg</Badge>
 
                   <h3 className="text-2xl font-semibold tracking-tight sm:text-3xl">
-                    <span className="bg-gradient-to-t from-warm-grey to-warm-grey-3 bg-clip-text text-transparent dark:from-warm-white dark:to-warm-grey-1">
+                    <span className="bg-gradient-to-t from-warm-grey to-warm-grey-3 bg-clip-text text-transparent">
                       Klar for en profesjonell verdivurdering?
                     </span>
                   </h3>
-                  <p className="mx-auto mt-4 max-w-2xl text-warm-grey-2 dark:text-warm-grey-1">
+                  <p className="mx-auto mt-4 max-w-2xl text-warm-grey-2">
                     Vi hjelper deg med en uforpliktende verdivurdering basert på lokal markedsinnsikt i
                     Nord-Norge. Vi svarer innen 24 timer.
                   </p>

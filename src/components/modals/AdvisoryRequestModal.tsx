@@ -57,23 +57,23 @@ export default function AdvisoryRequestModal({
 
   return (
     <Modal showModal={showModal} setShowModal={setShowModal}>
-      <div className="relative overflow-hidden bg-warm-white dark:bg-warm-grey">
-        <div className="border-b border-warm-grey-1/20 bg-gradient-to-br from-light-blue/10 to-warm-white px-6 py-6 dark:border-warm-grey-2/20 dark:from-light-blue/5 dark:to-warm-grey">
+      <div className="relative overflow-hidden bg-warm-white">
+        <div className="border-b border-warm-grey-1/20 bg-gradient-to-br from-light-blue/10 to-warm-white px-6 py-6">
           <button
             onClick={() => setShowModal(false)}
-            className="absolute right-4 top-4 rounded-full p-2 text-warm-grey-2 transition-colors hover:bg-warm-grey-1/10 dark:text-warm-grey-1 dark:hover:bg-warm-grey-2/20"
+            className="absolute right-4 top-4 rounded-full p-2 text-warm-grey-2 transition-colors hover:bg-warm-grey-1/10"
           >
             <RiCloseLine className="h-5 w-5" />
           </button>
           <div className="flex items-center gap-3">
             <div className="rounded-xl bg-light-blue/20 p-3">
-              <RiLightbulbLine className="h-6 w-6 text-warm-grey dark:text-warm-white" />
+              <RiLightbulbLine className="h-6 w-6 text-warm-grey" />
             </div>
             <div>
-              <h2 className="text-2xl font-semibold text-warm-grey dark:text-warm-white">
+              <h2 className="text-2xl font-semibold text-warm-grey">
                 Be om rådgivning
               </h2>
-              <p className="mt-1 text-sm text-warm-grey-2 dark:text-warm-grey-1">
+              <p className="mt-1 text-sm text-warm-grey-2">
                 Vi hjelper deg med kompetent rådgivning om næringseiendom
               </p>
             </div>
@@ -82,13 +82,13 @@ export default function AdvisoryRequestModal({
 
         {isSuccess ? (
           <div className="flex flex-col items-center justify-center px-6 py-12">
-            <div className="mb-4 rounded-full bg-green-100 p-4 dark:bg-green-900/30">
-              <RiCheckLine className="h-8 w-8 text-green-600 dark:text-green-400" />
+            <div className="mb-4 rounded-full bg-green-100 p-4">
+              <RiCheckLine className="h-8 w-8 text-green-600" />
             </div>
-            <h3 className="text-xl font-semibold text-warm-grey dark:text-warm-white">
+            <h3 className="text-xl font-semibold text-warm-grey">
               Takk for din henvendelse!
             </h3>
-            <p className="mt-2 text-center text-warm-grey-2 dark:text-warm-grey-1">
+            <p className="mt-2 text-center text-warm-grey-2">
               Vi vil kontakte deg innen 24 timer.
             </p>
           </div>
@@ -97,13 +97,13 @@ export default function AdvisoryRequestModal({
             <div className="space-y-4">
               <div className="grid gap-4 sm:grid-cols-2">
                 <div>
-                  <label htmlFor="firstname" className="mb-2 block text-sm font-medium text-warm-grey dark:text-warm-white">
+                  <label htmlFor="firstname" className="mb-2 block text-sm font-medium text-warm-grey">
                     Fornavn *
                   </label>
                   <Input id="firstname" name="firstname" type="text" placeholder="Fornavn" required />
                 </div>
                 <div>
-                  <label htmlFor="lastname" className="mb-2 block text-sm font-medium text-warm-grey dark:text-warm-white">
+                  <label htmlFor="lastname" className="mb-2 block text-sm font-medium text-warm-grey">
                     Etternavn *
                   </label>
                   <Input id="lastname" name="lastname" type="text" placeholder="Etternavn" required />
@@ -111,26 +111,26 @@ export default function AdvisoryRequestModal({
               </div>
               <div className="grid gap-4 sm:grid-cols-2">
                 <div>
-                  <label htmlFor="email" className="mb-2 block text-sm font-medium text-warm-grey dark:text-warm-white">
+                  <label htmlFor="email" className="mb-2 block text-sm font-medium text-warm-grey">
                     E-post *
                   </label>
                   <Input id="email" name="email" type="email" placeholder="din@epost.no" required />
                 </div>
                 <div>
-                  <label htmlFor="phone" className="mb-2 block text-sm font-medium text-warm-grey dark:text-warm-white">
+                  <label htmlFor="phone" className="mb-2 block text-sm font-medium text-warm-grey">
                     Telefon *
                   </label>
                   <Input id="phone" name="phone" type="tel" placeholder="+47 123 45 678" required />
                 </div>
               </div>
               <div>
-                <label htmlFor="company" className="mb-2 block text-sm font-medium text-warm-grey dark:text-warm-white">
+                <label htmlFor="company" className="mb-2 block text-sm font-medium text-warm-grey">
                   Selskap
                 </label>
                 <Input id="company" name="company" type="text" placeholder="Ditt selskap" />
               </div>
               <div>
-                <label htmlFor="advisoryArea" className="mb-2 block text-sm font-medium text-warm-grey dark:text-warm-white">
+                <label htmlFor="advisoryArea" className="mb-2 block text-sm font-medium text-warm-grey">
                   Rådgivningsområde *
                 </label>
                 <Select name="advisoryArea" required>
@@ -147,7 +147,7 @@ export default function AdvisoryRequestModal({
                 </Select>
               </div>
               <div>
-                <label htmlFor="description" className="mb-2 block text-sm font-medium text-warm-grey dark:text-warm-white">
+                <label htmlFor="description" className="mb-2 block text-sm font-medium text-warm-grey">
                   Beskriv ditt behov *
                 </label>
                 <textarea
@@ -155,7 +155,7 @@ export default function AdvisoryRequestModal({
                   name="description"
                   rows={4}
                   required
-                  className="w-full rounded-md border border-warm-grey-1 bg-warm-white px-3 py-2 text-warm-grey shadow-sm transition-colors placeholder:text-warm-grey-2 focus:border-warm-grey focus:outline-none focus:ring-2 focus:ring-light-blue/50 dark:border-warm-grey-2 dark:bg-warm-grey dark:text-warm-white dark:placeholder:text-warm-grey-1 dark:focus:border-warm-grey-1 dark:focus:ring-light-blue/30"
+                  className="w-full rounded-md border border-warm-grey-1 bg-warm-white px-3 py-2 text-warm-grey shadow-sm transition-colors placeholder:text-warm-grey-2 focus:border-warm-grey focus:outline-none focus:ring-2 focus:ring-light-blue/50"
                   placeholder="Fortell oss om ditt behov for rådgivning..."
                 />
               </div>
@@ -165,7 +165,7 @@ export default function AdvisoryRequestModal({
                 {isSubmitting ? "Sender..." : "Send forespørsel"}
               </Button>
             </div>
-            <p className="mt-4 text-center text-xs text-warm-grey-2 dark:text-warm-grey-1">
+            <p className="mt-4 text-center text-xs text-warm-grey-2">
               Ved å sende inn dette skjemaet godtar du at vi kontakter deg.
             </p>
           </form>

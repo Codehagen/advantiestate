@@ -17,41 +17,41 @@ export default function KarrierePage() {
         <Badge>Karriere</Badge>
         <h1
           id="careers-title"
-          className="mt-3 inline-block bg-gradient-to-t from-warm-grey to-warm-grey-3 bg-clip-text py-2 text-4xl font-bold tracking-tighter text-transparent sm:text-6xl dark:from-warm-white dark:to-warm-grey-1"
+          className="mt-3 inline-block bg-gradient-to-t from-warm-grey to-warm-grey-3 bg-clip-text py-2 text-4xl font-bold tracking-tighter text-transparent sm:text-6xl"
         >
           Vi er alltid på jakt etter de rette menneskene
         </h1>
-        <p className="mt-6 max-w-2xl text-lg text-warm-grey-2 dark:text-warm-grey-1">
+        <p className="mt-6 max-w-2xl text-lg text-warm-grey-2">
           Selv om vi ikke alltid har aktive utlysninger, ønsker vi å komme i
           kontakt med personer som brenner for næringseiendom, analyse og gode
           kundeopplevelser.
         </p>
       </section>
       <section className="mx-auto mt-14 grid w-full max-w-4xl gap-6 sm:grid-cols-2">
-        <div className="rounded-xl border border-warm-grey/20 bg-warm-white/70 p-6 backdrop-blur dark:border-warm-white/10 dark:bg-warm-grey-3/30">
-          <div className="mb-4 inline-flex rounded-full bg-warm-grey/10 p-2 dark:bg-warm-white/10">
-            <RiTeamLine className="size-5 text-warm-grey dark:text-warm-white" />
+        <div className="rounded-xl border border-warm-grey/20 bg-warm-white/70 p-6 backdrop-blur">
+          <div className="mb-4 inline-flex rounded-full bg-warm-grey/10 p-2">
+            <RiTeamLine className="size-5 text-warm-grey" />
           </div>
-          <h2 className="text-xl font-semibold text-warm-grey dark:text-warm-white">
+          <h2 className="text-xl font-semibold text-warm-grey">
             Hvem vi ser etter
           </h2>
-          <p className="mt-3 text-warm-grey-2 dark:text-warm-grey-1">
+          <p className="mt-3 text-warm-grey-2">
             Du er faglig nysgjerrig, tar eierskap og ønsker å skape resultater
             sammen med kunder og kolleger.
           </p>
         </div>
-        <div className="rounded-xl border border-warm-grey/20 bg-warm-white/70 p-6 backdrop-blur dark:border-warm-white/10 dark:bg-warm-grey-3/30">
-          <div className="mb-4 inline-flex rounded-full bg-warm-grey/10 p-2 dark:bg-warm-white/10">
-            <RiMailLine className="size-5 text-warm-grey dark:text-warm-white" />
+        <div className="rounded-xl border border-warm-grey/20 bg-warm-white/70 p-6 backdrop-blur">
+          <div className="mb-4 inline-flex rounded-full bg-warm-grey/10 p-2">
+            <RiMailLine className="size-5 text-warm-grey" />
           </div>
-          <h2 className="text-xl font-semibold text-warm-grey dark:text-warm-white">
+          <h2 className="text-xl font-semibold text-warm-grey">
             Ta kontakt
           </h2>
-          <p className="mt-3 text-warm-grey-2 dark:text-warm-grey-1">
+          <p className="mt-3 text-warm-grey-2">
             Send en kort introduksjon til{" "}
             <a
               href="mailto:Christer@advanti.no"
-              className="font-medium underline underline-offset-4 hover:text-warm-grey dark:hover:text-warm-white"
+              className="font-medium underline underline-offset-4 hover:text-warm-grey"
             >
               Christer@advanti.no
             </a>{" "}
@@ -60,8 +60,8 @@ export default function KarrierePage() {
         </div>
       </section>
 
-      <section className="mx-auto mb-20 mt-10 w-full max-w-4xl rounded-xl border border-warm-grey/20 bg-warm-white/70 p-6 backdrop-blur dark:border-warm-white/10 dark:bg-warm-grey-3/30">
-        <p className="text-warm-grey-2 dark:text-warm-grey-1">
+      <section className="mx-auto mb-20 mt-10 w-full max-w-4xl rounded-xl border border-warm-grey/20 bg-warm-white/70 p-6 backdrop-blur">
+        <p className="text-warm-grey-2">
           Vi vurderer åpne søknader fortløpende og tar kontakt når det er en
           relevant mulighet.
         </p>

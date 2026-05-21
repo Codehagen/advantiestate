@@ -61,25 +61,25 @@ export default function LeaseRequestModal({
 
   return (
     <Modal showModal={showModal} setShowModal={setShowModal}>
-      <div className="relative overflow-hidden bg-warm-white dark:bg-warm-grey">
+      <div className="relative overflow-hidden bg-warm-white">
         {/* Header */}
-        <div className="border-b border-warm-grey-1/20 bg-gradient-to-br from-light-blue/10 to-warm-white px-6 py-6 dark:border-warm-grey-2/20 dark:from-light-blue/5 dark:to-warm-grey">
+        <div className="border-b border-warm-grey-1/20 bg-gradient-to-br from-light-blue/10 to-warm-white px-6 py-6">
           <button
             onClick={() => setShowModal(false)}
-            className="absolute right-4 top-4 rounded-full p-2 text-warm-grey-2 transition-colors hover:bg-warm-grey-1/10 dark:text-warm-grey-1 dark:hover:bg-warm-grey-2/20"
+            className="absolute right-4 top-4 rounded-full p-2 text-warm-grey-2 transition-colors hover:bg-warm-grey-1/10"
           >
             <RiCloseLine className="h-5 w-5" />
           </button>
 
           <div className="flex items-center gap-3">
             <div className="rounded-xl bg-light-blue/20 p-3">
-              <RiBuilding4Line className="h-6 w-6 text-warm-grey dark:text-warm-white" />
+              <RiBuilding4Line className="h-6 w-6 text-warm-grey" />
             </div>
             <div>
-              <h2 className="text-2xl font-semibold text-warm-grey dark:text-warm-white">
+              <h2 className="text-2xl font-semibold text-warm-grey">
                 Finn lokaler
               </h2>
-              <p className="mt-1 text-sm text-warm-grey-2 dark:text-warm-grey-1">
+              <p className="mt-1 text-sm text-warm-grey-2">
                 Vi hjelper deg med å finne eller leie ut næringslokaler
               </p>
             </div>
@@ -89,13 +89,13 @@ export default function LeaseRequestModal({
         {/* Success State */}
         {isSuccess ? (
           <div className="flex flex-col items-center justify-center px-6 py-12">
-            <div className="mb-4 rounded-full bg-green-100 p-4 dark:bg-green-900/30">
-              <RiCheckLine className="h-8 w-8 text-green-600 dark:text-green-400" />
+            <div className="mb-4 rounded-full bg-green-100 p-4">
+              <RiCheckLine className="h-8 w-8 text-green-600" />
             </div>
-            <h3 className="text-xl font-semibold text-warm-grey dark:text-warm-white">
+            <h3 className="text-xl font-semibold text-warm-grey">
               Takk for din henvendelse!
             </h3>
-            <p className="mt-2 text-center text-warm-grey-2 dark:text-warm-grey-1">
+            <p className="mt-2 text-center text-warm-grey-2">
               Vi vil kontakte deg innen 24 timer for å diskutere dine behov.
             </p>
           </div>
@@ -109,7 +109,7 @@ export default function LeaseRequestModal({
                   <div>
                     <label
                       htmlFor="firstname"
-                      className="mb-2 block text-sm font-medium text-warm-grey dark:text-warm-white"
+                      className="mb-2 block text-sm font-medium text-warm-grey"
                     >
                       Fornavn *
                     </label>
@@ -124,7 +124,7 @@ export default function LeaseRequestModal({
                   <div>
                     <label
                       htmlFor="lastname"
-                      className="mb-2 block text-sm font-medium text-warm-grey dark:text-warm-white"
+                      className="mb-2 block text-sm font-medium text-warm-grey"
                     >
                       Etternavn *
                     </label>
@@ -143,7 +143,7 @@ export default function LeaseRequestModal({
                   <div>
                     <label
                       htmlFor="email"
-                      className="mb-2 block text-sm font-medium text-warm-grey dark:text-warm-white"
+                      className="mb-2 block text-sm font-medium text-warm-grey"
                     >
                       E-post *
                     </label>
@@ -158,7 +158,7 @@ export default function LeaseRequestModal({
                   <div>
                     <label
                       htmlFor="phone"
-                      className="mb-2 block text-sm font-medium text-warm-grey dark:text-warm-white"
+                      className="mb-2 block text-sm font-medium text-warm-grey"
                     >
                       Telefon *
                     </label>
@@ -176,7 +176,7 @@ export default function LeaseRequestModal({
                 <div>
                   <label
                     htmlFor="intent"
-                    className="mb-2 block text-sm font-medium text-warm-grey dark:text-warm-white"
+                    className="mb-2 block text-sm font-medium text-warm-grey"
                   >
                     Jeg ønsker å *
                   </label>
@@ -196,7 +196,7 @@ export default function LeaseRequestModal({
                   <div>
                     <label
                       htmlFor="propertyType"
-                      className="mb-2 block text-sm font-medium text-warm-grey dark:text-warm-white"
+                      className="mb-2 block text-sm font-medium text-warm-grey"
                     >
                       Eiendomstype *
                     </label>
@@ -216,7 +216,7 @@ export default function LeaseRequestModal({
                   <div>
                     <label
                       htmlFor="location"
-                      className="mb-2 block text-sm font-medium text-warm-grey dark:text-warm-white"
+                      className="mb-2 block text-sm font-medium text-warm-grey"
                     >
                       Sted / Kommune *
                     </label>
@@ -235,7 +235,7 @@ export default function LeaseRequestModal({
                   <div>
                     <label
                       htmlFor="desiredArea"
-                      className="mb-2 block text-sm font-medium text-warm-grey dark:text-warm-white"
+                      className="mb-2 block text-sm font-medium text-warm-grey"
                     >
                       Ønsket areal (m²)
                     </label>
@@ -249,7 +249,7 @@ export default function LeaseRequestModal({
                   <div>
                     <label
                       htmlFor="budgetRange"
-                      className="mb-2 block text-sm font-medium text-warm-grey dark:text-warm-white"
+                      className="mb-2 block text-sm font-medium text-warm-grey"
                     >
                       Budsjett / Leie (kr/mnd)
                     </label>
@@ -266,7 +266,7 @@ export default function LeaseRequestModal({
                 <div>
                   <label
                     htmlFor="moveInDate"
-                    className="mb-2 block text-sm font-medium text-warm-grey dark:text-warm-white"
+                    className="mb-2 block text-sm font-medium text-warm-grey"
                   >
                     Ønsket innflyttingsdato
                   </label>
@@ -290,7 +290,7 @@ export default function LeaseRequestModal({
                 </Button>
               </div>
 
-              <p className="mt-4 text-center text-xs text-warm-grey-2 dark:text-warm-grey-1">
+              <p className="mt-4 text-center text-xs text-warm-grey-2">
                 Ved å sende inn dette skjemaet godtar du at vi kontakter deg om dine behov.
               </p>
             </form>

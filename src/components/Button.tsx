@@ -20,70 +20,65 @@ const buttonVariants = tv({
     variant: {
       primary: [
         // border
-        "border-transparent dark:border-warm-white/20",
+        "border-transparent",
         // text color
-        "text-warm-white dark:text-warm-white",
+        "text-warm-white",
         // background color
-        "bg-warm-grey dark:bg-warm-grey",
+        "bg-warm-grey",
         // hover color
-        "hover:bg-warm-grey-3 dark:hover:bg-warm-grey-3",
+        "hover:bg-warm-grey-3",
         // disabled
         "disabled:bg-warm-grey-1 disabled:text-warm-grey-2",
-        "disabled:dark:bg-warm-grey-2 disabled:dark:text-warm-grey-1",
       ],
       secondary: [
         // border
-        "border-warm-grey-1 dark:border-warm-white/20",
+        "border-warm-grey-1",
         // text color
-        "text-warm-grey dark:text-warm-white",
+        "text-warm-grey",
         // background color
-        "bg-warm-white dark:bg-warm-grey",
+        "bg-warm-white",
         //hover color
-        "hover:bg-warm-white dark:hover:bg-warm-grey-3",
+        "hover:bg-warm-white",
         // disabled
         "disabled:text-warm-grey-2",
-        "disabled:dark:text-warm-grey-1",
       ],
       light: [
         // base
         "shadow-none",
         // border
-        "border-transparent dark:border-warm-white/20",
+        "border-transparent",
         // text color
-        "text-warm-grey dark:text-warm-white",
+        "text-warm-grey",
         // background color
-        "bg-light-blue-1 dark:bg-warm-grey-3",
+        "bg-light-blue-1",
         // hover color
-        "hover:bg-light-blue-2 dark:hover:bg-warm-grey-2",
+        "hover:bg-light-blue-2",
         // disabled
         "disabled:bg-warm-grey-1 disabled:text-warm-grey-2",
-        "disabled:dark:bg-warm-grey-2 disabled:dark:text-warm-grey-1",
       ],
       ghost: [
         // base
         "shadow-none",
         // border
-        "border-transparent dark:border-warm-white/20",
+        "border-transparent",
         // text color
-        "text-warm-grey dark:text-warm-white",
+        "text-warm-grey",
         // hover color
-        "bg-transparent hover:bg-light-blue-1 dark:hover:bg-warm-grey-3",
+        "bg-transparent hover:bg-light-blue-1",
         // disabled
         "disabled:text-warm-grey-2",
-        "disabled:dark:text-warm-grey-1",
       ],
       destructive: [
         // text color
         "text-warm-white",
         // border
-        "border-transparent dark:border-warm-white/20",
+        "border-transparent",
         // background color
-        "bg-red-600 dark:bg-red-700",
+        "bg-red-600",
         // hover color
-        "hover:bg-red-700 dark:hover:bg-red-600",
+        "hover:bg-red-700",
         // disabled
         "disabled:bg-red-300 disabled:text-warm-white",
-        "disabled:dark:bg-red-950 disabled:dark:text-red-400",
       ],
     },
   },

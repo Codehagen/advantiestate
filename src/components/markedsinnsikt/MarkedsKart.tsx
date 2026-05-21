@@ -218,27 +218,27 @@ export default function MarkedsKart() {
         <div ref={mapContainer} className="h-full w-full" />
       </div>
       {selectedZone && (
-        <div className="absolute bottom-4 right-4 z-20 w-80 rounded-lg border border-warm-grey/20 bg-warm-white p-4 shadow-lg dark:border-warm-white/20 dark:bg-warm-grey">
-          <h3 className="text-lg font-semibold text-warm-grey dark:text-warm-white">
+        <div className="absolute bottom-4 right-4 z-20 w-80 rounded-lg border border-warm-grey/20 bg-warm-white p-4 shadow-lg">
+          <h3 className="text-lg font-semibold text-warm-grey">
             {selectedZone.name}
           </h3>
-          <div className="mt-2 space-y-2 text-sm text-warm-grey-2 dark:text-warm-grey-1">
+          <div className="mt-2 space-y-2 text-sm text-warm-grey-2">
             <div>
-              <p className="font-medium text-warm-grey dark:text-warm-white">
+              <p className="font-medium text-warm-grey">
                 Kontor
               </p>
               <p>Prisintervall: {selectedZone.kontor.priceRange}</p>
               <p>Gjennomsnitt: {selectedZone.kontor.averagePrice} kr/m²</p>
             </div>
             <div>
-              <p className="font-medium text-warm-grey dark:text-warm-white">
+              <p className="font-medium text-warm-grey">
                 Handel
               </p>
               <p>Prisintervall: {selectedZone.handel.priceRange}</p>
               <p>Gjennomsnitt: {selectedZone.handel.averagePrice} kr/m²</p>
             </div>
             <div>
-              <p className="font-medium text-warm-grey dark:text-warm-white">
+              <p className="font-medium text-warm-grey">
                 Logistikk
               </p>
               <p>Prisintervall: {selectedZone.logistikk.priceRange}</p>

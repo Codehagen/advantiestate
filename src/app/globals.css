@@ -76,7 +76,7 @@ a {
 }
 
 .anchor-link:after {
-  @apply text-warm-grey-2 dark:text-warm-grey-1;
+  @apply text-warm-grey-2;
   content: "#";
 }
 
