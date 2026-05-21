@@ -3,6 +3,7 @@ import { TrackingListener } from "@/components/analytics/TrackingListener";
 import { Footer } from "@/components/site/Footer";
 import { Nav } from "@/components/site/Nav";
 import { constructMetadata } from "@/lib/utils";
+import type { Viewport } from "next";
 import { Inter } from "next/font/google";
 import StructuredData from "@/components/StructuredData";
 import "./globals.css";
@@ -22,6 +23,10 @@ export const metadata = constructMetadata({
   description:
     "Advanti tilbyr ekspertise innen kjøp, salg og utleie av næringseiendom i Nord-Norge. Profesjonell rådgivning for din virksomhet.",
 });
+
+export const viewport: Viewport = {
+  themeColor: "#2c2825",
+};
 
 export default function RootLayout({
   children,

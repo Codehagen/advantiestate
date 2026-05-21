@@ -47,14 +47,12 @@ export function constructMetadata({
   title = "Advanti - Din partner for næringseiendom i Nord-Norge",
   description = "Advanti tilbyr ekspertise innen kjøp, salg, utleie, verdivurdering og strategisk rådgivning for næringseiendom i Nord-Norge.",
   image = "/opengraph-image.png",
-  icons = "/favicon.ico",
   noIndex = false,
   canonical,
 }: {
   title?: string;
   description?: string;
   image?: string;
-  icons?: string;
   noIndex?: boolean;
   canonical?: string;
 } = {}): Metadata {
@@ -97,11 +95,9 @@ export function constructMetadata({
       creator: twitterHandle,
       site: twitterHandle,
     },
-    icons: {
-      icon: icons,
-      shortcut: icons,
-      apple: icons,
-    },
+    // Icons are served via the App Router file convention:
+    // app/favicon.ico, app/icon.svg, app/apple-icon.png
+    manifest: "/manifest.json",
     metadataBase: new URL(siteUrl),
     authors: [{ name: siteName, url: siteUrl }],
     keywords: [
