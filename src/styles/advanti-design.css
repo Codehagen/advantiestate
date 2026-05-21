@@ -2193,8 +2193,10 @@ h1, h2, h3 {
   width: 100%;
   min-height: 360px;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 16px;
   padding: 32px;
   text-align: center;
   font-size: 14px;
@@ -2238,7 +2240,8 @@ h1, h2, h3 {
 /* /kart — full-height detail map page */
 .mi-kart-frame {
   position: relative;
-  height: calc(100vh - 220px);
+  /* dvh, not vh: mobile Safari's dynamic toolbar makes 100vh overflow. */
+  height: calc(100dvh - 220px);
   min-height: 520px;
   border: var(--hairline);
   background: var(--accent-faint);
@@ -2349,7 +2352,7 @@ h1, h2, h3 {
 }
 
 @media (max-width: 880px) {
-  .mi-kart-frame { height: 72vh; }
+  .mi-kart-frame { height: 72dvh; }
   .mi-zone-panel { width: 230px; bottom: 50px; }
   .mi-kart-disclaimer { max-width: 220px; }
 }

@@ -115,7 +115,6 @@ const zoneStyle = {
 export function MarkedsKartLeaflet() {
   const [selectedZone, setSelectedZone] = useState<ZoneProps | null>(null)
   const [showCadastre, setShowCadastre] = useState(false)
-  const [tileError, setTileError] = useState(false)
 
   const onEachZone = (feature: Feature<Polygon, ZoneProps>, layer: Layer) => {
     const path = layer as Path
@@ -141,11 +140,13 @@ export function MarkedsKartLeaflet() {
         scrollWheelZoom
         style={{ height: "100%", width: "100%" }}
       >
+        {/* A few tile 404s (sea, beyond coverage) are normal Leaflet
+            behaviour — Leaflet shows blank tiles, no action needed. A
+            genuine map crash is caught by the route error.tsx instead. */}
         <TileLayer
           url={TILE_URL}
           attribution={TILE_ATTRIBUTION}
           maxZoom={TILE_MAX_ZOOM}
-          eventHandlers={{ tileerror: () => setTileError(true) }}
         />
         {showCadastre && (
           <WMSTileLayer
@@ -194,7 +195,6 @@ export function MarkedsKartLeaflet() {
       <div className="mi-kart-disclaimer">
         Soneinndeling og priser er Advantis indikative estimater per Q4 2025,
         ikke oppmålte tall.
-        {tileError ? " Noen kartfliser kunne ikke lastes." : ""}
       </div>
     </div>
   )

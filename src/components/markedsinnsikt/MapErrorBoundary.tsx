@@ -30,12 +30,23 @@ export class MapErrorBoundary extends Component<Props, State> {
     console.error("Markedskart feilet:", error)
   }
 
+  reset = () => this.setState({ hasError: false })
+
   render() {
     if (this.state.hasError) {
       return (
         <div className="mi-map-fallback">
-          {this.props.message ??
-            "Kartet kunne ikke lastes akkurat nå. Nøkkeltallene finner du i panelet ved siden av."}
+          <p>
+            {this.props.message ??
+              "Kartet kunne ikke lastes akkurat nå. Nøkkeltallene finner du i panelet ved siden av."}
+          </p>
+          <button
+            type="button"
+            className="btn btn-outline"
+            onClick={this.reset}
+          >
+            Prøv igjen
+          </button>
         </div>
       )
     }

@@ -68,9 +68,12 @@ export function MarketLineChart({
       <ResponsiveContainer width="100%" height="100%">
         <ComposedChart data={data} margin={CHART_MARGIN}>
           <defs>
+            {/* Literal hex, not var(--accent): a CSS variable in an SVG
+                <stop stop-color> is unreliable in Safari/WebKit and can
+                render transparent. #cbeef2 is the --accent token value. */}
             <linearGradient id={gradId} x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="var(--accent)" stopOpacity={0.38} />
-              <stop offset="100%" stopColor="var(--accent)" stopOpacity={0} />
+              <stop offset="0%" stopColor="#cbeef2" stopOpacity={0.38} />
+              <stop offset="100%" stopColor="#cbeef2" stopOpacity={0} />
             </linearGradient>
           </defs>
           <CartesianGrid

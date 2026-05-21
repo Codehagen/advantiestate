@@ -93,4 +93,18 @@ test.describe("Markedsinnsikt", () => {
     await toggle.click();
     await expect(toggle).toHaveAttribute("aria-pressed", "true");
   });
+
+  test("Yield sub-tabs switch the segment", async ({ page }) => {
+    await page.goto("/markedsinnsikt");
+    const handel = page.locator(".mi-subtabs button", { hasText: "Handel" });
+    await handel.click();
+    await expect(handel).toHaveAttribute("aria-selected", "true");
+    await expect(page.locator('.mi-shell main [role="img"]')).toBeVisible();
+  });
+
+  test("Transaksjoner tab renders the volume bar chart", async ({ page }) => {
+    await page.goto("/markedsinnsikt");
+    await page.locator('button[data-sector="tx"]').click();
+    await expect(page.locator('.mi-shell main [role="img"]')).toBeVisible();
+  });
 });

@@ -31,7 +31,13 @@ export function NordNorgeLeafletMap({
       zoom={ZOOM}
       minZoom={4}
       maxZoom={TILE_MAX_ZOOM}
+      // A fixed, clickable overview — pan/zoom disabled so a one-finger
+      // touch-drag scrolls the page instead of being trapped by the map.
       scrollWheelZoom={false}
+      dragging={false}
+      doubleClickZoom={false}
+      touchZoom={false}
+      zoomControl={false}
       style={{ height: "100%", width: "100%" }}
     >
       <TileLayer
