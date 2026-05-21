@@ -22,21 +22,21 @@ const CustomTooltip: React.FC<TooltipProps> = ({ active, payload }) => {
       <div
         className={cx(
           "overflow-hidden rounded-md text-sm shadow-md",
-          "bg-gray-900 dark:bg-gray-800",
+          "bg-gray-900",
         )}
       >
         <div
           className={cx(
-            "border-b border-warm-grey/10 px-4 py-2 dark:border-warm-grey-1/10",
+            "border-b border-warm-grey/10 px-4 py-2",
           )}
         >
-          <p className={cx("font-medium text-warm-grey dark:text-warm-grey-1")}>
+          <p className={cx("font-medium text-warm-grey")}>
             Kontantstrøm
           </p>
         </div>
         <div
           className={cx(
-            "space-y-1 bg-warm-grey/5 px-4 py-2 dark:bg-warm-grey/20",
+            "space-y-1 bg-warm-grey/5 px-4 py-2",
           )}
         >
           {payload.map(({ category, value }, index) => (
@@ -50,17 +50,17 @@ const CustomTooltip: React.FC<TooltipProps> = ({ active, payload }) => {
                   className={cx(
                     "h-[3px] w-3.5 shrink-0 rounded-full",
                     category === "noi"
-                      ? "bg-warm-grey-2 dark:bg-warm-grey-1"
+                      ? "bg-warm-grey-2"
                       : "bg-light-blue",
                   )}
                 />
-                <p className="whitespace-nowrap text-warm-grey-2 dark:text-warm-grey-1">
+                <p className="whitespace-nowrap text-warm-grey-2">
                   {category === "noi"
                     ? "Netto driftsinntekt"
                     : "Akkumulert nåverdi"}
                 </p>
               </div>
-              <p className="whitespace-nowrap text-right tabular-nums text-warm-grey dark:text-warm-grey-1">
+              <p className="whitespace-nowrap text-right tabular-nums text-warm-grey">
                 {valueFormatter(value)} kr
               </p>
             </div>
@@ -125,36 +125,36 @@ export function DcfChart({
   return (
     <Card className="mt-8">
       <div className="flex flex-col gap-2">
-        <h3 className="font-medium text-warm-grey dark:text-warm-white">
+        <h3 className="font-medium text-warm-grey">
           Diskontert kontantstrøm (DCF)
         </h3>
-        <p className="text-sm text-warm-grey-2 dark:text-warm-grey-1">
+        <p className="text-sm text-warm-grey-2">
           Viser netto driftsinntekter og nåverdi over tid
         </p>
       </div>
       <div className="mt-6 flex gap-8">
         <div>
-          <p className="text-sm text-warm-grey-2 dark:text-warm-grey-1">
+          <p className="text-sm text-warm-grey-2">
             Netto driftsinntekt (NOI)
           </p>
-          <p className="mt-2 text-xl font-semibold text-warm-grey dark:text-warm-white">
+          <p className="mt-2 text-xl font-semibold text-warm-grey">
             {valueFormatter(currentNOI)} kr
           </p>
         </div>
         <div>
-          <p className="text-sm text-warm-grey-2 dark:text-warm-grey-1">
+          <p className="text-sm text-warm-grey-2">
             Nåverdi
           </p>
-          <p className="mt-2 text-xl font-semibold text-warm-grey dark:text-warm-white">
+          <p className="mt-2 text-xl font-semibold text-warm-grey">
             {valueFormatter(currentPV)} kr
           </p>
         </div>
         {currentTerminalValue > 0 && (
           <div>
-            <p className="text-sm text-warm-grey-2 dark:text-warm-grey-1">
+            <p className="text-sm text-warm-grey-2">
               Terminal verdi
             </p>
-            <p className="mt-2 text-xl font-semibold text-warm-grey dark:text-warm-white">
+            <p className="mt-2 text-xl font-semibold text-warm-grey">
               {valueFormatter(currentTerminalValue)} kr
             </p>
           </div>

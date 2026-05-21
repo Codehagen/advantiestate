@@ -14,10 +14,10 @@ export default function Integrations() {
     <div className="mt-36 flex flex-col overflow-hidden px-3">
       <section aria-label="hero">
         <FadeContainer className="relative mx-auto flex max-w-6xl flex-col items-center justify-center">
-          <h1 className="mt-8 text-center text-5xl font-semibold tracking-tighter text-warm-grey sm:text-8xl sm:leading-[5.5rem] dark:text-warm-white">
+          <h1 className="mt-8 text-center text-5xl font-semibold tracking-tighter text-warm-grey sm:text-8xl sm:leading-[5.5rem]">
             <FadeSpan>Vårt</FadeSpan>{" "}
             <FadeSpan>
-              <span className="bg-gradient-to-r from-warm-grey via-warm-grey-2 to-warm-grey bg-clip-text text-transparent dark:from-warm-white dark:via-warm-grey-1 dark:to-warm-white">
+              <span className="bg-gradient-to-r from-warm-grey via-warm-grey-2 to-warm-grey bg-clip-text text-transparent">
                 Datagrunnlag
               </span>
             </FadeSpan>
@@ -35,7 +35,7 @@ export default function Integrations() {
           </p>
 
           <div className="absolute inset-0 -z-10 flex items-center justify-center overflow-hidden">
-            <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-warm-white via-warm-white/80 to-transparent dark:from-warm-grey dark:via-warm-grey/80" />
+            <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-warm-white via-warm-white/80 to-transparent" />
 
             <AnimatedGridPattern
               width={50}
@@ -46,7 +46,7 @@ export default function Integrations() {
               duration={3}
             />
 
-            <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-warm-white via-warm-white/80 to-transparent dark:from-warm-grey dark:via-warm-grey/80" />
+            <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-warm-white via-warm-white/80 to-transparent" />
           </div>
         </FadeContainer>
       </section>

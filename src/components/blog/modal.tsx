@@ -59,7 +59,7 @@ export default function Modal({
         <Drawer.Portal>
           <Drawer.Content
             className={cx(
-              "fixed bottom-0 left-0 right-0 z-50 mt-24 rounded-t-[10px] border-t border-warm-grey-2/20 bg-warm-white dark:bg-warm-grey",
+              "fixed bottom-0 left-0 right-0 z-50 mt-24 rounded-t-[10px] border-t border-warm-grey-2/20 bg-warm-white",
               className,
             )}
           >
@@ -92,7 +92,7 @@ export default function Modal({
           onOpenAutoFocus={(e) => e.preventDefault()}
           onCloseAutoFocus={(e) => e.preventDefault()}
           className={cx(
-            "animate-scale-in fixed inset-0 z-40 m-auto max-h-fit w-full max-w-md overflow-hidden bg-warm-white p-0 shadow-xl md:rounded-2xl dark:bg-warm-grey",
+            "animate-scale-in fixed inset-0 z-40 m-auto max-h-fit w-full max-w-md overflow-hidden bg-warm-white p-0 shadow-xl md:rounded-2xl",
             className,
           )}
         >

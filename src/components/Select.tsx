@@ -25,18 +25,17 @@ const selectTriggerStyles = [
     // base
     "group/trigger flex w-full select-none items-center justify-between gap-2 truncate rounded-md border px-3 py-2 shadow-sm outline-none transition sm:text-sm",
     // border color
-    "border-warm-grey-1 dark:border-warm-grey-2",
+    "border-warm-grey-1",
     // text color
-    "text-warm-grey dark:text-warm-white",
+    "text-warm-grey",
     // placeholder
-    "data-[placeholder]:text-warm-grey-2 data-[placeholder]:dark:text-warm-grey-1",
+    "data-[placeholder]:text-warm-grey-2",
     // background color
-    "bg-warm-white dark:bg-warm-grey",
+    "bg-warm-white",
     // hover
-    "hover:bg-light-blue-1 hover:dark:bg-warm-grey-3",
+    "hover:bg-light-blue-1",
     // disabled
     "data-[disabled]:bg-warm-grey-1 data-[disabled]:text-warm-grey-2",
-    "data-[disabled]:dark:border-warm-grey-2 data-[disabled]:dark:bg-warm-grey-3 data-[disabled]:dark:text-warm-grey-1",
     focusInput,
   ),
 ]
@@ -65,9 +64,9 @@ const SelectTrigger = React.forwardRef<
             // base
             "size-4 shrink-0",
             // text color
-            "text-warm-grey-2 dark:text-warm-grey-1",
+            "text-warm-grey-2",
             // disabled
-            "group-data-[disabled]/trigger:text-warm-grey-1 group-data-[disabled]/trigger:dark:text-warm-grey-2",
+            "group-data-[disabled]/trigger:text-warm-grey-1",
           )}
         />
       </SelectPrimitives.Icon>
@@ -138,11 +137,11 @@ const SelectContent = React.forwardRef<
           // heights
           "max-h-[--radix-select-content-available-height]",
           // background color
-          "bg-warm-white dark:bg-warm-grey",
+          "bg-warm-white",
           // text color
-          "text-warm-grey dark:text-warm-white",
+          "text-warm-grey",
           // border color
-          "border-warm-grey-1 dark:border-warm-grey-2",
+          "border-warm-grey-1",
           // transition
           "will-change-[transform,opacity]",
           "data-[state=closed]:animate-hide",
@@ -182,7 +181,7 @@ const SelectGroupLabel = React.forwardRef<
       // base
       "px-3 py-2 text-xs font-medium tracking-wide",
       // text color
-      "text-warm-grey-2 dark:text-warm-grey-1",
+      "text-warm-grey-2",
       className,
     )}
     {...props}
@@ -202,13 +201,13 @@ const SelectItem = React.forwardRef<
         // base
         "grid cursor-pointer grid-cols-[1fr_20px] gap-x-2 rounded px-3 py-2 outline-none transition-colors data-[state=checked]:font-semibold sm:text-sm",
         // text color
-        "text-warm-grey dark:text-warm-white",
+        "text-warm-grey",
         // disabled
-        "data-[disabled]:text-warm-grey-2 dark:data-[disabled]:text-warm-grey-1 data-[disabled]:pointer-events-none data-[disabled]:hover:bg-none",
+        "data-[disabled]:text-warm-grey-2 data-[disabled]:pointer-events-none data-[disabled]:hover:bg-none",
         // focus
-        "focus-visible:bg-light-blue-1 focus-visible:dark:bg-warm-grey-3",
+        "focus-visible:bg-light-blue-1",
         // hover
-        "hover:bg-light-blue-1 hover:dark:bg-warm-grey-3",
+        "hover:bg-light-blue-1",
         className,
       )}
       {...props}
@@ -218,7 +217,7 @@ const SelectItem = React.forwardRef<
       </SelectPrimitives.ItemText>
       <SelectPrimitives.ItemIndicator>
         <RiCheckLine
-          className="text-warm-grey dark:text-warm-white size-5 shrink-0"
+          className="text-warm-grey size-5 shrink-0"
           aria-hidden="true"
         />
       </SelectPrimitives.ItemIndicator>
@@ -238,7 +237,7 @@ const SelectSeparator = React.forwardRef<
       // base
       "-mx-1 my-1 h-px",
       // background color
-      "bg-warm-grey-1 dark:bg-warm-grey-2",
+      "bg-warm-grey-1",
       className,
     )}
     {...props}

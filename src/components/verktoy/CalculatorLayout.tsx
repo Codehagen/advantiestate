@@ -21,7 +21,7 @@ export function CalculatorLayout({
       {/* Back Link */}
       <Link
         href="/verktoy"
-        className="mb-6 inline-flex w-fit items-center text-sm text-warm-grey-2 transition-colors hover:text-warm-grey-3 dark:text-warm-grey-1 dark:hover:text-warm-white"
+        className="mb-6 inline-flex w-fit items-center text-sm text-warm-grey-2 transition-colors hover:text-warm-grey-3"
       >
         <RiArrowLeftLine className="mr-1 size-4" />
         Tilbake til verktøy
@@ -36,10 +36,10 @@ export function CalculatorLayout({
         }}
       >
         <Badge>{badge}</Badge>
-        <h1 className="mt-2 inline-block bg-gradient-to-t from-warm-grey to-warm-grey-3 bg-clip-text py-2 text-4xl font-bold tracking-tighter text-transparent sm:text-5xl md:text-6xl dark:from-warm-white dark:to-warm-grey-1">
+        <h1 className="mt-2 inline-block bg-gradient-to-t from-warm-grey to-warm-grey-3 bg-clip-text py-2 text-4xl font-bold tracking-tighter text-transparent sm:text-5xl md:text-6xl">
           {title}
         </h1>
-        <p className="mt-4 max-w-2xl text-lg text-warm-grey-2 dark:text-warm-grey-1">
+        <p className="mt-4 max-w-2xl text-lg text-warm-grey-2">
           {description}
         </p>
       </section>
@@ -51,8 +51,8 @@ export function CalculatorLayout({
       <CalculatorCTA />
 
       {/* Additional Info */}
-      <div className="mx-auto mt-12 max-w-3xl rounded-lg border border-warm-grey-1/10 bg-warm-grey/5 p-6 dark:border-warm-white/10 dark:bg-warm-grey-2/10">
-        <p className="text-sm text-warm-grey-2 dark:text-warm-grey-1">
+      <div className="mx-auto mt-12 max-w-3xl rounded-lg border border-warm-grey-1/10 bg-warm-grey/5 p-6">
+        <p className="text-sm text-warm-grey-2">
           <strong>Viktig:</strong> Disse kalkulatorene gir estimater basert på
           de verdiene du oppgir. For nøyaktige beregninger og profesjonell
           rådgivning, kontakt våre eksperter. Alle beregninger er veiledende og

@@ -70,8 +70,8 @@ export function ROICalculator() {
   return (
     <div className="grid gap-8 lg:grid-cols-2">
       {/* Input Section */}
-      <div className="rounded-xl border border-warm-grey-1/20 bg-warm-white p-6 dark:border-warm-white/10 dark:bg-warm-grey-2/20">
-        <h2 className="mb-6 text-xl font-semibold text-warm-grey dark:text-warm-white">
+      <div className="rounded-xl border border-warm-grey-1/20 bg-warm-white p-6">
+        <h2 className="mb-6 text-xl font-semibold text-warm-grey">
           Legg inn verdier
         </h2>
 
@@ -80,12 +80,12 @@ export function ROICalculator() {
           <div className="space-y-2">
             <label
               htmlFor="initialInvestering"
-              className="flex items-center text-tremor-default font-medium text-tremor-content-strong dark:text-dark-tremor-content-strong"
+              className="flex items-center text-tremor-default font-medium text-tremor-content-strong"
             >
               Initial investering (NOK)
               <div className="group relative ml-2">
-                <RiInformationLine className="size-4 text-warm-grey-2 dark:text-warm-grey-1" />
-                <div className="pointer-events-none absolute bottom-full left-1/2 mb-2 hidden w-64 -translate-x-1/2 rounded-lg bg-warm-grey px-3 py-2 text-xs text-warm-white shadow-lg group-hover:block dark:bg-warm-white dark:text-warm-grey">
+                <RiInformationLine className="size-4 text-warm-grey-2" />
+                <div className="pointer-events-none absolute bottom-full left-1/2 mb-2 hidden w-64 -translate-x-1/2 rounded-lg bg-warm-grey px-3 py-2 text-xs text-warm-white shadow-lg group-hover:block">
                   Kjøpesum inkludert omkostninger
                 </div>
               </div>
@@ -112,12 +112,12 @@ export function ROICalculator() {
           <div className="space-y-2">
             <label
               htmlFor="arligLeieinntekt"
-              className="flex items-center text-tremor-default font-medium text-tremor-content-strong dark:text-dark-tremor-content-strong"
+              className="flex items-center text-tremor-default font-medium text-tremor-content-strong"
             >
               Årlig leieinntekt (NOK)
               <div className="group relative ml-2">
-                <RiInformationLine className="size-4 text-warm-grey-2 dark:text-warm-grey-1" />
-                <div className="pointer-events-none absolute bottom-full left-1/2 mb-2 hidden w-64 -translate-x-1/2 rounded-lg bg-warm-grey px-3 py-2 text-xs text-warm-white shadow-lg group-hover:block dark:bg-warm-white dark:text-warm-grey">
+                <RiInformationLine className="size-4 text-warm-grey-2" />
+                <div className="pointer-events-none absolute bottom-full left-1/2 mb-2 hidden w-64 -translate-x-1/2 rounded-lg bg-warm-grey px-3 py-2 text-xs text-warm-white shadow-lg group-hover:block">
                   Forventet årlig leieinntekt
                 </div>
               </div>
@@ -144,12 +144,12 @@ export function ROICalculator() {
           <div className="space-y-2">
             <label
               htmlFor="driftskostnader"
-              className="flex items-center text-tremor-default font-medium text-tremor-content-strong dark:text-dark-tremor-content-strong"
+              className="flex items-center text-tremor-default font-medium text-tremor-content-strong"
             >
               Årlige driftskostnader (NOK)
               <div className="group relative ml-2">
-                <RiInformationLine className="size-4 text-warm-grey-2 dark:text-warm-grey-1" />
-                <div className="pointer-events-none absolute bottom-full left-1/2 mb-2 hidden w-64 -translate-x-1/2 rounded-lg bg-warm-grey px-3 py-2 text-xs text-warm-white shadow-lg group-hover:block dark:bg-warm-white dark:text-warm-grey">
+                <RiInformationLine className="size-4 text-warm-grey-2" />
+                <div className="pointer-events-none absolute bottom-full left-1/2 mb-2 hidden w-64 -translate-x-1/2 rounded-lg bg-warm-grey px-3 py-2 text-xs text-warm-white shadow-lg group-hover:block">
                   Vedlikehold, forsikring, eiendomsskatt, etc.
                 </div>
               </div>
@@ -176,12 +176,12 @@ export function ROICalculator() {
           <div className="space-y-2">
             <label
               htmlFor="verdiOkning"
-              className="flex items-center text-tremor-default font-medium text-tremor-content-strong dark:text-dark-tremor-content-strong"
+              className="flex items-center text-tremor-default font-medium text-tremor-content-strong"
             >
               Forventet verdiøkning per år (%)
               <div className="group relative ml-2">
-                <RiInformationLine className="size-4 text-warm-grey-2 dark:text-warm-grey-1" />
-                <div className="pointer-events-none absolute bottom-full left-1/2 mb-2 hidden w-64 -translate-x-1/2 rounded-lg bg-warm-grey px-3 py-2 text-xs text-warm-white shadow-lg group-hover:block dark:bg-warm-white dark:text-warm-grey">
+                <RiInformationLine className="size-4 text-warm-grey-2" />
+                <div className="pointer-events-none absolute bottom-full left-1/2 mb-2 hidden w-64 -translate-x-1/2 rounded-lg bg-warm-grey px-3 py-2 text-xs text-warm-white shadow-lg group-hover:block">
                   Estimert årlig verdiøkning på eiendommen
                 </div>
               </div>
@@ -205,12 +205,12 @@ export function ROICalculator() {
           <div className="space-y-2">
             <label
               htmlFor="holdeperiode"
-              className="flex items-center text-tremor-default font-medium text-tremor-content-strong dark:text-dark-tremor-content-strong"
+              className="flex items-center text-tremor-default font-medium text-tremor-content-strong"
             >
               Holdeperiode (år)
               <div className="group relative ml-2">
-                <RiInformationLine className="size-4 text-warm-grey-2 dark:text-warm-grey-1" />
-                <div className="pointer-events-none absolute bottom-full left-1/2 mb-2 hidden w-64 -translate-x-1/2 rounded-lg bg-warm-grey px-3 py-2 text-xs text-warm-white shadow-lg group-hover:block dark:bg-warm-white dark:text-warm-grey">
+                <RiInformationLine className="size-4 text-warm-grey-2" />
+                <div className="pointer-events-none absolute bottom-full left-1/2 mb-2 hidden w-64 -translate-x-1/2 rounded-lg bg-warm-grey px-3 py-2 text-xs text-warm-white shadow-lg group-hover:block">
                   Hvor lenge planlegger du å eie eiendommen?
                 </div>
               </div>
@@ -236,8 +236,8 @@ export function ROICalculator() {
       {/* Results Section */}
       <div className="space-y-4">
         {/* Total avkastning % */}
-        <div className="rounded-xl border border-light-blue/20 bg-gradient-to-br from-light-blue/5 to-transparent p-6 dark:border-light-blue/30 dark:from-light-blue/10">
-          <div className="mb-2 text-sm font-medium text-warm-grey-2 dark:text-warm-grey-1">
+        <div className="rounded-xl border border-light-blue/20 bg-gradient-to-br from-light-blue/5 to-transparent p-6">
+          <div className="mb-2 text-sm font-medium text-warm-grey-2">
             Total avkastning
           </div>
           <div className="flex items-baseline">
@@ -247,20 +247,20 @@ export function ROICalculator() {
                 minimumFractionDigits: 1,
                 maximumFractionDigits: 1,
               }}
-              className="text-4xl font-bold text-warm-grey dark:text-warm-white"
+              className="text-4xl font-bold text-warm-grey"
             />
-            <span className="ml-2 text-2xl font-semibold text-warm-grey-2 dark:text-warm-grey-1">
+            <span className="ml-2 text-2xl font-semibold text-warm-grey-2">
               %
             </span>
           </div>
-          <p className="mt-2 text-xs text-warm-grey-2 dark:text-warm-grey-1">
+          <p className="mt-2 text-xs text-warm-grey-2">
             Total avkastning over {holdeperiode} år
           </p>
         </div>
 
         {/* Gjennomsnittlig årlig avkastning */}
-        <div className="rounded-xl border border-light-blue/20 bg-gradient-to-br from-light-blue/5 to-transparent p-6 dark:border-light-blue/30 dark:from-light-blue/10">
-          <div className="mb-2 text-sm font-medium text-warm-grey-2 dark:text-warm-grey-1">
+        <div className="rounded-xl border border-light-blue/20 bg-gradient-to-br from-light-blue/5 to-transparent p-6">
+          <div className="mb-2 text-sm font-medium text-warm-grey-2">
             Gjennomsnittlig årlig avkastning
           </div>
           <div className="flex items-baseline">
@@ -270,20 +270,20 @@ export function ROICalculator() {
                 minimumFractionDigits: 1,
                 maximumFractionDigits: 1,
               }}
-              className="text-4xl font-bold text-warm-grey dark:text-warm-white"
+              className="text-4xl font-bold text-warm-grey"
             />
-            <span className="ml-2 text-2xl font-semibold text-warm-grey-2 dark:text-warm-grey-1">
+            <span className="ml-2 text-2xl font-semibold text-warm-grey-2">
               %
             </span>
           </div>
-          <p className="mt-2 text-xs text-warm-grey-2 dark:text-warm-grey-1">
+          <p className="mt-2 text-xs text-warm-grey-2">
             Gjennomsnitt per år
           </p>
         </div>
 
         {/* Total verdi */}
-        <div className="rounded-xl border border-warm-grey-1/20 bg-warm-white p-6 dark:border-warm-white/10 dark:bg-warm-grey-2/20">
-          <div className="mb-2 text-sm font-medium text-warm-grey-2 dark:text-warm-grey-1">
+        <div className="rounded-xl border border-warm-grey-1/20 bg-warm-white p-6">
+          <div className="mb-2 text-sm font-medium text-warm-grey-2">
             Total verdi ved salg
           </div>
           <div className="flex items-baseline">
@@ -296,17 +296,17 @@ export function ROICalculator() {
                 maximumFractionDigits: 0,
               }}
               locales="no-NO"
-              className="text-3xl font-bold text-warm-grey dark:text-warm-white"
+              className="text-3xl font-bold text-warm-grey"
             />
           </div>
-          <p className="mt-2 text-xs text-warm-grey-2 dark:text-warm-grey-1">
+          <p className="mt-2 text-xs text-warm-grey-2">
             Inkludert leieinntekter og verdiøkning
           </p>
         </div>
 
         {/* Netto gevinst */}
-        <div className="rounded-xl border border-warm-grey-1/20 bg-warm-white p-6 dark:border-warm-white/10 dark:bg-warm-grey-2/20">
-          <div className="mb-2 text-sm font-medium text-warm-grey-2 dark:text-warm-grey-1">
+        <div className="rounded-xl border border-warm-grey-1/20 bg-warm-white p-6">
+          <div className="mb-2 text-sm font-medium text-warm-grey-2">
             Netto gevinst
           </div>
           <div className="flex items-baseline">
@@ -319,10 +319,10 @@ export function ROICalculator() {
                 maximumFractionDigits: 0,
               }}
               locales="no-NO"
-              className="text-3xl font-bold text-warm-grey dark:text-warm-white"
+              className="text-3xl font-bold text-warm-grey"
             />
           </div>
-          <p className="mt-2 text-xs text-warm-grey-2 dark:text-warm-grey-1">
+          <p className="mt-2 text-xs text-warm-grey-2">
             Total gevinst etter {holdeperiode} år
           </p>
         </div>

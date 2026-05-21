@@ -12,12 +12,12 @@ export function CalculatorCTA({
   description = "Våre eksperter kan hjelpe deg med å tolke resultatene og gi deg skreddersydd rådgivning for din næringseiendom.",
 }: CalculatorCTAProps) {
   return (
-    <div className="mt-12 rounded-xl border border-warm-grey-1/20 bg-gradient-to-br from-warm-grey/5 to-light-blue/5 p-8 dark:border-warm-white/10 dark:from-warm-grey-2/20 dark:to-light-blue/10">
+    <div className="mt-12 rounded-xl border border-warm-grey-1/20 bg-gradient-to-br from-warm-grey/5 to-light-blue/5 p-8">
       <div className="mx-auto max-w-2xl text-center">
-        <h3 className="text-2xl font-semibold text-warm-grey dark:text-warm-white">
+        <h3 className="text-2xl font-semibold text-warm-grey">
           {title}
         </h3>
-        <p className="mt-3 text-warm-grey-2 dark:text-warm-grey-1">
+        <p className="mt-3 text-warm-grey-2">
           {description}
         </p>
         <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:justify-center">

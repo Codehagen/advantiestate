@@ -80,10 +80,10 @@ export default function ContactUsForm() {
   if (isSubmitted) {
     return (
       <div className="sm:mx-auto sm:max-w-2xl py-12 text-center">
-        <h3 className="text-xl font-semibold text-tremor-content-strong dark:text-dark-tremor-content-strong">
+        <h3 className="text-xl font-semibold text-tremor-content-strong">
           Takk for din henvendelse!
         </h3>
-        <p className="mt-2 text-tremor-default text-tremor-content dark:text-dark-tremor-content">
+        <p className="mt-2 text-tremor-default text-tremor-content">
           Vi kontakter deg innen 24 timer for en uforpliktende avklaring.
         </p>
       </div>
@@ -103,7 +103,7 @@ export default function ContactUsForm() {
             <div className="col-span-full sm:col-span-2">
               <label
                 htmlFor="name"
-                className="text-tremor-default font-medium text-tremor-content-strong dark:text-dark-tremor-content-strong"
+                className="text-tremor-default font-medium text-tremor-content-strong"
               >
                 Navn
                 <span className="text-red-500">*</span>
@@ -124,7 +124,7 @@ export default function ContactUsForm() {
             <div className="col-span-full sm:col-span-1">
               <label
                 htmlFor="phone"
-                className="text-tremor-default font-medium text-tremor-content-strong dark:text-dark-tremor-content-strong"
+                className="text-tremor-default font-medium text-tremor-content-strong"
               >
                 Telefon
                 <span className="text-red-500">*</span>
@@ -145,7 +145,7 @@ export default function ContactUsForm() {
             <div className="col-span-full sm:col-span-1">
               <label
                 htmlFor="email"
-                className="text-tremor-default font-medium text-tremor-content-strong dark:text-dark-tremor-content-strong"
+                className="text-tremor-default font-medium text-tremor-content-strong"
               >
                 E-post
                 <span className="text-red-500">*</span>
@@ -166,7 +166,7 @@ export default function ContactUsForm() {
             <div className="col-span-full">
               <label
                 htmlFor="service"
-                className="text-tremor-default font-medium text-tremor-content-strong dark:text-dark-tremor-content-strong"
+                className="text-tremor-default font-medium text-tremor-content-strong"
               >
                 Ønsket tjeneste
                 <span className="text-red-500">*</span>
@@ -191,7 +191,7 @@ export default function ContactUsForm() {
             <div className="col-span-full">
               <label
                 htmlFor="message"
-                className="text-tremor-default font-medium text-tremor-content-strong dark:text-dark-tremor-content-strong"
+                className="text-tremor-default font-medium text-tremor-content-strong"
               >
                 Melding (valgfritt)
               </label>
@@ -199,7 +199,7 @@ export default function ContactUsForm() {
                 id="message"
                 name="message"
                 rows={4}
-                className="mt-2 w-full rounded-md border border-warm-grey-1 bg-warm-white text-warm-grey placeholder:text-warm-grey-2 focus:border-warm-grey focus:ring-2 focus:ring-light-blue/50 dark:border-warm-grey-2 dark:bg-warm-grey dark:text-warm-white dark:placeholder:text-warm-grey-1 dark:focus:border-warm-grey-1 dark:focus:ring-light-blue/30 px-3 py-2 shadow-sm"
+                className="mt-2 w-full rounded-md border border-warm-grey-1 bg-warm-white text-warm-grey placeholder:text-warm-grey-2 focus:border-warm-grey focus:ring-2 focus:ring-light-blue/50 px-3 py-2 shadow-sm"
                 placeholder="Fortell oss litt om din situasjon eller spørsmål..."
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
@@ -212,12 +212,12 @@ export default function ContactUsForm() {
           )}
           <Divider className="mt-8" />
           <div className="mt-6 flex flex-col items-end space-y-3">
-            <p className="text-sm text-warm-grey-2 dark:text-warm-grey-1 text-right">
+            <p className="text-sm text-warm-grey-2 text-right">
               Vi tar kontakt med deg innen 24 timer for en kort, uforpliktende avklaring.
             </p>
             <button
               type="submit"
-              className="whitespace-nowrap rounded-tremor-default border border-tremor-brand bg-tremor-brand px-4 py-2.5 text-tremor-default font-medium text-tremor-brand-inverted shadow-tremor-input ring-1 ring-inset ring-tremor-brand/40 hover:bg-tremor-brand-emphasis focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tremor-brand dark:border-dark-tremor-brand dark:bg-dark-tremor-brand dark:text-dark-tremor-brand-inverted dark:shadow-dark-tremor-input dark:ring-dark-tremor-brand/40 dark:hover:bg-dark-tremor-brand-emphasis"
+              className="whitespace-nowrap rounded-tremor-default border border-tremor-brand bg-tremor-brand px-4 py-2.5 text-tremor-default font-medium text-tremor-brand-inverted shadow-tremor-input ring-1 ring-inset ring-tremor-brand/40 hover:bg-tremor-brand-emphasis focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tremor-brand"
               disabled={isSubmitting}
             >
               {isSubmitting ? "Sender..." : "Send Henvendelse"}

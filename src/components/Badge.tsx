@@ -11,23 +11,18 @@ const badgeVariants = tv({
     variant: {
       default: [
         "bg-light-blue-1/50 ring-warm-grey/20",
-        "dark:bg-light-blue/20 dark:ring-warm-white/30",
       ],
       neutral: [
         "bg-gray-50 ring-gray-500/30",
-        "dark:bg-gray-400/10 dark:ring-gray-400/20",
       ],
       success: [
         "bg-emerald-50 ring-emerald-600/30",
-        "dark:bg-emerald-400/10 dark:ring-emerald-400/20",
       ],
       error: [
         "bg-rose-50 ring-rose-600/20",
-        "dark:bg-rose-400/10 dark:ring-rose-400/20",
       ],
       warning: [
         "bg-orange-50 ring-orange-600/30",
-        "dark:bg-orange-400/10 dark:ring-orange-400/20",
       ],
     },
     size: {
@@ -57,7 +52,7 @@ const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
         tremor-id="tremor-raw"
         {...props}
       >
-        <span className="bg-gradient-to-b from-warm-grey to-warm-grey-2 bg-clip-text text-transparent dark:from-warm-white dark:to-warm-grey-1">
+        <span className="bg-gradient-to-b from-warm-grey to-warm-grey-2 bg-clip-text text-transparent">
           {children}
         </span>
       </span>

@@ -32,7 +32,7 @@ export function AnimatedCTA({
   return (
     <div
       className={cx(
-        "relative overflow-hidden rounded-2xl bg-warm-grey/5 p-8 shadow-lg shadow-light-blue/10 ring-1 ring-warm-grey/5 dark:bg-warm-grey/20 dark:shadow-light-blue/10 dark:ring-warm-white/5",
+        "relative overflow-hidden rounded-2xl bg-warm-grey/5 p-8 shadow-lg shadow-light-blue/10 ring-1 ring-warm-grey/5",
         size === "large" && "min-h-[400px]",
         className,
       )}
@@ -45,16 +45,16 @@ export function AnimatedCTA({
       />
       <div className="relative flex h-full flex-col items-center justify-center gap-6 text-center">
         {badge && <Badge>{badge}</Badge>}
-        <h3 className="text-2xl font-semibold tracking-tight text-warm-grey dark:text-warm-white">
+        <h3 className="text-2xl font-semibold tracking-tight text-warm-grey">
           {title}
         </h3>
-        <p className="text-warm-grey-2 dark:text-warm-grey-1">{description}</p>
+        <p className="text-warm-grey-2">{description}</p>
         {(primaryAction || secondaryAction) && (
           <div className="flex gap-4">
             {primaryAction && (
               <Link
                 href={primaryAction.href}
-                className="inline-flex items-center justify-center rounded-full bg-warm-grey px-6 py-2 font-medium text-white transition-colors hover:bg-warm-grey-2 dark:bg-warm-white dark:text-warm-grey dark:hover:bg-warm-grey-1"
+                className="inline-flex items-center justify-center rounded-full bg-warm-grey px-6 py-2 font-medium text-white transition-colors hover:bg-warm-grey-2"
               >
                 {primaryAction.label}
               </Link>
@@ -62,7 +62,7 @@ export function AnimatedCTA({
             {secondaryAction && (
               <Link
                 href={secondaryAction.href}
-                className="inline-flex items-center justify-center rounded-full px-6 py-2 font-medium text-warm-grey ring-1 ring-warm-grey/20 transition-colors hover:bg-warm-grey/5 dark:text-warm-white dark:ring-warm-white/20 dark:hover:bg-warm-white/5"
+                className="inline-flex items-center justify-center rounded-full px-6 py-2 font-medium text-warm-grey ring-1 ring-warm-grey/20 transition-colors hover:bg-warm-grey/5"
               >
                 {secondaryAction.label} →
               </Link>

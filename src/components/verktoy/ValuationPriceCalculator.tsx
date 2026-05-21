@@ -65,8 +65,8 @@ export function ValuationPriceCalculator() {
   return (
     <div className="grid gap-8 lg:grid-cols-2">
       {/* Input Section */}
-      <div className="rounded-xl border border-warm-grey-1/20 bg-warm-white p-6 dark:border-warm-grey-2/20 dark:border-warm-white/10 dark:bg-warm-grey-2/20">
-        <h2 className="mb-6 text-xl font-semibold text-warm-grey dark:text-warm-white">
+      <div className="rounded-xl border border-warm-grey-1/20 bg-warm-white p-6">
+        <h2 className="mb-6 text-xl font-semibold text-warm-grey">
           Legg inn verdier
         </h2>
 
@@ -75,12 +75,12 @@ export function ValuationPriceCalculator() {
           <div className="space-y-2">
             <label
               htmlFor="areal"
-              className="flex items-center text-tremor-default font-medium text-tremor-content-strong dark:text-dark-tremor-content-strong"
+              className="flex items-center text-tremor-default font-medium text-tremor-content-strong"
             >
               Areal (m²)
               <div className="group relative ml-2">
-                <RiInformationLine className="size-4 text-warm-grey-2 dark:text-warm-grey-1" />
-                <div className="pointer-events-none absolute bottom-full left-1/2 mb-2 hidden w-64 -translate-x-1/2 rounded-lg bg-warm-grey px-3 py-2 text-xs text-warm-white shadow-lg group-hover:block dark:bg-warm-white dark:text-warm-grey">
+                <RiInformationLine className="size-4 text-warm-grey-2" />
+                <div className="pointer-events-none absolute bottom-full left-1/2 mb-2 hidden w-64 -translate-x-1/2 rounded-lg bg-warm-grey px-3 py-2 text-xs text-warm-white shadow-lg group-hover:block">
                   Total bruksareal for eiendommen
                 </div>
               </div>
@@ -101,7 +101,7 @@ export function ValuationPriceCalculator() {
           <div className="space-y-2">
             <label
               htmlFor="kompleksitet"
-              className="text-tremor-default font-medium text-tremor-content-strong dark:text-dark-tremor-content-strong"
+              className="text-tremor-default font-medium text-tremor-content-strong"
             >
               Kompleksitet
             </label>
@@ -115,7 +115,7 @@ export function ValuationPriceCalculator() {
                 <SelectItem value="høy">Høy (spesielle karakteristikker)</SelectItem>
               </SelectContent>
             </Select>
-            <p className="text-xs text-warm-grey-2 dark:text-warm-grey-1">
+            <p className="text-xs text-warm-grey-2">
               Standard: En enkel bygning med én bruk. Middels: Flere bygninger eller blandet bruk.
               Høy: Spesielle karakteristikker som krever ekstra analyse.
             </p>
@@ -125,7 +125,7 @@ export function ValuationPriceCalculator() {
           <div className="space-y-2">
             <label
               htmlFor="formål"
-              className="text-tremor-default font-medium text-tremor-content-strong dark:text-dark-tremor-content-strong"
+              className="text-tremor-default font-medium text-tremor-content-strong"
             >
               Formål med verdsettelsen
             </label>
@@ -142,7 +142,7 @@ export function ValuationPriceCalculator() {
                 <SelectItem value="omfattende">Omfattende (juridisk/strategisk)</SelectItem>
               </SelectContent>
             </Select>
-            <p className="text-xs text-warm-grey-2 dark:text-warm-grey-1">
+            <p className="text-xs text-warm-grey-2">
               Enkel: Rask indikasjon. Standard: For salg, kjøp eller finansiering. Omfattende: For
               juridiske formål eller strategisk planlegging.
             </p>
@@ -150,7 +150,7 @@ export function ValuationPriceCalculator() {
 
           {/* Hastverk */}
           <div className="space-y-2">
-            <label className="flex items-center gap-2 text-tremor-default font-medium text-tremor-content-strong dark:text-dark-tremor-content-strong">
+            <label className="flex items-center gap-2 text-tremor-default font-medium text-tremor-content-strong">
               <input
                 type="checkbox"
                 checked={hastverk}
@@ -159,7 +159,7 @@ export function ValuationPriceCalculator() {
               />
               Hastverk (leveranse innen 48 timer)
             </label>
-            <p className="text-xs text-warm-grey-2 dark:text-warm-grey-1">
+            <p className="text-xs text-warm-grey-2">
               Hastverk kan øke prisen med 20-50% på grunn av prioritering og kortere tidsramme.
             </p>
           </div>
@@ -167,16 +167,16 @@ export function ValuationPriceCalculator() {
       </div>
 
       {/* Results Section */}
-      <div className="rounded-xl border border-warm-grey-1/20 bg-gradient-to-br from-light-blue/10 to-warm-white p-6 dark:border-warm-white/10 dark:from-light-blue/5 dark:to-warm-grey-2/20">
-        <h2 className="mb-6 text-xl font-semibold text-warm-grey dark:text-warm-white">
+      <div className="rounded-xl border border-warm-grey-1/20 bg-gradient-to-br from-light-blue/10 to-warm-white p-6">
+        <h2 className="mb-6 text-xl font-semibold text-warm-grey">
           Estimat
         </h2>
 
         <div className="space-y-6">
           {/* Estimert pris */}
-          <div className="rounded-lg bg-warm-white p-4 ring-1 ring-warm-grey/10 dark:bg-warm-grey dark:ring-warm-white/10">
-            <p className="text-sm text-warm-grey-2 dark:text-warm-grey-1">Estimert pris</p>
-            <p className="mt-1 text-3xl font-bold text-warm-grey dark:text-warm-white">
+          <div className="rounded-lg bg-warm-white p-4 ring-1 ring-warm-grey/10">
+            <p className="text-sm text-warm-grey-2">Estimert pris</p>
+            <p className="mt-1 text-3xl font-bold text-warm-grey">
               <NumberFlow
                 value={estimertPris}
                 locales="no-NO"
@@ -187,16 +187,16 @@ export function ValuationPriceCalculator() {
           </div>
 
           {/* Prisrange */}
-          <div className="rounded-lg bg-warm-white p-4 ring-1 ring-warm-grey/10 dark:bg-warm-grey dark:ring-warm-white/10">
-            <p className="text-sm text-warm-grey-2 dark:text-warm-grey-1">Prisrange</p>
-            <p className="mt-1 text-lg font-semibold text-warm-grey dark:text-warm-white">
+          <div className="rounded-lg bg-warm-white p-4 ring-1 ring-warm-grey/10">
+            <p className="text-sm text-warm-grey-2">Prisrange</p>
+            <p className="mt-1 text-lg font-semibold text-warm-grey">
               {formatCurrency(prisRange.min)} - {formatCurrency(prisRange.max)} kr
             </p>
           </div>
 
           {/* Info box */}
-          <div className="rounded-lg bg-light-blue/20 p-4 dark:bg-light-blue/10">
-            <p className="text-sm text-warm-grey dark:text-warm-white">
+          <div className="rounded-lg bg-light-blue/20 p-4">
+            <p className="text-sm text-warm-grey">
               <strong>Viktig:</strong> Dette er et estimat basert på generelle priser. Faktisk pris
               kan variere basert på spesifikke forhold, lokasjon og detaljer i din situasjon.
             </p>
@@ -204,10 +204,10 @@ export function ValuationPriceCalculator() {
 
           {/* What's included */}
           <div className="space-y-2">
-            <h3 className="font-semibold text-warm-grey dark:text-warm-white">
+            <h3 className="font-semibold text-warm-grey">
               Hva inkluderes typisk:
             </h3>
-            <ul className="space-y-1 text-sm text-warm-grey-2 dark:text-warm-grey-1">
+            <ul className="space-y-1 text-sm text-warm-grey-2">
               {formål === "enkel" && (
                 <>
                   <li>• Grunnleggende markedsanalyse</li>

@@ -67,13 +67,13 @@ export default function VerktoyPage() {
         <Badge>Verktøy</Badge>
         <h1
           id="tools-overview"
-          className="mt-2 inline-block bg-gradient-to-t from-warm-grey to-warm-grey-3 bg-clip-text py-2 text-4xl font-bold tracking-tighter text-transparent sm:text-6xl md:text-6xl dark:from-warm-white dark:to-warm-grey-1"
+          className="mt-2 inline-block bg-gradient-to-t from-warm-grey to-warm-grey-3 bg-clip-text py-2 text-4xl font-bold tracking-tighter text-transparent sm:text-6xl md:text-6xl"
         >
           <Balancer>
             Profesjonelle kalkulatorer for næringseiendom
           </Balancer>
         </h1>
-        <p className="mt-6 max-w-2xl text-lg text-warm-grey-2 dark:text-warm-grey-1">
+        <p className="mt-6 max-w-2xl text-lg text-warm-grey-2">
           Bruk våre avanserte verktøy for å analysere investeringsmuligheter,
           beregne avkastning og ta informerte beslutninger. Alle beregninger er
           skreddersydd for det norske markedet.
@@ -91,7 +91,7 @@ export default function VerktoyPage() {
               <Link
                 key={calculator.href}
                 href={calculator.href}
-                className="group relative overflow-hidden rounded-xl border border-warm-grey-1/20 bg-warm-white p-8 transition-all duration-300 hover:border-warm-grey-1/40 hover:shadow-xl dark:border-warm-white/10 dark:bg-warm-grey-2/20 dark:hover:border-warm-white/20"
+                className="group relative overflow-hidden rounded-xl border border-warm-grey-1/20 bg-warm-white p-8 transition-all duration-300 hover:border-warm-grey-1/40 hover:shadow-xl"
                 style={{
                   animationDelay: `${index * 100}ms`,
                   animationDuration: "600ms",
@@ -100,14 +100,14 @@ export default function VerktoyPage() {
               >
                 <div className="relative">
                   <div
-                    className={`mb-4 inline-flex rounded-lg bg-warm-grey/5 p-3 ${calculator.color} dark:bg-warm-white/5`}
+                    className={`mb-4 inline-flex rounded-lg bg-warm-grey/5 p-3 ${calculator.color}`}
                   >
                     <Icon className="size-6" />
                   </div>
-                  <h3 className="mb-2 text-xl font-semibold text-warm-grey dark:text-warm-white">
+                  <h3 className="mb-2 text-xl font-semibold text-warm-grey">
                     {calculator.title}
                   </h3>
-                  <p className="mb-6 text-warm-grey-2 dark:text-warm-grey-1">
+                  <p className="mb-6 text-warm-grey-2">
                     {calculator.description}
                   </p>
                   <div className="flex items-center text-sm font-medium text-light-blue">
@@ -128,10 +128,10 @@ export default function VerktoyPage() {
 
       {/* Info Section */}
       <section className="mx-auto mt-24 max-w-3xl text-center">
-        <h2 className="text-2xl font-semibold text-warm-grey dark:text-warm-white">
+        <h2 className="text-2xl font-semibold text-warm-grey">
           Hvorfor bruke våre kalkulatorer?
         </h2>
-        <p className="mt-4 text-warm-grey-2 dark:text-warm-grey-1">
+        <p className="mt-4 text-warm-grey-2">
           Våre verktøy er utviklet av erfarne næringsmeglere og skreddersydd for
           det norske markedet. Du får nøyaktige beregninger basert på
           bransjestandarder og best practice.
@@ -139,7 +139,7 @@ export default function VerktoyPage() {
         <div className="mt-8 grid gap-6 sm:grid-cols-3">
           <div>
             <div className="mb-2 text-3xl font-bold text-light-blue">100%</div>
-            <div className="text-sm text-warm-grey-2 dark:text-warm-grey-1">
+            <div className="text-sm text-warm-grey-2">
               Gratis å bruke
             </div>
           </div>
@@ -147,13 +147,13 @@ export default function VerktoyPage() {
             <div className="mb-2 text-3xl font-bold text-light-blue">
               <RiBarChartBoxLine className="mx-auto size-8" />
             </div>
-            <div className="text-sm text-warm-grey-2 dark:text-warm-grey-1">
+            <div className="text-sm text-warm-grey-2">
               Sanntids beregninger
             </div>
           </div>
           <div>
             <div className="mb-2 text-3xl font-bold text-light-blue">10+</div>
-            <div className="text-sm text-warm-grey-2 dark:text-warm-grey-1">
+            <div className="text-sm text-warm-grey-2">
               Års erfaring
             </div>
           </div>
