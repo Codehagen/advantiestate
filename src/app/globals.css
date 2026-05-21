@@ -1,3 +1,8 @@
+/* Advanti editorial design system — ported from Claude Design handoff.
+   Imported first so Tailwind base/components/utilities cascade after it;
+   page layout uses the design's semantic classes, utilities win one-off tweaks. */
+@import "../styles/advanti-design.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -8,13 +13,8 @@
     --foreground: 44 40 37;
   }
   
-  .dark {
-    --background: 44 40 37;
-    --foreground: 243 241 239;
-  }
-  
   body {
-    @apply bg-warm-white text-warm-grey dark:bg-warm-grey dark:text-warm-white;
+    @apply bg-warm-white text-warm-grey;
   }
 }
 
@@ -82,4 +82,36 @@ a {
 
 *:hover > .anchor-link {
   @apply visible;
+}
+
+/* PERF-4: respect reduced-motion for the marquee ticker + scroll cue */
+@media (prefers-reduced-motion: reduce) {
+  .ticker-track {
+    animation: none !important;
+  }
+  .scroll-cue::after {
+    animation: none !important;
+  }
+}
+
+/* Full-bleed editorial photo band (PhotoBand component) */
+.photo-band {
+  position: relative;
+  width: 100%;
+  height: clamp(320px, 40vw, 560px);
+  overflow: hidden;
+  border-top: 1px solid var(--warm-grey-75);
+  border-bottom: 1px solid var(--warm-grey-75);
+}
+.photo-band-caption {
+  position: absolute;
+  left: var(--gutter);
+  bottom: 24px;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 500;
+  color: var(--warm-white);
+  background: rgba(44, 40, 37, 0.55);
+  padding: 7px 14px;
 }

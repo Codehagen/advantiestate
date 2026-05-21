@@ -1,11 +1,11 @@
-import { allLegalPosts } from "content-collections"
+import type { LegalPost } from "content-collections"
 
 import { formatDate } from "@/lib/utils"
 
 import MaxWidthWrapper from "./max-width-wrapper"
 import { MDX } from "./mdx"
 
-export default function LegalPage({ post }) {
+export default function LegalPage({ post }: { post?: LegalPost }) {
   if (!post) {
     return (
       <div className="text-muted-foreground">Juridisk innlegg ikke funnet</div>

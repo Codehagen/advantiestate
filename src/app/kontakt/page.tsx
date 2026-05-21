@@ -1,12 +1,6 @@
 import ContactUsForm from "@/components/ContactUsForm";
-import EarlyAccessCta from "@/components/ui/EarlyAccessCta";
-import TeamSection from "@/components/ui/TeamSection";
+import { SubHero } from "@/components/site/SubHero";
 import { constructMetadata } from "@/lib/utils";
-import {
-  RiShieldCheckLine,
-  RiUserStarLine,
-  RiBuildingLine,
-} from "@remixicon/react";
 
 export const metadata = constructMetadata({
   title: "Kontakt Advanti for Salg og Verdivurdering av Næringseiendom",
@@ -16,81 +10,370 @@ export const metadata = constructMetadata({
 
 export default function KontaktPage() {
   return (
-    <div className="flex flex-col overflow-hidden">
-      <section className="py-16 mt-12 md:mt-24">
-        <div className="mx-auto max-w-2xl text-center">
-          <h1 className="text-3xl font-bold tracking-tight text-warm-grey sm:text-4xl dark:text-warm-white">
-            Få Hjelp med Salg eller Verdivurdering av Din Næringseiendom
-          </h1>
-          <p className="mt-4 text-lg leading-8 text-warm-grey-2 dark:text-warm-grey-1">
-            Planlegger du salg eller trenger en verdivurdering? Fyll ut
-            skjemaet, så tar vi kontakt med deg innen 24 timer for en
-            uforpliktende samtale om hvordan vi kan hjelpe deg oppnå best mulig
-            resultat.
-          </p>
+    <>
+      <SubHero
+        crumb={[{ label: "Hjem", href: "/" }, { label: "Kontakt" }]}
+        eyebrow="La oss snakke sammen"
+        title={
+          <>
+            Få hjelp med salg eller <br />
+            <span className="italic">
+              verdivurdering av din næringseiendom.
+            </span>
+          </>
+        }
+        lede="Planlegger du salg eller trenger en verdivurdering? Fyll ut skjemaet, så tar vi kontakt innen 24 timer for en uforpliktende samtale — om hvordan vi kan hjelpe deg oppnå best mulig resultat."
+      />
 
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-6 text-sm text-warm-grey-2 dark:text-warm-grey-1">
-            <div className="flex items-center gap-2">
-              <RiShieldCheckLine className="size-4 text-warm-grey dark:text-warm-white" />
-              <span>Lokal ekspertise i Nord-Norge</span>
+      {/* CONTACT GRID */}
+      <section className="section section-divider" style={{ paddingTop: 64 }}>
+        <div className="wrap">
+          <div className="contact-grid">
+            {/* LEFT: form */}
+            <div className="contact-form">
+              <h2>Send oss en henvendelse.</h2>
+              <p className="sub">Vi svarer innen 24 timer på virkedager.</p>
+              <ContactUsForm />
             </div>
-            <div className="flex items-center gap-2">
-              <RiUserStarLine className="size-4 text-warm-grey dark:text-warm-white" />
-              <span>Erfarne rådgivere</span>
+
+            {/* RIGHT: offices + next steps */}
+            <aside>
+              <div className="office">
+                <div className="pre">Kontor · 01</div>
+                <h3>Bodø</h3>
+                <address className="addr">
+                  Dronningens gate 18
+                  <br />
+                  8006 Bodø
+                </address>
+                <div className="ch">
+                  <a href="tel:+4798453571">
+                    <span className="key">Telefon</span>
+                    <span>+47 984 53 571</span>
+                  </a>
+                  <a href="mailto:Christer@advanti.no">
+                    <span className="key">E-post</span>
+                    <span>Christer@advanti.no</span>
+                  </a>
+                  <a
+                    href="https://maps.google.com"
+                    target="_blank"
+                    rel="noopener"
+                  >
+                    <span className="key">Veibeskrivelse</span>
+                    <span>Google Maps →</span>
+                  </a>
+                </div>
+              </div>
+
+              <div className="office">
+                <div className="pre">Kontor · 02</div>
+                <h3>Alta</h3>
+                <address className="addr">
+                  AMFI Alta, Markedsgata 21/25
+                  <br />
+                  9510 Alta
+                </address>
+                <div className="ch">
+                  <a href="tel:+4798038737">
+                    <span className="key">Telefon</span>
+                    <span>+47 980 38 737</span>
+                  </a>
+                  <a href="mailto:Havard@advanti.no">
+                    <span className="key">E-post</span>
+                    <span>Havard@advanti.no</span>
+                  </a>
+                  <a
+                    href="https://maps.google.com"
+                    target="_blank"
+                    rel="noopener"
+                  >
+                    <span className="key">Veibeskrivelse</span>
+                    <span>Google Maps →</span>
+                  </a>
+                </div>
+              </div>
+
+              <div className="next-steps">
+                <h3>Hva skjer videre?</h3>
+                <ol>
+                  <li>
+                    <span className="n">01</span>
+                    <div>
+                      <h4>Du sender inn henvendelsen</h4>
+                      <p>
+                        Fyll ut skjemaet med opplysninger og hvilken tjeneste du
+                        er interessert i.
+                      </p>
+                    </div>
+                  </li>
+                  <li>
+                    <span className="n">02</span>
+                    <div>
+                      <h4>Vi tar kontakt</h4>
+                      <p>
+                        Vi ringer eller skriver innen 24 timer for en kort,
+                        uforpliktende avklaring.
+                      </p>
+                    </div>
+                  </li>
+                  <li>
+                    <span className="n">03</span>
+                    <div>
+                      <h4>Skreddersydd forslag</h4>
+                      <p>
+                        Basert på din situasjon lager vi et konkret forslag til
+                        hvordan vi kan hjelpe.
+                      </p>
+                    </div>
+                  </li>
+                </ol>
+              </div>
+            </aside>
+          </div>
+        </div>
+      </section>
+
+      {/* TRYGG-RAD */}
+      <section
+        style={{
+          background: "var(--accent-faint)",
+          borderTop: "var(--hairline)",
+          borderBottom: "var(--hairline)",
+          padding: "56px 0",
+        }}
+      >
+        <div className="wrap">
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(3, 1fr)",
+              gap: 32,
+              textAlign: "center",
+            }}
+          >
+            <div>
+              <div
+                style={{
+                  fontFamily: "var(--font-display)",
+                  fontSize: 48,
+                  fontWeight: 400,
+                  letterSpacing: "-0.02em",
+                  lineHeight: 1,
+                }}
+              >
+                24 t
+              </div>
+              <p
+                style={{
+                  marginTop: 12,
+                  fontSize: 13.5,
+                  color: "var(--warm-grey-85)",
+                  letterSpacing: "0.04em",
+                }}
+              >
+                SVARTID PÅ HENVENDELSER
+              </p>
             </div>
-            <div className="flex items-center gap-2">
-              <RiBuildingLine className="size-4 text-warm-grey dark:text-warm-white" />
-              <span>Uforpliktende samtale</span>
+            <div
+              style={{
+                borderLeft: "var(--hairline)",
+                borderRight: "var(--hairline)",
+              }}
+            >
+              <div
+                style={{
+                  fontFamily: "var(--font-display)",
+                  fontSize: 48,
+                  fontWeight: 400,
+                  letterSpacing: "-0.02em",
+                  lineHeight: 1,
+                }}
+              >
+                Senior
+              </div>
+              <p
+                style={{
+                  marginTop: 12,
+                  fontSize: 13.5,
+                  color: "var(--warm-grey-85)",
+                  letterSpacing: "0.04em",
+                }}
+              >
+                PARTNER PÅ HVER SAK
+              </p>
+            </div>
+            <div>
+              <div
+                style={{
+                  fontFamily: "var(--font-display)",
+                  fontSize: 48,
+                  fontWeight: 400,
+                  letterSpacing: "-0.02em",
+                  lineHeight: 1,
+                }}
+              >
+                NDA
+              </div>
+              <p
+                style={{
+                  marginTop: 12,
+                  fontSize: 13.5,
+                  color: "var(--warm-grey-85)",
+                  letterSpacing: "0.04em",
+                }}
+              >
+                KONFIDENSIELT FRA DAG 1
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* TEAM CARD */}
+      <section className="section">
+        <div className="wrap">
+          <div className="head-compact">
+            <span className="eyebrow">Snakk direkte</span>
+            <div>
+              <h2>
+                Foretrekker du å <span className="italic">ringe?</span>
+              </h2>
+              <p>
+                Du kan også ringe oss direkte. Vi tar telefonen 08–17 på
+                virkedager.
+              </p>
             </div>
           </div>
 
-          <div className="mt-10 grid gap-6 text-left sm:grid-cols-2">
-            <div className="rounded-xl bg-warm-grey/5 p-6 ring-1 ring-warm-grey/10 dark:bg-warm-grey/10 dark:ring-warm-white/10">
-              <h3 className="text-lg font-semibold text-warm-grey dark:text-warm-white">
-                Kontor Bodø
-              </h3>
-              <address className="mt-3 not-italic text-sm text-warm-grey-2 dark:text-warm-grey-1">
-                <p className="font-medium text-warm-grey dark:text-warm-white">
-                  Dronningens gate 18
-                </p>
-                <p>8006 Bodø</p>
-              </address>
-              <div className="mt-3 space-y-1 text-sm text-warm-grey-2 dark:text-warm-grey-1">
+          <div
+            className="team"
+            style={{ gridTemplateColumns: "repeat(2, 1fr)", gap: 48 }}
+          >
+            <div
+              className="member"
+              style={{
+                flexDirection: "row",
+                gap: 24,
+                alignItems: "center",
+              }}
+            >
+              <div
+                className="portrait"
+                style={{
+                  width: 140,
+                  height: 175,
+                  flexShrink: 0,
+                  backgroundImage: "url('/havard.jpg')",
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                }}
+              />
+              <div
+                style={{ display: "flex", flexDirection: "column", gap: 6 }}
+              >
+                <span
+                  style={{
+                    fontSize: 11,
+                    letterSpacing: "0.18em",
+                    textTransform: "uppercase",
+                    color: "var(--warm-grey-85)",
+                  }}
+                >
+                  Bodø
+                </span>
+                <h3
+                  style={{
+                    fontFamily: "var(--font-display)",
+                    fontSize: 28,
+                    fontWeight: 400,
+                    letterSpacing: "-0.018em",
+                  }}
+                >
+                  Christer Hagen
+                </h3>
+                <div
+                  style={{
+                    fontSize: 14,
+                    color: "var(--warm-grey-85)",
+                    marginBottom: 12,
+                  }}
+                >
+                  Partner &amp; daglig leder
+                </div>
                 <a
                   href="tel:+4798453571"
-                  className="block font-medium text-warm-grey hover:text-warm-grey-3 dark:text-warm-white"
+                  style={{ fontSize: 15, fontWeight: 500 }}
                 >
                   +47 984 53 571
                 </a>
                 <a
                   href="mailto:Christer@advanti.no"
-                  className="block text-warm-grey-2 hover:text-warm-grey-3 dark:text-warm-grey-1"
+                  style={{ fontSize: 14.5, color: "var(--warm-grey-85)" }}
                 >
                   Christer@advanti.no
                 </a>
               </div>
             </div>
 
-            <div className="rounded-xl bg-warm-grey/5 p-6 ring-1 ring-warm-grey/10 dark:bg-warm-grey/10 dark:ring-warm-white/10">
-              <h3 className="text-lg font-semibold text-warm-grey dark:text-warm-white">
-                Kontor Alta
-              </h3>
-              <address className="mt-3 not-italic text-sm text-warm-grey-2 dark:text-warm-grey-1">
-                <p className="font-medium text-warm-grey dark:text-warm-white">
-                  AMFI Alta, Markedsgata 21/25
-                </p>
-                <p>9510 Alta</p>
-              </address>
-              <div className="mt-3 space-y-1 text-sm text-warm-grey-2 dark:text-warm-grey-1">
+            <div
+              className="member"
+              style={{
+                flexDirection: "row",
+                gap: 24,
+                alignItems: "center",
+              }}
+            >
+              <div
+                className="portrait"
+                style={{
+                  width: 140,
+                  height: 175,
+                  flexShrink: 0,
+                  background: "var(--warm-grey-75)",
+                }}
+              />
+              <div
+                style={{ display: "flex", flexDirection: "column", gap: 6 }}
+              >
+                <span
+                  style={{
+                    fontSize: 11,
+                    letterSpacing: "0.18em",
+                    textTransform: "uppercase",
+                    color: "var(--warm-grey-85)",
+                  }}
+                >
+                  Alta
+                </span>
+                <h3
+                  style={{
+                    fontFamily: "var(--font-display)",
+                    fontSize: 28,
+                    fontWeight: 400,
+                    letterSpacing: "-0.018em",
+                  }}
+                >
+                  Håvard Walgermo
+                </h3>
+                <div
+                  style={{
+                    fontSize: 14,
+                    color: "var(--warm-grey-85)",
+                    marginBottom: 12,
+                  }}
+                >
+                  Partner · Næringsmegler
+                </div>
                 <a
                   href="tel:+4798038737"
-                  className="block font-medium text-warm-grey hover:text-warm-grey-3 dark:text-warm-white"
+                  style={{ fontSize: 15, fontWeight: 500 }}
                 >
                   +47 980 38 737
                 </a>
                 <a
                   href="mailto:Havard@advanti.no"
-                  className="block text-warm-grey-2 hover:text-warm-grey-3 dark:text-warm-grey-1"
+                  style={{ fontSize: 14.5, color: "var(--warm-grey-85)" }}
                 >
                   Havard@advanti.no
                 </a>
@@ -98,80 +381,7 @@ export default function KontaktPage() {
             </div>
           </div>
         </div>
-
-        <div className="mt-12">
-          <ContactUsForm />
-        </div>
-
-        <div className="mx-auto mt-16 max-w-2xl">
-          <div className="rounded-xl bg-warm-grey/5 p-8 ring-1 ring-warm-grey/10 dark:bg-warm-grey/10 dark:ring-warm-white/10">
-            <h3 className="text-xl font-semibold text-warm-grey dark:text-warm-white mb-6">
-              Hva skjer videre?
-            </h3>
-            <div className="space-y-4">
-              {nextSteps.map((step, index) => (
-                <div key={index} className="flex gap-4">
-                  <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-warm-grey text-warm-white dark:bg-warm-white dark:text-warm-grey mt-0.5">
-                    <span className="text-xs font-semibold">{index + 1}</span>
-                  </div>
-                  <div>
-                    <h4 className="font-medium text-warm-grey dark:text-warm-white">
-                      {step.title}
-                    </h4>
-                    <p className="mt-1 text-sm text-warm-grey-2 dark:text-warm-grey-1">
-                      {step.description}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
       </section>
-
-      <div className="mx-auto mt-16 w-full max-w-6xl px-4">
-        <div className="flex flex-wrap items-center justify-center gap-8 py-8 opacity-60 grayscale transition-all hover:opacity-100 hover:grayscale-0 sm:gap-16">
-          <div className="flex items-center gap-2">
-            <RiShieldCheckLine className="size-5 text-warm-grey dark:text-warm-white" />
-            <span className="text-sm font-medium text-warm-grey-2 dark:text-warm-grey-1">
-              Lokal markedsleder
-            </span>
-          </div>
-          <div className="flex items-center gap-2">
-            <RiUserStarLine className="size-5 text-warm-grey dark:text-warm-white" />
-            <span className="text-sm font-medium text-warm-grey-2 dark:text-warm-grey-1">
-              Erfarne rådgivere
-            </span>
-          </div>
-          <div className="flex items-center gap-2">
-            <RiBuildingLine className="size-5 text-warm-grey dark:text-warm-white" />
-            <span className="text-sm font-medium text-warm-grey-2 dark:text-warm-grey-1">
-              Ekspertise i Nord-Norge
-            </span>
-          </div>
-        </div>
-      </div>
-
-      <TeamSection />
-      <EarlyAccessCta />
-    </div>
+    </>
   );
 }
-
-const nextSteps = [
-  {
-    title: "Du sender inn henvendelsen",
-    description:
-      "Fyll ut skjemaet med dine opplysninger og hvilken tjeneste du er interessert i.",
-  },
-  {
-    title: "Vi tar kontakt",
-    description:
-      "Vi kontakter deg innen 24 timer for en kort, uforpliktende avklaring av dine behov.",
-  },
-  {
-    title: "Vi lager et forslag",
-    description:
-      "Basert på din situasjon lager vi et skreddersydd forslag for hvordan vi kan hjelpe deg.",
-  },
-];

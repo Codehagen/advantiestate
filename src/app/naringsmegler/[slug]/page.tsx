@@ -1,19 +1,26 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
-import Balancer from "react-wrap-balancer";
 import { allLocationPosts } from "content-collections";
-import { Badge } from "@/components/Badge";
-import { CTAButtonGroup } from "@/components/CTAButtons";
-import { AnimatedCTA } from "@/components/ui/AnimatedCTA";
-import FeatureDivider from "@/components/ui/FeatureDivider";
+
 import StructuredData, {
   BreadcrumbStructuredData,
 } from "@/components/StructuredData";
+import { CtaStrip } from "@/components/site/CtaStrip";
+import { ProseShell } from "@/components/site/ProseShell";
+import { LocationMdx } from "@/components/locations/LocationMdx";
 import { siteConfig } from "@/app/siteConfig";
 import { constructMetadata } from "@/lib/utils";
-import { LocationMdx } from "@/components/locations/LocationMdx";
+
+/** Picks the value of the first marketStat whose label matches a keyword. */
+function findStat(
+  stats: { label: string; value: string }[],
+  keyword: string,
+) {
+  return stats.find((s) =>
+    s.label.toLowerCase().includes(keyword.toLowerCase()),
+  )?.value;
+}
 
 export async function generateStaticParams() {
   return allLocationPosts.map((location) => ({
@@ -55,7 +62,8 @@ export default async function LocationPage({
 
   const suggestedNearby = [...allLocationPosts]
     .filter((post) => post.slug !== location.slug)
-    .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+    .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
+    .slice(0, 3);
 
   const locationUrl = `https://www.advantiestate.no/naringsmegler/${location.slug}`;
   const mapUrl = `https://www.google.com/maps/search/?api=1&query=${location.geo.latitude},${location.geo.longitude}`;
@@ -73,8 +81,15 @@ export default async function LocationPage({
     !!location.officeAddress?.streetAddress &&
     !!location.officeAddress?.addressLocality;
 
+  const isMainOffice = location.officeAddress?.addressLocality === "Bodø";
+  const vacancy = findStat(location.marketStats, "ledighet");
+  const leadMember = location.localTeam?.[0];
+  // `email` is present in the location frontmatter but not declared in the
+  // content-collection schema; read it without changing the data layer.
+  const locationEmail = (location as { email?: string }).email;
+
   return (
-    <div className="mt-36 flex flex-col overflow-hidden px-3">
+    <>
       <BreadcrumbStructuredData
         items={[
           { name: "Hjem", url: "/" },
@@ -106,265 +121,400 @@ export default async function LocationPage({
           },
           hasMap: mapUrl,
           telephone: location.phone,
-          email: location.email,
+          email: locationEmail,
           areaServed: [areaServed],
           sameAs,
         }}
       />
       <StructuredData type="faq" data={{ faqs: location.faqs }} />
 
-      <section
-        aria-labelledby="location-hero"
-        className="mx-auto w-full max-w-6xl animate-slide-up-fade"
-        style={{
-          animationDuration: "600ms",
-          animationFillMode: "backwards",
-        }}
-      >
-        <Badge>{location.serviceArea === "Region" ? "Region" : "By"}</Badge>
-        <div className="lg:grid lg:grid-cols-2 lg:gap-16">
-          <div>
-            <h1
-              id="location-hero"
-              className="mt-2 inline-block bg-gradient-to-t from-warm-grey to-warm-grey-3 bg-clip-text py-2 text-4xl font-bold tracking-tighter text-transparent sm:text-6xl md:text-6xl dark:from-warm-white dark:to-warm-grey-1"
-            >
-              <Balancer>{location.hero.title}</Balancer>
-            </h1>
-            <p className="mt-6 max-w-2xl text-lg text-warm-grey-2 dark:text-warm-grey-1">
-              {location.hero.description}
-            </p>
-            <div className="mt-8">
-              <CTAButtonGroup />
+      <div className="page-pad" />
+
+      {/* SUBHERO */}
+      <section className="subhero">
+        <div className="wrap">
+          <nav className="crumb" aria-label="Brødsmuler">
+            <Link href="/">Hjem</Link>
+            <span className="sep">/</span>
+            <Link href="/naringsmegler">Næringsmegler</Link>
+            <span className="sep">/</span>
+            <span className="here">{location.name}</span>
+          </nav>
+
+          <div className="subhero-grid">
+            <div>
+              <span
+                className="eyebrow"
+                style={{ marginBottom: 28, display: "inline-flex" }}
+              >
+                {isMainOffice
+                  ? `Hovedkontor · ${location.name}`
+                  : location.serviceArea === "Region"
+                    ? `Region · ${location.region}`
+                    : `By · ${location.region}`}
+              </span>
+              <h1>
+                Næringsmegler <br />
+                <span className="italic">i {location.name}.</span>
+              </h1>
+              <p className="lede">{location.hero.description}</p>
+              <div className="hero-cta-row">
+                <Link href="/kontakt" className="btn btn-dark">
+                  Få lokal vurdering <span className="arrow">→</span>
+                </Link>
+                <Link href="#marked" className="btn btn-outline">
+                  Se markedsdata
+                </Link>
+              </div>
+              <div className="subhero-meta">
+                {hasOfficeAddress ? (
+                  <div>
+                    <span className="v">
+                      {isMainOffice ? "Hovedkontor" : "Lokalkontor"}
+                    </span>
+                    <span className="l">
+                      {location.officeAddress?.streetAddress}
+                    </span>
+                  </div>
+                ) : (
+                  <div>
+                    <span className="v">Regionalt</span>
+                    <span className="l">Dekker {location.name}</span>
+                  </div>
+                )}
+                <div>
+                  <span className="v">{location.phone}</span>
+                  <span className="l">
+                    {leadMember
+                      ? `${leadMember.name}, ${leadMember.role}`
+                      : "Lokal rådgiver"}
+                  </span>
+                </div>
+                {vacancy && (
+                  <div>
+                    <span className="v">{vacancy}</span>
+                    <span className="l">Ledighet · Q4 2025</span>
+                  </div>
+                )}
+              </div>
             </div>
-          </div>
-          <div className="mt-8 lg:mt-0">
-            <div className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-warm-grey/5 shadow-lg shadow-light-blue/10 ring-1 ring-warm-grey/5 dark:bg-warm-grey/20 dark:shadow-light-blue/10 dark:ring-warm-white/5">
-              <Image
+            <div className="subhero-photo">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
                 src={location.hero.image}
-                alt={`Næringsmegler i ${location.name}`}
-                fill
-                className="object-cover"
-                sizes="(max-width: 1024px) 100vw, 50vw"
-                priority
+                alt={`Næringseiendom i ${location.name}`}
               />
             </div>
           </div>
         </div>
       </section>
 
-      <FeatureDivider className="mx-auto mt-24 max-w-6xl" />
+      {/* MARKEDSDATA */}
+      <section className="section section-divider" id="marked">
+        <div className="wrap">
+          <div className="head-compact">
+            <span className="eyebrow">01 — Markedet i {location.name}</span>
+            <div>
+              <h2>
+                Nøkkeltall og <br />
+                <span className="italic">lokale drivere.</span>
+              </h2>
+              <p>
+                Indikative markedsdata og lokale drivere som påvirker verdien
+                av næringseiendom i {location.name}. Kvartalsvis oppdatert per
+                Q4 2025.
+              </p>
+            </div>
+          </div>
 
-      <section className="mx-auto mt-24 w-full max-w-6xl">
-        <div className="flex flex-col items-center gap-6 text-center">
-          <Badge>Markedet i {location.name}</Badge>
-          <h2 className="text-balance bg-gradient-to-t from-warm-grey to-warm-grey-3 bg-clip-text text-4xl font-semibold tracking-tighter text-transparent md:text-6xl dark:from-warm-white dark:to-warm-grey-1">
-            Nøkkeltall og lokale drivere
-          </h2>
-          <p className="max-w-2xl text-lg text-warm-grey-2 dark:text-warm-grey-1">
-            Indikative markedsdata og lokale drivere som påvirker verdien av
-            næringseiendom i {location.name}.
-          </p>
-        </div>
-        <div className="mt-12 overflow-hidden rounded-2xl border border-warm-grey/10 bg-warm-white/70 shadow-lg shadow-warm-grey/5 dark:border-warm-white/10 dark:bg-warm-grey/30">
-          <table className="w-full text-left">
-            <thead className="border-b border-warm-grey/10 text-sm text-warm-grey dark:text-warm-white">
+          <table className="cy-stats-table">
+            <thead>
               <tr>
-                <th className="px-6 py-4">Indikator</th>
-                <th className="px-6 py-4">Nivå</th>
-                <th className="px-6 py-4">Kommentar</th>
+                <th style={{ width: "32%" }}>Indikator</th>
+                <th style={{ width: "24%" }}>Nivå</th>
+                <th>Kommentar</th>
               </tr>
             </thead>
-            <tbody className="text-sm text-warm-grey-2 dark:text-warm-grey-1">
+            <tbody>
               {location.marketStats.map((stat) => (
-                <tr key={stat.label} className="border-t border-warm-grey/10">
-                  <td className="px-6 py-4 font-medium text-warm-grey dark:text-warm-white">
-                    {stat.label}
+                <tr key={stat.label}>
+                  <td>
+                    <span className="label">{stat.label}</span>
                   </td>
-                  <td className="px-6 py-4">{stat.value}</td>
-                  <td className="px-6 py-4">{stat.detail ?? ""}</td>
+                  <td>
+                    <span className="val">{stat.value}</span>
+                  </td>
+                  <td>
+                    <span className="detail">{stat.detail ?? ""}</span>
+                  </td>
                 </tr>
               ))}
             </tbody>
           </table>
+
+          <div className="mi-footnote" style={{ marginTop: 24 }}>
+            <span className="source">
+              Tall er indikative. For nøyaktig vurdering av din eiendom — ta
+              kontakt.
+            </span>
+            <span>Q4 2025 · Advanti markedsdata</span>
+          </div>
         </div>
       </section>
 
-      <FeatureDivider className="mx-auto mt-24 max-w-6xl" />
+      {/* BODY + SIDEBAR */}
+      <section className="section" style={{ paddingTop: 24 }}>
+        <div className="wrap">
+          <div className="ks-article">
+            <article className="ks-art-body" style={{ maxWidth: 720 }}>
+              <ProseShell>
+                <LocationMdx code={location.mdx} />
+              </ProseShell>
+            </article>
 
-      <section className="mx-auto mt-24 w-full max-w-6xl">
-        <div className="grid gap-12 lg:grid-cols-[1.2fr_0.8fr]">
-          <div>
-            <LocationMdx code={location.mdx} />
-          </div>
-          <div className="space-y-6">
-            {hasOfficeAddress && (
-              <div className="rounded-2xl border border-warm-grey/10 bg-warm-white/70 p-6 shadow-lg shadow-warm-grey/5 dark:border-warm-white/10 dark:bg-warm-grey/30">
-                <h3 className="text-lg font-semibold text-warm-grey dark:text-warm-white">
-                  Kontor i {location.name}
-                </h3>
-                <div className="mt-4 space-y-2 text-sm text-warm-grey-2 dark:text-warm-grey-1">
-                  <p className="font-medium text-warm-grey dark:text-warm-white">
+            <aside className="ks-toc" style={{ fontSize: 14 }}>
+              {hasOfficeAddress && (
+                <div
+                  className="ks-toc"
+                  style={{
+                    position: "static",
+                    padding: "24px 0 0",
+                    marginTop: 0,
+                  }}
+                >
+                  <div className="toc-label">
+                    {isMainOffice ? "Hovedkontor" : "Lokalkontor"} · Advanti
+                  </div>
+                  <address
+                    className="addr"
+                    style={{
+                      fontStyle: "normal",
+                      fontSize: 13.5,
+                      color: "var(--warm-grey-85)",
+                      lineHeight: 1.6,
+                      marginBottom: 16,
+                    }}
+                  >
                     {location.officeAddress?.streetAddress}
-                  </p>
-                  <p>
+                    <br />
                     {location.officeAddress?.postalCode}{" "}
                     {location.officeAddress?.addressLocality}
-                  </p>
-                  <p>{location.officeAddress?.addressRegion}</p>
-                  <p>{location.phone}</p>
-                  {location.email && <p>{location.email}</p>}
+                  </address>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: 6,
+                      fontSize: 13.5,
+                    }}
+                  >
+                    <a href={`tel:${location.phone.replace(/\s/g, "")}`}>
+                      {location.phone}
+                    </a>
+                    {locationEmail && (
+                      <a href={`mailto:${locationEmail}`}>{locationEmail}</a>
+                    )}
+                  </div>
                 </div>
-              </div>
-            )}
-            <div className="rounded-2xl border border-warm-grey/10 bg-warm-white/70 p-6 shadow-lg shadow-warm-grey/5 dark:border-warm-white/10 dark:bg-warm-grey/30">
-              <h3 className="text-lg font-semibold text-warm-grey dark:text-warm-white">
-                Lokalt team
-              </h3>
-              <div className="mt-4 space-y-4">
-                {location.localTeam?.map((member) => {
-                  const content = (
-                    <div className="flex items-center gap-4">
-                      {member.image ? (
-                        <Image
-                          src={member.image}
-                          alt={member.name}
-                          width={56}
-                          height={56}
-                          className="size-14 rounded-full object-cover"
-                        />
+              )}
+
+              {location.localTeam && location.localTeam.length > 0 && (
+                <div
+                  className="ks-toc"
+                  style={{
+                    position: "static",
+                    padding: "24px 0",
+                    borderTop: "var(--hairline)",
+                    marginTop: 0,
+                  }}
+                >
+                  <div className="toc-label">Lokalt team</div>
+                  <div className="cy-side-team">
+                    {location.localTeam.map((member) => {
+                      const card = (
+                        <>
+                          {member.image ? (
+                            <div
+                              className="av"
+                              style={{
+                                backgroundImage: `url('${member.image}')`,
+                              }}
+                            />
+                          ) : (
+                            <div className="av" />
+                          )}
+                          <div>
+                            <div className="name">{member.name}</div>
+                            <div className="role">{member.role}</div>
+                          </div>
+                        </>
+                      );
+                      return member.slug ? (
+                        <Link
+                          key={member.name}
+                          className="member"
+                          href={`/personer/${member.slug}`}
+                        >
+                          {card}
+                        </Link>
                       ) : (
-                        <div className="flex size-14 items-center justify-center rounded-full bg-warm-grey/10 text-sm font-semibold text-warm-grey dark:bg-warm-white/10 dark:text-warm-white">
-                          {member.name
-                            .split(" ")
-                            .map((part) => part[0])
-                            .join("")}
+                        <div key={member.name} className="member">
+                          {card}
                         </div>
-                      )}
-                      <div>
-                        <p className="font-medium text-warm-grey dark:text-warm-white">
-                          {member.name}
-                        </p>
-                        <p className="text-sm text-warm-grey-2 dark:text-warm-grey-1">
-                          {member.role}
-                        </p>
-                      </div>
-                    </div>
-                  );
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
 
-                  return member.slug ? (
-                    <Link
-                      key={member.name}
-                      href={`/personer/${member.slug}`}
-                      className="block rounded-xl border border-transparent p-2 transition hover:border-warm-grey/10 hover:bg-warm-grey/[2%] dark:hover:border-warm-white/10"
-                    >
-                      {content}
-                    </Link>
-                  ) : (
-                    <div key={member.name} className="rounded-xl p-2">
-                      {content}
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-
-            <div className="rounded-2xl border border-warm-grey/10 bg-warm-white/70 p-6 shadow-lg shadow-warm-grey/5 dark:border-warm-white/10 dark:bg-warm-grey/30">
-              <h3 className="text-lg font-semibold text-warm-grey dark:text-warm-white">
-                Eksempel fra {location.name}
-              </h3>
-              <p className="mt-3 text-sm text-warm-grey-2 dark:text-warm-grey-1">
-                {location.localCaseStudy.summary}
-              </p>
-              <Link
-                href={location.localCaseStudy.href}
-                className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-warm-grey hover:text-warm-grey-3 dark:text-warm-white"
+              <div
+                style={{ padding: "24px 0", borderTop: "var(--hairline)" }}
               >
-                {location.localCaseStudy.title}
-              </Link>
-            </div>
+                <div className="toc-label" style={{ marginBottom: 14 }}>
+                  Eksempel fra {location.name}
+                </div>
+                <p
+                  style={{
+                    fontSize: 13,
+                    color: "var(--warm-grey-85)",
+                    lineHeight: 1.55,
+                    marginBottom: 10,
+                  }}
+                >
+                  {location.localCaseStudy.summary}
+                </p>
+                <Link
+                  href={location.localCaseStudy.href}
+                  style={{ fontSize: 13, fontWeight: 500 }}
+                >
+                  {location.localCaseStudy.title} →
+                </Link>
+              </div>
+            </aside>
           </div>
         </div>
       </section>
 
-      <FeatureDivider className="mx-auto mt-24 max-w-6xl" />
-
-      <section className="mx-auto mt-24 w-full max-w-6xl">
-        <div className="flex flex-col items-center gap-6 text-center">
-          <Badge>Ofte stilte spørsmål</Badge>
-          <h2 className="text-balance bg-gradient-to-t from-warm-grey to-warm-grey-3 bg-clip-text text-4xl font-semibold tracking-tighter text-transparent md:text-6xl dark:from-warm-white dark:to-warm-grey-1">
-            Spørsmål om næringsmegling i {location.name}
-          </h2>
-          <p className="max-w-2xl text-lg text-warm-grey-2 dark:text-warm-grey-1">
-            Svar på vanlige spørsmål om salg, utleie og verdivurdering i lokale
-            markeder.
-          </p>
-        </div>
-        <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2">
-          {location.faqs.map((faq) => (
-            <div
-              key={faq.question}
-              className="rounded-2xl border border-warm-grey/10 bg-warm-white/70 p-6 shadow-lg shadow-warm-grey/5 dark:border-warm-white/10 dark:bg-warm-grey/30"
-            >
-              <h3 className="text-lg font-semibold text-warm-grey dark:text-warm-white">
-                {faq.question}
-              </h3>
-              <p className="mt-3 text-sm leading-6 text-warm-grey-2 dark:text-warm-grey-1">
-                {faq.answer}
+      {/* FAQ */}
+      <section
+        className="section"
+        style={{
+          background: "var(--accent-faint)",
+          borderTop: "var(--hairline)",
+          borderBottom: "var(--hairline)",
+        }}
+      >
+        <div className="wrap">
+          <div className="head-compact">
+            <span className="eyebrow">02 — Ofte stilte spørsmål</span>
+            <div>
+              <h2>
+                Spørsmål om næringsmegling <br />
+                <span className="italic">i {location.name}.</span>
+              </h2>
+              <p>
+                Finner du ikke svaret? Ta kontakt — vi setter av tid til en
+                uforpliktende samtale uansett.
               </p>
             </div>
-          ))}
+          </div>
+
+          <div className="faq" style={{ maxWidth: 920 }}>
+            {location.faqs.map((faq) => (
+              <details key={faq.question}>
+                <summary>{faq.question}</summary>
+                <div className="a">{faq.answer}</div>
+              </details>
+            ))}
+          </div>
         </div>
       </section>
 
-      <FeatureDivider className="mx-auto mt-24 max-w-6xl" />
+      {/* ANDRE BYER */}
+      {suggestedNearby.length > 0 && (
+        <section className="section">
+          <div className="wrap">
+            <div className="head-compact">
+              <span className="eyebrow">03 — Andre markeder</span>
+              <div>
+                <h2>
+                  Vi dekker også <span className="italic">disse byene.</span>
+                </h2>
+              </div>
+            </div>
 
-      <section className="mx-auto mt-24 w-full max-w-6xl">
-        <div className="flex flex-col items-center gap-6 text-center">
-          <Badge>Utforsk flere markeder</Badge>
-          <h2 className="text-balance bg-gradient-to-t from-warm-grey to-warm-grey-3 bg-clip-text text-4xl font-semibold tracking-tighter text-transparent md:text-6xl dark:from-warm-white dark:to-warm-grey-1">
-            Se alle byer vi dekker
-          </h2>
-          <p className="max-w-2xl text-lg text-warm-grey-2 dark:text-warm-grey-1">
-            Utforsk markedsinnsikt og tjenester i alle byer og regioner vi
-            jobber med.
-          </p>
-        </div>
-        <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {suggestedNearby.map((nearby) => (
-            <Link
-              key={nearby.slug}
-              href={`/naringsmegler/${nearby.slug}`}
-              className="rounded-2xl border border-warm-grey/10 bg-warm-white/70 p-6 shadow-lg shadow-warm-grey/5 transition hover:-translate-y-1 hover:border-warm-grey/20 hover:shadow-warm-grey/10 dark:border-warm-white/10 dark:bg-warm-grey/30"
+            <div
+              className="cy-grid"
+              style={{ gridTemplateColumns: "repeat(3, 1fr)" }}
             >
-              <h3 className="text-xl font-semibold text-warm-grey dark:text-warm-white">
-                {nearby.name}
-              </h3>
-              <p className="mt-2 text-sm text-warm-grey-2 dark:text-warm-grey-1">
-                {nearby.hero.description}
-              </p>
-            </Link>
-          ))}
-        </div>
-      </section>
+              {suggestedNearby.map((nearby, index) => {
+                const primeYield = findStat(
+                  nearby.marketStats,
+                  "prime yield",
+                );
+                const nearbyVacancy = findStat(
+                  nearby.marketStats,
+                  "ledighet",
+                );
+                return (
+                  <Link
+                    key={nearby.slug}
+                    className="cy-card"
+                    href={`/naringsmegler/${nearby.slug}`}
+                  >
+                    <div className="cy-image">
+                      <span className="label">
+                        _0{index + 1} · {nearby.region}
+                      </span>
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={nearby.hero.image}
+                        alt={`${nearby.name} næringseiendom`}
+                      />
+                    </div>
+                    <div>
+                      <span className="reg">{nearby.region}</span>
+                      <h3>{nearby.name}</h3>
+                    </div>
+                    {(primeYield || nearbyVacancy) && (
+                      <div className="stats">
+                        {primeYield && (
+                          <div>
+                            <span className="v">{primeYield}</span>
+                            <span className="l">Prime yield</span>
+                          </div>
+                        )}
+                        {nearbyVacancy && (
+                          <div>
+                            <span className="v">{nearbyVacancy}</span>
+                            <span className="l">Ledighet</span>
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+      )}
 
-      <FeatureDivider className="mx-auto mt-24 max-w-6xl" />
-
-      <section className="mx-auto mt-24 w-full max-w-6xl">
-        <AnimatedCTA
-          badge={`Næringsmegler i ${location.name}`}
-          title="Ønsker du en lokal vurdering?"
-          description="Få en profesjonell vurdering basert på lokale markedsdata og en tydelig plan for eiendommen din."
-          primaryAction={{
-            label: "Få uforpliktende verdivurdering",
-            href: "/kontakt",
-          }}
-          secondaryAction={{
-            label: "Se våre tjenester",
-            href: "/tjenester",
-          }}
-          size="default"
-        />
-      </section>
-    </div>
+      <CtaStrip
+        eyebrow={`Næringsmegler i ${location.name}`}
+        title={
+          <>
+            Få lokal vurdering <br />
+            <span className="italic">på din eiendom.</span>
+          </>
+        }
+        sub="Vi setter av tid til en uforpliktende samtale om eiendommen din — basert på lokale markedsdata og konkret erfaring."
+        primary={{ label: "Send henvendelse", href: "/kontakt" }}
+        secondary={{
+          label: location.phone,
+          href: `tel:${location.phone.replace(/\s/g, "")}`,
+        }}
+      />
+    </>
   );
 }

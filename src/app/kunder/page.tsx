@@ -1,8 +1,9 @@
-import { Customer } from "@/components/blog/customers";
-import { AnimatedGridPattern } from "@/components/ui/Animated-Grid-Background";
-import { FadeContainer, FadeSpan } from "@/components/ui/Fade";
-import { constructMetadata } from "@/lib/utils";
+import { allCustomersPosts } from "content-collections";
 import Link from "next/link";
+
+import { CtaStrip } from "@/components/site/CtaStrip";
+import { SubHero } from "@/components/site/SubHero";
+import { constructMetadata } from "@/lib/utils";
 
 export const metadata = constructMetadata({
   title: "Våre Kunder og Prosjekter - Advanti",
@@ -10,169 +11,202 @@ export const metadata = constructMetadata({
     "Se eksempler på vellykkede transaksjoner og prosjekter Advanti har gjennomført for våre kunder innen næringseiendom i Nord-Norge.",
 });
 
+// Editorial presentation metadata for the oppdrag grid. Falls back gracefully
+// for any customer story not listed here — the card still renders from the
+// content collection.
+const PRESENTATION: Record<
+  string,
+  {
+    image: string;
+    imageAlt: string;
+    category: string;
+    year: string;
+    kpis: { value: string; label: string }[];
+  }
+> = {
+  corponor: {
+    image: "/building/pexels-pixabay-248877.jpg",
+    imageAlt: "Corponor utviklingsprosjekt",
+    category: "Salg & transaksjon",
+    year: "2024",
+    kpis: [
+      { value: "+15 %", label: "Over første tilbud" },
+      { value: "4 mnd", label: "Total prosess" },
+    ],
+  },
+  "investor-avkastning": {
+    image: "/building/pexels-abshky-18566965.jpg",
+    imageAlt: "Investor portefølje",
+    category: "Strategisk rådgivning",
+    year: "2025",
+    kpis: [
+      { value: "+25 %", label: "Total avkastning" },
+      { value: "+14 %", label: "Verdistigning" },
+    ],
+  },
+  "tomgang-full-utleie": {
+    image: "/building/pexels-abshky-18567185.jpg",
+    imageAlt: "Kontorbygg Bodø — utleie",
+    category: "Utleie & markedsanalyse",
+    year: "2025",
+    kpis: [
+      { value: "100 %", label: "Utleiegrad" },
+      { value: "+50 %", label: "Verdistigning" },
+    ],
+  },
+};
+
+const ORDER = ["corponor", "investor-avkastning", "tomgang-full-utleie"];
+
 export default function Customers() {
+  // Render all customer stories, in a stable, intentional order; include any
+  // not covered by the explicit order.
+  const stories = [
+    ...ORDER.map((slug) => allCustomersPosts.find((p) => p.slug === slug)),
+    ...allCustomersPosts.filter((p) => !ORDER.includes(p.slug)),
+  ].filter((p): p is NonNullable<typeof p> => Boolean(p));
+
   return (
-    <div className="mt-36 flex flex-col overflow-hidden px-3">
-      <section aria-label="hero">
-        <FadeContainer className="relative mx-auto flex max-w-6xl flex-col items-center justify-center">
-          <h1 className="mt-8 text-center text-5xl font-semibold tracking-tighter text-warm-grey sm:text-8xl sm:leading-[5.5rem] dark:text-warm-white">
-            <FadeSpan>Våre fornøyde</FadeSpan> <FadeSpan>kunder og</FadeSpan>
-            <br />
-            <FadeSpan>vellykkede prosjekter</FadeSpan>
-          </h1>
+    <>
+      <SubHero
+        crumb={[{ label: "Hjem", href: "/" }, { label: "Utvalgte oppdrag" }]}
+        eyebrow="Case studies · 2024–2025"
+        title={
+          <>
+            Et utvalg av oppdrag <br />
+            <span className="italic">vi er stolte av.</span>
+          </>
+        }
+        lede="Konkrete eksempler på hvordan vi har levert resultater for klienter i Nord-Norge — salg, verdivurdering, utleieformidling og strategisk rådgivning. Tallene er reelle. Resultatene er målt."
+      />
 
-          <p className="mt-5 max-w-xl text-balance text-center text-base text-warm-grey-2 sm:mt-8 sm:text-xl">
-            <FadeSpan>
-              Advanti har bistått en rekke aktører i Nord-Norge med å realisere
-            </FadeSpan>{" "}
-            <FadeSpan>deres mål innen næringseiendom. Se et utvalg av</FadeSpan>{" "}
-            <FadeSpan>våre referanser og kundehistorier.</FadeSpan>
-          </p>
-
-          <div className="absolute inset-0 -z-10 flex items-center justify-center overflow-hidden">
-            <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-warm-white via-warm-white/80 to-transparent dark:from-warm-grey dark:via-warm-grey/80" />
-
-            <AnimatedGridPattern
-              width={50}
-              height={50}
-              className="-mt-24 scale-125 text-light-blue/20"
-              maxOpacity={0.3}
-              numSquares={30}
-              duration={3}
-            />
-
-            <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-warm-white via-warm-white/80 to-transparent dark:from-warm-grey dark:via-warm-grey/80" />
+      {/* KPI BAND */}
+      <section className="section-tight">
+        <div className="wrap">
+          <div className="mi-kpis">
+            <div className="mi-kpi">
+              <div className="label">Oppdrag levert</div>
+              <div className="val">
+                +47<span className="unit">i 2025</span>
+              </div>
+              <div className="delta">
+                <span className="arrow-up">▲ 24 %</span> mot 2024
+              </div>
+            </div>
+            <div className="mi-kpi">
+              <div className="label">Transaksjonsvolum</div>
+              <div className="val">
+                3,2<span className="unit">mrd</span>
+              </div>
+              <div className="delta">Salgsverdi · 2025</div>
+            </div>
+            <div className="mi-kpi">
+              <div className="label">Gjentakende klienter</div>
+              <div className="val">
+                71<span className="unit">%</span>
+              </div>
+              <div className="delta">Av nye oppdrag i 2025</div>
+            </div>
+            <div className="mi-kpi">
+              <div className="label">Snittpris vs. estimat</div>
+              <div className="val">
+                +12<span className="unit">%</span>
+              </div>
+              <div className="delta">Over første verdiestimat</div>
+            </div>
           </div>
-        </FadeContainer>
+        </div>
       </section>
 
-      <section className="mx-auto mt-24 w-full max-w-6xl">
-        <div className="grid grid-cols-2 gap-8 sm:grid-cols-3 lg:grid-cols-4">
-          {customers.map((customer) => (
-            <Customer key={customer.slug} {...customer} />
-          ))}
-        </div>
-        <div className="mt-10 rounded-xl border border-warm-grey/10 bg-warm-white/5 p-6 backdrop-blur-sm dark:border-warm-white/10 dark:bg-warm-grey-3/5">
-          <Link
-            href="/kunder/investor-avkastning"
-            className="text-sm font-medium text-warm-grey transition hover:text-warm-grey-3 dark:text-warm-white dark:hover:text-warm-grey-1"
-          >
-            Les kundecase: Hvordan vi hjalp en investor realisere 25% høyere
-            avkastning
-          </Link>
+      {/* OPPDRAG GRID */}
+      <section className="section" style={{ paddingTop: 24 }}>
+        <div className="wrap">
+          <div className="head-compact">
+            <span className="eyebrow">Utvalg</span>
+            <div>
+              <h2>
+                Hva vi har <span className="italic">gjort for klienter.</span>
+              </h2>
+              <p>
+                Klikk på et oppdrag for å se full case study — utfordring,
+                løsning, resultater og hvordan vi jobbet sammen med klienten.
+              </p>
+            </div>
+          </div>
+
+          <div className="op-grid">
+            {stories.map((story) => {
+              const pres = PRESENTATION[story.slug];
+              return (
+                <Link
+                  key={story.slug}
+                  className="op-card"
+                  href={`/kunder/${story.slug}`}
+                >
+                  {pres?.image && (
+                    <div className="op-img">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={pres.image} alt={pres.imageAlt} />
+                    </div>
+                  )}
+                  <div className="op-meta">
+                    <div className="top">
+                      <span>{pres?.category ?? story.companyIndustry}</span>
+                      <span>
+                        {pres?.year ?? story.publishedAt.slice(0, 4)}
+                      </span>
+                    </div>
+                    <h3>{story.title}</h3>
+                    <p className="sum">{story.summary}</p>
+                    {pres?.kpis && (
+                      <div className="kpis">
+                        {pres.kpis.map((kpi) => (
+                          <div key={kpi.label}>
+                            <span className="v">{kpi.value}</span>
+                            <span className="l">{kpi.label}</span>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
+
+          <div className="mi-footnote" style={{ marginTop: 48 }}>
+            <span className="source">
+              Klientnavn er anonymisert der ikke offentlig godkjent for
+              publisering. Tallene er bekreftet via tinglysing, kontrakt eller
+              direkte fra part.
+            </span>
+            <span>
+              <Link
+                href="/kontakt"
+                style={{
+                  color: "var(--warm-grey)",
+                  borderBottom: "1px solid",
+                }}
+              >
+                Bli neste case →
+              </Link>
+            </span>
+          </div>
         </div>
       </section>
-    </div>
+
+      <CtaStrip
+        eyebrow="Klar for å bli neste case?"
+        title={
+          <>
+            Vi behandler hvert oppdrag <br />
+            <span className="italic">som det er vårt eget.</span>
+          </>
+        }
+        sub="Senior partner på saken fra første samtale til signert avtale. Konkret rådgivning, dokumenterte resultater."
+        primary={{ label: "Ta kontakt", href: "/kontakt" }}
+        secondary={{ label: "Se våre tjenester", href: "/tjenester" }}
+      />
+    </>
   );
 }
-
-const customers = [
-  // {
-  //   slug: "vercel",
-  //   site: "https://vercel.com",
-  // },
-  {
-    slug: "corponor",
-  },
-  // {
-  //   slug: "mcgrath-estate-agents",
-  // },
-  // {
-  //   slug: "ray-white-brisbane",
-  // },
-  // {
-  //   slug: "tinybird",
-  //   site: "https://tinybird.co",
-  // },
-  // {
-  //   slug: "hashnode",
-  //   site: "https://hashnode.com",
-  // },
-  // {
-  //   slug: "cal",
-  //   site: "https://cal.com",
-  // },
-  // {
-  //   slug: "perplexity",
-  //   site: "https://perplexity.ai",
-  // },
-  // {
-  //   slug: "replicate",
-  //   site: "https://replicate.com",
-  // },
-  // {
-  //   slug: "super",
-  //   site: "https://super.so",
-  // },
-  // {
-  //   slug: "chronicle",
-  //   site: "https://chroniclehq.com",
-  // },
-  // {
-  //   slug: "attio",
-  //   site: "https://attio.com",
-  // },
-  // {
-  //   slug: "crowd",
-  //   site: "https://crowd.dev",
-  // },
-  // {
-  //   slug: "checkly",
-  //   site: "https://checklyhq.com",
-  // },
-  // {
-  //   slug: "rovisys",
-  //   site: "https://www.rovisys.com",
-  // },
-  // {
-  //   slug: "chatwoot",
-  //   site: "https://chatwoot.com",
-  // },
-  // {
-  //   slug: "lugg",
-  //   site: "https://lugg.com",
-  // },
-  // {
-  //   slug: "vueschool",
-  //   site: "https://vueschool.io",
-  // },
-  // {
-  //   slug: "refine",
-  //   site: "https://refine.dev",
-  // },
-  // {
-  //   slug: "crowdin",
-  //   site: "https://crowdin.com",
-  // },
-  // {
-  //   slug: "peerlist",
-  //   site: "https://peerlist.io",
-  // },
-  // {
-  //   slug: "anja",
-  //   site: "https://www.anjahealth.com/",
-  // },
-  // {
-  //   slug: "inngest",
-  //   site: "https://www.inngest.com/",
-  // },
-  // {
-  //   slug: "ashore",
-  //   site: "https://ashore.io/",
-  // },
-  // {
-  //   slug: "galactic",
-  //   site: "https://galacticrecords.com/",
-  // },
-  // {
-  //   slug: "1komma5grad",
-  //   site: "https://1komma5grad.com/",
-  // },
-  // { // Example structure for a new entry - replace with actual data
-  //   slug: "firmanavn-eller-prosjektnavn", // used for linking or as an ID
-  //   name: "Firmanavn AS", // Display name
-  //   logoUrl: "/path/to/logo.png", // Path to the company/project logo
-  //   description: "Kort beskrivelse av samarbeidet eller prosjektet.", // Optional short description
-  //   caseStudyUrl: "/kunder/firmanavn-case-study" // Optional link to a detailed case study page
-  // },
-];

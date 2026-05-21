@@ -1,19 +1,17 @@
-import Author from "@/components/blog/author";
-import MaxWidthWrapper from "@/components/blog/max-width-wrapper";
+import { ArticleToc } from "@/components/blog/ArticleToc";
 import { MDX } from "@/components/blog/mdx";
 import ScrollProgress from "@/components/blog/scroll-progress";
-import SocialShare from "@/components/blog/social-share";
-import TableOfContents from "@/components/blog/table-of-contents";
+import { CtaStrip } from "@/components/site/CtaStrip";
+import { ProseShell } from "@/components/site/ProseShell";
 import BlurImage from "@/lib/blog/blur-image";
 import { BLOG_CATEGORIES } from "@/lib/blog/content";
 import { getBlurDataURL } from "@/lib/blog/images";
-import { calculateReadingTime, formatReadingTime } from "@/lib/blog/utils";
-import { constructMetadata, formatDate } from "@/lib/utils";
+import { calculateReadingTime } from "@/lib/blog/utils";
+import { constructMetadata } from "@/lib/utils";
 import { allBlogPosts } from "content-collections";
 import { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { AnimatedCTA } from "@/components/ui/AnimatedCTA";
 import StructuredData, {
   BreadcrumbStructuredData,
 } from "@/components/StructuredData";
@@ -23,6 +21,44 @@ const AUTHOR_NAMES: Record<string, string> = {
   codehagen: "Christer Hagen",
   vsoraas: "Vegard Søraas",
 };
+
+const AUTHOR_META: Record<string, { name: string; role: string; image: string }> =
+  {
+    codehagen: {
+      name: "Christer Hagen",
+      role: "Partner · Advanti Estate",
+      image:
+        "https://imagedelivery.net/r-6-yk-gGPtjfbIST9-8uA/addc4b60-4c8f-47d7-10ab-6f9048432500/public",
+    },
+    vsoraas: {
+      name: "Vegard Søraas",
+      role: "Partner · Advanti Estate",
+      image:
+        "https://imagedelivery.net/r-6-yk-gGPtjfbIST9-8uA/76037f97-384f-4681-176e-5b8a0ba71300/public",
+    },
+  };
+
+const MONTHS_SHORT = [
+  "JAN",
+  "FEB",
+  "MAR",
+  "APR",
+  "MAI",
+  "JUN",
+  "JUL",
+  "AUG",
+  "SEP",
+  "OKT",
+  "NOV",
+  "DES",
+];
+
+/** Formats a YYYY-MM-DD date as e.g. "04. FEB 2026". */
+function editorialDate(date: string) {
+  const d = new Date(`${date}T00:00:00`);
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${day}. ${MONTHS_SHORT[d.getMonth()]} ${d.getFullYear()}`;
+}
 
 export async function generateStaticParams() {
   return allBlogPosts.map((post) => ({
@@ -104,6 +140,13 @@ export default async function BlogArticle({
         .filter((post): post is NonNullable<typeof post> => post !== undefined)
     : [];
 
+  const readingTime = data.mdx
+    ? calculateReadingTime(data.mdx)
+    : null;
+  const authorMeta = AUTHOR_META[data.author];
+  const authorName = AUTHOR_NAMES[data.author] || data.author;
+  const toc = data.tableOfContents ?? [];
+
   return (
     <>
       <ScrollProgress />
@@ -122,135 +165,175 @@ export default async function BlogArticle({
           publishedAt: data.publishedAt,
           image: data.image,
           author: data.author,
-          authorName: AUTHOR_NAMES[data.author] || data.author,
+          authorName,
           url: `/blog/${data.slug}`,
-          articleBody: data.mdx?.code
-            ? data.mdx.code.replace(/<[^>]+>/g, "").substring(0, 5000)
+          articleBody: data.mdx
+            ? data.mdx.replace(/<[^>]+>/g, "").substring(0, 5000)
             : undefined,
-          wordCount: data.mdx?.code
-            ? data.mdx.code.replace(/<[^>]+>/g, "").split(/\s+/).length
+          wordCount: data.mdx
+            ? data.mdx.replace(/<[^>]+>/g, "").split(/\s+/).length
             : undefined,
-          timeRequired: data.mdx?.code
-            ? calculateReadingTime(data.mdx.code)
-            : undefined,
+          timeRequired: readingTime ?? undefined,
           keywords: data.categories,
           articleSection: category?.title,
         }}
       />
-      <MaxWidthWrapper>
-        <div className="flex max-w-screen-sm flex-col space-y-4 pt-32 md:pt-40">
-          <div className="flex flex-wrap items-center gap-3">
-            <Link
-              href={`/blog/category/${category.slug}`}
-              className="rounded-full border border-warm-grey/20 bg-warm-white/80 px-4 py-1.5 text-sm font-semibold text-warm-grey shadow-[inset_10px_-50px_94px_0_rgb(199,199,199,0.1)] backdrop-blur transition-all hover:border-warm-grey/30 hover:bg-warm-white/50"
-            >
-              {category.title}
-            </Link>
-            <time
-              dateTime={data.publishedAt}
-              className="text-sm text-warm-grey/60 dark:text-warm-white/60"
-            >
-              {formatDate(data.publishedAt)}
-            </time>
-            {data.mdx?.code && (
-              <>
-                <span className="text-warm-grey/40 dark:text-warm-white/40">•</span>
-                <span className="text-sm text-warm-grey/60 dark:text-warm-white/60">
-                  {formatReadingTime(calculateReadingTime(data.mdx.code))}
-                </span>
-              </>
-            )}
-          </div>
-          <h1 className="font-display text-3xl font-extrabold text-warm-grey sm:text-4xl sm:leading-snug dark:text-warm-white">
-            {data.title}
-          </h1>
-          <p className="text-xl text-warm-grey/80 dark:text-warm-white/80">{data.summary}</p>
-        </div>
-      </MaxWidthWrapper>
 
-      <div className="relative">
-        <div className="absolute top-52 h-[calc(100%-13rem)] w-full border border-warm-grey/20 shadow-[inset_10px_-50px_94px_0_rgb(199,199,199,0.2)] backdrop-blur-lg" />
-        <MaxWidthWrapper className="grid grid-cols-4 gap-5 px-0 pt-10 lg:gap-10">
-          <div className="relative col-span-4 flex flex-col space-y-8 sm:rounded-t-xl sm:border sm:border-warm-grey/20 md:col-span-3">
-          <BlurImage
-            className="aspect-[1200/630] rounded-t-xl object-cover"
-            src={data.image}
-            blurDataURL={thumbnailBlurhash}
-            width={1200}
-            height={630}
-            alt={data.title}
-            priority
-          />
-          <MDX
-            code={data.mdx}
-            images={images.map((image) => ({
-              ...image,
-              alt: data.title,
-            }))}
-            className="px-5 pb-10 pt-4 sm:px-10"
-          />
-          <div className="px-5 pb-20 sm:px-10">
-            <AnimatedCTA
-              badge="Næringsmegling i Nord-Norge"
-              title="Planlegger du salg eller utleie av næringseiendom?"
-              description="Advanti kombinerer lokal kunnskap med avansert teknologi for å gi deg de beste resultatene i markedet."
-              primaryAction={{
-                label: "Kontakt oss",
-                href: "/kontakt",
-              }}
-              secondaryAction={{
-                label: "Våre tjenester",
-                href: "/tjenester",
-              }}
-              size="default"
-            />
-          </div>
+      <div className="page-pad" />
+
+      {/* HERO — breadcrumb only */}
+      <section className="subhero" style={{ paddingBottom: 24 }}>
+        <div className="wrap">
+          <nav className="crumb" aria-label="Brødsmuler">
+            <Link href="/">Hjem</Link>
+            <span className="sep">/</span>
+            <Link href="/blog">Artikler</Link>
+            <span className="sep">/</span>
+            <span className="here">{data.title}</span>
+          </nav>
         </div>
-          <div className="sticky top-20 col-span-1 mt-48 hidden max-h-[calc(100vh-5rem)] flex-col divide-y divide-warm-grey/20 self-start overflow-y-auto sm:flex">
-            {data.tableOfContents && data.tableOfContents.length > 0 && (
-              <div className="flex flex-col space-y-4 py-5">
-                <TableOfContents items={data.tableOfContents} />
+      </section>
+
+      {/* ARTICLE */}
+      <section className="section-tight" style={{ paddingTop: 0 }}>
+        <div className="wrap">
+          {/* Title block */}
+          <div style={{ maxWidth: 780, marginBottom: 32 }}>
+            <div className="ks-art-meta">
+              <Link
+                href={`/blog/category/${category.slug}`}
+                className="cat"
+                style={{ textDecoration: "none" }}
+              >
+                {category.title}
+              </Link>
+              <span className="sep">·</span>
+              <span>{editorialDate(data.publishedAt)}</span>
+              {readingTime && (
+                <>
+                  <span className="sep">·</span>
+                  <span>{readingTime} min lesing</span>
+                </>
+              )}
+            </div>
+
+            <h1 className="ks-art-title">{data.title}</h1>
+
+            <p className="ks-art-lede">{data.summary}</p>
+
+            {authorMeta && (
+              <div className="ks-art-author">
+                <div
+                  className="av"
+                  style={{ backgroundImage: `url('${authorMeta.image}')` }}
+                />
+                <div className="meta">
+                  <span className="name">{authorMeta.name}</span>
+                  <span className="role">{authorMeta.role}</span>
+                </div>
               </div>
             )}
-            <div className="flex flex-col space-y-4 py-5">
-              <SocialShare
-                title={data.title}
-                url={`/blog/${data.slug}`}
-                summary={data.summary}
+          </div>
+
+          {/* Hero image */}
+          <div className="bg-art-hero">
+            <div className="img">
+              <BlurImage
+                src={data.image}
+                blurDataURL={thumbnailBlurhash}
+                width={1200}
+                height={630}
+                alt={data.title}
+                priority
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                }}
               />
             </div>
-            <div className="flex flex-col space-y-4 py-5">
-              <p className="text-sm text-warm-grey/60 dark:text-warm-white/60">Skrevet av</p>
-              <Author username={data.author} />
-            </div>
-            {relatedArticles.length > 0 && (
-              <div className="flex flex-col space-y-4 py-5">
-                <p className="text-sm text-warm-grey/60 dark:text-warm-white/60">Les mer</p>
-                <ul className="flex flex-col space-y-4">
-                  {relatedArticles.map((post) => (
-                    <li key={post.slug}>
-                      <Link
-                        href={`/blog/${post.slug}`}
-                        className="group flex flex-col space-y-2"
-                      >
-                        <p className="font-semibold text-warm-grey underline-offset-4 group-hover:underline dark:text-warm-white">
-                          {post.title}
-                        </p>
-                        <p className="line-clamp-2 text-sm text-warm-grey/80 underline-offset-2 group-hover:underline dark:text-warm-white/80">
-                          {post.summary}
-                        </p>
-                        <p className="text-xs text-warm-grey/60 underline-offset-2 group-hover:underline dark:text-warm-white/60">
-                          {formatDate(post.publishedAt)}
-                        </p>
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
           </div>
-        </MaxWidthWrapper>
-      </div>
+
+          <div className="ks-article">
+            <article className="ks-art-body">
+              <ProseShell>
+                <MDX
+                  code={data.mdx}
+                  images={images.map((image) => ({
+                    ...image,
+                    alt: data.title,
+                  }))}
+                />
+              </ProseShell>
+
+              {/* Author footer */}
+              {authorMeta && (
+                <div
+                  className="ks-art-author"
+                  style={{ marginTop: 64, marginBottom: 0 }}
+                >
+                  <div
+                    className="av"
+                    style={{ backgroundImage: `url('${authorMeta.image}')` }}
+                  />
+                  <div className="meta">
+                    <span className="name">{authorMeta.name}</span>
+                    <span className="role">{authorMeta.role}</span>
+                  </div>
+                </div>
+              )}
+
+              {/* Related */}
+              {relatedArticles.length > 0 && (
+                <div className="ks-related">
+                  <h3>Les videre.</h3>
+                  <div className="ks-related-list">
+                    {relatedArticles.map((post) => {
+                      const relCat = post.categories
+                        .map((c) =>
+                          BLOG_CATEGORIES.find((bc) => bc.slug === c)
+                        )
+                        .find((c) => c !== undefined);
+                      const relReading = post.mdx
+                        ? calculateReadingTime(post.mdx)
+                        : null;
+                      return (
+                        <Link
+                          key={post.slug}
+                          className="item"
+                          href={`/blog/${post.slug}`}
+                        >
+                          <span className="pre">
+                            {(relCat?.title ?? "Artikkel").toUpperCase()}
+                            {relReading ? ` · ${relReading} MIN` : ""}
+                          </span>
+                          <h4>{post.title}</h4>
+                        </Link>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+            </article>
+
+            {/* TOC sidebar */}
+            <ArticleToc toc={toc} authorName={authorName} />
+          </div>
+        </div>
+      </section>
+
+      <CtaStrip
+        eyebrow="Trenger du markedsdata på din eiendom?"
+        title={
+          <>
+            Få skreddersydd analyse <br />
+            <span className="italic">— for din portefølje.</span>
+          </>
+        }
+        sub="Vi kombinerer relevant markedsdata med eiendomsspesifikk innsikt og leverer en konkret rapport — typisk innen to uker."
+        primary={{ label: "Bestill analyse", href: "/kontakt" }}
+        secondary={{ label: "Se markedsinnsikt", href: "/markedsinnsikt" }}
+      />
     </>
   );
 }

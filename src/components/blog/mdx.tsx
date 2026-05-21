@@ -2,18 +2,6 @@
 
 import { MDXContent } from "@content-collections/mdx/react"
 import {
-  RiAlertLine,
-  RiArrowRightLine,
-  RiBarChartBoxLine,
-  RiCheckboxCircleLine,
-  RiFunctions,
-  RiInformationLine,
-  RiLightbulbLine,
-  RiLineChartLine,
-  RiListCheck2,
-  RiScalesLine,
-} from "@remixicon/react"
-import {
   allBlogPosts,
   allChangelogPosts,
   allHelpPosts,
@@ -105,7 +93,7 @@ function AnimatedCTA(props: {
                 className="inline-flex items-center justify-center gap-2 rounded-full px-6 py-2 font-medium text-warm-grey/80 dark:text-warm-white/80 ring-1 ring-warm-grey-2/20 transition-colors hover:bg-warm-grey-2/10 hover:text-warm-grey dark:hover:text-warm-white"
               >
                 {props.secondaryAction.label}
-                <RiArrowRightLine className="h-4 w-4" />
+                <span aria-hidden="true">→</span>
               </Link>
             )}
           </div>
@@ -174,13 +162,6 @@ const components = {
     variant?: "info" | "warning" | "success"
     children: React.ReactNode
   }) => {
-    const icons = {
-      info: RiInformationLine,
-      warning: RiAlertLine,
-      success: RiCheckboxCircleLine,
-    }
-    const Icon = icons[props.variant || "info"]
-
     return (
       <div
         className={cx(
@@ -193,13 +174,6 @@ const components = {
         )}
       >
         <div className="mt-1 flex items-start gap-3">
-          <Icon
-            className={cx("mt-0.5 h-5 w-5", {
-              "text-blue-500/80": props.variant === "info",
-              "text-yellow-500/80": props.variant === "warning",
-              "text-green-500/80": props.variant === "success",
-            })}
-          />
           <div className="flex-1 text-warm-grey/80 dark:text-warm-white/80">{props.children}</div>
         </div>
       </div>
@@ -244,7 +218,6 @@ const components = {
   Prerequisites: (props: { children: React.ReactNode }) => (
     <div className="my-8 rounded-xl border border-warm-grey-2/20 bg-warm-grey-2/10 p-6 backdrop-blur-sm">
       <div className="mb-4 flex items-center gap-3">
-        <RiListCheck2 className="h-5 w-5 text-warm-grey/60 dark:text-warm-white/60" />
         <h4 className="font-display text-lg font-semibold text-warm-grey dark:text-warm-white">
           Forutsetninger
         </h4>
@@ -319,9 +292,6 @@ const components = {
   ),
   Info: (props: any) => (
     <div className="my-6 flex items-start gap-4 rounded-lg border border-warm-grey-2/20 bg-warm-grey-2/10 p-6 backdrop-blur-sm">
-      <div className="flex h-6 w-6 shrink-0 items-center justify-center">
-        <RiInformationLine className="h-6 w-6 text-warm-grey/60 dark:text-warm-white/60" />
-      </div>
       <div className="flex-1 text-[0.95rem] leading-relaxed">
         <div className="font-medium text-warm-grey dark:text-warm-white">Fun fact:</div>
         <div className="mt-1 text-warm-grey/80 dark:text-warm-white/80">{props.children}</div>
@@ -341,7 +311,6 @@ const components = {
       )}
     >
       <div className="flex items-center gap-3">
-        <RiFunctions className="h-5 w-5 text-warm-grey/60 dark:text-warm-white/60" />
         <div className="text-lg font-medium text-warm-grey dark:text-warm-white">Formel</div>
       </div>
       <div className="w-full overflow-x-auto">
@@ -382,7 +351,6 @@ const components = {
       )}
     >
       <div className="flex items-center gap-3">
-        <RiFunctions className="h-5 w-5 text-warm-grey/60 dark:text-warm-white/60" />
         <div className="text-lg font-medium text-warm-grey dark:text-warm-white">Formel</div>
       </div>
       <div className="w-full overflow-x-auto">
@@ -520,13 +488,6 @@ const components = {
       iconName?: string
     }[]
   }) => {
-    const iconMap: { [key: string]: React.ReactNode } = {
-      barChart: <RiBarChartBoxLine className="h-5 w-5 text-warm-grey/60 dark:text-warm-white/60" />,
-      scales: <RiScalesLine className="h-5 w-5 text-warm-grey/60 dark:text-warm-white/60" />,
-      lineChart: <RiLineChartLine className="h-5 w-5 text-warm-grey/60 dark:text-warm-white/60" />,
-      lightbulb: <RiLightbulbLine className="h-5 w-5 text-warm-grey/60 dark:text-warm-white/60" />,
-    }
-
     return (
       <div className="my-8 rounded-xl border border-warm-grey-2/20 bg-warm-grey-2/10 p-6 backdrop-blur-sm">
         {props.title && (
@@ -541,7 +502,6 @@ const components = {
               className="flex flex-col space-y-2 rounded-lg border border-warm-grey-2/20 bg-warm-grey-2/5 p-4 backdrop-blur-sm"
             >
               <div className="flex items-center gap-3">
-                {point.iconName && iconMap[point.iconName]}
                 <h5 className="font-medium text-warm-grey dark:text-warm-white">{point.title}</h5>
               </div>
               {point.description && (

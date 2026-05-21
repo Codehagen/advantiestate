@@ -73,3 +73,9 @@ tsconfig.tsbuildinfo
 
 .content-collections
 .cursor
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+.gstack/

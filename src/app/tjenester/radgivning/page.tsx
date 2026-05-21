@@ -1,222 +1,314 @@
-import { Badge } from "@/components/Badge";
-import { AnimatedCTA } from "@/components/ui/AnimatedCTA";
-import { AdvisoryCTAButtonGroup } from "@/components/CTAButtons";
-import FeatureDivider from "@/components/ui/FeatureDivider";
+import { constructMetadata } from "@/lib/utils";
+import { SubHero } from "@/components/site/SubHero";
+import { CtaStrip } from "@/components/site/CtaStrip";
+import { PhotoBand } from "@/components/site/PhotoBand";
 import StructuredData, {
   BreadcrumbStructuredData,
 } from "@/components/StructuredData";
-import { constructMetadata } from "@/lib/utils";
-import Image from "next/image";
-import {
-  RiBrainLine,
-  RiBriefcaseLine,
-  RiBarChartGroupedLine,
-  RiTeamLine,
-  RiFocus3Line,
-  RiMedalLine,
-} from "@remixicon/react";
-import Balancer from "react-wrap-balancer";
 
 export const metadata = constructMetadata({
-  title: "Rådgivning Næringseiendom | Advanti",
+  title: "Markedsdata og Rådgivning Næringseiendom | Advanti",
   description:
-    "Advanti tilbyr eiendomsfaglig rådgivning for bedrifter og organisasjoner i Nord-Norge. Vi sikrer optimal avkastning og verdioptimaliserende råd.",
+    "Advanti leverer markedsdata og kvantitativ rådgivning for næringseiendom i Nord-Norge. Egne databaser, kvartalsvise markedsrapporter og datatilgang via API.",
 });
-
-const advisoryServices = [
-  {
-    title: "Eiendomsanalyse",
-    description:
-      "Grundig analyse av din eiendom og portefølje for å identifisere muligheter for verdiskaping og optimalisering.",
-    icon: RiBrainLine,
-  },
-  {
-    title: "Strategisk Planlegging",
-    description:
-      "Utvikling av langsiktige strategier for din eiendomsportefølje basert på markedskunnskap og dine forretningsmål.",
-    icon: RiBriefcaseLine,
-  },
-  {
-    title: "Markedsvurdering",
-    description:
-      "Dybdegående markedsinnsikt og vurderinger som gir deg det beste grunnlaget for å ta optimale beslutninger.",
-    icon: RiBarChartGroupedLine,
-  },
-];
-
-const whyAdvantiAdvisory = [
-  {
-    title: "Eiendomsfaglig Kompetanse",
-    description:
-      "Med vår eiendomsfaglige kompetanse og markedskunnskap er vi kundens uavhengige rådgiver i eiendomsmarkedet.",
-    icon: RiTeamLine,
-  },
-  {
-    title: "Verdioptimaliserende Råd",
-    description:
-      "Vi tilbyr bedrifter og organisasjoner verdioptimaliserende råd i forbindelse med utleie og transaksjon.",
-    icon: RiFocus3Line,
-  },
-  {
-    title: "Fra Vurdering til Realisering",
-    description:
-      "I samarbeid med kunden kan vi bidra til å utvikle og forberede eiendomsprosjekter for vurdering/beslutning til realisering.",
-    icon: RiMedalLine,
-  },
-];
 
 export default function RadgivningPage() {
   return (
-    <div className="mt-36 flex flex-col overflow-hidden px-3">
+    <>
       <BreadcrumbStructuredData
         items={[
           { name: "Hjem", url: "/" },
           { name: "Tjenester", url: "/tjenester" },
-          { name: "Rådgivning", url: "/tjenester/radgivning" },
+          { name: "Markedsdata og rådgivning", url: "/tjenester/radgivning" },
         ]}
       />
       <StructuredData
         type="service"
         data={{
-          name: "Rådgivning Næringseiendom",
+          name: "Markedsdata og Rådgivning Næringseiendom",
           description:
-            "Eiendomsfaglig rådgivning for bedrifter og organisasjoner i Nord-Norge.",
+            "Markedsdata, kvantitativ analyse og rådgivning for næringseiendom i Nord-Norge.",
         }}
       />
-      {/* Hero Section */}
+
+      <SubHero
+        crumb={[
+          { label: "Hjem", href: "/" },
+          { label: "Tjenester", href: "/tjenester" },
+          { label: "Markedsdata og rådgivning" },
+        ]}
+        eyebrow="Tjeneste 05 · Marked"
+        title={
+          <>
+            Markedsdata <span className="italic">og rådgivning.</span>
+          </>
+        }
+        lede="Egne databaser, kvantitativ analyse og en dedikert analyseavdeling som leverer faktagrunnlaget — så du kan ta beslutninger basert på data, ikke magefølelse."
+        actions={[
+          { label: "Få markedsrapport", href: "/kontakt" },
+          {
+            label: "Våre leveranser",
+            href: "#leveranser",
+            variant: "outline",
+          },
+        ]}
+        metaRow={[
+          { value: "1 400+", label: "Eiendommer sporet" },
+          { value: "Kvartalsvis", label: "Markedsrapport" },
+          { value: "Egne API", label: "Datatilgang for kunder" },
+        ]}
+        photo={{
+          src: "/building/pexels-abshky-18567185.jpg",
+          alt: "Markedsdata for næringseiendom",
+        }}
+      />
+
+      {/* LEVERANSER */}
+      <section className="section section-divider" id="leveranser">
+        <div className="wrap">
+          <div className="head-compact">
+            <span className="eyebrow">01 — Leveranser</span>
+            <div>
+              <h2>
+                Fra rådata <span className="italic">til strategi.</span>
+              </h2>
+              <p>
+                Vår analyseavdeling samler, systematiserer og tolker
+                eiendomsdata fra hele landsdelen. Vi gjør det andre overser —
+                slik at du får svar du kan handle på.
+              </p>
+            </div>
+          </div>
+
+          <div className="method-grid">
+            <div className="method">
+              <div className="pre">01 · Leveranse</div>
+              <h3>Kvartalsvis markedsrapport</h3>
+              <p>
+                Yield, leienivå, ledighet og transaksjonsvolum per segment og by
+                — en gjennomsiktig oversikt over hvor markedet faktisk står.
+              </p>
+              <div className="meta">
+                <span>Hvert kvartal</span>
+                <span>PDF + datasett</span>
+              </div>
+            </div>
+
+            <div className="method">
+              <div className="pre">02 · Leveranse</div>
+              <h3>Skreddersydd analyse</h3>
+              <p>
+                Spesifikke analyser for en eiendom, et segment eller en
+                lokasjon. Vi kombinerer relevante data fra databasen og setter
+                dem i kontekst.
+              </p>
+              <div className="meta">
+                <span>1–3 uker</span>
+                <span>Rapport + dialog</span>
+              </div>
+            </div>
+
+            <div className="method">
+              <div className="pre">03 · Leveranse</div>
+              <h3>Datasett og API</h3>
+              <p>
+                Direkte tilgang til vår transaksjons- og leiebase via
+                lett-strukturerte datasett eller API — for kunder med egne
+                analysemiljøer.
+              </p>
+              <div className="meta">
+                <span>Abonnement</span>
+                <span>Eksport CSV/JSON</span>
+              </div>
+            </div>
+
+            <div className="method">
+              <div className="pre">04 · Leveranse</div>
+              <h3>Markedsrådgivning</h3>
+              <p>
+                Konkrete, knowledge-based anbefalinger som svarer på hva du
+                faktisk skal gjøre — ikke bare hva tallene er.
+              </p>
+              <div className="meta">
+                <span>Senior team</span>
+                <span>Resultatorientert</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* METODIKK */}
       <section
-        aria-labelledby="radgivning-hero"
-        className="mx-auto w-full max-w-6xl animate-slide-up-fade"
+        className="section"
+        id="metode"
         style={{
-          animationDuration: "600ms",
-          animationFillMode: "backwards",
+          background: "var(--accent-faint)",
+          borderTop: "var(--hairline)",
+          borderBottom: "var(--hairline)",
         }}
       >
-        <Badge>Rådgivning</Badge>
-        <div className="lg:grid lg:grid-cols-2 lg:gap-16">
-          <div>
-            <h1
-              id="radgivning-hero"
-              className="mt-2 inline-block bg-gradient-to-t from-warm-grey to-warm-grey-3 bg-clip-text py-2 text-4xl font-bold tracking-tighter text-transparent sm:text-6xl md:text-6xl dark:from-warm-white dark:to-warm-grey-1"
-            >
-              <Balancer>Sikre Størst Mulig Avkastning</Balancer>
-            </h1>
-            <p className="mt-6 max-w-2xl text-lg text-warm-grey-2 dark:text-warm-grey-1">
-              Betydelig kapital er bundet i fast eiendom. Vi kan bidra til å
-              sikre størst mulig avkastning på investert kapital for våre
-              kunder, og at kunden tar de optimale beslutningene.
-            </p>
-            <p className="mt-4 max-w-2xl text-lg text-warm-grey-2 dark:text-warm-grey-1">
-              Med vår eiendomsfaglige kompetanse og markedskunnskap er vi
-              kundens uavhengige rådgiver i eiendomsmarkedet.
-            </p>
-            <div className="mt-8">
-              <AdvisoryCTAButtonGroup />
-            </div>
-          </div>
-          <div className="mt-8 lg:mt-0">
-            <div className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-warm-grey/5 shadow-lg shadow-light-blue/10 ring-1 ring-warm-grey/5 dark:bg-warm-grey/20 dark:shadow-light-blue/10 dark:ring-warm-white/5">
-              <Image
-                src="/building/pexels-pixabay-248877.jpg"
-                alt="Rådgivere som analyserer næringseiendom"
-                fill
-                className="object-cover"
-                sizes="(max-width: 1024px) 100vw, 50vw"
-                priority
-              />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <FeatureDivider className="mx-auto mt-24 max-w-6xl" />
-
-      {/* Advisory Services Section */}
-      <section className="mx-auto mt-24 w-full max-w-6xl">
-        <div className="flex flex-col items-center gap-6 text-center">
-          <Badge>Våre Rådgivningstjenester</Badge>
-          <h2 className="text-balance bg-gradient-to-t from-warm-grey to-warm-grey-3 bg-clip-text text-4xl font-semibold tracking-tighter text-transparent md:text-6xl dark:from-warm-white dark:to-warm-grey-1">
-            Din Uavhengige Rådgiver
-          </h2>
-          <p className="max-w-2xl text-lg text-warm-grey-2 dark:text-warm-grey-1">
-            <Balancer>
-              Vi tilbyr bedrifter og organisasjoner verdioptimaliserende råd i
-              forbindelse med utleie og transaksjon.
-            </Balancer>
-          </p>
-        </div>
-        <div className="mt-16 grid grid-cols-1 gap-x-8 gap-y-12 md:grid-cols-2 lg:grid-cols-3">
-          {advisoryServices.map((service) => (
-            <div
-              key={service.title}
-              className="flex flex-col items-center gap-4 text-center md:items-start md:text-left"
-            >
-              <div className="flex size-12 items-center justify-center rounded-lg bg-warm-grey/5 ring-1 ring-warm-grey/5 dark:bg-warm-grey/20 dark:ring-warm-white/5">
-                <service.icon className="size-6 text-warm-grey dark:text-warm-white" />
-              </div>
-              <h3 className="text-lg font-semibold text-warm-grey dark:text-warm-white">
-                {service.title}
-              </h3>
-              <p className="text-sm text-warm-grey-2 dark:text-warm-grey-1">
-                {service.description}
+        <div className="wrap">
+          <div className="head-compact">
+            <span className="eyebrow">02 — Metodikk</span>
+            <div>
+              <h2>
+                Vi systematiserer{" "}
+                <span className="italic">det andre overser.</span>
+              </h2>
+              <p>
+                Markedet for næringseiendom i Nord-Norge er fragmentert og lite
+                transparent. Det er nettopp derfor en god database har så høy
+                verdi.
               </p>
             </div>
-          ))}
-        </div>
-      </section>
+          </div>
 
-      <FeatureDivider className="mx-auto mt-24 max-w-6xl" />
-
-      {/* Why Choose Advanti for Advisory Section */}
-      <section className="mx-auto mt-24 w-full max-w-6xl">
-        <div className="flex flex-col items-center gap-6 text-center">
-          <Badge>Hvorfor Velge Advanti?</Badge>
-          <h2 className="text-balance bg-gradient-to-t from-warm-grey to-warm-grey-3 bg-clip-text text-4xl font-semibold tracking-tighter text-transparent md:text-6xl dark:from-warm-white dark:to-warm-grey-1">
-            Eiendomsfaglig Kompetanse og Markedskunnskap
-          </h2>
-          <p className="max-w-2xl text-lg text-warm-grey-2 dark:text-warm-grey-1">
-            <Balancer>
-              I samarbeid med kunden kan vi bidra til å utvikle og forberede
-              eiendomsprosjekter for vurdering/beslutning til realisering.
-            </Balancer>
-          </p>
-        </div>
-        <div className="mt-16 grid grid-cols-1 gap-x-8 gap-y-12 md:grid-cols-3">
-          {whyAdvantiAdvisory.map((feature) => (
-            <div
-              key={feature.title}
-              className="flex flex-col items-center gap-4 rounded-xl p-6 text-center transition-all hover:bg-warm-grey/[2.5%] dark:hover:bg-warm-grey-3/50 md:items-start md:text-left"
-            >
-              <div className="flex size-12 items-center justify-center rounded-lg bg-warm-grey/5 ring-1 ring-warm-grey/5 dark:bg-warm-grey/20 dark:ring-warm-white/5">
-                <feature.icon className="size-6 text-warm-grey dark:text-warm-white" />
-              </div>
-              <h3 className="text-lg font-semibold text-warm-grey dark:text-warm-white">
-                {feature.title}
-              </h3>
-              <p className="text-sm text-warm-grey-2 dark:text-warm-grey-1">
-                {feature.description}
+          <div className="tc">
+            <div>
+              <h4>Innsamling</h4>
+              <p>
+                Vi sporer hver registrerte transaksjon, leiekontrakt og
+                leieendring i markedet — kombinert med proprietære relasjoner,
+                offentlig informasjon og dialog med aktører.
+              </p>
+              <p>
+                Datapunktene kvalitetssikres manuelt: en transaksjon registrert
+                hos oss er sjekket mot tinglysning, kjøpekontrakt eller direkte
+                bekreftelse fra part.
               </p>
             </div>
-          ))}
+            <div>
+              <h4>Analyse</h4>
+              <p>
+                Vår analyseavdeling kjører kvantitative modeller på toppen av
+                basen — yield-kurver, segmentbenchmarks, sensitivitetsmatriser
+                og scenarier som faktisk reflekterer hvordan markedet beveger
+                seg.
+              </p>
+              <p>
+                Resultatet er beslutningsgrunnlag du kan stå inne for — i
+                styremøtet, hos banken, hos revisor.
+              </p>
+            </div>
+          </div>
         </div>
       </section>
 
-      <section className="mx-auto mt-24 w-full max-w-6xl">
-        <AnimatedCTA
-          badge="Behov for Rådgivning?"
-          title="Ønsker du Verdioptimaliserende Råd?"
-          description="Kontakt Advanti for en samtale om hvordan vår rådgivning kan bidra til størst mulig avkastning på din eiendomskapital."
-          primaryAction={{
-            label: "Kontakt for Rådgivning",
-            href: "/kontakt",
-          }}
-          secondaryAction={{
-            label: "Se alle våre tjenester",
-            href: "/tjenester",
-          }}
-          size="default"
-        />
+      {/* HVORFOR ADVANTI */}
+      <section className="section">
+        <div className="wrap">
+          <div className="head-compact">
+            <span className="eyebrow">03 — Hvorfor Advanti</span>
+            <div>
+              <h2>
+                Markedsdata du <span className="italic">kan stole på.</span>
+              </h2>
+              <p>
+                Vi konkurrerer ikke med generelle markedsrapporter fra Oslo. Vi
+                konkurrerer med antakelser. Og vi vinner.
+              </p>
+            </div>
+          </div>
+
+          <div className="feat-3">
+            <div className="feat">
+              <div className="num">I</div>
+              <h3>Den dypeste databasen</h3>
+              <p>
+                Bransjens skarpeste markedsdatabase nord for Trondheim — over 1
+                400 eiendommer, 10 års transaksjonshistorikk.
+              </p>
+            </div>
+            <div className="feat">
+              <div className="num">II</div>
+              <h3>Faglig integritet</h3>
+              <p>
+                Vi viser metodikken, kildene og forutsetningene. Du kan utfordre
+                tallene — og vi har svaret.
+              </p>
+            </div>
+            <div className="feat">
+              <div className="num">III</div>
+              <h3>Bruksklart format</h3>
+              <p>
+                Rapporter, datasett og API som passer rett inn i bankens
+                kredittvurdering, styrets beslutningsgrunnlag eller revisors
+                verdsettelse.
+              </p>
+            </div>
+          </div>
+        </div>
       </section>
-    </div>
+
+      {/* COVERAGE */}
+      <section className="coverage">
+        <div className="wrap">
+          <div className="head-compact">
+            <span className="eyebrow">04 — Dekning</span>
+            <div>
+              <h2>
+                Markedsdata fra{" "}
+                <span
+                  style={{
+                    fontStyle: "italic",
+                    fontWeight: 300,
+                    color: "rgba(243,241,239,0.7)",
+                  }}
+                >
+                  hele landsdelen.
+                </span>
+              </h2>
+              <p>
+                Vi dekker næringssegmentene i de viktigste byene — med data som
+                faktisk er samlet inn lokalt.
+              </p>
+            </div>
+          </div>
+
+          <div className="cities">
+            <div className="city">
+              <div className="pn">01</div>
+              <h3>Bodø</h3>
+              <p>Hovedkontor. Kontor, handel, logistikk.</p>
+            </div>
+            <div className="city">
+              <div className="pn">02</div>
+              <h3>Tromsø</h3>
+              <p>Største kontormarkedet i landsdelen.</p>
+            </div>
+            <div className="city">
+              <div className="pn">03</div>
+              <h3>Alta</h3>
+              <p>Lokalkontor. Handel og næring i Finnmark.</p>
+            </div>
+            <div className="city">
+              <div className="pn">04</div>
+              <h3>Mo i Rana</h3>
+              <p>Industri- og logistikkbygg.</p>
+            </div>
+            <div className="city">
+              <div className="pn">05</div>
+              <h3>Narvik</h3>
+              <p>Transport, lager og næringspark.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <PhotoBand src="/building/pexels-abshky-18567185.jpg" alt="Markedsdata og radgivning" caption="Markedsdata · Nord-Norge" />
+
+      <CtaStrip
+        eyebrow="Trenger du markedsinnsikt?"
+        title={
+          <>
+            Bestill <span className="italic">markedsrapporten.</span>
+          </>
+        }
+        sub="Få vår siste kvartalsrapport eller en skreddersydd analyse for din eiendom eller portefølje."
+        primary={{ label: "Bestill rapport", href: "/kontakt" }}
+        secondary={{ label: "Se alle våre tjenester", href: "/tjenester" }}
+      />
+    </>
   );
 }

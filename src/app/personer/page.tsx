@@ -1,10 +1,8 @@
-import { Badge } from "@/components/Badge";
-import { AnimatedCTA } from "@/components/ui/AnimatedCTA";
-import FeatureDivider from "@/components/ui/FeatureDivider";
+import { CtaStrip } from "@/components/site/CtaStrip";
+import { SubHero } from "@/components/site/SubHero";
 import { constructMetadata } from "@/lib/utils";
 import { allPersonPosts } from "content-collections";
 import Link from "next/link";
-import Balancer from "react-wrap-balancer";
 
 export const metadata = constructMetadata({
   title: "Vårt Team | Advanti",
@@ -12,103 +10,283 @@ export const metadata = constructMetadata({
     "Møt teamet bak Advanti - erfarne næringsmeglere og rådgivere med dyp kompetanse innen næringseiendom i Nord-Norge.",
 });
 
+// Per-person presentation metadata used by the editorial team-card design.
+// Falls back gracefully for any person not listed here.
+const PRESENTATION: Record<
+  string,
+  { office: string; specialty: string }
+> = {
+  "christer-hagen": {
+    office: "Bodø",
+    specialty: "Salg · Verdivurdering · Investeringsanalyse",
+  },
+  "mathias-nilssen": {
+    office: "Bodø",
+    specialty: "Strategisk rådgivning · Relasjonsbygging",
+  },
+  "daniel-adamsen": {
+    office: "Alta",
+    specialty: "Salg · Verdivurdering",
+  },
+  "ole-ostensen": {
+    office: "NHH · Bergen",
+    specialty: "Jus · DD",
+  },
+  "havard-nome": {
+    office: "Alta",
+    specialty: "Marked Finnmark · Utleie · Analyse",
+  },
+  "tobias-bronder": {
+    office: "Bodø",
+    specialty: "Næringseiendom · Rådgivning",
+  },
+};
+
 export default function PersonerPage() {
-  // Filter to show only Christer Hagen and Daniel Adamsen, in this specific order
-  const displayedPeople = ["christer-hagen", "daniel-adamsen", "havard-nome"]
+  // Render all team members, in a stable, intentional order.
+  const order = [
+    "christer-hagen",
+    "mathias-nilssen",
+    "daniel-adamsen",
+    "ole-ostensen",
+    "havard-nome",
+    "tobias-bronder",
+  ];
+  const people = order
     .map((slug) => allPersonPosts.find((p) => p.slug === slug))
-    .filter(Boolean);
+    .filter((p): p is NonNullable<typeof p> => Boolean(p));
+
+  // Include any persons not covered by the explicit order.
+  for (const p of allPersonPosts) {
+    if (!people.includes(p)) people.push(p);
+  }
 
   return (
-    <div className="mt-36 flex flex-col overflow-hidden px-3">
-      {/* Hero Section */}
-      <section
-        aria-labelledby="about-overview"
-        className="animate-slide-up-fade"
-        style={{
-          animationDuration: "600ms",
-          animationFillMode: "backwards",
-        }}
-      >
-        <Badge>Vårt Team</Badge>
-        <h1
-          id="about-overview"
-          className="mt-2 inline-block bg-gradient-to-t from-warm-grey to-warm-grey-3 bg-clip-text py-2 text-4xl font-bold tracking-tighter text-transparent sm:text-6xl md:text-6xl dark:from-warm-white dark:to-warm-grey-1"
-        >
-          <Balancer>
-            Erfarne rådgivere for din suksess innen næringseiendom
-          </Balancer>
-        </h1>
-        <p className="mt-6 max-w-2xl text-lg text-warm-grey-2 dark:text-warm-grey-1">
-          Med solid erfaring og lokal kunnskap er vi din naturlige partner for
-          kjøp, salg og utleie av næringseiendom. Vi leverer profesjonell
-          rådgivning og skreddersydde løsninger for din virksomhet.
-        </p>
-      </section>
+    <>
+      <SubHero
+        crumb={[{ label: "Hjem", href: "/" }, { label: "Vårt team" }]}
+        eyebrow="Vårt team · 6 senior partnere"
+        title={
+          <>
+            Erfarne rådgivere <br />
+            <span className="italic">som svarer telefonen selv.</span>
+          </>
+        }
+        lede="Vi er et lite, dedikert team med 70+ års samlet erfaring fra næringseiendomsmarkedet. Hver klient møter senior rådgiver — fra første samtale til signert avtale."
+      />
 
-      <FeatureDivider className="mt-16" />
+      {/* TEAM GRID */}
+      <section className="section-tight" style={{ paddingTop: 24 }}>
+        <div className="wrap">
+          <div className="tm-grid">
+            {people.map((person, index) => {
+              const pres = PRESENTATION[person.slug ?? ""];
+              const num = `_0${index + 1}`;
+              return (
+                <Link
+                  key={person.slug}
+                  className="tm-card"
+                  href={`/personer/${person.slug}`}
+                >
+                  <div className="tm-portrait">
+                    <span className="num">{num}</span>
+                    {pres?.office && (
+                      <span className="office">{pres.office}</span>
+                    )}
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={person.avatar} alt={person.name} />
+                  </div>
+                  <div className="tm-meta">
+                    <h3>{person.name}</h3>
+                    <div className="role">{person.role}</div>
+                  </div>
+                  <div className="tm-contact">
+                    <span>{person.phone}</span>
+                    <span>{person.email}</span>
+                    {pres?.specialty && (
+                      <div className="specialty">{pres.specialty}</div>
+                    )}
+                  </div>
+                </Link>
+              );
+            })}
 
-      {/* Team Grid */}
-      <section className="mt-24">
-        <div className="grid gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
-          {displayedPeople.map((person, index) => (
+            {/* Vi vokser-kort: oppfordrer til å sende åpen søknad */}
             <Link
-              key={person.slug}
-              href={`/personer/${person.slug}`}
-              className="group overflow-hidden"
+              className="tm-card"
+              href="/kontakt"
+              style={{
+                background: "var(--accent-faint)",
+                alignItems: "stretch",
+              }}
             >
-              <img
-                className="h-96 w-full rounded-md object-cover object-top grayscale transition-all duration-500 hover:grayscale-0 group-hover:h-[22.5rem] group-hover:rounded-xl"
-                src={person.avatar}
-                alt={`${person.name} - ${person.role}`}
-                width="826"
-                height="1239"
-              />
-              <div className="px-2 pt-2 sm:pb-0 sm:pt-4">
-                <div className="flex justify-between">
-                  <h3 className="text-title text-base font-medium transition-all duration-500 group-hover:tracking-wider">
-                    {person.name}
-                  </h3>
-                  <span className="text-xs">_0{index + 1}</span>
-                </div>
-                <div className="mt-1 space-y-0.5 translate-y-6 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
-                  <p className="text-muted-foreground text-sm">{person.role}</p>
-                  <p className="text-sm text-warm-grey-2 dark:text-warm-grey-1">
-                    {person.yearsExperience} års erfaring
-                  </p>
-                  <p className="text-sm">
-                    <span className="text-gray-700 hover:text-primary-600 hover:underline dark:text-gray-300 dark:hover:text-primary-400">
-                      {person.email}
-                    </span>
-                  </p>
-                  <p className="text-sm">
-                    <span className="text-gray-700 hover:text-primary-600 hover:underline dark:text-gray-300 dark:hover:text-primary-400">
-                      {person.phone}
-                    </span>
-                  </p>
-                </div>
+              <div
+                className="tm-portrait"
+                style={{
+                  background: "var(--accent-soft)",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  filter: "none",
+                }}
+              >
+                <span
+                  className="num"
+                  style={{
+                    background: "var(--warm-grey)",
+                    position: "static",
+                    padding: "8px 14px",
+                  }}
+                >
+                  _0{people.length + 1}
+                </span>
+              </div>
+              <div className="tm-meta" style={{ padding: "4px 0" }}>
+                <h3 style={{ fontStyle: "italic", fontWeight: 300 }}>
+                  Neste partner?
+                </h3>
+                <div className="role">Vi vokser forsiktig.</div>
+              </div>
+              <div className="tm-contact">
+                <span
+                  style={{ color: "var(--warm-grey-85)", fontSize: 13.5 }}
+                >
+                  Vi tar inn én ny senior i året. Send oss en åpen henvendelse.
+                </span>
+                <span
+                  style={{
+                    marginTop: 8,
+                    fontSize: 13,
+                    fontWeight: 500,
+                  }}
+                >
+                  Send henvendelse →
+                </span>
               </div>
             </Link>
-          ))}
+          </div>
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="mt-24">
-        <AnimatedCTA
-          badge="Kontakt Oss"
-          title="Klar til å Ta Kontakt?"
-          description="Vårt team er her for å bistå deg med alle dine behov innen næringseiendom. Ta kontakt for en uforpliktende samtale."
-          primaryAction={{
-            label: "Send oss en henvendelse",
-            href: "/kontakt",
-          }}
-          secondaryAction={{
-            label: "Se våre tjenester",
-            href: "/tjenester",
-          }}
-          size="default"
-        />
+      {/* PHILOSOPHY */}
+      <section>
+        <div className="wrap">
+          <div className="tm-philo">
+            <div>
+              <span
+                className="eyebrow"
+                style={{ marginBottom: 20, display: "inline-flex" }}
+              >
+                Vår filosofi
+              </span>
+              <h2>
+                Bevisst små. <br />
+                <span className="italic">Mye senior erfaring.</span>
+              </h2>
+            </div>
+            <div className="body">
+              <p>
+                Vi er ikke et meglerhus med titalls juniorrådgivere. Vi er seks
+                partnere som tar oppdrag selv — og det er bevisst.{" "}
+                <strong>
+                  Du møter ikke en juniorkonsulent i forhandlingen
+                </strong>
+                , du møter den samme personen du snakket med på første samtale.
+              </p>
+              <p>
+                Det betyr at hvert oppdrag er begrenset til hva seks mennesker
+                faktisk kan levere godt på samtidig. Vi takker nei til oppdrag
+                der vi ikke har kapasitet — eller der vi tror andre kan løse det
+                bedre.
+              </p>
+              <p>
+                Resultatet er klienter som kommer tilbake. Over 70 % av nye
+                oppdrag i 2025 kom fra eksisterende relasjoner eller direkte
+                anbefalinger.
+              </p>
+            </div>
+          </div>
+        </div>
       </section>
-    </div>
+
+      {/* TEAM NUMBERS */}
+      <section className="market">
+        <div className="wrap">
+          <div className="head-compact">
+            <span
+              className="eyebrow"
+              style={{ color: "rgba(243,241,239,0.7)" }}
+            >
+              Teamet i tall
+            </span>
+            <div>
+              <h2 style={{ color: "var(--warm-white)" }}>
+                Hva 70 års samlet{" "}
+                <span
+                  style={{
+                    fontStyle: "italic",
+                    fontWeight: 300,
+                    color: "rgba(243,241,239,0.7)",
+                  }}
+                >
+                  erfaring leverer.
+                </span>
+              </h2>
+              <p style={{ color: "rgba(243,241,239,0.7)" }}>
+                Vi måler oss på hva vi har gjennomført — ikke på
+                pressemeldinger.
+              </p>
+            </div>
+          </div>
+          <div
+            className="market-stats"
+            style={{ gridTemplateColumns: "repeat(4, 1fr)" }}
+          >
+            <div className="stat">
+              <div className="num-big">6</div>
+              <p className="stat-label">Senior partnere</p>
+            </div>
+            <div
+              className="stat"
+              style={{ borderLeft: "1px solid rgba(243,241,239,0.18)" }}
+            >
+              <div className="num-big">
+                70<span className="unit">år+</span>
+              </div>
+              <p className="stat-label">Samlet bransjeerfaring</p>
+            </div>
+            <div
+              className="stat"
+              style={{ borderLeft: "1px solid rgba(243,241,239,0.18)" }}
+            >
+              <div className="num-big">
+                +2,1<span className="unit">mrd</span>
+              </div>
+              <p className="stat-label">Transaksjonsvolum siste 5 år</p>
+            </div>
+            <div
+              className="stat"
+              style={{ borderLeft: "1px solid rgba(243,241,239,0.18)" }}
+            >
+              <div className="num-big">2</div>
+              <p className="stat-label">Kontor — Bodø &amp; Alta</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <CtaStrip
+        eyebrow="Ønsker du å snakke med teamet?"
+        title={
+          <>
+            Ta en uforpliktende <br />
+            <span className="italic">samtale med en senior partner.</span>
+          </>
+        }
+        sub="Vi setter av tid til en åpen samtale — uten forpliktelser. Du bestemmer hvem av oss du vil snakke med."
+        primary={{ label: "Send henvendelse", href: "/kontakt" }}
+        secondary={{ label: "+47 984 53 571", href: "tel:+4798453571" }}
+      />
+    </>
   );
 }

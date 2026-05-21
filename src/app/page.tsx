@@ -1,13 +1,7 @@
-import ContentSection from "@/components/ContentSection";
-import AnalycitsDashboard from "@/components/ui/Analycits-dashboard";
-import Cta from "@/components/ui/Cta";
-import CtaMiddle from "@/components/ui/Cta-middle";
-import FeatureDivider from "@/components/ui/FeatureDivider";
-import Features2 from "@/components/ui/Features2";
-import { Hero2 } from "@/components/ui/Hero2";
-import { HvaSkjerVidereBlock } from "@/components/ui/HvaSkjerVidereBlock";
-import LogoCloud from "@/components/ui/LogoCloud";
-import NewsletterSignup from "@/components/NewsletterSignup";
+import Image from "next/image";
+import Link from "next/link";
+
+import { CtaStrip } from "@/components/site/CtaStrip";
 import { constructMetadata } from "@/lib/utils";
 
 export const metadata = constructMetadata({
@@ -16,29 +10,465 @@ export const metadata = constructMetadata({
     "Din lokale ekspert på salg og verdivurdering av næringseiendom i Nord-Norge. Vi hjelper eiendomsbesittere med å oppnå best mulig pris og nøyaktige verdivurderinger. Kontakt oss for en uforpliktende samtale.",
 });
 
+const italicMuted = {
+  fontStyle: "italic",
+  fontWeight: 300,
+  color: "var(--warm-grey-85)",
+} as const;
+
+const SERVICES = [
+  {
+    num: "01",
+    title: "Verdivurdering",
+    titleItalic: "og analyse",
+    href: "/tjenester/verdivurdering",
+    body: "Dyptgående verdivurderinger basert på DCF, yield-analyse og sensitivitet — et solid beslutningsgrunnlag for investering, finansiering eller regnskapsrapportering.",
+  },
+  {
+    num: "02",
+    title: "Transaksjons-",
+    titleItalic: "rådgivning",
+    href: "/tjenester/transaksjoner",
+    body: "Strategisk rådgivning gjennom hele kjøps- eller salgsprosessen — fra due diligence og verdidriver-analyse til forhandling og gjennomføring.",
+  },
+  {
+    num: "03",
+    title: "Kjøp og salg",
+    titleItalic: "av eiendom",
+    href: "/tjenester/salg",
+    body: "Vi identifiserer muligheter og gjennomfører transaksjoner med nasjonalt og internasjonalt nettverk — for å sikre riktig kjøper til riktig pris.",
+  },
+  {
+    num: "04",
+    title: "Utleie",
+    titleItalic: "av næringslokaler",
+    href: "/tjenester/utleie",
+    body: "Effektiv utleieformidling og reforhandling for kontor, handel, bevertning og logistikk. Vi kjenner aktørene som søker areal i Nord-Norge.",
+  },
+  {
+    num: "05",
+    title: "Markedsdata",
+    titleItalic: "og innsikt",
+    href: "/tjenester/radgivning",
+    body: "Egne databaser med yield, leienivå, ledighet og transaksjoner. Vi systematiserer det andre overser, og gjør tall til strategiske beslutninger.",
+  },
+  {
+    num: "06",
+    title: "Strategisk",
+    titleItalic: "rådgivning",
+    href: "/tjenester/strategisk-radgivning",
+    body: "Skreddersydd rådgivning for utvikling, akkvisisjon og optimalisering av eiendomsporteføljen — fra et enkelt bygg til komplekse posisjoner.",
+  },
+];
+
+const TICKER = [
+  { label: "Yield Kontor Tromsø", val: "6.10 %", delta: "▲ 0.15", up: true },
+  { label: "Yield Logistikk Bodø", val: "6.85 %", delta: "▲ 0.20", up: true },
+  { label: "Markedsleie kontor (kr/m²)", val: "2 950", delta: "▲ 4.2 %", up: true },
+  { label: "Transaksjonsvolum 2025", val: "4.8 mrd", delta: "▲ 18 %", up: true },
+  { label: "Ledighet kontor Tromsø", val: "3.4 %", delta: "▼ 0.6", up: false },
+  { label: "5-års swap (NOK)", val: "3.82 %", delta: "▼ 0.08", up: false },
+];
+
+const STATS = [
+  {
+    big: "6,10",
+    unit: "%",
+    delta: "▲ 15 bps siden Q3",
+    down: false,
+    label: "Prime yield kontor, Tromsø sentrum",
+  },
+  {
+    big: "2 950",
+    unit: "kr/m²",
+    delta: "▲ 4,2 % YoY",
+    down: false,
+    label: "Markedsleie kontor klasse A, Tromsø",
+  },
+  {
+    big: "3,4",
+    unit: "%",
+    delta: "▼ 60 bps YoY",
+    down: true,
+    label: "Kontorledighet, Tromsø-regionen",
+  },
+  {
+    big: "4,8",
+    unit: "mrd",
+    delta: "▲ 18 % YoY",
+    down: false,
+    label: "Transaksjonsvolum næringseiendom Nord-Norge, 2025",
+  },
+];
+
+const PILLARS = [
+  {
+    n: "I.",
+    title: "Lokal ekspertise, bredere perspektiv.",
+    body: "Røtter i Nord-Norge, øye for de nasjonale og internasjonale strømningene som beveger markedet.",
+  },
+  {
+    n: "II.",
+    title: "Datadrevet metodikk.",
+    body: "Egne databaser, kvantitativ analyse og en dedikert analyseavdeling som leverer faktagrunnlaget.",
+  },
+  {
+    n: "III.",
+    title: "Klientens beslutninger i sentrum.",
+    body: "Vi gir deg det best mulige faktabaserte grunnlaget — ikke for å imponere, men for å gjøre deg trygg på neste steg.",
+  },
+  {
+    n: "IV.",
+    title: "Komplett livssyklus.",
+    body: "Fra første verdivurdering til avhendelse — én partner gjennom alle faser av eiendommens livsløp.",
+  },
+];
+
+const CASES = [
+  {
+    tag: "Salg",
+    img: "/building/pexels-pixabay-248877.jpg",
+    alt: "Næringsbygg Tromsø",
+    meta: ["Kontor · Tromsø", "2025"],
+    title: "Salg av kontortårn på 11 400 m² i Tromsø sentrum.",
+    stats: [
+      { v: "285", unit: "mnok", l: "Transaksjonsverdi" },
+      { v: "5,9", unit: "%", l: "Netto yield" },
+    ],
+  },
+  {
+    tag: "Verdivurdering",
+    img: "/building/pexels-expect-best-79873-351262.jpg",
+    alt: "Logistikkbygg Bodø",
+    meta: ["Logistikk · Bodø", "2025"],
+    title: "Verdivurdering av regional logistikkportefølje — fire eiendommer.",
+    stats: [
+      { v: "42 800", unit: "m²", l: "Samlet areal" },
+      { v: "6,8", unit: "%", l: "Vektet yield" },
+    ],
+  },
+  {
+    tag: "Utleie",
+    img: "/building/pexels-abshky-18567185.jpg",
+    alt: "Næringseiendom Harstad",
+    meta: ["Kontor & Handel · Harstad", "2024"],
+    title: "Reforhandling og utleie av 8 600 m² i nytt næringsbygg.",
+    stats: [
+      { v: "12", unit: "år", l: "Snittlengde leie" },
+      { v: "100", unit: "%", l: "Utleiegrad" },
+    ],
+  },
+];
+
 export default function Home() {
   return (
-    <main className="flex flex-col overflow-hidden">
-      <Hero2 />
-      {/* <HvaSkjerVidereBlock /> */}
-      {/* <LogoCloud /> */}
-      <FeatureDivider />
-      <CtaMiddle />
-      {/* <AnalycitsDashboard /> */}
-      <FeatureDivider />
-      {/* <ContentSection /> */}
-      <Features2 />
+    <main>
+      {/* ===== HERO ===== */}
+      <section className="hero" id="top">
+        <div className="hero-photo">
+          <Image
+            src="/building/pexels-pixabay-248877.jpg"
+            alt="Næringseiendom i Nord-Norge"
+            fill
+            priority
+            sizes="100vw"
+            style={{ objectFit: "cover", objectPosition: "center 40%" }}
+          />
+        </div>
+        <div className="hero-content">
+          <div className="hero-meta">
+            <span className="left">
+              <span>Næringseiendom</span>
+              <span className="dot" />
+              <span>Nord-Norge</span>
+            </span>
+            <span>Etablert 2024 · Tromsø &amp; Bodø</span>
+          </div>
+          <h1>
+            Salg og verdivurdering
+            <br />
+            av næringseiendom{" "}
+            <span className="italic">i Nord-Norge.</span>
+          </h1>
+          <p className="hero-sub">
+            Vi leverer presise verdivurderinger og riktig salgsstrategi basert
+            på dyp lokal markedsinnsikt — og et nasjonalt nettverk som åpner
+            dørene for de rette kjøperne.
+          </p>
+          <div className="hero-cta-row">
+            <Link href="/kontakt" className="btn btn-primary">
+              Få uforpliktende verdivurdering
+              <span className="arrow">→</span>
+            </Link>
+            <Link href="#tjenester" className="btn btn-ghost">
+              Våre tjenester
+            </Link>
+          </div>
+        </div>
+        <div className="scroll-cue">Bla ned</div>
+      </section>
+      {/* Nav sentinel: present only on pages with a dark hero */}
+      <div id="hero-sentinel" aria-hidden="true" />
 
-      {/* Newsletter Signup Section */}
-      {/* <section className="mx-auto my-20 max-w-6xl px-4">
-        <NewsletterSignup
-          variant="card"
-          title="Hold deg oppdatert"
-          description="Få de nyeste markedsinnsiktene, verdivurderingstips og eksklusive analyser om næringseiendom i Nord-Norge direkte i innboksen din."
-        />
-      </section> */}
+      {/* ===== TICKER ===== */}
+      <div className="ticker" aria-hidden="true">
+        <div className="ticker-track">
+          {[...TICKER, ...TICKER].map((t, i) => (
+            <span key={i} style={{ display: "contents" }}>
+              <div>
+                <span className="label">{t.label}</span>
+                <span className="val">{t.val}</span>
+                <span className={t.up ? "delta-up" : "delta-down"}>
+                  {t.delta}
+                </span>
+              </div>
+              <span className="sep" />
+            </span>
+          ))}
+        </div>
+      </div>
 
-      <Cta />
+      {/* ===== TJENESTER ===== */}
+      <section className="section" id="tjenester">
+        <div className="wrap">
+          <div className="section-head">
+            <div className="left">
+              <span className="eyebrow">01 — Tjenester</span>
+            </div>
+            <div className="right">
+              <h2>
+                Et komplett spekter <br />
+                innen næringseiendom{" "}
+                <span className="italic">— levert med presisjon.</span>
+              </h2>
+              <p style={{ marginTop: 28 }}>
+                Advanti tilbyr verdivurdering, transaksjonsrådgivning,
+                utleieformidling og strategisk analyse. Vår tilnærming
+                kombinerer dybdekunnskap fra Nord-Norge med metodikk og data fra
+                det nasjonale markedet.
+              </p>
+            </div>
+          </div>
+
+          <div className="services">
+            {SERVICES.map((s) => (
+              <article className="service" key={s.num}>
+                <span className="num">{s.num}</span>
+                <div>
+                  <h3>
+                    {s.title}
+                    <br />
+                    <span style={italicMuted}>{s.titleItalic}</span>
+                  </h3>
+                  <p>{s.body}</p>
+                  <Link href={s.href} className="more">
+                    Les mer <span>→</span>
+                  </Link>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ===== MARKEDSINNSIKT ===== */}
+      <section className="market" id="markedsinnsikt">
+        <div className="wrap">
+          <div className="section-head">
+            <div className="left">
+              <span className="eyebrow">02 — Markedsinnsikt</span>
+            </div>
+            <div className="right">
+              <h2>
+                Tallene fra Nord-Norge, <br />
+                <span className="italic">oppdatert kvartalsvis.</span>
+              </h2>
+              <p style={{ marginTop: 28 }}>
+                Vi sporer over 1 400 næringseiendommer på tvers av Tromsø, Bodø,
+                Harstad, Narvik og Kirkenes. Resultatet er det skarpeste bildet
+                av markedet du finner nord for Trondheim.
+              </p>
+            </div>
+          </div>
+
+          <div className="market-grid">
+            <div className="market-stats">
+              {STATS.map((s) => (
+                <div className="stat" key={s.label}>
+                  <div className="num-big">
+                    {s.big}
+                    <span className="unit">{s.unit}</span>
+                  </div>
+                  <div className={s.down ? "delta down" : "delta"}>
+                    {s.delta}
+                  </div>
+                  <p className="stat-label">{s.label}</p>
+                </div>
+              ))}
+            </div>
+            <div className="market-photo">
+              <div className="img">
+                <Image
+                  src="/building/pexels-abshky-18566965.jpg"
+                  alt="Kontortårn i Tromsø"
+                  fill
+                  sizes="(max-width: 900px) 100vw, 40vw"
+                  style={{ objectFit: "cover" }}
+                />
+              </div>
+              <div className="caption">
+                <span>FIG. 01 — KONTORTÅRN, TROMSØ</span>
+                <span>Q4 2025</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ===== OM ADVANTI ===== */}
+      <section className="section" id="om-advanti">
+        <div className="wrap">
+          <div className="section-head">
+            <div className="left">
+              <span className="eyebrow">03 — Om Advanti</span>
+            </div>
+            <div className="right">
+              <h2>
+                Strategisk innsikt,
+                <br />
+                <span className="italic">lokal forankring.</span>
+              </h2>
+            </div>
+          </div>
+
+          <div className="about">
+            <div className="about-text">
+              <p>
+                Advanti er et kompetansemiljø dedikert til næringseiendom i
+                Nord-Norge. Vi kombinerer dyp lokal forankring med et nasjonalt
+                nettverk og metodikk hentet fra de største transaksjonshusene i
+                landet.
+              </p>
+              <p>
+                Resultatet er rådgivning som er presis, faktabasert og
+                strategisk — enten du eier ett bygg eller forvalter en
+                portefølje. Vi tror at de beste beslutningene tas der lokal
+                forståelse møter strukturert data.
+              </p>
+
+              <div className="pillars">
+                {PILLARS.map((p) => (
+                  <div className="pillar" key={p.n}>
+                    <span className="pn">{p.n}</span>
+                    <span className="pt">{p.title}</span>
+                    <p className="pd">{p.body}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="about-photo">
+              <div className="frame" style={{ position: "relative" }}>
+                <Image
+                  src="/building/pexels-abshky-18566965.jpg"
+                  alt="Næringsbygg i Nord-Norge"
+                  fill
+                  sizes="(max-width: 900px) 100vw, 40vw"
+                  style={{ objectFit: "cover" }}
+                />
+              </div>
+              <div className="photo-caption">
+                <span>Næringsbygg · Tromsø</span>
+                <span>2026</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ===== UTVALGTE OPPDRAG ===== */}
+      <section
+        className="section section-divider"
+        id="oppdrag"
+        style={{ background: "var(--accent-faint)" }}
+      >
+        <div className="wrap">
+          <div className="section-head">
+            <div className="left">
+              <span className="eyebrow">04 — Utvalgte oppdrag</span>
+            </div>
+            <div className="right">
+              <h2>
+                Et utvalg av{" "}
+                <span className="italic">nylige transaksjoner</span> <br />
+                og verdivurderinger.
+              </h2>
+              <p style={{ marginTop: 28 }}>
+                Et lite knippe av oppdragene vi har levert — fra strategisk salg
+                av kontortårn til reforhandling av lange leiekontrakter for
+                nasjonale aktører.
+              </p>
+            </div>
+          </div>
+
+          <div className="cases">
+            {CASES.map((c) => (
+              <article className="case" key={c.title}>
+                <div className="case-img" style={{ position: "relative" }}>
+                  <span className="tag">{c.tag}</span>
+                  <Image
+                    src={c.img}
+                    alt={c.alt}
+                    fill
+                    sizes="(max-width: 900px) 100vw, 33vw"
+                    style={{ objectFit: "cover" }}
+                  />
+                </div>
+                <div className="case-meta">
+                  <span>{c.meta[0]}</span>
+                  <span>{c.meta[1]}</span>
+                </div>
+                <h3>{c.title}</h3>
+                <div className="case-stat">
+                  {c.stats.map((st) => (
+                    <div key={st.l}>
+                      <span className="v">
+                        {st.v}
+                        <span className="unit">{st.unit}</span>
+                      </span>
+                      <span className="l">{st.l}</span>
+                    </div>
+                  ))}
+                </div>
+              </article>
+            ))}
+          </div>
+
+          <div className="cases-foot">
+            <div className="count">
+              <strong>+47 oppdrag</strong> levert i 2025 — på tvers av
+              Nord-Norge.
+            </div>
+            <Link href="/kunder" className="btn btn-outline">
+              Se alle oppdrag <span className="arrow">→</span>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ===== CTA ===== */}
+      <CtaStrip
+        eyebrow="05 — Kontakt"
+        title={
+          <>
+            Ta kontakt for en <br />
+            <span className="italic">uforpliktende samtale.</span>
+          </>
+        }
+        sub="Enten du vurderer å selge, kjøpe eller bare ønsker en oppdatert verdivurdering — vi tar en samtale uten forpliktelser."
+        primary={{ label: "Send henvendelse", href: "/kontakt" }}
+        secondary={{ label: "+47 984 53 571", href: "tel:+4798453571" }}
+      />
     </main>
   );
 }

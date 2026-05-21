@@ -7,7 +7,7 @@ const nextConfig = {
   // Configure `pageExtensions` to include markdown and MDX files
   pageExtensions: ["js", "jsx", "md", "mdx", "ts", "tsx"],
   // Optionally, add any other Next.js config below
-  typescript: { ignoreBuildErrors: true },
+  typescript: { ignoreBuildErrors: false },
   async redirects() {
     return [
       {
@@ -58,11 +58,6 @@ const nextConfig = {
       },
       {
         source: "/blog/naringseiendomsmarkedet-2025-nord-norge",
-        destination: "/markedsinnsikt",
-        permanent: true,
-      },
-      {
-        source: "/blog/markedspuls-nord-norge-2025-2026",
         destination: "/markedsinnsikt",
         permanent: true,
       },

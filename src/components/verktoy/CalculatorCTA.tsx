@@ -29,7 +29,7 @@ export function CalculatorCTA({
           </Link>
           <Link href="/personer">
             <Button
-              variant="outline"
+              variant="secondary"
               className="h-10 w-full font-semibold sm:w-auto"
             >
               <RiTeamLine className="mr-2 size-4" />

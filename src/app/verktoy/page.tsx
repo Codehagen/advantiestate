@@ -1,5 +1,4 @@
 import { Badge } from "@/components/Badge";
-import { Button } from "@/components/Button";
 import { AnimatedCTA } from "@/components/ui/AnimatedCTA";
 import FeatureDivider from "@/components/ui/FeatureDivider";
 import { constructMetadata } from "@/lib/utils";
