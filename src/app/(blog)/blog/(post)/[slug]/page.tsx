@@ -87,9 +87,6 @@ export async function generateMetadata({
   });
 }
 
-// Priority categories that should be shown first
-const PRIORITY_CATEGORIES = ["real-estate", "landscaping"];
-
 export default async function BlogArticle({
   params,
 }: {
@@ -115,19 +112,9 @@ export default async function BlogArticle({
     ),
   ]);
 
-  // First try to find a priority category (industry category)
-  let category = PRIORITY_CATEGORIES.filter((cat) =>
-    data.categories.includes(cat as any)
-  )
+  const category = data.categories
     .map((cat) => BLOG_CATEGORIES.find((c) => c.slug === cat))
     .find((cat) => cat !== undefined);
-
-  // If no priority category found, fall back to any valid category
-  if (!category) {
-    category = data.categories
-      .map((cat) => BLOG_CATEGORIES.find((c) => c.slug === cat))
-      .find((cat) => cat !== undefined);
-  }
 
   if (!category) {
     console.error(`No valid category found for post: ${data.slug}`);
