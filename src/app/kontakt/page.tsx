@@ -56,16 +56,11 @@ export default function KontaktPage() {
             Send henvendelse →
           </a>
           <a
-            href="tel:+4798453571"
-            style={{
-              fontSize: 22,
-              fontWeight: 500,
-              fontFamily: "var(--font-display)",
-              letterSpacing: "-0.02em",
-              textDecoration: "none",
-            }}
+            href="/personer"
+            className="btn btn-outline"
+            style={{ fontSize: 15, fontWeight: 500, textDecoration: "none" }}
           >
-            +47 984 53 571
+            Ta kontakt med teamet
           </a>
         </div>
       </SubHero>
