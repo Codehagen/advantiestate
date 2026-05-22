@@ -12,9 +12,10 @@ test("kontakt team cards render people from the collection", async ({
   expect(res?.status()).toBeLessThan(400);
 
   const members = page.locator(".member");
-  await expect(members).toHaveCount(2);
+  await expect(members).toHaveCount(3);
   await expect(members.locator("h3")).toContainText([
     "Christer Hagen",
+    "Mathias Nilssen",
     "Håvard Nome",
   ]);
   // Phone link is derived from the person's phone field.
