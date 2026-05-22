@@ -42,10 +42,6 @@ const PRESENTATION: Record<
     office: "Bodø",
     specialty: "Næringseiendom · Rådgivning",
   },
-  "fredrik-elvebakk": {
-    office: "Bodø",
-    specialty: "Finansiering · Kapitalstruktur · Investering",
-  },
 };
 
 export default function PersonerPage() {
@@ -57,7 +53,6 @@ export default function PersonerPage() {
     "ole-ostensen",
     "havard-nome",
     "tobias-bronder",
-    "fredrik-elvebakk",
   ];
   const people = order
     .map((slug) => allPersonPosts.find((p) => p.slug === slug))
