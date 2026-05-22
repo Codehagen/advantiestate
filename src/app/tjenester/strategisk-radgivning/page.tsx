@@ -7,6 +7,7 @@ import StructuredData, {
 } from "@/components/StructuredData";
 
 export const metadata = constructMetadata({
+  path: "/tjenester/strategisk-radgivning",
   title: "Strategisk Rådgivning Næringseiendom | Advanti",
   description:
     "Advanti tilbyr strategisk rådgivning for eiendomsinvestorer og -utviklere i Nord-Norge, inkludert porteføljestrategi, akkvisisjon og exit-strategi.",

@@ -9,7 +9,10 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
-        disallow: ["/advanti/", "/api/", "/admin/", "/_next/"],
+        // `/_next/` is intentionally NOT disallowed — it holds render-critical
+        // JS/CSS and the next/image endpoint that Googlebot must fetch to
+        // render and index pages.
+        disallow: ["/advanti/", "/api/", "/admin/"],
       },
     ],
     sitemap: `${baseUrl}/sitemap.xml`,

@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 export const metadata = constructMetadata({
+  path: "/om-oss",
   title: "Om Advanti | Din Næringsmegler i Nord-Norge",
   description:
     "Advanti er din erfarne partner for kjøp, salg og utleie av næringseiendom i Nord-Norge. Vi tilbyr lokal kunnskap og skreddersydde løsninger.",

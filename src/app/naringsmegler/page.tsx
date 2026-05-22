@@ -12,7 +12,7 @@ export const metadata = constructMetadata({
   title: "Næringsmegler i Nord-Norge | Advanti",
   description:
     "Næringsmegler i Nord-Norge med lokal tilstedeværelse. Advanti bistår med salg, utleie og verdivurdering av næringseiendom i sentrale byer.",
-  canonical: "/naringsmegler",
+  path: "/naringsmegler",
 });
 
 /** Picks the value of the first marketStat whose label matches a keyword. */

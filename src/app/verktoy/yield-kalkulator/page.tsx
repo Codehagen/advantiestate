@@ -4,6 +4,7 @@ import { constructMetadata } from "@/lib/utils";
 import { AnimatedCTA } from "@/components/ui/AnimatedCTA";
 
 export const metadata = constructMetadata({
+  path: "/verktoy/yield-kalkulator",
   title: "Yield Kalkulator | Advanti",
   description:
     "Beregn brutto og netto yield for næringseiendom. Få umiddelbar oversikt over avkastning basert på leieinntekter og driftskostnader.",

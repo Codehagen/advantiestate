@@ -2655,6 +2655,10 @@ h1, h2, h3 {
 }
 .ks-search input {
   flex: 1;
+  /* Without min-width:0 a flex-item <input> refuses to shrink below its
+     intrinsic (size-attribute) width, overflowing the search bar — and the
+     375px viewport — on narrow screens. */
+  min-width: 0;
   font: inherit;
   font-size: 16px;
   border: 0;
@@ -2756,6 +2760,9 @@ h1, h2, h3 {
   cursor: pointer;
   transition: padding 0.2s;
 }
+/* The middle (1fr) track must be free to shrink, or a long article title
+   forces the row past a 375px viewport. */
+.ks-popular-item > div { min-width: 0; }
 .ks-popular-item:nth-child(2n - 1) { padding-right: 32px; border-right: var(--hairline); }
 .ks-popular-item:nth-child(2n)     { padding-left: 32px; }
 .ks-popular-item:hover { background: var(--accent-faint); }
@@ -2773,6 +2780,7 @@ h1, h2, h3 {
   font-weight: 400;
   letter-spacing: -0.012em;
   line-height: 1.25;
+  overflow-wrap: break-word;
 }
 .ks-popular-item .meta {
   font-size: 11px;

@@ -7,6 +7,7 @@ import StructuredData, {
 } from "@/components/StructuredData";
 
 export const metadata = constructMetadata({
+  path: "/tjenester/verdivurdering",
   title: "Verdivurdering av Næringseiendom | Advanti",
   description:
     "Trenger du verdivurdering av næringseiendom? Advanti tilbyr profesjonelle analyser og verdivurderinger i Nord-Norge for et solid beslutningsgrunnlag.",

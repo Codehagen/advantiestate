@@ -7,6 +7,7 @@ import { SubHero } from "@/components/site/SubHero";
 import { constructMetadata } from "@/lib/utils";
 
 export const metadata = constructMetadata({
+  path: "/kunder",
   title: "Våre Kunder og Prosjekter - Advanti",
   description:
     "Se eksempler på vellykkede transaksjoner og prosjekter Advanti har gjennomført for våre kunder innen næringseiendom i Nord-Norge.",

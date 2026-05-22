@@ -54,6 +54,59 @@ Deferred work captured during the editorial redesign port (/plan-eng-review, 202
 
 ---
 
+## TODO 11 — FAQPage schema on service & tool pages
+
+- **What:** Add `FAQPage` structured data to the `/tjenester/*` service pages and
+  the `/verktoy/*` calculator pages.
+- **Why:** `StructuredData.tsx` already supports `type="faq"`, but only the
+  `/naringsmegler/[slug]` location pages use it. Service and tool pages have
+  FAQ-style content that could earn rich-result eligibility for free.
+- **Pros:** Eligible for FAQ rich results / People-Also-Ask placement; reuses an
+  existing component.
+- **Cons:** Each page needs real question/answer content authored or extracted;
+  Google has narrowed FAQ rich results, so impact is uncertain.
+- **Context:** Deferred from the SEO fix plan (/plan-eng-review, 2026-05-22) as
+  Phase 3 — that plan was mechanical metadata work; FAQ schema needs content.
+  Start: pick 2-3 Q&As per page from existing copy, pass via `StructuredData
+  type="faq"`.
+- **Depends on / blocked by:** None.
+
+---
+
+## TODO 12 — Link Organization + RealEstateAgent JSON-LD via shared @id
+
+- **What:** Give the `Organization` and `RealEstateAgent` JSON-LD blocks (both
+  rendered globally in `layout.tsx`) a shared `@id` so Google treats them as one
+  entity rather than two separate top-level entities.
+- **Why:** They currently describe the same company twice with no link between
+  them, which is a weaker entity signal than one connected graph.
+- **Pros:** Cleaner entity graph; small, well-defined change in
+  `StructuredData.tsx`.
+- **Cons:** Minor — no measurable ranking impact; purely a correctness/quality
+  refinement.
+- **Context:** Deferred from the SEO fix plan (/plan-eng-review, 2026-05-22),
+  Phase 3. Start: add `@id` (e.g. `${baseUrl}/#organization`) to the
+  `organization` case and reference it from `realEstateAgent`.
+- **Depends on / blocked by:** None.
+
+---
+
+## TODO 13 — Dedicated square logo image for structured data
+
+- **What:** Replace the reuse of `opengraph-image.jpg` (1200x630) as the `logo`
+  in Organization / RealEstateAgent / Article-publisher JSON-LD with a dedicated
+  square-ish logo asset.
+- **Why:** Google's structured-data guidance prefers a real logo image; a
+  wide OG banner is a poor fit for the `logo` field.
+- **Pros:** Cleaner publisher logo in rich results and Google's knowledge panel.
+- **Cons:** Needs a design asset that does not exist yet.
+- **Context:** Deferred from the SEO fix plan (/plan-eng-review, 2026-05-22),
+  Phase 3. Start: export a square logo (PNG/SVG) to `/public`, reference it from
+  the `logo` fields in `StructuredData.tsx`.
+- **Depends on / blocked by:** A square logo asset from design.
+
+---
+
 ## Completed
 
 ### TODO 10 — Automated performance regression guard

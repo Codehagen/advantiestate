@@ -64,7 +64,7 @@ export async function generateMetadata({ params }: PersonPageProps) {
   return constructMetadata({
     title: `${person.name} - ${person.role} | Advanti`,
     description: `${person.name} er ${person.role} i Advanti med ${person.yearsExperience} års erfaring. Spesialiseringer: ${person.specializations.join(", ")}.`,
-    canonical: `/personer/${slug}`,
+    path: `/personer/${slug}`,
   });
 }
 

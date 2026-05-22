@@ -4,7 +4,8 @@ import { CtaStrip } from "@/components/site/CtaStrip";
 import Link from "next/link";
 
 export const metadata = constructMetadata({
-  title: "Salg og Verdivurdering av Næringseiendom - Tjenester | Advanti",
+  path: "/tjenester",
+  title: "Tjenester innen Næringseiendom i Nord-Norge | Advanti",
   description:
     "Profesjonell salg og verdivurdering av næringseiendom i Nord-Norge. Vi tilbyr også utleie, transaksjoner og strategisk rådgivning for eiendomsbesittere.",
 });

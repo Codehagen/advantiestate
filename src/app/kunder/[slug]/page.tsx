@@ -138,7 +138,7 @@ export async function generateMetadata({
     title: `${title} – Advanti`,
     description: summary,
     image,
-    canonical: `/kunder/${post.slug}`,
+    path: `/kunder/${post.slug}`,
   });
 }
 

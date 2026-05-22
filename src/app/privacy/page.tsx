@@ -9,7 +9,7 @@ export async function generateMetadata(): Promise<Metadata> {
     title: "Personvernpolicy – Advanti",
     description:
       "Les om hvordan Advanti samler inn, bruker og beskytter dine personopplysninger når du bruker våre tjenester for næringseiendom.",
-    canonical: "/privacy",
+    path: "/privacy",
   });
 }
 

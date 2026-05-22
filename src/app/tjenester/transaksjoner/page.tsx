@@ -7,6 +7,7 @@ import StructuredData, {
 } from "@/components/StructuredData";
 
 export const metadata = constructMetadata({
+  path: "/tjenester/transaksjoner",
   title: "Transaksjoner Næringseiendom | Advanti",
   description:
     "Advanti bistår med kjøp og salg av næringseiendom i Nord-Norge. Ekspertise gjennom hele transaksjonsprosessen fra verdivurdering til overtakelse.",
