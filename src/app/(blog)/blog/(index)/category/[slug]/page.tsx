@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import { CtaStrip } from "@/components/site/CtaStrip";
+import { NewsletterSection } from "@/components/site/NewsletterSection";
 import { SubHero } from "@/components/site/SubHero";
 import { BLOG_CATEGORIES } from "@/lib/blog/content";
 import { calculateReadingTime } from "@/lib/blog/utils";
@@ -109,31 +109,31 @@ export default async function BlogCategory({
           </>
         }
         lede={data.description}
-      />
+      >
+        {/* Filter chips */}
+        <div className="bg-filters">
+          <Link
+            href="/blog"
+            className="bg-filter"
+            style={{ textDecoration: "none" }}
+          >
+            Alle
+          </Link>
+          {BLOG_CATEGORIES.map((cat) => (
+            <Link
+              key={cat.slug}
+              href={`/blog/category/${cat.slug}`}
+              className={`bg-filter${cat.slug === data.slug ? " active" : ""}`}
+              style={{ textDecoration: "none" }}
+            >
+              {cat.title}
+            </Link>
+          ))}
+        </div>
+      </SubHero>
 
       <section className="section-tight">
         <div className="wrap">
-          {/* Filter chips */}
-          <div className="bg-filters" style={{ marginBottom: 48 }}>
-            <Link
-              href="/blog"
-              className="bg-filter"
-              style={{ textDecoration: "none" }}
-            >
-              Alle
-            </Link>
-            {BLOG_CATEGORIES.map((cat) => (
-              <Link
-                key={cat.slug}
-                href={`/blog/category/${cat.slug}`}
-                className={`bg-filter${cat.slug === data.slug ? " active" : ""}`}
-                style={{ textDecoration: "none" }}
-              >
-                {cat.title}
-              </Link>
-            ))}
-          </div>
-
           {articles.length === 0 && (
             <p className="mi-footnote" style={{ borderTop: 0 }}>
               <span className="source">
@@ -236,18 +236,7 @@ export default async function BlogCategory({
         </div>
       </section>
 
-      <CtaStrip
-        eyebrow="Trenger du markedsdata på din eiendom?"
-        title={
-          <>
-            Få skreddersydd analyse <br />
-            <span className="italic">— for din portefølje.</span>
-          </>
-        }
-        sub="Vi kombinerer relevant markedsdata med eiendomsspesifikk innsikt og leverer en konkret rapport — typisk innen to uker."
-        primary={{ label: "Bestill analyse", href: "/kontakt" }}
-        secondary={{ label: "Se markedsinnsikt", href: "/markedsinnsikt" }}
-      />
+      <NewsletterSection />
     </>
   );
 }
