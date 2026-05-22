@@ -91,18 +91,25 @@ export default function KontaktPage() {
                   8006 Bodø
                 </address>
                 <div className="ch">
-                  <a href="tel:+4798453571">
-                    <span className="key">Telefon</span>
-                    <span>+47 984 53 571</span>
-                  </a>
-                  <a href="mailto:Christer@advanti.no">
-                    <span className="key">E-post</span>
-                    <span>Christer@advanti.no</span>
-                  </a>
+                  <div className="contact-person">
+                    <span className="contact-person-name">Christer Hagen</span>
+                    <div className="contact-person-links">
+                      <a href="tel:+4798453571">+47 984 53 571</a>
+                      <a href="mailto:Christer@advanti.no">Christer@advanti.no</a>
+                    </div>
+                  </div>
+                  <div className="contact-person">
+                    <span className="contact-person-name">Mathias Nilsen</span>
+                    <div className="contact-person-links">
+                      <a href="tel:+4790519901">+47 905 19 901</a>
+                      <a href="mailto:mathias@advanti.no">mathias@advanti.no</a>
+                    </div>
+                  </div>
                   <a
                     href="https://maps.google.com"
                     target="_blank"
                     rel="noopener"
+                    className="contact-maps"
                   >
                     <span className="key">Veibeskrivelse</span>
                     <span>Google Maps →</span>
@@ -119,18 +126,18 @@ export default function KontaktPage() {
                   9510 Alta
                 </address>
                 <div className="ch">
-                  <a href="tel:+4798038737">
-                    <span className="key">Telefon</span>
-                    <span>+47 980 38 737</span>
-                  </a>
-                  <a href="mailto:Havard@advanti.no">
-                    <span className="key">E-post</span>
-                    <span>Havard@advanti.no</span>
-                  </a>
+                  <div className="contact-person">
+                    <span className="contact-person-name">Håvard Walgermo</span>
+                    <div className="contact-person-links">
+                      <a href="tel:+4798038737">+47 980 38 737</a>
+                      <a href="mailto:Havard@advanti.no">Havard@advanti.no</a>
+                    </div>
+                  </div>
                   <a
                     href="https://maps.google.com"
                     target="_blank"
                     rel="noopener"
+                    className="contact-maps"
                   >
                     <span className="key">Veibeskrivelse</span>
                     <span>Google Maps →</span>

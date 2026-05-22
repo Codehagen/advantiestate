@@ -1503,6 +1503,36 @@ h1, h2, h3 {
   .contact-form { padding: 32px 24px; }
 }
 
+.contact-person {
+  padding: 10px 0;
+  border-bottom: 1px dashed var(--warm-grey-75);
+}
+.contact-person-name {
+  font-size: 15px;
+  font-weight: 500;
+  display: block;
+  margin-bottom: 4px;
+}
+.contact-person-links {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.contact-person-links a {
+  font-size: 14px;
+  color: var(--warm-grey-85);
+  border-bottom: none;
+  padding: 0;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.contact-person-links a:hover {
+  color: var(--accent);
+}
+.contact-maps {
+  margin-top: 4px;
+}
+
 /* Contact side: offices + next steps */
 .office {
   border-top: var(--hairline);
