@@ -5,6 +5,7 @@ import { RiMailLine, RiTeamLine } from "@remixicon/react";
 import Link from "next/link";
 
 export const metadata = constructMetadata({
+  path: "/karriere",
   title: "Ledige stillinger hos Advanti | Karriere i Nord-Norge",
   description:
     "Vi er alltid på utkikk etter de rette menneskene. Ta kontakt med Advanti hvis du vil bli med og forme fremtidens næringseiendom i Nord-Norge.",

@@ -9,6 +9,7 @@ import { calculateReadingTime } from "@/lib/blog/utils";
 import { constructMetadata } from "@/lib/utils";
 
 export const metadata = constructMetadata({
+  path: "/blog",
   title: "Artikler – Advanti Estate",
   description:
     "Siste nyheter, trends og innsikter fra Advanti Estate. Finn ekspertråd og veiledning for å forvalte og investere i næringseiendom i Nord-Norge.",

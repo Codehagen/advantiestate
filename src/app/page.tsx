@@ -5,7 +5,8 @@ import { CtaStrip } from "@/components/site/CtaStrip";
 import { constructMetadata } from "@/lib/utils";
 
 export const metadata = constructMetadata({
-  title: "Salg og Verdivurdering av Næringseiendom i Nord-Norge | Advanti",
+  path: "/",
+  title: "Næringseiendom Nord-Norge – Verdivurdering & Salg | Advanti",
   description:
     "Din lokale ekspert på salg og verdivurdering av næringseiendom i Nord-Norge. Vi hjelper eiendomsbesittere med å oppnå best mulig pris og nøyaktige verdivurderinger. Kontakt oss for en uforpliktende samtale.",
 });

@@ -1,6 +1,8 @@
 import { constructMetadata } from "@/lib/utils";
 
 export const metadata = constructMetadata({
+  path: "/presentasjon",
+  noIndex: true, // internal sales deck — not for the organic index
   title: "Advanti Estate — Presentasjon | Næringsmegling Nord-Norge",
   description:
     "Advanti Estate er din partner for kjøp, salg og utleie av næringseiendom i Nord-Norge.",

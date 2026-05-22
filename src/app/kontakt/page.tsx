@@ -5,6 +5,7 @@ import { SubHero } from "@/components/site/SubHero";
 import { constructMetadata } from "@/lib/utils";
 
 export const metadata = constructMetadata({
+  path: "/kontakt",
   title: "Kontakt Advanti for Salg og Verdivurdering av Næringseiendom",
   description:
     "Trenger du hjelp med salg eller verdivurdering av næringseiendom i Nord-Norge? Kontakt Advanti for en uforpliktende samtale. Vi hjelper eiendomsbesittere med å oppnå best mulig resultat.",

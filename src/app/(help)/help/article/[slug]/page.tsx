@@ -92,7 +92,10 @@ export async function generateMetadata({
     image: `/api/og/help?title=${encodeURIComponent(
       title,
     )}&summary=${encodeURIComponent(summary)}`,
-    canonical: `/help/article/${post.slug}`,
+    path: `/help/article/${post.slug}`,
+    ogType: "article",
+    modifiedTime: post.updatedAt,
+    authors: [AUTHOR_NAMES[post.author] || post.author],
   })
 }
 

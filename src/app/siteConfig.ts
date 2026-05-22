@@ -16,6 +16,9 @@ export const siteConfig = {
     social: {
       linkedin: "https://www.linkedin.com/company/advantiestate",
       twitter: "https://twitter.com/advantiestate",
+      // Twitter/X @handle — distinct from the profile URL above. The
+      // openGraph/twitter card metadata expects a handle, not a URL.
+      twitterHandle: "@advantiestate",
     },
   },
   baseLinks: {

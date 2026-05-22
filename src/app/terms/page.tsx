@@ -9,7 +9,7 @@ export async function generateMetadata(): Promise<Metadata> {
     title: "Vilkår for bruk – Advanti",
     description:
       "Les vilkårene for bruk av Advantis tjenester innen salg, verdivurdering, utleie og rådgivning av næringseiendom.",
-    canonical: "/terms",
+    path: "/terms",
   });
 }
 

@@ -2,7 +2,7 @@ import { GoogleTagManager } from "@/components/analytics/GoogleTagManager";
 import { TrackingListener } from "@/components/analytics/TrackingListener";
 import { Footer } from "@/components/site/Footer";
 import { Nav } from "@/components/site/Nav";
-import { constructMetadata } from "@/lib/utils";
+import { baseMetadata } from "@/lib/utils";
 import type { Viewport } from "next";
 import { Inter } from "next/font/google";
 import StructuredData from "@/components/StructuredData";
@@ -18,11 +18,9 @@ const inter = Inter({
   variable: "--font-inter",
 });
 
-export const metadata = constructMetadata({
-  title: "Advanti | Næringsmegler i Nord-Norge",
-  description:
-    "Advanti tilbyr ekspertise innen kjøp, salg og utleie av næringseiendom i Nord-Norge. Profesjonell rådgivning for din virksomhet.",
-});
+// Site-wide metadata defaults. Every real page overrides these via
+// constructMetadata(); the root layout deliberately carries NO canonical.
+export const metadata = baseMetadata();
 
 export const viewport: Viewport = {
   themeColor: "#2c2825",

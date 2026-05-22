@@ -2,6 +2,7 @@ import clsx, { type ClassValue } from "clsx";
 import ms from "ms";
 import { Metadata } from "next";
 import { twMerge } from "tailwind-merge";
+import { siteConfig } from "@/app/siteConfig";
 
 export function cx(...args: ClassValue[]) {
   return twMerge(clsx(...args));
@@ -43,109 +44,177 @@ export function formatDate(date: string) {
   }
 }
 
+// ---------------------------------------------------------------------------
+// Metadata
+//
+//   baseMetadata()        site-wide defaults — used by the root layout only.
+//                         Carries NO canonical: a canonical is page identity,
+//                         never a site default. A page that exports no metadata
+//                         degrades to *no* canonical (Google decides), never an
+//                         inherited *wrong* one.
+//   constructMetadata()   per-page metadata. `path` is REQUIRED — the compiler
+//                         rejects any page that forgets it, so every indexable
+//                         page always emits a correct self-referencing
+//                         canonical and openGraph.url.
+//
+// All URLs derive from siteConfig.url — the same source sitemap.ts, robots.ts
+// and StructuredData.tsx use — so canonical tags can never drift from the
+// sitemap.
+// ---------------------------------------------------------------------------
+
+const SITE_TITLE_FALLBACK = "Advanti | Næringsmegler i Nord-Norge";
+const SITE_DESCRIPTION_FALLBACK =
+  "Advanti tilbyr ekspertise innen kjøp, salg, utleie, verdivurdering og strategisk rådgivning for næringseiendom i Nord-Norge.";
+const OG_IMAGE_DEFAULT = "/opengraph-image.jpg";
+const OG_IMAGE_ALT = "Advanti - Næringseiendom i Nord-Norge";
+
+const SEO_KEYWORDS = [
+  "næringseiendom Nord-Norge",
+  "kjøp næringseiendom",
+  "salg næringseiendom",
+  "utleie næringseiendom",
+  "verdivurdering næringseiendom",
+  "strategisk rådgivning eiendom",
+  "næringsmegling Nord-Norge",
+  "eiendomsrådgivning",
+  "kommersiell eiendom",
+  "eiendomsmarked Nord-Norge",
+  "Advanti",
+  "eiendomsinvestor",
+  "leietaker",
+  "gårdeier",
+];
+
+/**
+ * Site-wide metadata defaults for the root layout. Holds everything that is
+ * genuinely site-wide (metadataBase, OG/twitter defaults, icons via the App
+ * Router file convention, keywords, authors) and deliberately NO
+ * `alternates.canonical` — see the note above.
+ */
+export function baseMetadata(): Metadata {
+  return {
+    title: SITE_TITLE_FALLBACK,
+    description: SITE_DESCRIPTION_FALLBACK,
+    metadataBase: new URL(siteConfig.url),
+    openGraph: {
+      title: SITE_TITLE_FALLBACK,
+      description: SITE_DESCRIPTION_FALLBACK,
+      images: [
+        { url: OG_IMAGE_DEFAULT, width: 1200, height: 630, alt: OG_IMAGE_ALT },
+      ],
+      locale: "nb_NO",
+      type: "website",
+      siteName: siteConfig.name,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: SITE_TITLE_FALLBACK,
+      description: SITE_DESCRIPTION_FALLBACK,
+      images: [OG_IMAGE_DEFAULT],
+      creator: siteConfig.contact.social.twitterHandle,
+      site: siteConfig.contact.social.twitterHandle,
+    },
+    // Icons are served via the App Router file convention:
+    // app/favicon.ico, app/icon.svg, app/apple-icon.png
+    manifest: "/manifest.json",
+    authors: [{ name: siteConfig.name, url: siteConfig.url }],
+    keywords: SEO_KEYWORDS,
+    category: "Næringseiendom",
+  };
+}
+
 export function constructMetadata({
-  title = "Advanti - Din partner for næringseiendom i Nord-Norge",
-  description = "Advanti tilbyr ekspertise innen kjøp, salg, utleie, verdivurdering og strategisk rådgivning for næringseiendom i Nord-Norge.",
-  image = "/opengraph-image.jpg",
+  path,
+  title = SITE_TITLE_FALLBACK,
+  description = SITE_DESCRIPTION_FALLBACK,
+  image = OG_IMAGE_DEFAULT,
   noIndex = false,
-  canonical,
+  ogType = "website",
+  publishedTime,
+  modifiedTime,
+  authors,
 }: {
+  /** Route pathname, e.g. "/tjenester/salg". Drives the self-referencing
+   *  canonical and openGraph.url. Required — a page cannot ship without it. */
+  path: string;
   title?: string;
   description?: string;
   image?: string;
   noIndex?: boolean;
-  canonical?: string;
-} = {}): Metadata {
-  const siteUrl = "https://www.advantiestate.no";
-  const siteName = "Advanti";
-  const twitterHandle = "@advantiestate";
+  ogType?: "website" | "article";
+  /** ISO date — only used when ogType is "article". */
+  publishedTime?: string;
+  /** ISO date — only used when ogType is "article". */
+  modifiedTime?: string;
+  /** Author name(s) — only used when ogType is "article". */
+  authors?: string[];
+}): Metadata {
+  const base = baseMetadata();
   const metaTitle = normalizeMetaTitle(title);
   const metaDescription = normalizeMetaDescription(description);
-  const canonicalUrl = canonical
-    ? canonical.startsWith("http")
-      ? canonical
-      : `${siteUrl}${canonical.startsWith("/") ? canonical : `/${canonical}`}`
-    : undefined;
+  const canonicalUrl = `${siteConfig.url}${path}`;
+  const ogImages = [
+    { url: image, width: 1200, height: 630, alt: OG_IMAGE_ALT },
+  ];
+
+  // Build openGraph as one literal per type so TypeScript narrows it to the
+  // correct OpenGraph union member (article gets publishedTime/authors).
+  const openGraph: Metadata["openGraph"] =
+    ogType === "article"
+      ? {
+          title: metaTitle,
+          description: metaDescription,
+          url: canonicalUrl,
+          images: ogImages,
+          locale: "nb_NO",
+          type: "article",
+          siteName: siteConfig.name,
+          publishedTime,
+          modifiedTime,
+          authors,
+        }
+      : {
+          title: metaTitle,
+          description: metaDescription,
+          url: canonicalUrl,
+          images: ogImages,
+          locale: "nb_NO",
+          type: "website",
+          siteName: siteConfig.name,
+        };
 
   return {
+    ...base,
     title: metaTitle,
     description: metaDescription,
-    alternates: canonicalUrl ? { canonical: canonicalUrl } : undefined,
-    openGraph: {
-      title: metaTitle,
-      description: metaDescription,
-      url: canonicalUrl ?? siteUrl,
-      images: [
-        {
-          url: image,
-          width: 1200,
-          height: 630,
-          alt: "Advanti - Næringseiendom i Nord-Norge",
-        },
-      ],
-      locale: "nb_NO",
-      type: "website",
-      siteName: siteName,
-    },
+    alternates: { canonical: canonicalUrl },
+    openGraph,
     twitter: {
       card: "summary_large_image",
       title: metaTitle,
       description: metaDescription,
       images: [image],
-      creator: twitterHandle,
-      site: twitterHandle,
+      creator: siteConfig.contact.social.twitterHandle,
+      site: siteConfig.contact.social.twitterHandle,
     },
-    // Icons are served via the App Router file convention:
-    // app/favicon.ico, app/icon.svg, app/apple-icon.png
-    manifest: "/manifest.json",
-    metadataBase: new URL(siteUrl),
-    authors: [{ name: siteName, url: siteUrl }],
-    keywords: [
-      "næringseiendom Nord-Norge",
-      "kjøp næringseiendom",
-      "salg næringseiendom",
-      "utleie næringseiendom",
-      "verdivurdering næringseiendom",
-      "strategisk rådgivning eiendom",
-      "næringsmegling Nord-Norge",
-      "eiendomsrådgivning",
-      "kommersiell eiendom",
-      "eiendomsmarked Nord-Norge",
-      "Advanti",
-      "eiendomsinvestor",
-      "leietaker",
-      "gårdeier",
-    ],
-    category: "Næringseiendom",
-    ...(noIndex && {
-      robots: {
-        index: false,
-        follow: false,
-      },
-    }),
+    // noindex pages stay `follow` so link equity still flows to the pages
+    // they link to (e.g. an ad landing page's CTAs into /tjenester/*).
+    ...(noIndex && { robots: { index: false, follow: true } }),
   };
 }
 
-const META_TITLE_MAX_LENGTH = 60;
-const META_TITLE_SOFT_MIN_WORD_BOUNDARY = 40;
 const META_DESCRIPTION_MAX_LENGTH = 160;
 const META_DESCRIPTION_SOFT_MIN_WORD_BOUNDARY = 110;
 
+/**
+ * Normalises a <title>: collapses whitespace only — titles are NOT truncated.
+ * A code-baked "..." inside the <title> element is an SEO anti-pattern: Google
+ * renders its own SERP truncation and a literal ellipsis just looks broken.
+ * Keep authored titles concise instead; tests/seo-meta.spec.ts fails CI on any
+ * emitted title containing an ellipsis.
+ */
 function normalizeMetaTitle(title: string) {
-  const cleaned = title.replace(/\s+/g, " ").trim();
-
-  if (cleaned.length <= META_TITLE_MAX_LENGTH) {
-    return cleaned;
-  }
-
-  const hardTruncated = cleaned.slice(0, META_TITLE_MAX_LENGTH - 3);
-  const lastWordBoundary = hardTruncated.lastIndexOf(" ");
-  const truncated =
-    lastWordBoundary >= META_TITLE_SOFT_MIN_WORD_BOUNDARY
-      ? hardTruncated.slice(0, lastWordBoundary)
-      : hardTruncated;
-
-  return `${truncated}...`;
+  return title.replace(/\s+/g, " ").trim();
 }
 
 function normalizeMetaDescription(description: string) {

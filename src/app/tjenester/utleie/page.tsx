@@ -7,6 +7,7 @@ import StructuredData, {
 } from "@/components/StructuredData";
 
 export const metadata = constructMetadata({
+  path: "/tjenester/utleie",
   title: "Utleie av Næringseiendom | Advanti",
   description:
     "Advanti tilbyr skreddersydde løsninger for utleie av kontor, handel- og logistikkeiendom, samt leietaker- og gårdeierrådgivning i Nord-Norge.",

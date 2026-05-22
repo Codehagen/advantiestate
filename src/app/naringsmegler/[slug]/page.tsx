@@ -45,7 +45,7 @@ export async function generateMetadata({
   return constructMetadata({
     title,
     description,
-    canonical: `/naringsmegler/${location.slug}`,
+    path: `/naringsmegler/${location.slug}`,
   });
 }
 

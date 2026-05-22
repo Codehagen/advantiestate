@@ -4,6 +4,7 @@ import { FadeContainer, FadeSpan } from "@/components/ui/Fade";
 import { constructMetadata } from "@/lib/utils";
 
 export const metadata = constructMetadata({
+  path: "/integrasjoner",
   title: "Datakilder og Innsikt - Advanti",
   description:
     "Advanti bruker kvalitetssikrede datakilder som Kartverket og Brønnøysundregistrene for presis markedsanalyse, verdivurdering og strategisk rådgivning.",

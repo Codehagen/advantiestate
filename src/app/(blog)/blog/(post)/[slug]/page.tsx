@@ -84,7 +84,10 @@ export async function generateMetadata({
     title: `${seoTitle || title} – Advanti Estate`,
     description: seoDescription || summary,
     image,
-    canonical: `/blog/${slug}`,
+    path: `/blog/${slug}`,
+    ogType: "article",
+    publishedTime: post.publishedAt,
+    authors: [AUTHOR_NAMES[post.author] || post.author],
   });
 }
 

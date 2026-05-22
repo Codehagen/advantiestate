@@ -4,6 +4,7 @@ import { CtaStrip } from "@/components/site/CtaStrip"
 import { MarkedsinnsiktShell } from "@/components/markedsinnsikt/MarkedsinnsiktShell"
 
 export const metadata = constructMetadata({
+  path: "/markedsinnsikt",
   title: "Markedsinnsikt for næringseiendom | Advanti",
   description:
     "Få tilgang til omfattende markedsdata og analyser for næringseiendom. Utforsk sanntids markedstrender og yield-analyser for smarte investeringer..",
