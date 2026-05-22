@@ -34,7 +34,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="nb" className={inter.variable}>
+    <html
+      lang="nb"
+      className={inter.variable}
+      data-scroll-behavior="smooth"
+    >
       <head>
         <StructuredData type="organization" />
         <StructuredData type="realEstateAgent" />

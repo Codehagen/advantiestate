@@ -64,7 +64,11 @@ export function SubHero({
             ))}
           </nav>
 
-          <div className="subhero-grid">
+          <div
+            className={
+              photo ? "subhero-grid" : "subhero-grid subhero-grid--solo"
+            }
+          >
             <div>
               {eyebrow && (
                 <span
