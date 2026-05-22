@@ -223,7 +223,7 @@ export default function About() {
             <div className="member">
               <div className="portrait" />
               <div className="member-meta">
-                <h3>Håvard Walgermo</h3>
+                <h3>Håvard Nome</h3>
                 <div className="role">Partner · Næringsmegler</div>
               </div>
               <div className="member-contact">

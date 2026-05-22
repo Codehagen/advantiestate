@@ -123,7 +123,7 @@ export default function KontaktPage() {
                 </address>
                 <div className="ch">
                   <div className="contact-person">
-                    <span className="contact-person-name">Håvard Walgermo</span>
+                    <span className="contact-person-name">Håvard Nome</span>
                     <div className="contact-person-links">
                       <a href="tel:+4798038737">+47 980 38 737</a>
                       <a href="mailto:Havard@advanti.no">Havard@advanti.no</a>
