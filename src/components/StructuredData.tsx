@@ -310,8 +310,10 @@ export default function StructuredData({
             name: authorName,
           },
           publisher: {
+            // Standalone node, not linked to #organization: this block's name
+            // ("Advanti Estate") differs from the Organization's ("Advanti"),
+            // so a shared @id would merge conflicting names into one entity.
             "@type": "Organization",
-            "@id": `${baseUrl}/#organization`,
             name: "Advanti Estate",
             logo: {
               "@type": "ImageObject",
