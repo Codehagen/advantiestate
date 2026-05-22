@@ -15,6 +15,7 @@ export const metadata = constructMetadata({
 // /personer — kun kontoret er sidespesifikt.
 const CONTACT_PEOPLE = [
   { slug: "christer-hagen", office: "Bodø" },
+  { slug: "mathias-nilssen", office: "Bodø" },
   { slug: "havard-nome", office: "Alta" },
 ];
 
@@ -260,7 +261,7 @@ export default function KontaktPage() {
 
           <div
             className="team"
-            style={{ gridTemplateColumns: "repeat(2, 1fr)", gap: 48 }}
+            style={{ gridTemplateColumns: "repeat(auto-fill, minmax(360px, 1fr))", gap: 48 }}
           >
             {team.map((person) => (
               <div
