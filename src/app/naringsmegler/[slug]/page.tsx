@@ -510,10 +510,7 @@ export default async function LocationPage({
         }
         sub="Vi setter av tid til en uforpliktende samtale om eiendommen din — basert på lokale markedsdata og konkret erfaring."
         primary={{ label: "Send henvendelse", href: "/kontakt" }}
-        secondary={{
-          label: location.phone,
-          href: `tel:${location.phone.replace(/\s/g, "")}`,
-        }}
+        secondary={{ label: "Ta kontakt med teamet", href: "/personer" }}
       />
     </>
   );

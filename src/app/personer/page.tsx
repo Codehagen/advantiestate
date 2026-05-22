@@ -292,7 +292,7 @@ export default function PersonerPage() {
         }
         sub="Vi setter av tid til en åpen samtale — uten forpliktelser. Du bestemmer hvem av oss du vil snakke med."
         primary={{ label: "Send henvendelse", href: "/kontakt" }}
-        secondary={{ label: "+47 984 53 571", href: "tel:+4798453571" }}
+        secondary={{ label: "Ta kontakt med teamet", href: "/personer" }}
       />
     </>
   );

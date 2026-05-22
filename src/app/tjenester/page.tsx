@@ -387,7 +387,7 @@ export default function TjenesterPage() {
         }
         sub="Ta kontakt for en uforpliktende prat om dine muligheter i dagens marked. Vi tar en åpen samtale uten forpliktelser."
         primary={{ label: "Kontakt oss", href: "/kontakt" }}
-        secondary={{ label: "+47 984 53 571", href: "tel:+4798453571" }}
+        secondary={{ label: "Ta kontakt med teamet", href: "/personer" }}
       />
     </>
   );
