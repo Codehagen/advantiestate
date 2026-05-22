@@ -591,6 +591,37 @@ h1, h2, h3 {
   color: var(--accent);
 }
 .stat .delta.down { color: var(--soft-terrakotta); }
+@media (max-width: 560px) {
+  /* Stack the stat band — two big-number columns do not fit a phone. */
+  .market-stats { grid-template-columns: 1fr; }
+  /* Single column: clear the even-cell left divider, normalise padding. */
+  .stat,
+  .stat:nth-child(2n) {
+    padding: 32px 0;
+    border-left: 0;
+  }
+  .stat .num-big { font-size: clamp(40px, 13vw, 64px); }
+}
+/* 4-up stat band (om-oss) — collapses 4 → 2 → 1 columns instead of staying
+   four-across on a phone. Dividers track the first-in-row cell per width. */
+.market-stats--4up { grid-template-columns: repeat(4, 1fr); }
+.market-stats--4up .stat {
+  padding: 40px 24px;
+  border-left: 1px solid rgba(243, 241, 239, 0.18);
+}
+.market-stats--4up .stat:nth-child(4n+1) { border-left: 0; padding-left: 0; }
+@media (max-width: 880px) {
+  .market-stats--4up { grid-template-columns: 1fr 1fr; }
+  .market-stats--4up .stat {
+    border-left: 1px solid rgba(243, 241, 239, 0.18);
+    padding-left: 24px;
+  }
+  .market-stats--4up .stat:nth-child(2n+1) { border-left: 0; padding-left: 0; }
+}
+@media (max-width: 560px) {
+  .market-stats--4up { grid-template-columns: 1fr; }
+  .market-stats--4up .stat { border-left: 0; padding: 32px 0; }
+}
 .market-photo {
   position: relative;
   overflow: hidden;
