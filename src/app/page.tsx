@@ -468,7 +468,7 @@ export default function Home() {
         }
         sub="Enten du vurderer å selge, kjøpe eller bare ønsker en oppdatert verdivurdering — vi tar en samtale uten forpliktelser."
         primary={{ label: "Send henvendelse", href: "/kontakt" }}
-        secondary={{ label: "+47 984 53 571", href: "tel:+4798453571" }}
+        secondary={{ label: "Ta kontakt med teamet", href: "/personer" }}
       />
     </main>
   );
