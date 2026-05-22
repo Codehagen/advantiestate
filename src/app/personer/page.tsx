@@ -42,6 +42,10 @@ const PRESENTATION: Record<
     office: "Bodø",
     specialty: "Næringseiendom · Rådgivning",
   },
+  "alexander-hansen": {
+    office: "Bodø",
+    specialty: "Bank og finansiering · Næringseiendom",
+  },
 };
 
 export default function PersonerPage() {
@@ -53,6 +57,7 @@ export default function PersonerPage() {
     "ole-ostensen",
     "havard-nome",
     "tobias-bronder",
+    "alexander-hansen",
   ];
   const people = order
     .map((slug) => allPersonPosts.find((p) => p.slug === slug))

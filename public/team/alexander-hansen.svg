@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="1000" viewBox="0 0 800 1000">
+  <rect width="800" height="1000" fill="#1a2a3a"/>
+  <text x="400" y="460" font-family="serif" font-size="160" font-weight="700" fill="#e8e0d0" text-anchor="middle" letter-spacing="4">AH</text>
+  <text x="400" y="540" font-family="sans-serif" font-size="28" fill="#9a8a7a" text-anchor="middle" letter-spacing="2">Alexander Hansen</text>
+</svg>
