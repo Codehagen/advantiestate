@@ -73,10 +73,14 @@ export default function StructuredData({
         return {
           "@context": "https://schema.org",
           "@type": "Organization",
+          // Shared node identity: the organization and realEstateAgent blocks
+          // describe the same company. The matching @id makes search engines
+          // merge them into one entity instead of two unconnected ones.
+          "@id": `${baseUrl}/#organization`,
           name: "Advanti",
           alternateName: "Advanti Næringseiendom",
           url: baseUrl,
-          logo: `${baseUrl}/opengraph-image.jpg`,
+          logo: `${baseUrl}/icon-512x512.png`,
           description:
             "Advanti tilbyr ekspertise innen kjøp, salg, utleie, verdivurdering og strategisk rådgivning for næringseiendom i Nord-Norge.",
           email: contact.email,
@@ -112,9 +116,11 @@ export default function StructuredData({
         const defaultAgent = {
           "@context": "https://schema.org",
           "@type": "RealEstateAgent",
+          // Same @id as the organization block — see the comment there.
+          "@id": `${baseUrl}/#organization`,
           name: "Advanti",
           url: baseUrl,
-          logo: `${baseUrl}/opengraph-image.jpg`,
+          logo: `${baseUrl}/icon-512x512.png`,
           image: [`${baseUrl}/opengraph-image.jpg`],
           description:
             "Profesjonell næringsmegler i Nord-Norge. Spesialisert på kjøp, salg, utleie og verdivurdering av næringseiendom.",
@@ -254,10 +260,12 @@ export default function StructuredData({
             "Advanti - Din partner for næringseiendom i Nord-Norge. Ekspertise innen salg, kjøp, utleie og verdivurdering.",
           publisher: {
             "@type": "Organization",
+            // Link the website's publisher to the shared organization node.
+            "@id": `${baseUrl}/#organization`,
             name: "Advanti",
             logo: {
               "@type": "ImageObject",
-              url: `${baseUrl}/opengraph-image.jpg`,
+              url: `${baseUrl}/icon-512x512.png`,
             },
           },
           potentialAction: {
@@ -302,13 +310,16 @@ export default function StructuredData({
             name: authorName,
           },
           publisher: {
+            // Standalone node, not linked to #organization: this block's name
+            // ("Advanti Estate") differs from the Organization's ("Advanti"),
+            // so a shared @id would merge conflicting names into one entity.
             "@type": "Organization",
             name: "Advanti Estate",
             logo: {
               "@type": "ImageObject",
-              url: `${baseUrl}/opengraph-image.jpg`,
-              width: 1200,
-              height: 630,
+              url: `${baseUrl}/icon-512x512.png`,
+              width: 512,
+              height: 512,
             },
           },
           mainEntityOfPage: {

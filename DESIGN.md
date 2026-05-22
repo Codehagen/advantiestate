@@ -109,6 +109,7 @@ Use these; do not reinvent them.
 | `SubHero` | Inner-page header (breadcrumb + editorial title block). Renders `.page-pad`. Accepts `crumb`, `eyebrow`, `title`, `lede`, `metaRow`, `photo`, `actions`, `children`. |
 | `CtaStrip` | The closing call-to-action band. Most pages end with one. |
 | `PhotoBand` | Full-bleed photo strip with a caption. |
+| `Faq` | FAQ section: a `.faq` accordion plus matching `FAQPage` JSON-LD, both driven by one `items` array. Accepts `eyebrow`, `title`, `lede`, `items`. |
 | `ProseShell` | Wrapper that applies editorial prose styling to MDX/article bodies. |
 
 ### Nav behaviour (important)

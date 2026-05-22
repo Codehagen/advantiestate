@@ -2,6 +2,7 @@ import { constructMetadata } from "@/lib/utils";
 import { SubHero } from "@/components/site/SubHero";
 import { CtaStrip } from "@/components/site/CtaStrip";
 import { PhotoBand } from "@/components/site/PhotoBand";
+import { Faq, type FaqItem } from "@/components/site/Faq";
 import StructuredData, {
   BreadcrumbStructuredData,
 } from "@/components/StructuredData";
@@ -12,6 +13,29 @@ export const metadata = constructMetadata({
   description:
     "Advanti bistår med kjøp og salg av næringseiendom i Nord-Norge. Ekspertise gjennom hele transaksjonsprosessen fra verdivurdering til overtakelse.",
 });
+
+const FAQ_ITEMS: FaqItem[] = [
+  {
+    question: "Bistår Advanti både kjøpere og selgere?",
+    answer:
+      "Ja. Advanti tilbyr en helhetlig transaksjonstjeneste på både buy-side og sell-side. På buy-side representerer vi kjøper fra screening av akkvisisjonsmål til signert kjøpekontrakt og overtagelse. På sell-side representerer vi selger fra strategivalg og prospekt til oppgjør og overtakelse. Lojaliteten er kun mot deg.",
+  },
+  {
+    question: "Hvor lang tid tar en due diligence?",
+    answer:
+      "En due diligence tar normalt 4–6 uker. Vi gjennomgår eiendom, kontrakter og økonomiske forhold grundig og leverer en rapport med funn — vi finner det som ellers blir oversett.",
+  },
+  {
+    question: "Hvem jobber med saken min hos Advanti?",
+    answer:
+      "Hvert oppdrag har én senior partner. Du blir aldri overlevert til en juniorrådgiver — den senior partneren som er på saken fra dag én, er der ved signering.",
+  },
+  {
+    question: "Hjelper Advanti med strukturering av transaksjonen?",
+    answer:
+      "Ja. Vi strukturerer transaksjonen optimalt — single asset, portefølje, SPV eller eiendomsselskap — på en skattenøytral måte, og koordinerer mot finansiering og øvrige rådgivere.",
+  },
+];
 
 export default function TransaksjonerPage() {
   return (
@@ -299,6 +323,17 @@ export default function TransaksjonerPage() {
           </div>
         </div>
       </section>
+
+      <Faq
+        eyebrow="05 — Ofte stilte spørsmål"
+        title={
+          <>
+            Spørsmål om <span className="italic">transaksjoner.</span>
+          </>
+        }
+        lede="Finner du ikke svaret? Ta kontakt — vi setter av tid til en uforpliktende samtale uansett."
+        items={FAQ_ITEMS}
+      />
 
       <PhotoBand src="/building/pexels-abshky-18566965.jpg" alt="Transaksjonsradgivning naeringseiendom" caption="Transaksjoner · Nord-Norge" />
 

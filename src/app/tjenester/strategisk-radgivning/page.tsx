@@ -2,6 +2,7 @@ import { constructMetadata } from "@/lib/utils";
 import { SubHero } from "@/components/site/SubHero";
 import { CtaStrip } from "@/components/site/CtaStrip";
 import { PhotoBand } from "@/components/site/PhotoBand";
+import { Faq, type FaqItem } from "@/components/site/Faq";
 import StructuredData, {
   BreadcrumbStructuredData,
 } from "@/components/StructuredData";
@@ -12,6 +13,29 @@ export const metadata = constructMetadata({
   description:
     "Advanti tilbyr strategisk rådgivning for eiendomsinvestorer og -utviklere i Nord-Norge, inkludert porteføljestrategi, akkvisisjon og exit-strategi.",
 });
+
+const FAQ_ITEMS: FaqItem[] = [
+  {
+    question: "Hva dekker strategisk rådgivning hos Advanti?",
+    answer:
+      "Strategisk rådgivning dekker fire fokusområder: porteføljestrategi med en 3–10 års plan for hva som skal beholdes, utvikles eller avhendes, akkvisisjonsstrategi med systematisk pipeline-bygging, eierskapsstrukturer som holdco, SPV eller portefølje, og exit-strategi for når og hvordan eiendommer skal avhendes.",
+  },
+  {
+    question: "Er strategisk rådgivning et engangsoppdrag eller en løpende relasjon?",
+    answer:
+      "De aller fleste strategiske oppdrag er løpende. Strategisk rådgivning er ikke en transaksjon — det er en relasjon, med fast rytme av møter og oppdaterte analyser mellom styremøtene. De fleste oppdrag løper i tre år eller mer.",
+  },
+  {
+    question: "Hvordan håndterer Advanti konfidensialitet?",
+    answer:
+      "All strategisk rådgivning er NDA-styrt. Vi opplyser om eventuelle interessekonflikter før vi tar oppdrag, og takker nei der det er nødvendig — slik at klienter kan snakke fritt, også om de tunge beslutningene som ikke skal ut.",
+  },
+  {
+    question: "Hvem er rådgiveren min i et strategisk oppdrag?",
+    answer:
+      "Du får én senior partner som blir kjent med porteføljen, ambisjonene og menneskene rundt — over tid. Ingen overlevering, ingen rotasjon og ingen junior-konsulent som gjør jobben.",
+  },
+];
 
 export default function StrategiskRadgivningPage() {
   return (
@@ -294,6 +318,18 @@ export default function StrategiskRadgivningPage() {
           </div>
         </div>
       </section>
+
+      <Faq
+        eyebrow="05 — Ofte stilte spørsmål"
+        title={
+          <>
+            Spørsmål om{" "}
+            <span className="italic">strategisk rådgivning.</span>
+          </>
+        }
+        lede="Finner du ikke svaret? Ta kontakt — vi setter av tid til en uforpliktende samtale uansett."
+        items={FAQ_ITEMS}
+      />
 
       <PhotoBand src="/building/pexels-pixabay-248877.jpg" alt="Strategisk radgivning naeringseiendom" caption="Strategisk · Nord-Norge" />
 

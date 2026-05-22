@@ -37,3 +37,50 @@ test("each JSON-LD block is valid JSON", async ({ page }) => {
     expect(() => JSON.parse(block)).not.toThrow();
   }
 });
+
+/**
+ * Every /tjenester page renders a visible FAQ accordion plus a FAQPage
+ * JSON-LD block. Google's FAQ rich-result policy requires the schema to
+ * match the visible content — the Faq component drives both from one array,
+ * so this asserts the question counts stay in lockstep.
+ */
+const FAQ_ROUTES = [
+  "/tjenester/salg",
+  "/tjenester/verdivurdering",
+  "/tjenester/utleie",
+  "/tjenester/radgivning",
+  "/tjenester/transaksjoner",
+  "/tjenester/strategisk-radgivning",
+];
+
+for (const route of FAQ_ROUTES) {
+  test(`FAQPage schema matches visible accordion: ${route}`, async ({
+    page,
+  }) => {
+    await page.goto(route, { waitUntil: "domcontentloaded" });
+
+    // Scope to the FAQ section so the assertion can't be skewed by an
+    // unrelated `.faq` block elsewhere on a future version of the page.
+    const visibleQuestions = await page
+      .locator("#faq .faq details summary")
+      .allTextContents();
+    expect(
+      visibleQuestions.length,
+      `${route} visible FAQ items`,
+    ).toBeGreaterThan(0);
+
+    const faqBlock = (await page.locator(LD).allTextContents())
+      .map((block) => JSON.parse(block))
+      .find((json) => json["@type"] === "FAQPage");
+    expect(faqBlock, `${route} FAQPage JSON-LD`).toBeTruthy();
+
+    // Same items array drives the accordion and the schema — assert the
+    // questions match verbatim, so any drift fails the build.
+    const schemaQuestions = faqBlock.mainEntity.map(
+      (q: { name: string }) => q.name,
+    );
+    expect(schemaQuestions, `${route} schema vs visible questions`).toEqual(
+      visibleQuestions.map((q) => q.trim()),
+    );
+  });
+}

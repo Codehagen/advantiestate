@@ -2,6 +2,7 @@ import { constructMetadata } from "@/lib/utils";
 import { SubHero } from "@/components/site/SubHero";
 import { CtaStrip } from "@/components/site/CtaStrip";
 import { PhotoBand } from "@/components/site/PhotoBand";
+import { Faq, type FaqItem } from "@/components/site/Faq";
 import StructuredData, {
   BreadcrumbStructuredData,
 } from "@/components/StructuredData";
@@ -12,6 +13,29 @@ export const metadata = constructMetadata({
   description:
     "Planlegger du salg av næringseiendom? Advanti bistår deg gjennom hele salgsprosessen, fra verdivurdering og markedsføring til forhandlinger og oppgjør.",
 });
+
+const FAQ_ITEMS: FaqItem[] = [
+  {
+    question: "Hvor lang tid tar en salgsprosess for næringseiendom?",
+    answer:
+      "En typisk salgsprosess hos Advanti tar tre til seks måneder. Den følger seks dokumenterte faser: forberedelse og verdivurdering (2–4 uker), markedsføring og prospekt (2–3 uker), visninger og interessenter (løpende), budrunde og forhandlinger (1–2 uker), kontrakt og oppgjør (2–4 uker) og til slutt overtakelse og oppfølging.",
+  },
+  {
+    question: "Hva koster det å selge næringseiendom gjennom Advanti?",
+    answer:
+      "Honoraret er resultatbasert — vi tjener når du tjener. Det gir oss alle insentiver til å oppnå best mulig pris og vilkår for deg som selger. Ta kontakt for en konfidensiell salgsvurdering.",
+  },
+  {
+    question: "Kan eiendommen selges uten åpen markedsføring?",
+    answer:
+      "Ja. Advanti tilbyr to salgsspor. En åpen salgsprosess markedsfører eiendommen bredt gjennom prospekt, annonser og målrettet outreach til nettverket vårt. En diskré prosess går målrettet til en kuratert liste investorer under NDA, uten åpen markedsføring eller offentlig omtale. Vi velger spor sammen med deg ut fra eiendomstype, marked og konfidensialitetskrav.",
+  },
+  {
+    question: "Hvilke områder dekker Advanti ved salg av næringseiendom?",
+    answer:
+      "Vi gjennomfører salgsprosesser i hele Nord-Norge, med lokal markedskunnskap i Bodø, Tromsø, Alta, Mo i Rana og Narvik.",
+  },
+];
 
 export default function SalgPage() {
   return (
@@ -321,6 +345,18 @@ export default function SalgPage() {
           </div>
         </div>
       </section>
+
+      <Faq
+        eyebrow="05 — Ofte stilte spørsmål"
+        title={
+          <>
+            Spørsmål om{" "}
+            <span className="italic">salg av næringseiendom.</span>
+          </>
+        }
+        lede="Finner du ikke svaret? Ta kontakt — vi setter av tid til en uforpliktende samtale uansett."
+        items={FAQ_ITEMS}
+      />
 
       <PhotoBand src="/building/pexels-pixabay-248877.jpg" alt="Salg av næringseiendom i Nord-Norge" caption="Salg · Nord-Norge" />
 
