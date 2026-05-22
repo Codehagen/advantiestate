@@ -24,7 +24,6 @@ const OFFICE: Record<string, string> = {
   "ole-ostensen": "Bergen",
   "havard-nome": "Alta",
   "tobias-bronder": "Bodø",
-  "michal-meyer-nilssen": "Bodø",
 };
 
 const MONTHS = [

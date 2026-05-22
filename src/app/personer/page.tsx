@@ -42,10 +42,6 @@ const PRESENTATION: Record<
     office: "Bodø",
     specialty: "Næringseiendom · Rådgivning",
   },
-  "michal-meyer-nilssen": {
-    office: "Bodø",
-    specialty: "Gründer · Innovasjon · Bærekraft",
-  },
 };
 
 export default function PersonerPage() {
@@ -57,7 +53,6 @@ export default function PersonerPage() {
     "ole-ostensen",
     "havard-nome",
     "tobias-bronder",
-    "michal-meyer-nilssen",
   ];
   const people = order
     .map((slug) => allPersonPosts.find((p) => p.slug === slug))
