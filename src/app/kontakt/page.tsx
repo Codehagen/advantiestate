@@ -195,14 +195,7 @@ export default function KontaktPage() {
         }}
       >
         <div className="wrap">
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(3, 1fr)",
-              gap: 32,
-              textAlign: "center",
-            }}
-          >
+          <div className="kontakt-trust">
             <div>
               <div
                 style={{
@@ -226,12 +219,7 @@ export default function KontaktPage() {
                 SVARTID PÅ HENVENDELSER
               </p>
             </div>
-            <div
-              style={{
-                borderLeft: "var(--hairline)",
-                borderRight: "var(--hairline)",
-              }}
-            >
+            <div>
               <div
                 style={{
                   fontFamily: "var(--font-display)",
@@ -294,10 +282,7 @@ export default function KontaktPage() {
             </div>
           </div>
 
-          <div
-            className="team"
-            style={{ gridTemplateColumns: "repeat(auto-fill, minmax(360px, 1fr))", gap: 48 }}
-          >
+          <div className="team">
             {team.map((person) => (
               <div
                 key={person.slug}
