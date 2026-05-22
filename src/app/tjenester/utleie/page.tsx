@@ -2,6 +2,7 @@ import { constructMetadata } from "@/lib/utils";
 import { SubHero } from "@/components/site/SubHero";
 import { CtaStrip } from "@/components/site/CtaStrip";
 import { PhotoBand } from "@/components/site/PhotoBand";
+import { Faq, type FaqItem } from "@/components/site/Faq";
 import StructuredData, {
   BreadcrumbStructuredData,
 } from "@/components/StructuredData";
@@ -12,6 +13,29 @@ export const metadata = constructMetadata({
   description:
     "Advanti tilbyr skreddersydde løsninger for utleie av kontor, handel- og logistikkeiendom, samt leietaker- og gårdeierrådgivning i Nord-Norge.",
 });
+
+const FAQ_ITEMS: FaqItem[] = [
+  {
+    question: "Representerer Advanti både gårdeiere og leietakere?",
+    answer:
+      "Ja, men aldri på samme sak. Vi tar én side av bordet om gangen — gårdeier eller leietaker. Lojaliteten er klar fra første samtale, og vi opplyser åpent om eventuelle interessekonflikter før vi tar oppdrag.",
+  },
+  {
+    question: "Hvilke typer næringslokaler hjelper Advanti med å leie ut?",
+    answer:
+      "Vi dekker fire segmenter: kontorutleie i klasse A til C, handel og bevertning, lager og logistikk fra 500 til 25 000 m², og spesialiserte formål som helse, undervisning, kultur og produksjon.",
+  },
+  {
+    question: "Hva kan en leietaker spare på å bruke Advanti?",
+    answer:
+      "Når Advanti representerer leietaker i søk etter nye lokaler eller reforhandling, er resultatet ofte 10–20 % lavere kostnad sammenlignet med direkte forhandling — eller bedre vilkår på samme kostnad.",
+  },
+  {
+    question: "Hjelper Advanti med reforhandling av eksisterende leieavtaler?",
+    answer:
+      "Ja. Vi bistår gårdeiere med reforhandling av eksisterende kontrakter og rådgivning ved leietakerbytter, og vi representerer leietakere ved reforhandling av eksisterende avtaler og flytteprosesser.",
+  },
+];
 
 export default function UtleiePage() {
   return (
@@ -296,6 +320,17 @@ export default function UtleiePage() {
           </div>
         </div>
       </section>
+
+      <Faq
+        eyebrow="05 — Ofte stilte spørsmål"
+        title={
+          <>
+            Spørsmål om <span className="italic">utleie.</span>
+          </>
+        }
+        lede="Finner du ikke svaret? Ta kontakt — vi setter av tid til en uforpliktende samtale uansett."
+        items={FAQ_ITEMS}
+      />
 
       <PhotoBand src="/building/pexels-expect-best-79873-351262.jpg" alt="Utleie av næringslokaler" caption="Utleie · Nord-Norge" />
 

@@ -2,6 +2,7 @@ import { constructMetadata } from "@/lib/utils";
 import { SubHero } from "@/components/site/SubHero";
 import { CtaStrip } from "@/components/site/CtaStrip";
 import { PhotoBand } from "@/components/site/PhotoBand";
+import { Faq, type FaqItem } from "@/components/site/Faq";
 import StructuredData, {
   BreadcrumbStructuredData,
 } from "@/components/StructuredData";
@@ -12,6 +13,29 @@ export const metadata = constructMetadata({
   description:
     "Advanti leverer markedsdata og kvantitativ rådgivning for næringseiendom i Nord-Norge. Egne databaser, kvartalsvise markedsrapporter og datatilgang via API.",
 });
+
+const FAQ_ITEMS: FaqItem[] = [
+  {
+    question: "Hva inneholder den kvartalsvise markedsrapporten?",
+    answer:
+      "Den kvartalsvise markedsrapporten viser yield, leienivå, ledighet og transaksjonsvolum per segment og by — en gjennomsiktig oversikt over hvor markedet faktisk står. Den leveres som PDF med tilhørende datasett hvert kvartal.",
+  },
+  {
+    question: "Hvor stor er Advantis markedsdatabase?",
+    answer:
+      "Databasen omfatter over 1 400 eiendommer i Nord-Norge med 10 års transaksjonshistorikk. Hvert datapunkt kvalitetssikres manuelt mot tinglysning, kjøpekontrakt eller direkte bekreftelse fra part.",
+  },
+  {
+    question: "Kan jeg få direkte tilgang til markedsdataene?",
+    answer:
+      "Ja. Kunder med egne analysemiljøer kan få direkte tilgang til transaksjons- og leiebasen via lett-strukturerte datasett eller API, med eksport i CSV eller JSON. Datatilgang tilbys som abonnement.",
+  },
+  {
+    question: "Hvor raskt leveres en skreddersydd analyse?",
+    answer:
+      "En skreddersydd analyse for en eiendom, et segment eller en lokasjon leveres normalt innen 1–3 uker, som rapport med tilhørende dialog.",
+  },
+];
 
 export default function RadgivningPage() {
   return (
@@ -296,6 +320,17 @@ export default function RadgivningPage() {
           </div>
         </div>
       </section>
+
+      <Faq
+        eyebrow="05 — Ofte stilte spørsmål"
+        title={
+          <>
+            Spørsmål om <span className="italic">markedsdata.</span>
+          </>
+        }
+        lede="Finner du ikke svaret? Ta kontakt — vi setter av tid til en uforpliktende samtale uansett."
+        items={FAQ_ITEMS}
+      />
 
       <PhotoBand src="/building/pexels-abshky-18567185.jpg" alt="Markedsdata og radgivning" caption="Markedsdata · Nord-Norge" />
 

@@ -2,6 +2,7 @@ import { constructMetadata } from "@/lib/utils";
 import { SubHero } from "@/components/site/SubHero";
 import { CtaStrip } from "@/components/site/CtaStrip";
 import { PhotoBand } from "@/components/site/PhotoBand";
+import { Faq, type FaqItem } from "@/components/site/Faq";
 import StructuredData, {
   BreadcrumbStructuredData,
 } from "@/components/StructuredData";
@@ -12,6 +13,29 @@ export const metadata = constructMetadata({
   description:
     "Trenger du verdivurdering av næringseiendom? Advanti tilbyr profesjonelle analyser og verdivurderinger i Nord-Norge for et solid beslutningsgrunnlag.",
 });
+
+const FAQ_ITEMS: FaqItem[] = [
+  {
+    question: "Hvilke metoder bruker Advanti i en verdivurdering?",
+    answer:
+      "Advanti kombinerer diskontert kontantstrøm (DCF) og yield-betraktning. DCF-modellen prognoserer eiendommens kontantstrøm i et 10-års perspektiv og diskonterer den til nåverdi med et avkastningskrav som reflekterer reell markedsrisiko. Yield-betraktningen avstemmer DCF-verdien mot prime yield i sammenlignbare segmenter, basert på vår transaksjonsdatabase med over 1 400 eiendommer i Nord-Norge.",
+  },
+  {
+    question: "Hvor lang tid tar en verdivurdering?",
+    answer:
+      "Det avhenger av type. En markedsverdivurdering tar normalt 3–4 uker, en investeringsanalyse 2–3 uker og en sensitivitetsanalyse 1–2 uker. En full porteføljeverdsettelse tar 4–8 uker avhengig av antall eiendommer.",
+  },
+  {
+    question: "Hva inneholder en verdivurderingsrapport?",
+    answer:
+      "Hver verdivurdering leveres som en skriftlig rapport med metodikk, forutsetninger, sensitivitet og konklusjon — klar til bruk mot bank, revisor eller styre. Vi dokumenterer hvert valg slik at resultatet kan etterprøves.",
+  },
+  {
+    question: "Er verdivurderingen fra Advanti uavhengig?",
+    answer:
+      "Ja. Advanti er uavhengige rådgivere uten interessekonflikter — vår eneste lojalitet er mot oppdragsgiver og tallene. Typisk avvik mot faktisk transaksjonspris er rundt ±2 %.",
+  },
+];
 
 export default function VerdivurderingPage() {
   return (
@@ -301,6 +325,17 @@ export default function VerdivurderingPage() {
           </div>
         </div>
       </section>
+
+      <Faq
+        eyebrow="05 — Ofte stilte spørsmål"
+        title={
+          <>
+            Spørsmål om <span className="italic">verdivurdering.</span>
+          </>
+        }
+        lede="Finner du ikke svaret? Ta kontakt — vi setter av tid til en uforpliktende samtale uansett."
+        items={FAQ_ITEMS}
+      />
 
       <PhotoBand src="/building/pexels-abshky-18567185.jpg" alt="Verdivurdering av næringseiendom" caption="Verdivurdering · Nord-Norge" />
 
