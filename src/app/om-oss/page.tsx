@@ -288,36 +288,24 @@ export default function About() {
               </p>
             </div>
           </div>
-          <div
-            className="market-stats"
-            style={{ gridTemplateColumns: "repeat(4, 1fr)" }}
-          >
+          <div className="market-stats market-stats--4up">
             <div className="stat">
               <div className="num-big">+47</div>
               <p className="stat-label">Oppdrag levert i 2025</p>
             </div>
-            <div
-              className="stat"
-              style={{ borderLeft: "1px solid rgba(243,241,239,0.18)" }}
-            >
+            <div className="stat">
               <div className="num-big">
                 4,8<span className="unit">mrd</span>
               </div>
               <p className="stat-label">Eiendomsverdier under rådgivning</p>
             </div>
-            <div
-              className="stat"
-              style={{ borderLeft: "1px solid rgba(243,241,239,0.18)" }}
-            >
+            <div className="stat">
               <div className="num-big">
                 1 400<span className="unit">+</span>
               </div>
               <p className="stat-label">Eiendommer i markedsdatabasen</p>
             </div>
-            <div
-              className="stat"
-              style={{ borderLeft: "1px solid rgba(243,241,239,0.18)" }}
-            >
+            <div className="stat">
               <div className="num-big">2</div>
               <p className="stat-label">Kontor — Bodø og Alta</p>
             </div>

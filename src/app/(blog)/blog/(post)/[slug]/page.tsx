@@ -172,7 +172,7 @@ export default async function BlogArticle({
       {/* HERO — breadcrumb only */}
       <section className="subhero" style={{ paddingBottom: 24 }}>
         <div className="wrap">
-          <nav className="crumb" aria-label="Brødsmuler">
+          <nav className="crumb crumb-article" aria-label="Brødsmuler">
             <Link href="/">Hjem</Link>
             <span className="sep">/</span>
             <Link href="/blog">Artikler</Link>
