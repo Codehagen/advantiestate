@@ -117,9 +117,11 @@ export default function KontaktPage() {
                 <div className="pre">Kontor · 02</div>
                 <h3>Alta</h3>
                 <address className="addr">
-                  AMFI Alta, Markedsgata 21/25
+                  Markedsgata 3
                   <br />
                   9510 Alta
+                  <br />
+                  Kunnskapsparken 4. etg
                 </address>
                 <div className="ch">
                   <div className="contact-person">

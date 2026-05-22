@@ -70,9 +70,11 @@ export function Footer() {
               8006 Bodø
               <br />
               <br />
-              Alta — Markedsgata 21/25
+              Alta — Markedsgata 3
               <br />
               9510 Alta
+              <br />
+              Kunnskapsparken 4. etg
             </address>
           </div>
         </div>
