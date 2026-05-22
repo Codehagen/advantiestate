@@ -42,6 +42,10 @@
    ============================================================ */
 * { margin: 0; padding: 0; box-sizing: border-box; }
 html { scroll-behavior: smooth; }
+/* Honour the OS "reduce motion" setting — TOC jumps land instantly. */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
 body {
   font-family: var(--font-body);
   font-size: 16px;
@@ -3129,16 +3133,17 @@ h1, h2, h3 {
   padding: 8px 0;
   color: var(--warm-grey-85);
   line-height: 1.4;
-  transition: color 0.2s, padding 0.2s;
+  transition: color 0.2s ease, border-left-color 0.2s ease;
   border-left: 1px solid transparent;
   padding-left: 14px;
   margin-left: -14px;
 }
 .ks-toc a:hover { color: var(--warm-grey); }
+/* No font-weight change on active — that reflows the text and shifts the
+   layout. The accent bar plus the darker colour carry the active state. */
 .ks-toc a.active {
   color: var(--warm-grey);
   border-left-color: var(--accent);
-  font-weight: 500;
 }
 .ks-toc .toc-meta {
   margin-top: 32px;
