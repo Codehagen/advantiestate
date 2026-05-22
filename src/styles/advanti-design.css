@@ -1525,6 +1525,7 @@ h1, h2, h3 {
   grid-template-columns: repeat(4, 1fr);
   gap: 32px;
 }
+.team > * { min-width: 0; }
 .team .member {
   display: flex;
   flex-direction: column;
