@@ -311,6 +311,7 @@ h1, h2, h3 {
   letter-spacing: -0.025em;
   margin-bottom: 36px;
   max-width: 16ch;
+  overflow-wrap: break-word;
 }
 .hero h1 .italic {
   font-style: italic;
