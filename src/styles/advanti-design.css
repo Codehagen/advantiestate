@@ -914,7 +914,7 @@ h1, h2, h3 {
   border: 0;
   padding: 14px 20px;
   font: inherit;
-  font-size: 15px;
+  font-size: 16px;
   color: var(--warm-white);
   outline: none;
 }
@@ -1678,7 +1678,7 @@ h1, h2, h3 {
 .field textarea {
   font: inherit;
   font-family: var(--font-body);
-  font-size: 15px;
+  font-size: 16px;
   color: var(--warm-grey);
   background: transparent;
   border: 0;
@@ -2655,7 +2655,7 @@ h1, h2, h3 {
 .ks-search input {
   flex: 1;
   font: inherit;
-  font-size: 15.5px;
+  font-size: 16px;
   border: 0;
   background: transparent;
   color: var(--warm-grey);
@@ -4109,6 +4109,13 @@ h1, h2, h3 {
   background: var(--warm-grey);
   color: var(--warm-white);
   border-color: var(--warm-grey);
+}
+
+/* Mobile tap ergonomics — bigger touch targets for finger-sized hits. */
+@media (max-width: 560px) {
+  .bg-filter { padding: 12px 18px; }
+  .footer-col a { display: inline-block; padding: 6px 0; }
+  .footer-col ul { gap: 4px; }
 }
 
 /* Blog article body — reuses .ks-prose with a hero image on top */
