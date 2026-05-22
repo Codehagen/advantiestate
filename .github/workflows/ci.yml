@@ -1,0 +1,40 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    name: Build, test & perf budget
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - run: pnpm exec playwright install --with-deps chromium
+
+      # Playwright's webServer runs `pnpm build && pnpm start`, so this single
+      # step builds the app (which type-checks — ignoreBuildErrors is false) and
+      # runs every spec in tests/, including perf-budget.spec.ts (TODOS.md 10).
+      - run: npx playwright test
+        env:
+          CI: "true"
+
+      - uses: actions/upload-artifact@v4
+        if: ${{ failure() }}
+        with:
+          name: playwright-traces
+          path: test-results/
+          retention-days: 7

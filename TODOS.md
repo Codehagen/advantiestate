@@ -54,50 +54,38 @@ Deferred work captured during the editorial redesign port (/plan-eng-review, 202
 
 ---
 
-## TODO 9 — Slim the global advanti-design.css (~100KB)
-
-- **What:** Audit and trim `src/styles/advanti-design.css` (~100 KB raw),
-  `@import`-ed at `globals.css:4` so it loads and blocks first render on every
-  route. Not Tailwind-purged.
-- **Why:** It was ported wholesale from the Claude Design handoff (a 3,983-line
-  styles.css) and almost certainly carries selectors for pages/components that
-  aren't used. Trimming it cuts render-blocking weight site-wide.
-- **Pros:** Smaller render-blocking payload on every page; faster FCP.
-- **Cons:** Regression-prone — must verify every selector is still live across
-  ~30 routes; needs per-route visual QA.
-- **Context:** Deferred from /plan-eng-review of PERFORMANCE_PLAN.md
-  (2026-05-21), surfaced by the Codex outside-voice pass. The design doc
-  deliberately kept this as a scoped semantic-class layer (not Tailwind), so
-  the file stays — this is about removing dead rules. Start with a coverage
-  audit (PurgeCSS against built HTML, or DevTools coverage). Phase 0 of the
-  performance plan records its exact current weight as the baseline.
-- **Depends on / blocked by:** Phase 0 baseline of PERFORMANCE_PLAN.md.
-
----
-
-## TODO 10 — Automated performance regression guard
-
-- **What:** Add a performance budget to CI — minimally a test that parses
-  `next build` output and fails if a key route's First Load JS exceeds a
-  threshold; optionally Lighthouse CI.
-- **Why:** Once the PERFORMANCE_PLAN.md optimization ships, nothing stops a
-  future change from silently re-bloating the bundle or regressing Core Web
-  Vitals. The design doc's success criterion ("Lighthouse/CWV not worse than
-  current site") has no enforcement today.
-- **Pros:** Locks in the gains; regressions caught at PR time.
-- **Cons:** CI infrastructure to own; Lighthouse CI can be flaky; thresholds
-  need tuning.
-- **Context:** Deferred from /plan-eng-review of PERFORMANCE_PLAN.md
-  (2026-05-21). Thresholds must be set from the POST-optimization numbers, so
-  this naturally follows Phases 1–2 rather than joining them. Cheapest viable
-  version: a Playwright/Node test asserting `/markedsinnsikt` and a blog route
-  First Load JS stay under a recorded ceiling.
-- **Depends on / blocked by:** PERFORMANCE_PLAN.md Phases 1–2 complete (for
-  realistic thresholds).
-
----
-
 ## Completed
+
+### TODO 10 — Automated performance regression guard
+
+- **What:** Add a performance budget so a future change can't silently
+  re-bloat the bundle.
+- **Outcome:** Done. Added `tests/perf-budget.spec.ts` — a Playwright spec
+  that measures each key route's first-load JS (sum of every `.js` resource's
+  `encodedBodySize`, in a real browser) and fails over a per-route ceiling.
+  Budgets (measured value + ~15% headroom): `/` 250 KB, `/markedsinnsikt`
+  380 KB, plain article 490 KB, chart article 575 KB, chart+math article
+  710 KB. Next 16 dropped per-route sizes from `next build` output and has no
+  `app-build-manifest.json`, so the metric is measured in-browser —
+  Next-internals-independent. Also added `.github/workflows/ci.yml` (the repo
+  had no CI) running build + the full Playwright suite incl. perf-budget on
+  push and PR.
+- **Completed:** 2026-05-22 (branch `perf/optimization-pass`).
+
+### TODO 9 — Slim the global advanti-design.css
+
+- **What:** Trim dead selectors from `src/styles/advanti-design.css` (~100 KB,
+  `@import`-ed globally).
+- **Outcome:** Done — but the premise did not hold. PurgeCSS analysis showed
+  the file is ~92% live: it was purpose-built for these routes, not bloated.
+  Removed 18 verified-dead selectors (zero references anywhere in source): the
+  `ks-*` knowledge-base classes (re-implemented with Tailwind in `mdx.tsx`),
+  unused hero variants, and other design-handoff leftovers. Kept 4 Leaflet
+  runtime classes PurgeCSS flagged as false positives. Result: 102 KB →
+  94.6 KB raw (~2 KB gzipped) — a small win. Verified: build clean, 52
+  Playwright tests pass, 5 routes visually QA'd. The file is a genuine design
+  system, not dead weight; no further slimming is worthwhile.
+- **Completed:** 2026-05-22 (branch `perf/optimization-pass`).
 
 ### TODO 8 — Fix the stale Next.js version in CLAUDE.md
 
