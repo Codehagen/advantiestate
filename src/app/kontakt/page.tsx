@@ -64,12 +64,20 @@ export default function KontaktPage() {
                 </address>
                 <div className="ch">
                   <a href="tel:+4798453571">
-                    <span className="key">Telefon</span>
+                    <span className="key">Christer Hagen</span>
                     <span>+47 984 53 571</span>
                   </a>
                   <a href="mailto:Christer@advanti.no">
-                    <span className="key">E-post</span>
+                    <span className="key">Christer Hagen</span>
                     <span>Christer@advanti.no</span>
+                  </a>
+                  <a href="tel:+4790519901">
+                    <span className="key">Mathias Nilsen</span>
+                    <span>+47 905 19 901</span>
+                  </a>
+                  <a href="mailto:mathias@advanti.no">
+                    <span className="key">Mathias Nilsen</span>
+                    <span>mathias@advanti.no</span>
                   </a>
                   <a
                     href="https://maps.google.com"
