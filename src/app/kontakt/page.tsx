@@ -29,24 +29,52 @@ export default function KontaktPage() {
     <>
       <SubHero
         crumb={[{ label: "Hjem", href: "/" }, { label: "Kontakt" }]}
-        eyebrow="La oss snakke sammen"
+        eyebrow="05 — Kontakt"
         title={
           <>
-            Få hjelp med salg eller <br />
-            <span className="italic">
-              verdivurdering av din næringseiendom.
-            </span>
+            Ta kontakt for en <br />
+            <span className="italic">uforpliktende samtale.</span>
           </>
         }
-        lede="Planlegger du salg eller trenger en verdivurdering? Fyll ut skjemaet, så tar vi kontakt innen 24 timer for en uforpliktende samtale — om hvordan vi kan hjelpe deg oppnå best mulig resultat."
-      />
+        lede="Enten du vurderer å selge, kjøpe eller bare ønsker en oppdatert verdivurdering — vi tar en samtale uten forpliktelser."
+      >
+        <div
+          style={{
+            display: "flex",
+            gap: 20,
+            alignItems: "center",
+            marginTop: 28,
+            flexWrap: "wrap",
+          }}
+        >
+          <a
+            href="#kontakt-skjema"
+            className="btn btn-dark"
+            style={{ fontSize: 15, fontWeight: 500, textDecoration: "none" }}
+          >
+            Send henvendelse →
+          </a>
+          <a
+            href="tel:+4798453571"
+            style={{
+              fontSize: 22,
+              fontWeight: 500,
+              fontFamily: "var(--font-display)",
+              letterSpacing: "-0.02em",
+              textDecoration: "none",
+            }}
+          >
+            +47 984 53 571
+          </a>
+        </div>
+      </SubHero>
 
       {/* CONTACT GRID */}
       <section className="section section-divider" style={{ paddingTop: 64 }}>
         <div className="wrap">
           <div className="contact-grid">
             {/* LEFT: form */}
-            <div className="contact-form">
+            <div className="contact-form" id="kontakt-skjema">
               <h2>Send oss en henvendelse.</h2>
               <p className="sub">Vi svarer innen 24 timer på virkedager.</p>
               <ContactUsForm />
@@ -64,20 +92,12 @@ export default function KontaktPage() {
                 </address>
                 <div className="ch">
                   <a href="tel:+4798453571">
-                    <span className="key">Christer Hagen</span>
+                    <span className="key">Telefon</span>
                     <span>+47 984 53 571</span>
                   </a>
                   <a href="mailto:Christer@advanti.no">
-                    <span className="key">Christer Hagen</span>
+                    <span className="key">E-post</span>
                     <span>Christer@advanti.no</span>
-                  </a>
-                  <a href="tel:+4790519901">
-                    <span className="key">Mathias Nilsen</span>
-                    <span>+47 905 19 901</span>
-                  </a>
-                  <a href="mailto:mathias@advanti.no">
-                    <span className="key">Mathias Nilsen</span>
-                    <span>mathias@advanti.no</span>
                   </a>
                   <a
                     href="https://maps.google.com"
