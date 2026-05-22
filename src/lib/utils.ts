@@ -46,7 +46,7 @@ export function formatDate(date: string) {
 export function constructMetadata({
   title = "Advanti - Din partner for næringseiendom i Nord-Norge",
   description = "Advanti tilbyr ekspertise innen kjøp, salg, utleie, verdivurdering og strategisk rådgivning for næringseiendom i Nord-Norge.",
-  image = "/opengraph-image.png",
+  image = "/opengraph-image.jpg",
   noIndex = false,
   canonical,
 }: {

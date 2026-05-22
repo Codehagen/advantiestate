@@ -76,7 +76,7 @@ export default function StructuredData({
           name: "Advanti",
           alternateName: "Advanti Næringseiendom",
           url: baseUrl,
-          logo: `${baseUrl}/opengraph-image.png`,
+          logo: `${baseUrl}/opengraph-image.jpg`,
           description:
             "Advanti tilbyr ekspertise innen kjøp, salg, utleie, verdivurdering og strategisk rådgivning for næringseiendom i Nord-Norge.",
           email: contact.email,
@@ -114,8 +114,8 @@ export default function StructuredData({
           "@type": "RealEstateAgent",
           name: "Advanti",
           url: baseUrl,
-          logo: `${baseUrl}/opengraph-image.png`,
-          image: [`${baseUrl}/opengraph-image.png`],
+          logo: `${baseUrl}/opengraph-image.jpg`,
+          image: [`${baseUrl}/opengraph-image.jpg`],
           description:
             "Profesjonell næringsmegler i Nord-Norge. Spesialisert på kjøp, salg, utleie og verdivurdering av næringseiendom.",
           priceRange: "Konsultasjon på forespørsel",
@@ -257,7 +257,7 @@ export default function StructuredData({
             name: "Advanti",
             logo: {
               "@type": "ImageObject",
-              url: `${baseUrl}/opengraph-image.png`,
+              url: `${baseUrl}/opengraph-image.jpg`,
             },
           },
           potentialAction: {
@@ -284,7 +284,7 @@ export default function StructuredData({
           ? data.image.startsWith("http")
             ? data.image
             : `${baseUrl}${data.image}`
-          : `${baseUrl}/opengraph-image.png`;
+          : `${baseUrl}/opengraph-image.jpg`;
 
         // Get author name from author username if available
         const authorName = data.authorName || data.author || "Advanti Estate";
@@ -306,7 +306,7 @@ export default function StructuredData({
             name: "Advanti Estate",
             logo: {
               "@type": "ImageObject",
-              url: `${baseUrl}/opengraph-image.png`,
+              url: `${baseUrl}/opengraph-image.jpg`,
               width: 1200,
               height: 630,
             },

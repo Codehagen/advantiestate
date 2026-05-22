@@ -8,6 +8,12 @@ const nextConfig = {
   pageExtensions: ["js", "jsx", "md", "mdx", "ts", "tsx"],
   // Optionally, add any other Next.js config below
   typescript: { ignoreBuildErrors: false },
+  experimental: {
+    // @remixicon/react is a large icon barrel — transform bare imports into
+    // direct ones so only the icons actually used are bundled.
+    // See PERFORMANCE_PLAN.md Phase 2.3.
+    optimizePackageImports: ["@remixicon/react"],
+  },
   async redirects() {
     return [
       {

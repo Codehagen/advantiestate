@@ -1,6 +1,7 @@
 import { CtaStrip } from "@/components/site/CtaStrip";
 import { SubHero } from "@/components/site/SubHero";
 import { constructMetadata } from "@/lib/utils";
+import Image from "next/image";
 import Link from "next/link";
 
 export const metadata = constructMetadata({
@@ -196,8 +197,13 @@ export default function About() {
                 className="portrait"
                 style={{ backgroundColor: "var(--warm-grey-75)" }}
               >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="/havard.jpg" alt="Christer Hagen" />
+                <Image
+                  src="/havard.jpg"
+                  alt="Christer Hagen"
+                  width={480}
+                  height={600}
+                  sizes="(max-width: 768px) 100vw, 480px"
+                />
               </div>
               <div className="member-meta">
                 <h3>Christer Hagen</h3>

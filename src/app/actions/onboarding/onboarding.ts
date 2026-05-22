@@ -160,31 +160,33 @@ export async function submitContactInquiry(data: ContactInquiryData) {
       ],
     };
 
-    // Send to primary webhook (existing — typically #team or onboarding)
+    // The primary (#team) and secondary (#nettside-henvendelser) webhooks are
+    // independent — fire them in parallel instead of one after the other.
+    // postToDiscordWebhook never throws (it catches internally and returns a
+    // boolean), so Promise.all cannot short-circuit. See PERFORMANCE_PLAN.md 4.1.
     const primaryUrl = process.env.DISCORD_WEBHOOK_URL;
-    if (primaryUrl) {
-      await postToDiscordWebhook(
-        primaryUrl,
-        contactMessage,
-      );
-    }
-
-    // Send to secondary contact webhook (new — #nettside-henvendelser)
     const nettsideUrl = process.env.DISCORD_NETTSIDE_WEBHOOK_URL;
-    if (nettsideUrl) {
-      const nettsideMessage: DiscordMessage = {
-        content: "",
-        embeds: [
-          {
-            title: "📬 Ny nettside-henvendelse",
-            description: `**${data.name}** — ${data.service}`,
-            color: 0x00ff88,
-            fields,
-          },
-        ],
-      };
-      await postToDiscordWebhook(nettsideUrl, nettsideMessage);
-    }
+
+    const nettsideMessage: DiscordMessage = {
+      content: "",
+      embeds: [
+        {
+          title: "📬 Ny nettside-henvendelse",
+          description: `**${data.name}** — ${data.service}`,
+          color: 0x00ff88,
+          fields,
+        },
+      ],
+    };
+
+    await Promise.all([
+      primaryUrl
+        ? postToDiscordWebhook(primaryUrl, contactMessage)
+        : Promise.resolve(false),
+      nettsideUrl
+        ? postToDiscordWebhook(nettsideUrl, nettsideMessage)
+        : Promise.resolve(false),
+    ]);
 
     if (!primaryUrl && !nettsideUrl) {
       throw new Error("Discord webhook URL not configured");

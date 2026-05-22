@@ -10,6 +10,7 @@ import { HELP_CATEGORIES } from "@/lib/blog/content"
 import { getBlurDataURL } from "@/lib/blog/images"
 import { calculateReadingTime } from "@/lib/blog/utils"
 import { constructMetadata } from "@/lib/utils"
+import { getHelpPost } from "@/lib/content"
 import StructuredData, {
   BreadcrumbStructuredData,
 } from "@/components/StructuredData"
@@ -58,15 +59,6 @@ function editorialDate(date: string) {
   return `${day}. ${MONTHS_SHORT[d.getMonth()]} ${d.getFullYear()}`
 }
 
-const HELP_ARTICLE_ALIASES: Record<string, string> = {
-  "hva-er-næringseiendom-en-komplett-guide": "hva-er-naringseiendom",
-  "hva-er-naringseiendom-en-komplett-guide": "hva-er-naringseiendom",
-}
-
-function resolveHelpArticleSlug(slug: string) {
-  return HELP_ARTICLE_ALIASES[slug] ?? slug
-}
-
 export async function generateStaticParams() {
   return [
     ...allHelpPosts.map((post) => ({
@@ -87,8 +79,7 @@ export async function generateMetadata({
   params: { slug: string }
 }): Promise<Metadata | undefined> {
   const { slug } = await params
-  const resolvedSlug = resolveHelpArticleSlug(slug)
-  const post = allHelpPosts.find((post) => post.slug === resolvedSlug)
+  const post = getHelpPost(slug)
   if (!post) {
     return
   }
@@ -113,8 +104,7 @@ export default async function HelpArticle({
   }
 }) {
   const { slug } = await params
-  const resolvedSlug = resolveHelpArticleSlug(slug)
-  const data = allHelpPosts.find((post) => post.slug === resolvedSlug)
+  const data = getHelpPost(slug)
   if (!data) {
     notFound()
   }
@@ -122,14 +112,12 @@ export default async function HelpArticle({
     (category) => data.categories[0] === category.slug,
   )!
 
-  const [images] = await Promise.all([
-    await Promise.all(
-      data.images.map(async (src: string) => ({
-        src,
-        blurDataURL: await getBlurDataURL(src),
-      })),
-    ),
-  ])
+  const images = await Promise.all(
+    data.images.map(async (src: string) => ({
+      src,
+      blurDataURL: await getBlurDataURL(src),
+    })),
+  )
 
   const relatedArticles =
     ((data.related &&

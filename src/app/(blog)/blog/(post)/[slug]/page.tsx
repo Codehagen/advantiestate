@@ -8,6 +8,7 @@ import { BLOG_CATEGORIES } from "@/lib/blog/content";
 import { getBlurDataURL } from "@/lib/blog/images";
 import { calculateReadingTime } from "@/lib/blog/utils";
 import { constructMetadata } from "@/lib/utils";
+import { getBlogPost } from "@/lib/content";
 import { allBlogPosts } from "content-collections";
 import { Metadata } from "next";
 import Link from "next/link";
@@ -72,7 +73,7 @@ export async function generateMetadata({
   params: { slug: string };
 }): Promise<Metadata | undefined> {
   const { slug } = await params;
-  const post = allBlogPosts.find((post) => post.slug === slug);
+  const post = getBlogPost(slug);
   if (!post) {
     return;
   }
@@ -95,7 +96,7 @@ export default async function BlogArticle({
   };
 }) {
   const { slug } = await params;
-  const data = allBlogPosts.find((post) => post.slug === slug);
+  const data = getBlogPost(slug);
   if (!data) {
     notFound();
   }

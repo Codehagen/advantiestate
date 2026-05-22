@@ -5,7 +5,7 @@ import {
   MotionValue,
   useMotionTemplate,
   useMotionValue,
-} from "framer-motion"
+} from "motion/react"
 import Link from "next/link"
 
 import { useId } from "react"

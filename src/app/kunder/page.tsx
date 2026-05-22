@@ -1,4 +1,5 @@
 import { allCustomersPosts } from "content-collections";
+import Image from "next/image";
 import Link from "next/link";
 
 import { CtaStrip } from "@/components/site/CtaStrip";
@@ -145,8 +146,13 @@ export default function Customers() {
                 >
                   {pres?.image && (
                     <div className="op-img">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={pres.image} alt={pres.imageAlt} />
+                      <Image
+                        src={pres.image}
+                        alt={pres.imageAlt}
+                        width={480}
+                        height={600}
+                        sizes="(max-width: 768px) 100vw, 480px"
+                      />
                     </div>
                   )}
                   <div className="op-meta">

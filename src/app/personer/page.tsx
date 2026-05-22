@@ -2,6 +2,7 @@ import { CtaStrip } from "@/components/site/CtaStrip";
 import { SubHero } from "@/components/site/SubHero";
 import { constructMetadata } from "@/lib/utils";
 import { allPersonPosts } from "content-collections";
+import Image from "next/image";
 import Link from "next/link";
 
 export const metadata = constructMetadata({
@@ -93,8 +94,13 @@ export default function PersonerPage() {
                     {pres?.office && (
                       <span className="office">{pres.office}</span>
                     )}
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={person.avatar} alt={person.name} />
+                    <Image
+                      src={person.avatar}
+                      alt={person.name}
+                      width={480}
+                      height={600}
+                      sizes="(max-width: 768px) 100vw, 480px"
+                    />
                   </div>
                   <div className="tm-meta">
                     <h3>{person.name}</h3>

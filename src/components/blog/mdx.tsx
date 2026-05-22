@@ -6,21 +6,43 @@ import {
   allChangelogPosts,
   allHelpPosts,
 } from "content-collections"
+import dynamic from "next/dynamic"
 import Link from "next/link"
 
 import BlurImage from "@/lib/blog/blur-image"
 import { HELP_CATEGORIES, POPULAR_ARTICLES } from "@/lib/blog/content"
 import { cx, formatDate } from "@/lib/utils"
 
-import { DcfChart } from "@/components/advanti/DcfChart"
-import { AnimatedGridPattern } from "@/components/ui/Animated-Grid-Background"
-import "katex/dist/katex.min.css"
-import { BlockMath, InlineMath } from "react-katex"
 import CategoryCard from "./category-card"
 import CopyBox from "./copy-box"
 import HelpArticleLink from "./help-article-link"
 import ExpandingArrow from "./icons/expanding-arrow"
 import ZoomImage from "./zoom-image"
+
+// Heavy MDX widgets — loaded on demand via next/dynamic so the ~47 articles
+// that use none of them never ship recharts / katex / framer-motion.
+// See PERFORMANCE_PLAN.md Phase 2.0.
+const DcfChart = dynamic(
+  () => import("@/components/advanti/DcfChart").then((m) => m.DcfChart),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="mt-8 h-[420px] w-full animate-pulse rounded-lg border border-warm-grey-2/20 bg-warm-grey-2/10" />
+    ),
+  },
+)
+
+const AnimatedGridPattern = dynamic(
+  () =>
+    import("@/components/ui/Animated-Grid-Background").then(
+      (m) => m.AnimatedGridPattern,
+    ),
+  { ssr: false },
+)
+
+const KatexMath = dynamic(() =>
+  import("./katex-math").then((m) => m.KatexMath),
+)
 
 const CustomLink = (props: any) => {
   const href = props.href
@@ -320,11 +342,7 @@ const components = {
             props.mode === "inline" ? "py-2" : "py-4",
           )}
         >
-          {props.mode === "inline" ? (
-            <InlineMath math={props.formula} />
-          ) : (
-            <BlockMath math={props.formula} />
-          )}
+          <KatexMath formula={props.formula} mode={props.mode} />
         </div>
       </div>
       {props.description && (
@@ -335,7 +353,7 @@ const components = {
   // For inline math within text
   InlineMath: (props: { formula: string }) => (
     <span className="mx-1">
-      <InlineMath math={props.formula} />
+      <KatexMath formula={props.formula} mode="inline" />
     </span>
   ),
   FormulaDisplay: (props: {
@@ -360,11 +378,7 @@ const components = {
             props.mode === "inline" ? "py-2" : "py-4",
           )}
         >
-          {props.mode === "inline" ? (
-            <InlineMath math={props.formula} />
-          ) : (
-            <BlockMath math={props.formula} />
-          )}
+          <KatexMath formula={props.formula} mode={props.mode} />
         </div>
       </div>
       {props.description && (

@@ -54,6 +54,49 @@ Deferred work captured during the editorial redesign port (/plan-eng-review, 202
 
 ---
 
+## TODO 9 — Slim the global advanti-design.css (~100KB)
+
+- **What:** Audit and trim `src/styles/advanti-design.css` (~100 KB raw),
+  `@import`-ed at `globals.css:4` so it loads and blocks first render on every
+  route. Not Tailwind-purged.
+- **Why:** It was ported wholesale from the Claude Design handoff (a 3,983-line
+  styles.css) and almost certainly carries selectors for pages/components that
+  aren't used. Trimming it cuts render-blocking weight site-wide.
+- **Pros:** Smaller render-blocking payload on every page; faster FCP.
+- **Cons:** Regression-prone — must verify every selector is still live across
+  ~30 routes; needs per-route visual QA.
+- **Context:** Deferred from /plan-eng-review of PERFORMANCE_PLAN.md
+  (2026-05-21), surfaced by the Codex outside-voice pass. The design doc
+  deliberately kept this as a scoped semantic-class layer (not Tailwind), so
+  the file stays — this is about removing dead rules. Start with a coverage
+  audit (PurgeCSS against built HTML, or DevTools coverage). Phase 0 of the
+  performance plan records its exact current weight as the baseline.
+- **Depends on / blocked by:** Phase 0 baseline of PERFORMANCE_PLAN.md.
+
+---
+
+## TODO 10 — Automated performance regression guard
+
+- **What:** Add a performance budget to CI — minimally a test that parses
+  `next build` output and fails if a key route's First Load JS exceeds a
+  threshold; optionally Lighthouse CI.
+- **Why:** Once the PERFORMANCE_PLAN.md optimization ships, nothing stops a
+  future change from silently re-bloating the bundle or regressing Core Web
+  Vitals. The design doc's success criterion ("Lighthouse/CWV not worse than
+  current site") has no enforcement today.
+- **Pros:** Locks in the gains; regressions caught at PR time.
+- **Cons:** CI infrastructure to own; Lighthouse CI can be flaky; thresholds
+  need tuning.
+- **Context:** Deferred from /plan-eng-review of PERFORMANCE_PLAN.md
+  (2026-05-21). Thresholds must be set from the POST-optimization numbers, so
+  this naturally follows Phases 1–2 rather than joining them. Cheapest viable
+  version: a Playwright/Node test asserting `/markedsinnsikt` and a blog route
+  First Load JS stay under a recorded ceiling.
+- **Depends on / blocked by:** PERFORMANCE_PLAN.md Phases 1–2 complete (for
+  realistic thresholds).
+
+---
+
 ## Completed
 
 ### TODO 8 — Fix the stale Next.js version in CLAUDE.md

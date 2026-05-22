@@ -1,5 +1,6 @@
 import { allCustomersPosts } from "content-collections";
 import { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
@@ -8,17 +9,7 @@ import { CtaStrip } from "@/components/site/CtaStrip";
 import { ProseShell } from "@/components/site/ProseShell";
 import { getBlurDataURL } from "@/lib/blog/images";
 import { constructMetadata } from "@/lib/utils";
-
-const CUSTOMER_STORY_ALIASES: Record<string, string> = {
-  "hvordan-vi-hjalp-en-investor-realisere-25-høyere-avkastning":
-    "investor-avkastning",
-  "hvordan-vi-hjalp-en-investor-realisere-25-hoyere-avkastning":
-    "investor-avkastning",
-};
-
-function resolveCustomerSlug(slug: string) {
-  return CUSTOMER_STORY_ALIASES[slug] ?? slug;
-}
+import { getCustomerPost } from "@/lib/content";
 
 // Editorial presentation extras for the case study layout. Optional — any
 // customer not listed still renders fully from the content collection.
@@ -136,8 +127,7 @@ export async function generateMetadata({
   params: { slug: string };
 }): Promise<Metadata | undefined> {
   const { slug } = await params;
-  const resolvedSlug = resolveCustomerSlug(slug);
-  const post = allCustomersPosts.find((post) => post.slug === resolvedSlug);
+  const post = getCustomerPost(slug);
   if (!post) {
     return;
   }
@@ -160,15 +150,14 @@ export default async function CustomerStory({
   };
 }) {
   const { slug } = await params;
-  const resolvedSlug = resolveCustomerSlug(slug);
-  const data = allCustomersPosts.find((post) => post.slug === resolvedSlug);
+  const data = getCustomerPost(slug);
   if (!data) {
     notFound();
   }
 
   const [, images] = await Promise.all([
     getBlurDataURL(data.image),
-    await Promise.all(
+    Promise.all(
       data.images.map(async (src: string) => ({
         src,
         blurDataURL: await getBlurDataURL(src),
@@ -257,8 +246,14 @@ export default async function CustomerStory({
 
             {pres?.heroImage && (
               <div className="img">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={pres.heroImage} alt={pres.heroImageAlt} />
+                <Image
+                  src={pres.heroImage}
+                  alt={pres.heroImageAlt}
+                  width={720}
+                  height={900}
+                  priority
+                  sizes="(max-width: 980px) 100vw, 720px"
+                />
               </div>
             )}
           </div>

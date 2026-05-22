@@ -7,8 +7,6 @@
 import { Fragment, useEffect, useState } from "react"
 import dynamic from "next/dynamic"
 import Link from "next/link"
-import { MarketBarChart } from "./charts/MarketBarChart"
-import { MarketLineChart } from "./charts/MarketLineChart"
 import { MapErrorBoundary } from "./MapErrorBoundary"
 import type { MapCity } from "./types"
 
@@ -19,6 +17,33 @@ const NordNorgeLeafletMap = dynamic(
   () =>
     import("./maps/NordNorgeLeafletMap").then((m) => m.NordNorgeLeafletMap),
   { ssr: false, loading: () => <div className="mi-map-loading" /> },
+)
+
+// recharts (~100KB) is heavy, and its ResponsiveContainer cannot meaningfully
+// server-render anyway — so the charts load on demand. The 360px skeleton
+// matches CHART_HEIGHT and locks layout to avoid a shift on first paint.
+// See PERFORMANCE_PLAN.md Phase 2.1.
+const ChartSkeleton = () => (
+  <div
+    className="mi-chart-skeleton"
+    style={{
+      width: "100%",
+      height: 360,
+      borderRadius: 8,
+      background: "rgba(44, 40, 37, 0.04)",
+    }}
+    aria-hidden="true"
+  />
+)
+
+const MarketBarChart = dynamic(
+  () => import("./charts/MarketBarChart").then((m) => m.MarketBarChart),
+  { ssr: false, loading: ChartSkeleton },
+)
+
+const MarketLineChart = dynamic(
+  () => import("./charts/MarketLineChart").then((m) => m.MarketLineChart),
+  { ssr: false, loading: ChartSkeleton },
 )
 
 // ════════════════════════════════════════════════════════════════════════

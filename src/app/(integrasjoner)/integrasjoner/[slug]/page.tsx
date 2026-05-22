@@ -8,6 +8,7 @@ import { MDX } from "@/components/blog/mdx";
 import BlurImage from "@/lib/blog/blur-image";
 import { getBlurDataURL } from "@/lib/blog/images";
 import { constructMetadata } from "@/lib/utils";
+import { getIntegrationPost } from "@/lib/content";
 
 export async function generateStaticParams() {
   return allIntegrationsPosts.map((post) => ({
@@ -21,7 +22,7 @@ export async function generateMetadata({
   params: { slug: string };
 }): Promise<Metadata | undefined> {
   const { slug } = await params;
-  const post = allIntegrationsPosts.find((post) => post.slug === slug);
+  const post = getIntegrationPost(slug);
   if (!post) {
     return;
   }
@@ -44,14 +45,14 @@ export default async function IntegrationPage({
   };
 }) {
   const { slug } = await params;
-  const data = allIntegrationsPosts.find((post) => post.slug === slug);
+  const data = getIntegrationPost(slug);
   if (!data) {
     notFound();
   }
 
   const [thumbnailBlurhash, images] = await Promise.all([
     getBlurDataURL(data.image),
-    await Promise.all(
+    Promise.all(
       (data.images || []).map(async (src: string) => ({
         src,
         blurDataURL: await getBlurDataURL(src),

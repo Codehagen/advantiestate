@@ -5,6 +5,7 @@ import { CtaStrip } from "@/components/site/CtaStrip";
 import { constructMetadata } from "@/lib/utils";
 import { allPersonPosts } from "content-collections";
 import { notFound } from "next/navigation";
+import Image from "next/image";
 import Link from "next/link";
 import { PersonMDX } from "./person-mdx";
 
@@ -119,8 +120,14 @@ export default async function PersonPage({ params }: PersonPageProps) {
           <div className="pe-hero">
             <div className="portrait">
               <span className="badge">{office}</span>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={person.avatar} alt={person.name} />
+              <Image
+                src={person.avatar}
+                alt={person.name}
+                width={560}
+                height={700}
+                priority
+                sizes="(max-width: 980px) 100vw, 560px"
+              />
             </div>
 
             <div>
@@ -337,8 +344,13 @@ export default async function PersonPage({ params }: PersonPageProps) {
                   href={`/personer/${other.slug}`}
                 >
                   <div className="ip">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={other.avatar} alt={other.name} />
+                    <Image
+                      src={other.avatar}
+                      alt={other.name}
+                      width={320}
+                      height={400}
+                      sizes="(max-width: 768px) 50vw, 320px"
+                    />
                   </div>
                   <div>
                     <h4>{other.name}</h4>

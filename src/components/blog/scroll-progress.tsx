@@ -6,19 +6,32 @@ export default function ScrollProgress() {
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    const updateProgress = () => {
-      const windowHeight = window.innerHeight;
-      const documentHeight = document.documentElement.scrollHeight;
-      const scrollTop = window.scrollY;
-      const scrollableHeight = documentHeight - windowHeight;
-      const scrolled = scrollTop / scrollableHeight;
+    let frame = 0;
+
+    const compute = () => {
+      frame = 0;
+      const scrollableHeight =
+        document.documentElement.scrollHeight - window.innerHeight;
+      const scrolled =
+        scrollableHeight > 0 ? window.scrollY / scrollableHeight : 0;
       setProgress(Math.min(100, Math.max(0, scrolled * 100)));
     };
 
-    window.addEventListener("scroll", updateProgress);
-    updateProgress(); // Initial calculation
+    // Throttle to one update per animation frame — a raw scroll handler fires
+    // many times per frame and would re-render the bar on each. The listener is
+    // passive so it never blocks scrolling. See PERFORMANCE_PLAN.md Phase 5.1.
+    const onScroll = () => {
+      if (frame) return;
+      frame = requestAnimationFrame(compute);
+    };
 
-    return () => window.removeEventListener("scroll", updateProgress);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    compute(); // initial calculation
+
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      if (frame) cancelAnimationFrame(frame);
+    };
   }, []);
 
   return (
