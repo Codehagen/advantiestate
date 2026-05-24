@@ -19,6 +19,8 @@
     "@radix-ui/react-select": "^2.1.6",
     "@radix-ui/react-slot": "^1.1.1",
     "@radix-ui/react-visually-hidden": "^1.1.2",
+    "@react-email/components": "^1.0.12",
+    "@react-email/render": "^2.0.8",
     "@remixicon/react": "^4.6.0",
     "@types/katex": "^0.16.7",
     "@types/mdx": "^2.0.13",
@@ -38,6 +40,7 @@
     "react-medium-image-zoom": "^5.2.13",
     "react-wrap-balancer": "^1.1.1",
     "recharts": "^2.15.1",
+    "resend": "^6.12.3",
     "tailwind-merge": "^2.6.0",
     "tailwind-variants": "^0.3.0",
     "vaul": "^1.1.2"
