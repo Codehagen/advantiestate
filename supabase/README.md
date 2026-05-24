@@ -1,126 +1,126 @@
-# Supabase — funnel lead capture
+# Supabase — funnel routing
 
-One Postgres table (`leads`) backed by Supabase. Every signup from the funnel
-inserts a row here. The Next.js app uses the **service-role key** server-side
-(never exposed to the browser) to insert directly. The `anon` key is not used
-anywhere in this codebase.
+The advantiestate.no funnel writes signups into **two Supabase destinations**,
+chosen by intent:
 
-## One-time setup
+| Source | Destination | Why |
+|---|---|---|
+| `verdivurdering-intake` | `crm_leads` + `crm_activities` | Sales-qualified — visitor filled the 5-question intake on `/tjenester/verdivurdering` |
+| `kontakt` | `crm_leads` + `crm_activities` | Direct enquiry via the contact form |
+| `markedsrapport` | `web_signups` | Top-of-funnel PDF gate |
+| `sjekkliste-verdivurdering` | `web_signups` | Top-of-funnel PDF gate |
+| `blog`, `help`, `markedsinnsikt`, `service`, `footer` | `web_signups` | Newsletter signup, no qualification |
 
-1. **Create a Supabase project** at https://supabase.com/dashboard. Name it
-   something like `advanti-funnel`. Region: closest to your team (probably
-   `eu-north-1` for Norway).
+Writer: `src/lib/supabase/leads.ts` (`recordSignup()`). Routing is by
+SubscribeSource (see `src/lib/email/subscribe.ts`).
 
-2. **Run the migration.** In the project's SQL editor, paste the contents
-   of `supabase/migrations/001_leads.sql` and run it. Safe to re-run — every
-   statement is idempotent.
+## Why two tables
 
-   Or via Supabase CLI:
-   ```
-   supabase link --project-ref <your-ref>
-   supabase db push
-   ```
+`crm_leads` is a curated sales pipeline — 89 hand-tended rows when this
+shipped, all with real company names, contact info, and outbound activity
+context. Pouring 1000 newsletter signups in there would dilute it past the
+point of usefulness.
 
-3. **Copy the credentials** from Settings → API:
-   - `Project URL` → `SUPABASE_URL`
-   - `service_role` key (NOT `anon`) → `SUPABASE_SERVICE_ROLE_KEY`
+`web_signups` is the firehose. Lightweight: `email`, `source`, `page_url`,
+`intake` jsonb, `created_at`. Use it for funnel analytics, attribution, and
+to escalate specific entries into `crm_leads` manually (or via automation
+later).
 
-4. **Set on Vercel:** Project Settings → Environment Variables. Set for
-   Production + Preview + Development. Redeploy main.
+## crm_leads mapping (high-intent signups)
 
-5. **Verify**: submit a test signup on /markedsrapport or
-   /tjenester/verdivurdering#bestill. Then in Supabase SQL editor:
-   ```sql
-   select * from leads order by created_at desc limit 10;
-   ```
-   You should see your test row.
+| Funnel field | crm_leads column | Notes |
+|---|---|---|
+| `email` | `kontakt_epost` | lowercased |
+| `firstName` | `kontakt_navn` | falls back to `"Ukjent"` |
+| `intake.Bedrift` | `firma_navn` | NOT NULL — falls back to `"Ukjent (skjema-innsending)"` |
+| `intake.Telefon` | `kontakt_telefon` | |
+| `intake.Eiendomstype` | `behov_type_eiendom` | mapped to `property_type` enum: Kontor→`kontor`, Handel→`butikk`, Logistikk/lager→`lager`, Kombinert→`{kontor,lager}` |
+| `intake.Sted` | `behov_geografi` | single-element array |
+| `intake.Tidshorisont` | `tidshorisont` | direct |
+| `intake.Bakgrunn` | `behov_beskrivelse` | |
+| `intake.Beskjed` | `notater` | |
+| `source` + `pageUrl` | `kilde` | `web: <human label> fra <url>` matches the existing `incoming: …` / `epost: …` convention |
+| (constant) | `status` | `'ny'` (default) |
+| (derived) | `tags` | `['web', source]` |
 
-## Table shape
+Each high-intent insert also writes a `notat` row to `crm_activities` so the
+lead surfaces in the CRM activity feed with intake context, not as an empty
+new row.
+
+## web_signups schema
 
 ```
-leads
-  id                  uuid PK
-  created_at          timestamptz
-  email               text         (lower-cased on insert)
-  first_name          text
-  phone               text
-  source              text         enum-by-convention; see SubscribeSource union
-  page_url            text         where the visitor signed up
-  intake              jsonb        the 5 verdivurdering fields when applicable
-  notes               text         visitor-provided message
-  high_intent         boolean      true for verdivurdering-intake + kontakt
-  already_subscribed  boolean      true if Resend reported the email existed
-  status              text         new | contacted | qualified | converted | dead
-  assigned_to         text         partner who owns the lead
-  status_changed_at   timestamptz  auto-updated by trigger
+id                  uuid PK
+created_at          timestamptz
+email               text  (lowercased)
+first_name          text
+source              text  (matches SubscribeSource union)
+page_url            text
+intake              jsonb (rare for newsletter; populated for gated PDFs that ask for name)
+already_subscribed  boolean (true if Resend reported a repeat touchpoint)
+kilde               text  generated as 'web: ' || source
 ```
 
-One row = one signup event. Multiple touchpoints from the same email = multiple
-rows. Query `leads_latest` (view) for the deduplicated "current state".
+`web_signups_latest` view dedupes by email and keeps the most recent
+touchpoint per address — useful for "current state of the list" queries.
+
+## Setup
+
+The migrations have already been applied to the live project via the
+Supabase MCP. The SQL is kept in `supabase/migrations/` for reference and
+disaster recovery.
+
+The Next.js app needs two env vars on Vercel:
+
+| Variable | Source |
+|---|---|
+| `SUPABASE_URL` | Supabase Dashboard → Settings → API → Project URL |
+| `SUPABASE_SERVICE_ROLE_KEY` | Same page → `service_role` key (NOT `anon`) |
+
+Without them, `recordSignup()` is a silent no-op — the funnel still works
+(Resend + Discord), nothing lands in Supabase. Documented in `.env.example`.
 
 ## Common queries
 
 ```sql
--- All signups today
-select * from leads
+-- Web signups today
+select * from public.web_signups
 where created_at > now() - interval '1 day'
 order by created_at desc;
 
--- High-intent leads not yet contacted
-select * from leads
-where high_intent = true and status = 'new'
+-- New high-intent leads not yet contacted
+select * from public.crm_leads
+where status = 'ny' and 'web' = any(tags)
 order by created_at desc;
 
--- All touchpoints for a specific email
-select * from leads
-where lower(email) = lower('user@example.com')
+-- All touchpoints for a specific email (across both tables)
+select 'web_signup' as kind, created_at, source, page_url
+  from public.web_signups where lower(email) = lower($1)
+union all
+select 'crm_lead', created_at, kilde, null
+  from public.crm_leads where lower(kontakt_epost) = lower($1)
 order by created_at desc;
 
--- Funnel breakdown by source (last 30 days)
-select source, count(*) as signups
-from leads
+-- Funnel by source (30d)
+select source, count(*) from public.web_signups
 where created_at > now() - interval '30 days'
-group by source
-order by signups desc;
+group by source order by count desc;
 
--- Current state of the list (deduplicated)
-select * from leads_latest order by latest_touchpoint_at desc limit 50;
-```
-
-## Updating lead status
-
-The team updates `status` via the Supabase dashboard (Table Editor → leads) or
-through whatever CRM tooling lands later. The `status_changed_at` column is
-auto-bumped by trigger when status changes — you don't need to set it manually.
-
-```sql
--- Mark a lead as contacted
-update leads
-set status = 'contacted', assigned_to = 'christer'
-where email = 'user@example.com' and status = 'new';
+-- Promote a web_signup into crm_leads manually (template)
+-- Run after a phone call or further qualification.
+insert into public.crm_leads (firma_navn, kontakt_navn, kontakt_epost, kilde, status, tags)
+select 'Ukjent (manuelt promotert)', coalesce(first_name, 'Ukjent'), email,
+       'promotert fra web_signups: ' || source, 'ny', array['web', source]
+from public.web_signups where id = '<uuid>';
 ```
 
 ## Graceful degradation
 
-If `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` are unset:
-- The funnel still works end-to-end (Resend audience + welcome email + Discord ping)
-- `insertLead()` returns early without throwing
-- Server log: nothing — silent no-op (by design, so unset env doesn't spam logs)
+- `SUPABASE_URL` / `SUPABASE_SERVICE_ROLE_KEY` unset → `recordSignup` is a no-op. Funnel still ships Resend + Discord.
+- Supabase responds with an error → logged to server console, visitor still sees success.
 
-If Supabase is configured but the insert fails (network, RLS error, schema drift):
-- The funnel still works end-to-end
-- `insertLead()` logs `Supabase leads.insert error: <error>` to the server console
-- Visitor sees the success state — the failure is silent to them
+## Migration log
 
-Resend is the source of truth for "is this email on the newsletter list?".
-Supabase is a downstream sink. If Supabase falls behind, the newsletter still
-ships; backfill by exporting from Resend's audience.
-
-## Schema migrations
-
-Add new migrations as `supabase/migrations/00N_description.sql`. Numbering
-is chronological. Re-running the same file should be safe (guard every
-`create` with `if not exists`).
-
-For destructive changes (renaming columns, dropping tables), write a
-forward+rollback pair and document the rollback in the migration file itself.
+| File | Applied | Notes |
+|---|---|---|
+| `001_web_signups.sql` | 2026-05-24 via MCP `apply_migration` (name: `advanti_web_signups`) | `web_signups` table, indexes, RLS, view. `crm_leads` was already in place from the team's CRM — no migration needed there. |

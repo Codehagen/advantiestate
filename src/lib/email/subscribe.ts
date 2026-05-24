@@ -3,7 +3,7 @@ import { render } from "@react-email/render"
 import { WelcomeEmail } from "@/emails/WelcomeEmail"
 import { AUDIENCE_ID, EMAIL_FROM, getResend } from "./resend"
 import { notifyLead } from "./discord"
-import { insertLead } from "@/lib/supabase/leads"
+import { recordSignup } from "@/lib/supabase/leads"
 
 // All the surfaces that can trigger a subscribe. Used for analytics on the
 // Discord side ("which page / lead magnet drove this signup?") and to pick
@@ -116,9 +116,6 @@ export async function subscribe(input: SubscribeInput): Promise<SubscribeResult>
     }
   }
 
-  const highIntent =
-    input.source === "verdivurdering-intake" || input.source === "kontakt"
-
   // Discord digest — non-blocking.
   notifyLead({
     email,
@@ -129,19 +126,18 @@ export async function subscribe(input: SubscribeInput): Promise<SubscribeResult>
     alreadySubscribed,
   }).catch((e) => console.error("Discord notify failed:", e))
 
-  // Supabase lead row — non-blocking, same contract as Discord. Resend
-  // remains the source of truth for "is this email on the list?"; Supabase
-  // is a downstream sink that the team queries for CRM-style reporting and
-  // per-lead touchpoint history.
-  insertLead({
+  // Supabase routing — non-blocking, same contract as Discord. High-intent
+  // signups (verdivurdering-intake, kontakt) land in crm_leads + a notat
+  // activity; everything else lands in web_signups. Resend stays the source
+  // of truth for the newsletter list.
+  recordSignup({
     email,
     source: input.source,
     pageUrl: input.pageUrl,
     firstName: input.firstName,
     intake: input.intake,
-    highIntent,
     alreadySubscribed,
-  }).catch((e) => console.error("Supabase insertLead failed:", e))
+  }).catch((e) => console.error("Supabase recordSignup failed:", e))
 
   return { ok: true, alreadySubscribed }
 }
