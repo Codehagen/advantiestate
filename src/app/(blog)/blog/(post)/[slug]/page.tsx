@@ -70,7 +70,7 @@ export async function generateStaticParams() {
 export async function generateMetadata({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }): Promise<Metadata | undefined> {
   const { slug } = await params;
   const post = getBlogPost(slug);
@@ -78,12 +78,14 @@ export async function generateMetadata({
     return;
   }
 
-  const { title, seoTitle, summary, seoDescription, image } = post;
+  const { title, seoTitle, summary, seoDescription } = post;
 
+  // og:image is the per-article editorial card from /api/og/blog/<slug>.
+  // The frontmatter `image` still drives the in-page hero (BlogArticle).
   return constructMetadata({
     title: `${seoTitle || title} – Advanti Estate`,
     description: seoDescription || summary,
-    image,
+    image: `/api/og/blog/${slug}`,
     path: `/blog/${slug}`,
     ogType: "article",
     publishedTime: post.publishedAt,

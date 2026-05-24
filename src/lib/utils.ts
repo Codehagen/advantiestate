@@ -65,7 +65,13 @@ export function formatDate(date: string) {
 const SITE_TITLE_FALLBACK = "Advanti | Næringsmegler i Nord-Norge";
 const SITE_DESCRIPTION_FALLBACK =
   "Advanti tilbyr ekspertise innen kjøp, salg, utleie, verdivurdering og strategisk rådgivning for næringseiendom i Nord-Norge.";
-const OG_IMAGE_DEFAULT = "/opengraph-image.jpg";
+// Route handler at /api/og/brand renders the editorial brand card.
+// constructMetadata uses it as the OG fallback so every indexable route
+// emits at least the brand card. Per-article routes (e.g. blog posts) pass
+// their own URL (/api/og/blog/<slug>) to override. The old static JPG at
+// /opengraph-image.jpg is still served and is referenced by StructuredData
+// for the Organization schema — that's a JSON-LD concern, not og:image.
+const OG_IMAGE_DEFAULT = "/api/og/brand";
 const OG_IMAGE_ALT = "Advanti - Næringseiendom i Nord-Norge";
 
 const SEO_KEYWORDS = [
@@ -139,6 +145,9 @@ export function constructMetadata({
   path: string;
   title?: string;
   description?: string;
+  /** Absolute or root-relative OG image URL. Defaults to the brand card
+   *  route at /api/og/brand. Per-article routes (e.g. blog posts) pass
+   *  their own URL like /api/og/blog/<slug> to override. */
   image?: string;
   noIndex?: boolean;
   ogType?: "website" | "article";
