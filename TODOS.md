@@ -130,23 +130,27 @@ the AI SEO closure review (/plan-eng-review, 2026-05-24), and the AI-SEO researc
 
 ---
 
-## TODO 6 — Make /kart price-zone selection keyboard- and touch-accessible
+## TODO 6 — /kart price-zone accessibility — SHIPPED 2026-05-24
 
-- **What:** On `/markedsinnsikt/kart` the zone-info panel opens on hover only
-  (`mouseover`/`mouseout`). Touch taps flicker it; keyboard users cannot reach it.
-- **Why:** Zone pricing is currently mouse-only. Add click/tap-to-select and a
-  keyboard path (e.g. a zone list).
-- **Context:** Carried over from the Mapbox version's hover-only pattern; flagged
-  by the ship adversarial review, 2026-05-21. Not a regression, but a real gap.
-- **Sketch (added 2026-05-24 from Leaflet a11y research):** Leaflet's
-  `MapContainer` is keyboard-operable by default; the gap is the GeoJSON path
-  zone-selection layer. Pattern: (1) render a parallel `<ul>` of zones outside
-  the map (an accessible "Bodø sentrum / Bodø ytre / …" list), (2) wire each
-  list item to `setSelected(zone)`, mirroring the existing `mouseover` state,
-  (3) add `onClick`/`onKeyDown` to GeoJSON paths so clicking or pressing Enter
-  selects the same zone, (4) add `aria-label` to each Path via the Leaflet
-  pane API. Reference: [leafletjs.com/examples/accessibility/](https://leafletjs.com/examples/accessibility/),
-  WCAG 2.1 SC 2.4.3 Focus Order.
+- **What:** Make the Bodø price-zone map keyboard- and touch-accessible.
+- **Outcome:** Shipped `feat(a11y)` commit `e43bde4`. Three accessible paths
+  into the zone data:
+  - **Chip list** above the map (DOM-first for keyboard tab): horizontal row
+    of `<button aria-pressed>` chips, one per zone. Pressed state mirrors
+    pinned; hover state mirrors mouseover on the map. Positioned right of
+    Leaflet's +/- zoom controls to avoid overlap.
+  - **SVG GeoJSON paths** get `role="button"`, `tabindex="0"`, and a
+    Norwegian `aria-label` after Leaflet mounts them. Enter/Space wired via
+    Leaflet's keypress event.
+  - **Detail panel** is now `role="region"` + `aria-live="polite"` (screen
+    readers announce zone changes) with a × close button when pinned.
+- **Two-state selection model:** `hovered` (transient, mouseover) + `pinned`
+  (persistent, click/keyboard). Panel shows `pinned ?? hovered`. Touch tap
+  pins; subsequent stray mouseouts no longer clear the panel. Escape also
+  clears the pin.
+- **Verified locally:** chip click pins/unpins, swap between chips works,
+  Escape clears, SVG path click pins, console clean.
+- **Completed:** 2026-05-24.
 
 ---
 
