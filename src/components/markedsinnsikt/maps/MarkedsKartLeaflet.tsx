@@ -8,7 +8,7 @@
 // the authoritative Leaflet basemap + official GeoNorge cadastral overlay do
 // not lend false precision to hand-drawn shapes (see plan eD8).
 
-import { useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import type { Layer, Path } from "leaflet"
 import type { Feature, FeatureCollection, Polygon } from "geojson"
 import { GeoJSON, MapContainer, TileLayer, WMSTileLayer } from "react-leaflet"
@@ -112,26 +112,129 @@ const zoneStyle = {
   weight: ZONE.strokeWidth,
 }
 
+// All zone-feature properties for the parallel accessible button list.
+// Source of truth is `priceZones.features` — keep this derived to avoid drift.
+const ZONES: ZoneProps[] = priceZones.features.map((f) => f.properties)
+
 export function MarkedsKartLeaflet() {
-  const [selectedZone, setSelectedZone] = useState<ZoneProps | null>(null)
+  // Two-state selection so touch users can pin a zone without the next stray
+  // mouseout clearing it. `hovered` reflects current mouse position on the
+  // map; `pinned` reflects an explicit click / Enter / chip selection. The
+  // visible panel shows `pinned ?? hovered`.
+  const [hovered, setHovered] = useState<ZoneProps | null>(null)
+  const [pinned, setPinned] = useState<ZoneProps | null>(null)
   const [showCadastre, setShowCadastre] = useState(false)
+  // Maps zone name → its Leaflet Path so we can sync visual state (fill
+  // opacity) when the user picks a zone from the chip list above the map.
+  const layerByName = useRef<Map<string, Path>>(new Map())
+
+  const active = pinned ?? hovered
+
+  const applyFillOpacity = useCallback(
+    (name: string, opacity: number) => {
+      layerByName.current.get(name)?.setStyle({ fillOpacity: opacity })
+    },
+    [],
+  )
+
+  // When `pinned` changes, sync fill on the active zone. Hover updates already
+  // run inside the Leaflet event handler. This effect catches selections that
+  // came from outside the map (chip click, keyboard).
+  useEffect(() => {
+    ZONES.forEach((z) => {
+      const isActive = active?.name === z.name
+      applyFillOpacity(
+        z.name,
+        isActive ? ZONE.activeFillOpacity : ZONE.fillOpacity,
+      )
+    })
+  }, [active, applyFillOpacity])
+
+  // Escape clears the pin so keyboard users can dismiss without a close button
+  // reach. The close button still exists for pointer users.
+  useEffect(() => {
+    if (!pinned) return
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setPinned(null)
+    }
+    window.addEventListener("keydown", onKey)
+    return () => window.removeEventListener("keydown", onKey)
+  }, [pinned])
+
+  const togglePin = useCallback((zone: ZoneProps) => {
+    setPinned((current) => (current?.name === zone.name ? null : zone))
+  }, [])
 
   const onEachZone = (feature: Feature<Polygon, ZoneProps>, layer: Layer) => {
     const path = layer as Path
-    layer.on({
-      mouseover: () => {
-        path.setStyle({ fillOpacity: ZONE.activeFillOpacity })
-        setSelectedZone(feature.properties)
-      },
-      mouseout: () => {
+    const props = feature.properties
+    layerByName.current.set(props.name, path)
+
+    // Surface the zone to assistive tech directly on the SVG path. Leaflet
+    // creates the SVG element after `add` fires; getElement is safe by then.
+    layer.on("add", () => {
+      const el = path.getElement() as SVGElement | null
+      if (!el) return
+      el.setAttribute("role", "button")
+      el.setAttribute("tabindex", "0")
+      el.setAttribute(
+        "aria-label",
+        `Prissone ${props.name}. Trykk for å feste detaljene.`,
+      )
+    })
+
+    layer.on("mouseover", () => {
+      path.setStyle({ fillOpacity: ZONE.activeFillOpacity })
+      setHovered(props)
+    })
+    layer.on("mouseout", () => {
+      // Keep active styling on a pinned zone — only revert the rest.
+      if (pinned?.name !== props.name) {
         path.setStyle({ fillOpacity: ZONE.fillOpacity })
-        setSelectedZone(null)
-      },
+      }
+      setHovered(null)
+    })
+    layer.on("click", () => togglePin(props))
+    // Leaflet wires DOM events on the SVG path; `keypress` covers Enter/Space.
+    layer.on("keypress", (e: any) => {
+      const key: string | undefined = e?.originalEvent?.key
+      if (key === "Enter" || key === " ") {
+        e?.originalEvent?.preventDefault?.()
+        togglePin(props)
+      }
     })
   }
 
   return (
     <div className="mi-kart-shell">
+      {/* Parallel accessible zone list — rendered before the map in the DOM so
+          keyboard users encounter it first. Visible as a chip cluster
+          overlaid top-left of the map. */}
+      <div
+        className="mi-zone-list"
+        role="group"
+        aria-label="Velg prissone"
+      >
+        {ZONES.map((z) => {
+          const isPinned = pinned?.name === z.name
+          const isHovered = hovered?.name === z.name && !isPinned
+          return (
+            <button
+              key={z.name}
+              type="button"
+              className="mi-zone-chip"
+              aria-pressed={isPinned}
+              data-hovered={isHovered ? "true" : undefined}
+              onClick={() => togglePin(z)}
+              onMouseEnter={() => setHovered(z)}
+              onMouseLeave={() => setHovered(null)}
+            >
+              {z.name}
+            </button>
+          )
+        })}
+      </div>
+
       <MapContainer
         center={BODO_CENTER}
         zoom={BODO_ZOOM}
@@ -173,21 +276,36 @@ export function MarkedsKartLeaflet() {
         {showCadastre ? "Skjul eiendomsgrenser" : "Vis eiendomsgrenser"}
       </button>
 
-      {selectedZone && (
-        <div className="mi-zone-panel">
+      {active && (
+        <div
+          className="mi-zone-panel"
+          role="region"
+          aria-live="polite"
+          aria-label={`Detaljer for prissone ${active.name}`}
+        >
+          {pinned && (
+            <button
+              type="button"
+              className="mi-zone-close"
+              aria-label="Lukk detaljpanel"
+              onClick={() => setPinned(null)}
+            >
+              ×
+            </button>
+          )}
           <div className="mi-zone-eyebrow">Indikativ prissone</div>
-          <h3>{selectedZone.name}</h3>
+          <h3>{active.name}</h3>
           <div className="mi-zone-row">
             <span className="l">Kontor</span>
-            <span className="v">{selectedZone.kontorPriceRange}</span>
+            <span className="v">{active.kontorPriceRange}</span>
           </div>
           <div className="mi-zone-row">
             <span className="l">Handel</span>
-            <span className="v">{selectedZone.handelPriceRange}</span>
+            <span className="v">{active.handelPriceRange}</span>
           </div>
           <div className="mi-zone-row">
             <span className="l">Logistikk</span>
-            <span className="v">{selectedZone.logistikkPriceRange}</span>
+            <span className="v">{active.logistikkPriceRange}</span>
           </div>
         </div>
       )}

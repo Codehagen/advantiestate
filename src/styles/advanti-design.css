@@ -2451,6 +2451,58 @@ h1, h2, h3 {
   border: var(--hairline);
   padding: 20px 22px;
 }
+.mi-zone-close {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  background: transparent;
+  border: none;
+  font-size: 22px;
+  line-height: 1;
+  color: var(--warm-grey-85);
+  cursor: pointer;
+  padding: 4px 8px;
+}
+.mi-zone-close:hover,
+.mi-zone-close:focus-visible {
+  color: var(--warm-grey);
+  outline: none;
+}
+.mi-zone-list {
+  position: absolute;
+  top: 16px;
+  /* Sit to the right of Leaflet's default top-left zoom controls (~44px wide
+     plus the 10px Leaflet edge gap) so the +/- buttons aren't covered. */
+  left: 70px;
+  z-index: 1000;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  max-width: calc(100% - 270px);
+}
+.mi-zone-chip {
+  background: var(--warm-white);
+  border: var(--hairline);
+  padding: 7px 12px;
+  font-size: 12px;
+  font-family: var(--font-body);
+  color: var(--warm-grey);
+  cursor: pointer;
+  letter-spacing: 0.01em;
+}
+.mi-zone-chip:hover,
+.mi-zone-chip[data-hovered="true"] {
+  background: var(--accent-faint);
+}
+.mi-zone-chip:focus-visible {
+  outline: 2px solid var(--warm-grey);
+  outline-offset: 2px;
+}
+.mi-zone-chip[aria-pressed="true"] {
+  background: var(--warm-grey);
+  color: var(--warm-white);
+  border-color: var(--warm-grey);
+}
 .mi-zone-eyebrow {
   font-size: 10px;
   letter-spacing: 0.16em;
@@ -2520,6 +2572,7 @@ h1, h2, h3 {
   .mi-kart-frame { height: 72dvh; }
   .mi-zone-panel { width: 230px; bottom: 50px; }
   .mi-kart-disclaimer { max-width: 220px; }
+  .mi-zone-list { max-width: calc(100% - 230px); }
 }
 
 /* Download report card */
