@@ -1,4 +1,4 @@
-import { constructMetadata } from "@/lib/utils";
+import { constructMetadata, formatDate } from "@/lib/utils";
 import { SubHero } from "@/components/site/SubHero";
 import { CtaStrip } from "@/components/site/CtaStrip";
 import { PhotoBand } from "@/components/site/PhotoBand";
@@ -6,6 +6,8 @@ import { Faq, type FaqItem } from "@/components/site/Faq";
 import StructuredData, {
   BreadcrumbStructuredData,
 } from "@/components/StructuredData";
+
+const LAST_UPDATED = "2026-05-22";
 
 export const metadata = constructMetadata({
   path: "/tjenester/utleie",
@@ -346,6 +348,11 @@ export default function UtleiePage() {
         primary={{ label: "Kontakt oss om utleie", href: "/kontakt" }}
         secondary={{ label: "Se alle våre tjenester", href: "/tjenester" }}
       />
+      <div className="wrap pb-16 text-center">
+        <p className="eyebrow no-rule">
+          Sist oppdatert · {formatDate(LAST_UPDATED)}
+        </p>
+      </div>
     </>
   );
 }

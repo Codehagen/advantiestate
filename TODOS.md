@@ -1,6 +1,55 @@
 # TODOS
 
-Deferred work captured during the editorial redesign port (/plan-eng-review, 2026-05-21).
+Deferred work captured during the editorial redesign port (/plan-eng-review, 2026-05-21)
+and the AI SEO closure review (/plan-eng-review, 2026-05-24).
+
+---
+
+## TODO 14 — Revisit HowTo schema after Perplexity/ChatGPT citation baseline
+
+- **What:** Revisit HowTo schema for help articles after measuring 1-2 months of
+  baseline citation rate on Perplexity and ChatGPT for how-to queries (e.g.
+  "slik verdsetter du næringseiendom").
+- **Why:** Google deprecated HowTo rich results in 2023, so it is no longer a
+  SERP feature. The remaining value is as entity/context markup for non-Google AI
+  engines (Perplexity, ChatGPT). Worth doing only if monitoring shows we are
+  under-cited on how-to queries.
+- **Context:** Dropped from the AI SEO closure PR after the Codex outside-voice
+  review flagged Google's 2023 deprecation against the AI SEO skill's framing.
+  Surfaced in `/plan-eng-review`, 2026-05-24.
+- **Depends on / blocked by:** Monthly AI citation monitoring in place —
+  currently manual; AI SEO skill suggests Peec AI, Otterly, or ZipTie.
+- **Sketch when reopened:** add `howto: z.boolean().optional()` + `step:
+  z.array(z.object({ name, text }))` (singular `step` per schema.org) to
+  `HelpPost`; extend `StructuredData.tsx` with a `howto` branch emitting
+  `@type: "HowToStep"` with `position`; pilot ONE article and validate with the
+  Schema.org tester before extending.
+
+---
+
+## TODO 15 — Add `updatedAt` to BlogPost frontmatter + render
+
+- **What:** Add optional `updatedAt: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional()`
+  to `BlogPost` in `content-collections.ts`; backfill on the 5-10 evergreen
+  posts; render "Sist oppdatert" below `publishedAt` in the blog post header
+  when the two differ.
+- **Why:** Blog is the highest-citation content type (~10% of AI citations per
+  the AI SEO skill's stats), and freshness is a top-3 ranking signal for AI
+  engines. `HelpPost` and `LegalPost` already have `updatedAt`; BlogPost is the
+  only content type still missing the field.
+- **Context:** Noticed during the AI SEO closure review on 2026-05-24. Held out
+  of the crawler / llms.txt / services PR to keep that PR small and shippable.
+  Pairs cleanly with the next round of content editing.
+- **Depends on / blocked by:** Nothing technical. Bundle with a content-editing
+  pass so the 5-10 evergreen posts get refreshed at the same time the field is
+  added.
+- **Sketch when reopened:** `content-collections.ts:570` (BlogPost schema) gets
+  the optional field; `src/app/(blog)/blog/(post)/[slug]/page.tsx` header renders
+  the date only when `updatedAt` differs from `publishedAt`;
+  `src/app/sitemap.ts:457` uses `updatedAt ?? publishedAt` for `lastModified`.
+  `StructuredData.tsx` `article` case at line 850 already reads
+  `data.updatedAt || data.publishedAt` for `dateModified` — no schema-side
+  change needed.
 
 ---
 
