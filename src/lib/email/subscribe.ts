@@ -130,28 +130,32 @@ export async function subscribe(input: SubscribeInput): Promise<SubscribeResult>
     )
   }
 
-  // 2. Discord — when configured. notifyLead() already early-returns on
-  //    missing DISCORD_WEBHOOK_URL and never throws.
-  notifyLead({
-    email,
-    source: input.source,
-    pageUrl: input.pageUrl,
-    firstName: input.firstName,
-    intake: input.intake,
-    alreadySubscribed,
-  }).catch((e) => console.error("Discord notify failed:", e))
-
-  // 3. Supabase — when configured. recordSignup() routes high-intent
-  //    signups into crm_leads + crm_activities, everything else into
-  //    web_signups. Already non-blocking + env-gated internally.
-  recordSignup({
-    email,
-    source: input.source,
-    pageUrl: input.pageUrl,
-    firstName: input.firstName,
-    intake: input.intake,
-    alreadySubscribed,
-  }).catch((e) => console.error("Supabase recordSignup failed:", e))
+  // 2 + 3. Discord + Supabase — both must AWAIT, in parallel. Earlier
+  // versions used .catch() fire-and-forget, which Vercel's serverless
+  // runtime silently truncates the moment the function returns. Symptom
+  // before the fix: one-write paths (web_signups) sometimes landed, the
+  // two-write path (crm_leads + crm_activities) usually got cut off
+  // mid-flight with no error log. Promise.all so the function waits for
+  // both to settle, .catch() inside so a failure in one doesn't poison
+  // the other or the response.
+  await Promise.all([
+    notifyLead({
+      email,
+      source: input.source,
+      pageUrl: input.pageUrl,
+      firstName: input.firstName,
+      intake: input.intake,
+      alreadySubscribed,
+    }).catch((e) => console.error("Discord notify failed:", e)),
+    recordSignup({
+      email,
+      source: input.source,
+      pageUrl: input.pageUrl,
+      firstName: input.firstName,
+      intake: input.intake,
+      alreadySubscribed,
+    }).catch((e) => console.error("Supabase recordSignup failed:", e)),
+  ])
 
   return { ok: true, alreadySubscribed }
 }
