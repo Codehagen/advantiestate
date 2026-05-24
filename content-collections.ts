@@ -63,6 +63,7 @@ const BlogPost = defineCollection({
       .array(z.enum(["company", "valuation", "market-analysis", "casestudies"]))
       .default(["company"]),
     publishedAt: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+    updatedAt: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional(),
     featured: z.boolean().default(false),
     image: z.string(),
     images: z.array(z.string()).optional(),

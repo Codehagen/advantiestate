@@ -71,10 +71,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.8,
   }));
 
-  // Dynamic blog pages — `lastModified` derived from frontmatter.
+  // Dynamic blog pages — `lastModified` prefers `updatedAt` when an evergreen
+  // post has been refreshed; falls back to `publishedAt` for unedited posts.
   const blogPages = allBlogPosts.map((post) => ({
     url: `${baseUrl}/blog/${post.slug}`,
-    lastModified: new Date(post.publishedAt),
+    lastModified: new Date(post.updatedAt ?? post.publishedAt),
     changeFrequency: "weekly" as const,
     priority: 0.8,
   }));

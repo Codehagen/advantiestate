@@ -87,6 +87,7 @@ export async function generateMetadata({
     path: `/blog/${slug}`,
     ogType: "article",
     publishedTime: post.publishedAt,
+    modifiedTime: post.updatedAt,
     authors: [AUTHOR_NAMES[post.author] || post.author],
   });
 }
@@ -154,6 +155,7 @@ export default async function BlogArticle({
           title: data.title,
           summary: data.summary,
           publishedAt: data.publishedAt,
+          updatedAt: data.updatedAt,
           image: data.image,
           author: data.author,
           authorName,
@@ -200,6 +202,12 @@ export default async function BlogArticle({
               </Link>
               <span className="sep">·</span>
               <span>{editorialDate(data.publishedAt)}</span>
+              {data.updatedAt && data.updatedAt !== data.publishedAt && (
+                <>
+                  <span className="sep">·</span>
+                  <span>Sist oppdatert {editorialDate(data.updatedAt)}</span>
+                </>
+              )}
               {readingTime && (
                 <>
                   <span className="sep">·</span>
