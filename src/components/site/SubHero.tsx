@@ -125,6 +125,7 @@ export function SubHero({
                   fill
                   sizes="(max-width: 900px) 100vw, 45vw"
                   style={{ objectFit: "cover" }}
+                  priority
                 />
               </div>
             )}
