@@ -1024,7 +1024,7 @@ function RapporterView() {
           </div>
           <div>
             <div className="key">Neste utgave</div>
-            <div className="val">15. april 2026</div>
+            <div className="val">15. juli 2026</div>
           </div>
         </div>
       </div>
