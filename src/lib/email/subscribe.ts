@@ -36,14 +36,26 @@ export type SubscribeResult =
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
+const RESEND_CONFIGURED = () =>
+  Boolean(AUDIENCE_ID && process.env.RESEND_API_KEY)
+
 /**
- * Idempotent subscribe — adds the email to the Advanti audience in Resend
- * and fires the welcome email. Safe to call multiple times: Resend's contact
- * API returns the existing contact instead of erroring.
+ * Idempotent subscribe.
  *
- * Also pings the team Discord with source/context so Christer + Vegard see
- * pipeline in real time. Discord failure does NOT block the signup —
- * subscriber data is the source of truth.
+ * Three independent destinations, each non-blocking:
+ *   1. Resend (newsletter audience + welcome email) — optional, skipped
+ *      when env unset.
+ *   2. Discord (team digest webhook) — optional, skipped when env unset.
+ *   3. Supabase (web_signups / crm_leads + crm_activities) — optional,
+ *      skipped when env unset.
+ *
+ * The visitor only sees a hard failure when none of the three could fire
+ * AND email validation passed — i.e. the funnel has no destination at all.
+ * In every other case we return ok so the form flips to the success state.
+ *
+ * Re-subscribing the same email is safe: Resend treats contacts.create as
+ * an upsert, Discord pings are dedupable by the team, and Supabase records
+ * one row per touchpoint by design (see supabase/README.md).
  */
 export async function subscribe(input: SubscribeInput): Promise<SubscribeResult> {
   const email = input.email.trim().toLowerCase()
@@ -51,72 +63,75 @@ export async function subscribe(input: SubscribeInput): Promise<SubscribeResult>
   if (!EMAIL_RE.test(email)) {
     return { ok: false, error: "Ugyldig e-postadresse." }
   }
-  if (!AUDIENCE_ID || !process.env.RESEND_API_KEY) {
+
+  // If literally nothing is configured, fail loudly so we don't ghost the
+  // visitor with a "success" that wrote to nothing.
+  const anyConfigured =
+    RESEND_CONFIGURED() ||
+    Boolean(process.env.DISCORD_WEBHOOK_URL) ||
+    Boolean(process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY)
+  if (!anyConfigured) {
     console.error(
-      "Resend env not configured (RESEND_API_KEY or RESEND_AUDIENCE_ID missing); aborting subscribe.",
+      "subscribe(): no destinations configured (Resend, Discord, Supabase all unset).",
     )
     return { ok: false, error: "Tjenesten er midlertidig utilgjengelig." }
   }
 
-  let resend
-  try {
-    resend = getResend()
-  } catch (e) {
-    console.error("Resend client init failed:", e)
-    return { ok: false, error: "Tjenesten er midlertidig utilgjengelig." }
-  }
-
-  // Resend's contacts.create returns 200 even for existing contacts (the API
-  // is upsert-shaped) so we read `alreadySubscribed` from the unsubscribed
-  // flag. If the contact was previously unsubscribed, re-subscribe them.
+  // 1. Resend — when configured. Detects repeat signups so we don't double-
+  //    fire the welcome email. When env is unset, alreadySubscribed stays
+  //    false and we skip the welcome.
   let alreadySubscribed = false
-  try {
-    const created = await resend.contacts.create({
-      email,
-      firstName: input.firstName,
-      unsubscribed: false,
-      audienceId: AUDIENCE_ID,
-    })
-    if (created.error) {
-      // Treat "already exists" as a soft success — flag it so we skip the
-      // welcome email but still ping Discord (the source/intake context is
-      // valuable even for repeat signups, e.g. someone grabbing a second
-      // gated asset).
-      const msg = created.error.message ?? ""
-      if (/already|exists|duplicate/i.test(msg)) {
-        alreadySubscribed = true
-      } else {
-        console.error("Resend contacts.create error:", created.error)
-        return { ok: false, error: "Kunne ikke registrere e-post." }
-      }
-    }
-  } catch (e) {
-    console.error("Resend contacts.create threw:", e)
-    return { ok: false, error: "Kunne ikke registrere e-post." }
-  }
-
-  // Welcome email — first-time signups only.
-  if (!alreadySubscribed) {
+  if (RESEND_CONFIGURED()) {
     try {
-      const html = await render(WelcomeEmail({ firstName: input.firstName }))
-      const text = await render(WelcomeEmail({ firstName: input.firstName }), {
-        plainText: true,
+      const resend = getResend()
+      const created = await resend.contacts.create({
+        email,
+        firstName: input.firstName,
+        unsubscribed: false,
+        audienceId: AUDIENCE_ID,
       })
-      await resend.emails.send({
-        from: EMAIL_FROM,
-        to: email,
-        subject: "Velkommen til Advanti",
-        html,
-        text,
-      })
+      if (created.error) {
+        const msg = created.error.message ?? ""
+        if (/already|exists|duplicate/i.test(msg)) {
+          alreadySubscribed = true
+        } else {
+          console.error("Resend contacts.create error:", created.error)
+          // Don't bail — Supabase + Discord should still fire.
+        }
+      }
+
+      // Welcome email — first-time signups only.
+      if (!alreadySubscribed) {
+        try {
+          const html = await render(
+            WelcomeEmail({ firstName: input.firstName }),
+          )
+          const text = await render(
+            WelcomeEmail({ firstName: input.firstName }),
+            { plainText: true },
+          )
+          await resend.emails.send({
+            from: EMAIL_FROM,
+            to: email,
+            subject: "Velkommen til Advanti",
+            html,
+            text,
+          })
+        } catch (e) {
+          console.error("Welcome email failed for", email, e)
+        }
+      }
     } catch (e) {
-      // Welcome failure is non-fatal — we have the subscriber, the drip
-      // sequence will pick them up. Logged for ops to investigate.
-      console.error("Welcome email failed for", email, e)
+      console.error("Resend pipeline threw:", e)
     }
+  } else {
+    console.warn(
+      "subscribe(): Resend env unset — skipping audience + welcome; Discord + Supabase still fire.",
+    )
   }
 
-  // Discord digest — non-blocking.
+  // 2. Discord — when configured. notifyLead() already early-returns on
+  //    missing DISCORD_WEBHOOK_URL and never throws.
   notifyLead({
     email,
     source: input.source,
@@ -126,10 +141,9 @@ export async function subscribe(input: SubscribeInput): Promise<SubscribeResult>
     alreadySubscribed,
   }).catch((e) => console.error("Discord notify failed:", e))
 
-  // Supabase routing — non-blocking, same contract as Discord. High-intent
-  // signups (verdivurdering-intake, kontakt) land in crm_leads + a notat
-  // activity; everything else lands in web_signups. Resend stays the source
-  // of truth for the newsletter list.
+  // 3. Supabase — when configured. recordSignup() routes high-intent
+  //    signups into crm_leads + crm_activities, everything else into
+  //    web_signups. Already non-blocking + env-gated internally.
   recordSignup({
     email,
     source: input.source,
