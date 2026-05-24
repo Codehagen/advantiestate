@@ -139,6 +139,11 @@ function buildBody(baseUrl: string): string {
         "Interaktivt kart over prissoner og transaksjoner.",
       ),
       line(
+        "Markedsrapport",
+        `${baseUrl}/markedsrapport`,
+        "Kvartalsvis PDF-rapport med yield, leiepriser og transaksjoner.",
+      ),
+      line(
         "Verktøy",
         `${baseUrl}/verktoy`,
         "Yield-, ROI- og boliglånkalkulatorer.",

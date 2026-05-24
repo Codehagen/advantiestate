@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Button } from "@/components/Button";
 import { Input } from "@/components/Input";
 import { Badge } from "@/components/Badge";
+import { subscribeNewsletter } from "@/app/actions/newsletter";
 import { AnimatedGridPattern } from "@/components/ui/Animated-Grid-Background";
 import { FadeContainer, FadeDiv, FadeSpan } from "@/components/ui/Fade";
 import {
@@ -86,20 +87,21 @@ export default function SjekklisteVerdiPage() {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch("/api/discord-notification", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email,
-          pageUrl: window.location.href,
-          formType: "Sjekkliste Verdivurdering",
-        }),
-      });
+      // Route through the newsletter subscribe action so this signup lands in
+      // Resend + fires the welcome email + pings Discord — instead of just
+      // hitting the Discord webhook in isolation as the legacy handler did.
+      const formData = new FormData();
+      formData.set("email", email);
+      formData.set("source", "sjekkliste-verdivurdering");
+      formData.set("pageUrl", window.location.href);
+      const result = await subscribeNewsletter(
+        { status: "idle" },
+        formData,
+      );
 
-      if (!response.ok) {
-        throw new Error("Failed to submit");
+      if (result.status === "error") {
+        setError(result.message);
+        return;
       }
 
       setIsUnlocked(true);

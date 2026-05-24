@@ -1,6 +1,7 @@
 import { constructMetadata } from "@/lib/utils"
 import { SubHero } from "@/components/site/SubHero"
 import { CtaStrip } from "@/components/site/CtaStrip"
+import { NewsletterSection } from "@/components/site/NewsletterSection"
 import { MarkedsinnsiktShell } from "@/components/markedsinnsikt/MarkedsinnsiktShell"
 
 export const metadata = constructMetadata({
@@ -77,6 +78,17 @@ export default function MarkedsinnsiktPage() {
           <MarkedsinnsiktShell />
         </div>
       </section>
+
+      <NewsletterSection
+        source="markedsinnsikt"
+        eyebrow="Få markedsinnsikt før alle andre"
+        title={
+          <>
+            Markedsdata, ferskt <span className="italic">på epost.</span>
+          </>
+        }
+        description="Kvartalsvis markedsbrev med yield, leiepriser, transaksjoner og kommentarer fra senior partner. For eiendomsbesittere og investorer i Nord-Norge."
+      />
 
       <CtaStrip
         eyebrow="Trenger du tallene for en spesifikk eiendom?"

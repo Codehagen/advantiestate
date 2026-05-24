@@ -1,11 +1,11 @@
 import { constructMetadata, formatDate } from "@/lib/utils";
 import { SubHero } from "@/components/site/SubHero";
-import { CtaStrip } from "@/components/site/CtaStrip";
 import { PhotoBand } from "@/components/site/PhotoBand";
 import { Faq, type FaqItem } from "@/components/site/Faq";
 import StructuredData, {
   BreadcrumbStructuredData,
 } from "@/components/StructuredData";
+import { VerdivurderingIntake } from "./VerdivurderingIntake";
 
 const LAST_UPDATED = "2026-05-22";
 
@@ -73,7 +73,7 @@ export default function VerdivurderingPage() {
         }
         lede="Grundige verdivurderinger basert på markedsanalyse, DCF og sammenlignbare transaksjoner — et solid beslutningsgrunnlag for investering, finansiering, regnskap og strategi."
         actions={[
-          { label: "Bestill verdivurdering", href: "/kontakt" },
+          { label: "Bestill verdivurdering", href: "#bestill" },
           { label: "Vår metode", href: "#metode", variant: "outline" },
         ]}
         metaRow={[
@@ -341,21 +341,8 @@ export default function VerdivurderingPage() {
 
       <PhotoBand src="/building/pexels-abshky-18567185.jpg" alt="Verdivurdering av næringseiendom" caption="Verdivurdering · Nord-Norge" />
 
-      <CtaStrip
-        eyebrow="Behov for verdivurdering?"
-        title={
-          <>
-            Bestill en{" "}
-            <span className="italic">profesjonell vurdering.</span>
-          </>
-        }
-        sub="Ta kontakt med Advanti for en samtale om hvordan vi kan bistå med verdivurdering av din næringseiendom — innen 24 timer."
-        primary={{
-          label: "Kontakt oss om verdivurdering",
-          href: "/kontakt",
-        }}
-        secondary={{ label: "Se alle våre tjenester", href: "/tjenester" }}
-      />
+      <VerdivurderingIntake />
+
       <div className="wrap pb-16 text-center">
         <p className="eyebrow no-rule">
           Sist oppdatert · {formatDate(LAST_UPDATED)}

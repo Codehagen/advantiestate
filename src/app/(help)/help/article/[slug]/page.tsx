@@ -4,6 +4,7 @@ import Link from "next/link"
 import { notFound } from "next/navigation"
 
 import { CtaStrip } from "@/components/site/CtaStrip"
+import { NewsletterSection } from "@/components/site/NewsletterSection"
 import { ProseShell } from "@/components/site/ProseShell"
 import { MDX } from "@/components/blog/mdx"
 import { HELP_CATEGORIES } from "@/lib/blog/content"
@@ -309,6 +310,8 @@ export default async function HelpArticle({
           </div>
         </div>
       </section>
+
+      <NewsletterSection source="help" />
 
       <CtaStrip
         eyebrow="Trenger du hjelp på din eiendom?"

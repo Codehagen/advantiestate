@@ -2,6 +2,7 @@ import { ArticleToc } from "@/components/blog/ArticleToc";
 import { MDX } from "@/components/blog/mdx";
 import ScrollProgress from "@/components/blog/scroll-progress";
 import { CtaStrip } from "@/components/site/CtaStrip";
+import { NewsletterSection } from "@/components/site/NewsletterSection";
 import { ProseShell } from "@/components/site/ProseShell";
 import BlurImage from "@/lib/blog/blur-image";
 import { BLOG_CATEGORIES } from "@/lib/blog/content";
@@ -322,6 +323,8 @@ export default async function BlogArticle({
           </div>
         </div>
       </section>
+
+      <NewsletterSection source="blog" />
 
       <CtaStrip
         eyebrow="Trenger du markedsdata på din eiendom?"
