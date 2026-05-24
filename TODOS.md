@@ -6,60 +6,64 @@ the AI SEO closure review (/plan-eng-review, 2026-05-24), and the AI-SEO researc
 
 ---
 
-## TODO 14 — Revisit HowTo schema (priority RAISED after 2026 research)
+## TODO 14 — HowTo schema pilot — SHIPPED 2026-05-24
 
-- **What:** Pilot HowTo schema on ONE help article (likely
-  `diskontert-kontantstrom` or a step-by-step valuation guide), validate with
-  Schema.org tester, then decide on broader rollout after seeing citation
-  movement.
-- **Why (REVISED 2026-05-24):** Codex's "Google deprecated in 2023" framing was
-  literally correct but the *AI-engine value* of HowTo schema is NOT dead.
-  2026 sources (heeya.fr, stackmatix.com, hashmeta.ai) consistently report that
-  HowTo step structure maps to AI Overview / Perplexity / ChatGPT step
-  extraction, and one source claims schema-marked content is ~2.5× more likely
-  to be cited. Earlier framing was too dismissive.
-- **Context:** Originally deferred from the AI SEO closure PR on 2026-05-24
-  pending monitoring data. After the web-research pass that same day, the
-  evidence shifted enough that piloting on one article without waiting for
-  monitoring is defensible. Still useful to pair with TODO 16 (monitoring) to
-  measure actual lift.
-- **Depends on / blocked by:** Nothing hard. Better with TODO 16 in place so
-  we can see the lift, but not strictly required.
-- **Sketch when reopened:** add `howto: z.boolean().optional()` + `step:
-  z.array(z.object({ name, text }))` (singular `step` per schema.org —
-  schema.org says `step` supersedes `steps`) to `HelpPost`; extend
-  `StructuredData.tsx` with a `howto` branch emitting `@type: "HowToStep"`
-  with `position`; pilot ONE article and validate with the Schema.org tester
-  before extending. Each emitted `step` must mirror visible page content
-  (Google rich-result policy and trust risk).
+- **What:** Pilot HowTo schema on one help article and validate.
+- **Outcome:** Shipped infrastructure + one pilot article:
+  - `content-collections.ts` HelpPost: added optional `howto: boolean` +
+    `step: { name, text }[]` (min 2) — singular `step` per schema.org
+    (supersedes legacy `steps`).
+  - `src/components/StructuredData.tsx`: new `howto` case emits
+    `@type: "HowTo"` with `step[]` of `@type: "HowToStep"` items carrying
+    `position` (1-indexed) and `inLanguage: "nb-NO"`. Returns `null` (no-op)
+    unless `step.length >= 2`.
+  - `src/app/(help)/help/article/[slug]/page.tsx`: render
+    `<StructuredData type="howto" />` only when `data.howto && data.step?.length >= 2`.
+  - `src/content/help/diskontert-kontantstrom.mdx`: opt-in with 4 steps that
+    mirror the visible `<Stepper>` component verbatim (no schema/visible
+    drift; satisfies Google rich-result policy).
+- **Verified locally:** 6 JSON-LD scripts on the DCF article (Organization,
+  RealEstateAgent, WebSite, BreadcrumbList, Article, **HowTo**). Each HowTo
+  step has `@type: "HowToStep"` and `position`. 5 control help articles
+  emit no HowTo (gate works).
+- **Why this matters:** 2026 research (heeya.fr, stackmatix.com, hashmeta.ai)
+  shows HowTo schema maps to AI Overview / Perplexity / ChatGPT step
+  extraction; one source claims schema-marked content gets ~2.5× more
+  citations.
+- **Rollout plan:** wait for 1-2 monthly runs of TODO 16 monitoring on
+  how-to queries (e.g. "DCF analyse næringseiendom"). If DCF citation
+  rate improves vs. control help articles, extend HowTo to
+  `sensitivitetsanalyse`, `verdivurdering-av-naringseiendom`,
+  `kontantstromsanalyse`. If no movement, stop expanding and revisit.
+- **Completed:** 2026-05-24.
 
 ---
 
-## TODO 16 — Set up AI citation monitoring (NEW, 2026-05-24)
+## TODO 16 — AI citation monitoring — SHIPPED 2026-05-24 (template + cadence)
 
-- **What:** Establish a baseline measurement of how often Advanti is cited /
-  surfaced by ChatGPT, Perplexity, and Google AI Overviews for the 10-20
-  highest-value queries ("næringsmegler Nord-Norge", "verdivurdering
-  næringseiendom", "salg av næringseiendom Bodø", etc.). Recommended:
-  start with DIY manual (a spreadsheet) for one month at $0, then upgrade
-  to **Otterly** ($29/mo, 100 prompts) if the manual cadence is unsustainable.
-  **ZipTie** ($69/mo) is the strongest GEO workflow tool but probably
-  overkill for a single-market Norwegian B2B site at this stage.
-- **Why:** Several open AI-SEO TODOs (14 HowTo pilot, 15 backfill cadence)
-  need *data*, not intuition, to prioritize correctly. Without monitoring
-  we are guessing whether the work we ship moves anything.
-- **Context:** New TODO surfaced by the 2026-05-24 web-research pass. The AI
-  SEO skill calls citation monitoring "monthly minimum" and lists Peec /
-  Otterly / ZipTie / LLMrefs as standard tools. The 2026 landscape converged
-  on UI-simulation tools (ZipTie, Peec, LLMRefs) being more reliable than
-  API-only approaches.
-- **Depends on / blocked by:** Decision on tool budget (DIY vs $29/mo vs
-  $69/mo). Recommend DIY for one month first.
-- **Sketch when reopened:** create `markedsfoering/ai-citation-baseline.md`
-  (or a Sheets doc) with rows = priority queries × cols = platforms × runs
-  monthly. Track citation presence (yes/no), source URL cited, sentiment.
-  After 1 month of data, decide whether the manual cadence is sustainable
-  or worth an Otterly subscription.
+- **What:** Establish a baseline measurement of how often Advanti is cited
+  by ChatGPT, Perplexity, Google AI Overviews, and Claude for the priority
+  næringsmegler queries.
+- **Outcome:** Created `markedsfoering/ai-citation-baseline.md` — a
+  self-contained DIY tracking template with:
+  - 20 priority queries covering category / market / service / how-to /
+    comparison intents
+  - Monthly run template (query × platform matrix)
+  - Summary section for citation rate, competitor wins, MoM delta
+  - "What to do with the data" guidance: when to expand HowTo schema, when
+    to refresh blog content, when to upgrade tooling
+- **Cadence:** monthly check (~30 min). First Monday of the month.
+- **Tool path:** Start DIY at $0 for 1-2 months. If the cadence becomes
+  burdensome, upgrade to **Otterly** ($29/mo, 100 prompts). **ZipTie**
+  ($69/mo) is the Cadillac GEO tool but probably overkill for a
+  single-market Norwegian B2B site at this stage.
+- **First run target:** 2026-06-01 (next Monday) — Christer or whoever
+  owns marketing checks the 20 queries and fills in the first row.
+- **Why this matters:** Several TODOs (14 HowTo expansion, 15 BlogPost
+  backfill prioritization) need DATA, not intuition, to decide whether
+  the work moves anything. Without monitoring we are guessing.
+- **Completed (template):** 2026-05-24. First monthly run is the next
+  open task.
 
 ---
 
