@@ -224,6 +224,16 @@ export const HelpPost = defineCollection({
       .default(["overview"]),
     related: z.array(z.string()).optional(),
     excludeHeadingsFromSearch: z.boolean().optional(),
+    // Opt-in HowTo schema. Only set on genuine step-by-step procedural
+    // articles — the emitted JSON-LD MUST mirror visible page content (Google
+    // and schema.org policy), so author the `step` array to match a visible
+    // <Stepper> or numbered section on the page. `step` uses the singular form
+    // per schema.org (supersedes the older `steps`).
+    howto: z.boolean().optional(),
+    step: z
+      .array(z.object({ name: z.string(), text: z.string() }))
+      .min(2)
+      .optional(),
     slug: z.string().optional(),
   }),
   transform: async (document, context) => {

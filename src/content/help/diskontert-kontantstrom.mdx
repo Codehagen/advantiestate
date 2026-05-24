@@ -11,6 +11,20 @@ related:
   - netto-leieinntekter
   - driftskostnader
 slug: diskontert-kontantstrom
+# HowTo schema pilot. The `step` array MUST mirror the visible <Stepper>
+# items in the "Steg-for-steg DCF-analyse" section — names and text are
+# transcribed verbatim from the component props so the JSON-LD never drifts
+# from what readers see (schema.org and Google rich-result policy).
+howto: true
+step:
+  - name: "Estimer fremtidige kontantstrømmer"
+    text: "Beregn forventede netto driftsinntekter (NOI) for hvert år i analyseperioden. Ta hensyn til kontraktsfestede leieøkninger, markedsvekst og forventede endringer i driftskostnader."
+  - name: "Fastsett diskonteringsrente"
+    text: "Bestem en passende diskonteringsrente basert på risikofri rente, markedsrisiko og eiendomsspesifikk risiko. Dette reflekterer avkastningskravet til investeringen."
+  - name: "Beregn terminal verdi"
+    text: "Estimer eiendommens verdi ved slutten av analyseperioden ved å bruke exit yield på forventet NOI i året etter analyseperioden."
+  - name: "Diskontér alle verdier"
+    text: "Diskontér både de årlige kontantstrømmene og terminalverdien tilbake til dagens verdi ved å bruke diskonteringsrenten."
 ---
 
 <Prerequisites>

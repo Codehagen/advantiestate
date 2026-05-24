@@ -7,10 +7,13 @@ interface StructuredDataProps {
     | "website"
     | "article"
     | "faq"
+    | "howto"
     | "person"
     | "service";
   data?: any;
 }
+
+export type HowToStep = { name: string; text: string };
 
 export default function StructuredData({
   type = "organization",
@@ -374,6 +377,28 @@ export default function StructuredData({
               ),
             }
           : null;
+
+      case "howto":
+        // Emit ONLY when the caller has both a non-empty `step` array AND
+        // matching visible content on the page. The caller is responsible
+        // for gating on `howto: true` in frontmatter. Each step gets
+        // `@type: "HowToStep"` + `position` per schema.org.
+        if (!data?.step || !Array.isArray(data.step) || data.step.length < 2) {
+          return null;
+        }
+        return {
+          "@context": "https://schema.org",
+          "@type": "HowTo",
+          name: data.name,
+          description: data.description,
+          inLanguage: "nb-NO",
+          step: data.step.map((s: HowToStep, i: number) => ({
+            "@type": "HowToStep",
+            position: i + 1,
+            name: s.name,
+            text: s.text,
+          })),
+        };
 
       default:
         return null;

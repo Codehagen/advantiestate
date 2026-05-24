@@ -156,6 +156,16 @@ export default async function HelpArticle({
           url: `/help/article/${data.slug}`,
         }}
       />
+      {data.howto && data.step && data.step.length >= 2 && (
+        <StructuredData
+          type="howto"
+          data={{
+            name: data.title,
+            description: data.summary,
+            step: data.step,
+          }}
+        />
+      )}
 
       <div className="page-pad" />
 
