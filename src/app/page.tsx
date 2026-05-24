@@ -253,7 +253,7 @@ export default function Home() {
 
           <div className="services">
             {SERVICES.map((s) => (
-              <article className="service" key={s.num}>
+              <Link href={s.href} className="service" key={s.num}>
                 <span className="num">{s.num}</span>
                 <div>
                   <h3>
@@ -262,11 +262,11 @@ export default function Home() {
                     <span style={italicMuted}>{s.titleItalic}</span>
                   </h3>
                   <p>{s.body}</p>
-                  <Link href={s.href} className="more">
+                  <span className="more">
                     Les mer <span>→</span>
-                  </Link>
+                  </span>
                 </div>
-              </article>
+              </Link>
             ))}
           </div>
         </div>
