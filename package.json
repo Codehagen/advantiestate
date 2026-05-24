@@ -22,6 +22,7 @@
     "@react-email/components": "^1.0.12",
     "@react-email/render": "^2.0.8",
     "@remixicon/react": "^4.6.0",
+    "@supabase/supabase-js": "^2.106.1",
     "@types/katex": "^0.16.7",
     "@types/mdx": "^2.0.13",
     "@types/proj4": "^2.5.6",
