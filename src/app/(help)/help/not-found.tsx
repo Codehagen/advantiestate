@@ -1,18 +1,9 @@
 import Link from "next/link"
 
-import BlurImage from "@/lib/blog/blur-image"
-
 export default function NotFound() {
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center">
+    <div className="flex min-h-screen flex-col items-center justify-center gap-8">
       <h1 className="font-display text-6xl font-bold">404</h1>
-      <BlurImage
-        src="/_static/illustrations/call-waiting.svg"
-        alt="404"
-        width={400}
-        height={400}
-        className="pointer-events-none -my-8"
-      />
       <p className="text-2xl font-medium">
         Page not found. Back to{" "}
         <Link
