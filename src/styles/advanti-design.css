@@ -4234,14 +4234,14 @@ h1, h2, h3 {
    Ported from design handoff "Advanti Estate CRM" 2026-05-25.
    ============================================================ */
 
-/* Filter bar — sticky under the fixed nav */
+/* Filter bar — static, sits once at the top of the listings grid.
+   The sticky variant was load-bearing only as long as we wanted the
+   filter to follow the user past the grid; in practice the grid is
+   short enough that scrolling back to filter is fine, and the
+   translucent-light bar floating over the dark off-market band was
+   never going to be fully solved. */
 .ei-filter {
-  position: sticky;
-  top: 80px;
-  z-index: 20;
-  background: rgba(243, 241, 239, 0.92);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
+  background: var(--warm-white);
   border-top: var(--hairline);
   border-bottom: var(--hairline);
   padding: 18px 0;
@@ -4307,7 +4307,6 @@ h1, h2, h3 {
 }
 .ei-filter-result strong { color: var(--warm-grey); font-weight: 500; }
 @media (max-width: 880px) {
-  .ei-filter { position: relative; top: 0; }
   /* Stack filter groups vertically so STATUS / TYPE / BY each get their
      own row at mobile, and allow chips inside each group to wrap when
      5+ chips exceed viewport width. Otherwise the chip row overflows
