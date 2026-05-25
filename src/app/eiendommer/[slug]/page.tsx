@@ -221,7 +221,7 @@ export default async function EiendomDetailPage({
           <div className="ed-title">
             <div>
               <span className="pre">
-                {listing.featured ? "Featured oppdrag" : "Aktivt oppdrag"} ·
+                {listing.featured ? "Utvalgt oppdrag" : "Aktivt oppdrag"} ·
                 {" "}
                 {listing.reference}
               </span>
