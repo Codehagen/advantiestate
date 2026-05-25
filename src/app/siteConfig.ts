@@ -34,6 +34,7 @@ export const siteConfig = {
     blog: "/blog",
     verktoy: "/verktoy",
     naringsmegler: "/naringsmegler",
+    eiendommer: "/eiendommer",
   },
 };
 

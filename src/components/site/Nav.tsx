@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 
 const LINKS = [
   { href: "/tjenester", label: "Tjenester" },
+  { href: "/eiendommer", label: "Eiendommer" },
   { href: "/markedsinnsikt", label: "Markedsinnsikt" },
   { href: "/blog", label: "Artikler" },
   { href: "/help", label: "Kunnskapssenter" },

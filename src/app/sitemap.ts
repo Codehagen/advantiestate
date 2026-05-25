@@ -6,6 +6,7 @@ import {
   allIntegrationsPosts,
   allPersonPosts,
   allLocationPosts,
+  allListingPosts,
 } from "content-collections";
 import { MetadataRoute } from "next";
 import { siteConfig } from "./siteConfig";
@@ -42,6 +43,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "/integrasjoner",
     "/personer",
     "/naringsmegler",
+    "/eiendommer",
     "/privacy",
     "/terms",
   ].map((route) => ({
@@ -113,6 +115,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.85,
   }));
 
+  // Active listing detail pages. `lastModified` prefers `updatedAt` for
+  // listings that have been re-priced or re-statused; falls back to
+  // `publishedAt` for fresh mandates.
+  const listingPages = allListingPosts.map((listing) => ({
+    url: `${baseUrl}/eiendommer/${listing.slug}`,
+    lastModified: new Date(listing.updatedAt ?? listing.publishedAt),
+    changeFrequency: "weekly" as const,
+    priority: 0.9,
+  }));
+
   return [
     ...staticPages,
     ...blogCategories,
@@ -123,5 +135,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...integrationPages,
     ...personPages,
     ...locationPages,
+    ...listingPages,
   ];
 }

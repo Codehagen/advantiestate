@@ -9,6 +9,7 @@ import {
   allCustomersPosts,
   allHelpPosts,
   allIntegrationsPosts,
+  allListingPosts,
 } from "content-collections"
 
 // Legacy / URL-encoded slug aliases → canonical content slugs.
@@ -42,4 +43,12 @@ export const getCustomerPost = cache((slug: string) =>
 
 export const getIntegrationPost = cache((slug: string) =>
   allIntegrationsPosts.find((post) => post.slug === slug),
+)
+
+export const getListingPost = cache((slug: string) =>
+  allListingPosts.find((post) => post.slug === slug),
+)
+
+export const getActiveListings = cache(() =>
+  [...allListingPosts].sort((a, b) => a.order - b.order),
 )
