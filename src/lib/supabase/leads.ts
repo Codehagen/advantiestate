@@ -14,7 +14,11 @@ type RecordSignupArgs = {
 
 // Sources that are sales-qualified and warrant a row in the curated CRM.
 // Everything else lands in the lightweight web_signups table.
-const HIGH_INTENT: SubscribeSource[] = ["verdivurdering-intake", "kontakt"]
+const HIGH_INTENT: SubscribeSource[] = [
+  "verdivurdering-intake",
+  "kontakt",
+  "eiendommer",
+]
 
 // Visitor-facing Norwegian terms → crm_leads `property_type` enum values.
 // The enum is: kontor, industri, lager, butikk, senter, tomt.
@@ -40,6 +44,7 @@ function intakeString(
 const SOURCE_LABEL: Partial<Record<SubscribeSource, string>> = {
   "verdivurdering-intake": "Verdivurdering-intake (skjema)",
   kontakt: "Kontaktskjema",
+  eiendommer: "Eiendommer (varslingsskjema for nye oppdrag)",
 }
 
 /**
@@ -161,6 +166,10 @@ function buildActivitySummary(
     )
   } else if (args.source === "kontakt") {
     lines.push("Henvendelse via kontaktskjema.")
+  } else if (args.source === "eiendommer") {
+    lines.push(
+      "Saved-search-signup på /eiendommer — vil bli varslet om nye oppdrag som matcher.",
+    )
   } else {
     lines.push(`Web-skjemainnsending (${args.source}).`)
   }

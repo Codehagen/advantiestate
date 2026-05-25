@@ -22,6 +22,7 @@ const SOURCE_LABEL: Record<SubscribeSource, string> = {
 const HIGH_INTENT: SubscribeSource[] = [
   "verdivurdering-intake",
   "kontakt",
+  "eiendommer",
 ]
 const WARM_GREY = 0x2c2825
 const LIGHT_BLUE = 0xcbeef2
