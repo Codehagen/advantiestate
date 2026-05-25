@@ -145,7 +145,10 @@ export function ListingsBrowser({
     filteredItems.length + (featuredVisible ? 1 : 0);
 
   return (
-    <>
+    // Containing block for the sticky filter. CSS `position: sticky` is
+    // bounded by the nearest scroll ancestor — without this wrapper the bar
+    // floats over the dark off-market band below, occluding its headline.
+    <div className="ei-browser">
       {/* FILTER BAR */}
       <div className="ei-filter" id="filterBar">
         <div className="wrap">
@@ -434,6 +437,6 @@ export function ListingsBrowser({
           </div>
         </div>
       </section>
-    </>
+    </div>
   );
 }
