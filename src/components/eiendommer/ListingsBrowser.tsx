@@ -2,7 +2,14 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { usePathname } from "next/navigation";
+import { useActionState, useMemo, useState } from "react";
+import {
+  subscribeNewsletter,
+  type NewsletterFormState,
+} from "@/app/actions/newsletter";
+
+const SAVED_SEARCH_INITIAL: NewsletterFormState = { status: "idle" };
 
 export type ListingCardData = {
   slug: string;
@@ -236,6 +243,7 @@ export function ListingsBrowser({
                   fill
                   sizes="(max-width: 980px) 100vw, 55vw"
                   style={{ objectFit: "cover" }}
+                  priority
                 />
                 <div className={`ei-status ${featured.status}`}>
                   <span className="dot" />
@@ -410,33 +418,66 @@ export function ListingsBrowser({
           </div>
 
           {/* SAVED-SEARCH ALERT */}
-          <div className="ei-alert">
-            <div>
-              <div className="pre">Få oppdrag direkte i innboksen</div>
-              <h4>
-                Bli varslet når vi får inn{" "}
-                <span className="italic">eiendommer som passer deg.</span>
-              </h4>
-            </div>
-            <form
-              onSubmit={(event) => {
-                event.preventDefault();
-                const button =
-                  event.currentTarget.querySelector("button[type='submit']");
-                if (button) button.textContent = "Registrert ✓";
-              }}
-            >
-              <input
-                type="email"
-                placeholder="ola.nordmann@firma.no"
-                aria-label="E-post"
-                required
-              />
-              <button type="submit">Få varsel</button>
-            </form>
-          </div>
+          <SavedSearchAlert />
         </div>
       </section>
+    </div>
+  );
+}
+
+function SavedSearchAlert() {
+  const pathname = usePathname();
+  const [state, formAction, pending] = useActionState(
+    subscribeNewsletter,
+    SAVED_SEARCH_INITIAL,
+  );
+
+  const success = state.status === "success";
+  const successCopy = success
+    ? state.alreadySubscribed
+      ? "Du står allerede på listen — vi varsler deg når vi får inn matchende oppdrag."
+      : "Registrert. Du får varsel i innboksen når vi får inn matchende oppdrag."
+    : null;
+
+  return (
+    <div className="ei-alert">
+      <div>
+        <div className="pre">Få oppdrag direkte i innboksen</div>
+        <h4>
+          Bli varslet når vi får inn{" "}
+          <span className="italic">eiendommer som passer deg.</span>
+        </h4>
+      </div>
+      {success ? (
+        <p role="status" className="ei-alert-success">
+          {successCopy}
+        </p>
+      ) : (
+        <form action={formAction}>
+          <input
+            type="email"
+            name="email"
+            placeholder="ola.nordmann@firma.no"
+            aria-label="E-post"
+            autoComplete="email"
+            required
+          />
+          <input type="hidden" name="source" value="eiendommer" />
+          <input
+            type="hidden"
+            name="pageUrl"
+            value={pathname ?? "(unknown)"}
+          />
+          <button type="submit" disabled={pending}>
+            {pending ? "Sender …" : "Få varsel"}
+          </button>
+        </form>
+      )}
+      {state.status === "error" && (
+        <p role="alert" className="ei-alert-error">
+          {state.message}
+        </p>
+      )}
     </div>
   );
 }

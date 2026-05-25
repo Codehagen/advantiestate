@@ -4793,9 +4793,27 @@ h1, h2, h3 {
   font-family: inherit;
 }
 .ei-alert button:hover { background: var(--accent); color: var(--warm-grey); }
+.ei-alert button[disabled] {
+  opacity: 0.7;
+  cursor: progress;
+}
+.ei-alert-success {
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--warm-grey);
+  max-width: 360px;
+  margin: 0;
+}
+.ei-alert-error {
+  grid-column: 1 / -1;
+  font-size: 12px;
+  color: #8b3a2a;
+  margin: -4px 0 0;
+}
 @media (max-width: 720px) {
   .ei-alert { grid-template-columns: 1fr; }
   .ei-alert input { flex: 1; width: auto; }
+  .ei-alert-success { max-width: none; }
 }
 
 /* ============================================================

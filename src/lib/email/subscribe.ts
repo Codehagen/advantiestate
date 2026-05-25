@@ -18,6 +18,7 @@ export type SubscribeSource =
   | "markedsrapport"
   | "verdivurdering-intake"
   | "kontakt"
+  | "eiendommer"
 
 export type SubscribeInput = {
   email: string
