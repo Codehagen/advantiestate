@@ -9,6 +9,7 @@ import StructuredData, {
 import { CtaStrip } from "@/components/site/CtaStrip";
 import { ProseShell } from "@/components/site/ProseShell";
 import { LocationMdx } from "@/components/locations/LocationMdx";
+import { ActiveListingsStrip } from "@/components/eiendommer/ActiveListingsStrip";
 import { siteConfig } from "@/app/siteConfig";
 import { constructMetadata } from "@/lib/utils";
 
@@ -499,6 +500,19 @@ export default async function LocationPage({
           </div>
         </section>
       )}
+
+      <ActiveListingsStrip
+        eyebrow={`Aktuelle oppdrag · ${location.name}`}
+        title={
+          <>
+            Eiendommer vi formidler{" "}
+            <span className="italic">i {location.name}.</span>
+          </>
+        }
+        lede="Pluss off-market-portefølje for kvalifiserte investorer."
+        city={location.slug}
+        limit={3}
+      />
 
       <CtaStrip
         eyebrow={`Næringsmegler i ${location.name}`}
