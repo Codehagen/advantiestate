@@ -4271,11 +4271,16 @@ h1, h2, h3 {
   font-weight: 500;
   letter-spacing: -0.005em;
   color: var(--warm-grey-85);
-  padding: 7px 14px;
+  /* min-height hits the 44px WCAG touch target without inflating
+     the visible pill; padding keeps the same horizontal rhythm. */
+  min-height: 44px;
+  padding: 0 14px;
+  display: inline-flex;
+  align-items: center;
   border: 1px solid transparent;
   border-radius: 999px;
   cursor: pointer;
-  transition: all 0.18s ease;
+  transition: background-color 0.18s ease, color 0.18s ease, border-color 0.18s ease;
   background: transparent;
   white-space: nowrap;
   font-variant-numeric: tabular-nums;
