@@ -576,8 +576,8 @@ export default async function EiendomDetailPage({
               <span className="eyebrow">04 · Beliggenhet</span>
               <div>
                 <h2>
-                  Direkte på havna —{" "}
-                  <span className="italic">midt i {cityLabel} sentrum.</span>
+                  Beliggenhet og{" "}
+                  <span className="italic">tilgjengelighet.</span>
                 </h2>
               </div>
             </div>
