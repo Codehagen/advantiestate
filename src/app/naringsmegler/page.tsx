@@ -160,7 +160,7 @@ export default function NaringsmeglerHubPage() {
               </h2>
               <p>
                 Vi bor i regionen. Det betyr at vi forstår nyansene mellom
-                kontormarkedet i Tromsø og Bodø, og hvorfor en
+                kontormarkedet i Bodø og Tromsø, og hvorfor en
                 logistikkeiendom i Narvik ikke prises som én i Harstad.
                 Samtidig bringer vi metodikk fra de største transaksjonshusene.
               </p>

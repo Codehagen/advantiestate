@@ -73,18 +73,18 @@ const YIELD: Record<Segment, number[]> = {
 
 const LEIE: Record<Segment, Record<string, number[]>> = {
   kontor: {
-    Tromsø: [2550, 2570, 2600, 2640, 2680, 2720, 2780, 2830, 2860, 2880, 2900, 2910, 2925, 2935, 2940, 2945, 2945, 2950, 2950, 2950],
     Bodø: [2050, 2070, 2090, 2120, 2150, 2180, 2220, 2260, 2290, 2310, 2330, 2340, 2355, 2370, 2380, 2385, 2390, 2395, 2400, 2400],
+    Tromsø: [2550, 2570, 2600, 2640, 2680, 2720, 2780, 2830, 2860, 2880, 2900, 2910, 2925, 2935, 2940, 2945, 2945, 2950, 2950, 2950],
     Harstad: [1620, 1640, 1650, 1670, 1690, 1710, 1740, 1770, 1790, 1810, 1820, 1830, 1845, 1855, 1860, 1865, 1870, 1870, 1875, 1875],
   },
   handel: {
-    Tromsø: [3200, 3220, 3250, 3280, 3320, 3360, 3400, 3440, 3470, 3500, 3520, 3540, 3560, 3580, 3600, 3610, 3620, 3625, 3630, 3635],
     Bodø: [2750, 2770, 2790, 2820, 2850, 2880, 2920, 2960, 2990, 3020, 3040, 3060, 3080, 3095, 3105, 3115, 3120, 3125, 3130, 3135],
+    Tromsø: [3200, 3220, 3250, 3280, 3320, 3360, 3400, 3440, 3470, 3500, 3520, 3540, 3560, 3580, 3600, 3610, 3620, 3625, 3630, 3635],
     Harstad: [2100, 2110, 2120, 2140, 2160, 2180, 2210, 2240, 2260, 2280, 2290, 2300, 2315, 2325, 2335, 2340, 2345, 2350, 2355, 2360],
   },
   logistikk: {
-    Tromsø: [1450, 1455, 1465, 1475, 1490, 1505, 1525, 1545, 1560, 1575, 1585, 1595, 1610, 1620, 1630, 1635, 1640, 1645, 1650, 1655],
     Bodø: [1200, 1205, 1215, 1225, 1240, 1255, 1275, 1295, 1310, 1325, 1335, 1345, 1360, 1370, 1380, 1385, 1390, 1395, 1400, 1405],
+    Tromsø: [1450, 1455, 1465, 1475, 1490, 1505, 1525, 1545, 1560, 1575, 1585, 1595, 1610, 1620, 1630, 1635, 1640, 1645, 1650, 1655],
     "Mo i Rana": [1050, 1055, 1060, 1070, 1085, 1100, 1115, 1130, 1140, 1150, 1160, 1170, 1180, 1190, 1195, 1200, 1205, 1210, 1215, 1220],
   },
 }
@@ -95,10 +95,10 @@ const VOLUME = {
 }
 
 const VACANCY = [
-  { city: "Tromsø", kontor: 3.4, handel: 2.8, logistikk: 1.9 },
   { city: "Bodø", kontor: 4.6, handel: 3.1, logistikk: 2.4 },
-  { city: "Harstad", kontor: 5.8, handel: 3.9, logistikk: 3.2 },
+  { city: "Tromsø", kontor: 3.4, handel: 2.8, logistikk: 1.9 },
   { city: "Alta", kontor: 6.2, handel: 4.4, logistikk: 3.8 },
+  { city: "Harstad", kontor: 5.8, handel: 3.9, logistikk: 3.2 },
   { city: "Narvik", kontor: 7.5, handel: 5.1, logistikk: 4.2 },
   { city: "Mo i Rana", kontor: 5.4, handel: 4.0, logistikk: 2.8 },
 ]
@@ -113,8 +113,8 @@ const TX = [
 ]
 
 const CITIES: MapCity[] = [
-  { id: "tromso", name: "Tromsø", lat: 69.65, lon: 18.95, yield: "6,10 %", leie: "2 950 kr/m²", vac: "3,4 %", note: "Største kontormarkedet i Nord-Norge." },
   { id: "bodo", name: "Bodø", lat: 67.28, lon: 14.4, yield: "6,35 %", leie: "2 400 kr/m²", vac: "4,6 %", note: "Hovedkontor for Advanti. Voksende logistikkhubb." },
+  { id: "tromso", name: "Tromsø", lat: 69.65, lon: 18.95, yield: "6,10 %", leie: "2 950 kr/m²", vac: "3,4 %", note: "Største kontormarkedet i Nord-Norge." },
   { id: "alta", name: "Alta", lat: 69.97, lon: 23.27, yield: "6,75 %", leie: "1 950 kr/m²", vac: "6,2 %", note: "Sterkt handelsmarked i Finnmark." },
   { id: "mo", name: "Mo i Rana", lat: 66.32, lon: 14.14, yield: "6,80 %", leie: "1 750 kr/m²", vac: "5,4 %", note: "Industri og logistikk. Stor industriutbygging." },
   { id: "narvik", name: "Narvik", lat: 68.44, lon: 17.43, yield: "6,90 %", leie: "1 820 kr/m²", vac: "7,5 %", note: "Transport- og næringspark. Lavere likviditet." },

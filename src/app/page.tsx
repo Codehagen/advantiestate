@@ -183,7 +183,7 @@ export default function Home() {
               <span className="dot" />
               <span>Nord-Norge</span>
             </span>
-            <span>Etablert 2024 · Tromsø &amp; Bodø</span>
+            <span>Etablert 2024 · Bodø, Tromsø &amp; Alta</span>
           </div>
           <h1>
             Salg og verdivurdering
@@ -285,9 +285,10 @@ export default function Home() {
                 <span className="italic">oppdatert kvartalsvis.</span>
               </h2>
               <p style={{ marginTop: 28 }}>
-                Vi sporer over 1 400 næringseiendommer på tvers av Tromsø, Bodø,
-                Harstad, Narvik og Kirkenes. Resultatet er det skarpeste bildet
-                av markedet du finner nord for Trondheim.
+                Vi sporer over 1 400 næringseiendommer på tvers av Bodø, Tromsø
+                og Alta — og videre nordover via Harstad, Narvik, Hammerfest og
+                Kirkenes. Resultatet er det skarpeste bildet av markedet du
+                finner nord for Trondheim.
               </p>
             </div>
           </div>
