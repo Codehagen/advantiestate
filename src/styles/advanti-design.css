@@ -4308,6 +4308,19 @@ h1, h2, h3 {
 .ei-filter-result strong { color: var(--warm-grey); font-weight: 500; }
 @media (max-width: 880px) {
   .ei-filter { position: relative; top: 0; }
+  /* Stack filter groups vertically so STATUS / TYPE / BY each get their
+     own row at mobile, and allow chips inside each group to wrap when
+     5+ chips exceed viewport width. Otherwise the chip row overflows
+     horizontally (status: 5 × ~90px = ~500px > 390px viewport). */
+  .ei-filter .wrap {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+  }
+  .ei-filter-group {
+    flex-wrap: wrap;
+    width: 100%;
+  }
   .ei-filter-result { margin-left: 0; width: 100%; }
 }
 
@@ -4697,9 +4710,32 @@ h1, h2, h3 {
 }
 @media (max-width: 720px) {
   .ei-offmarket .head { grid-template-columns: 1fr; gap: 32px; }
-  .ei-offmarket-row { grid-template-columns: 1fr 28px; gap: 8px; }
-  .ei-offmarket-row > .col-hide-m { display: none; }
-  .ei-offmarket-row .title { font-size: 18px; }
+  /* Stack each row as a vertical card: ref + title + label-inline-value
+     meta rows. The 7-column desktop grid collapsing to 1fr 28px clipped the
+     title horizontally and pushed the type/BTA/status cells onto a chaotic
+     second row. flex-column lets the row breathe and keeps each
+     label-value pair inline for scan rhythm. */
+  .ei-offmarket-row {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 22px 0;
+  }
+  .ei-offmarket-row:hover { transform: none; padding-left: 0; }
+  .ei-offmarket-row > .col-hide,
+  .ei-offmarket-row > .col-hide-m { display: flex; }
+  .ei-offmarket-row > div {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+  }
+  .ei-offmarket-row .cell-l {
+    margin-bottom: 0;
+    min-width: 80px;
+  }
+  .ei-offmarket-row .cell-v { font-size: 15px; }
+  .ei-offmarket-row .title { font-size: 19px; }
+  .ei-offmarket-row .arr { display: none; }
 }
 
 /* Saved-search / alert strip */
@@ -4957,8 +4993,16 @@ h1, h2, h3 {
 }
 @media (max-width: 560px) {
   .ed-stats { grid-template-columns: 1fr 1fr; }
-  .ed-stats > div { border-right: var(--hairline); border-bottom: var(--hairline); }
+  .ed-stats > div {
+    border-right: var(--hairline);
+    border-bottom: var(--hairline);
+    padding: 18px 12px;
+  }
   .ed-stats > div:nth-child(2n) { border-right: 0; }
+  /* Cap value font so the 5-stat row doesn't overflow a 2-col grid at
+     390px — "11 400 m²" at 32px overran its cell on the narrow column. */
+  .ed-stats .v { font-size: 26px; }
+  .ed-stats .l { font-size: 10.5px; letter-spacing: 0.12em; }
 }
 
 /* Editorial body */
@@ -5225,6 +5269,21 @@ h1, h2, h3 {
   .ed-tenants tbody .col-hide { display: none; }
   .ed-tenants .name { font-size: 16px; }
   .ed-tenants .v { font-size: 15px; }
+}
+/* Phone (≤560px): 5 columns clip even after col-hide removes 2.
+   Drop Etasjer too — leaves Leietaker, Areal, Årlig leie, Andel.
+   Andel bar collapses to text so the percent number isn't crowded. */
+@media (max-width: 560px) {
+  .ed-tenants thead th:nth-child(2),
+  .ed-tenants tbody td:nth-child(2) { display: none; }
+  .ed-tenants thead th,
+  .ed-tenants tbody td { padding-right: 8px; padding-left: 12px; }
+  .ed-tenants thead th:first-child,
+  .ed-tenants tbody td:first-child { padding-left: 0; }
+  .ed-tenants .bar { display: none; }
+  .ed-tenants .v { font-size: 14px; }
+  .ed-tenants .name { font-size: 15px; }
+  .ed-tenants .sector { font-size: 10px; letter-spacing: 0.1em; }
 }
 
 /* Financials (dark KPI grid) */
