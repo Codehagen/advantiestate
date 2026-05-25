@@ -501,6 +501,165 @@ export const LocationPost = defineCollection({
   },
 });
 
+export const ListingPost = defineCollection({
+  name: "ListingPost",
+  directory: "src/content/listings",
+  include: "*.mdx",
+  schema: (z) => ({
+    // Editorial title — split into a non-italic head and an italic tail so
+    // the H1 + listing-card H3 render with the design's two-tone treatment
+    // without authors having to embed JSX in frontmatter. `title` (plain) is
+    // used for metadata, sitemap, and JSON-LD.
+    title: z.string(),
+    titleHead: z.string(),
+    titleTail: z.string(),
+
+    // Taxonomy
+    status: z.enum(["til-salgs", "reservert", "kommer", "solgt"]),
+    statusLabel: z.string().optional(),
+    type: z.enum([
+      "kontor",
+      "logistikk",
+      "handel",
+      "kombi",
+      "hotell",
+      "utvikling",
+      "industri",
+    ]),
+    typeLabel: z.string(),
+    city: z.enum([
+      "bodo",
+      "tromso",
+      "harstad",
+      "alta",
+      "narvik",
+      "lofoten",
+      "mo-i-rana",
+    ]),
+
+    // Identity
+    address: z.string(),
+    reference: z.string(),
+    cardEyebrow: z.string(),
+    featured: z.boolean().default(false),
+    featuredEyebrow: z.string().optional(),
+    order: z.number(),
+    publishedAt: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+    updatedAt: z
+      .string()
+      .regex(/^\d{4}-\d{2}-\d{2}$/)
+      .optional(),
+
+    // Headline stats
+    bta: z.number(),
+    prisantydning: z.number().optional(),
+    prisantydningEstimat: z.boolean().default(false),
+    yieldNetto: z.number().optional(),
+    yieldEstimat: z.boolean().default(false),
+    utleiegrad: z.number().optional(),
+    wault: z.number().optional(),
+    ferdig: z.string().optional(),
+
+    // Media
+    coverImage: z.string(),
+    coverImageAlt: z.string(),
+    gallery: z
+      .array(z.object({ src: z.string(), alt: z.string() }))
+      .optional(),
+    photoCount: z.number().optional(),
+
+    // Summary on index card + meta
+    summary: z.string(),
+    lede: z.string().optional(),
+
+    // Megler (responsible broker)
+    megler: z.object({
+      name: z.string(),
+      role: z.string(),
+      avatar: z.string(),
+      email: z.string(),
+      phone: z.string(),
+      slug: z.string().optional(),
+    }),
+
+    // Optional structured detail-page data
+    facts: z
+      .array(z.object({ label: z.string(), value: z.string() }))
+      .optional(),
+    tenants: z
+      .array(
+        z.object({
+          name: z.string(),
+          sector: z.string(),
+          etasjer: z.string(),
+          areal: z.number(),
+          leieKrM2: z.number().optional(),
+          leieArlig: z.number(),
+          leieArligEstimat: z.boolean().default(false),
+          kontraktTil: z.string().optional(),
+          andel: z.number(),
+          ledig: z.boolean().default(false),
+        }),
+      )
+      .optional(),
+    tenantsNote: z.string().optional(),
+    financials: z
+      .object({
+        bruttoLeie: z.number(),
+        eierkostnader: z.number(),
+        noi: z.number(),
+        yieldNetto: z.number(),
+        intro: z.string().optional(),
+      })
+      .optional(),
+    location: z
+      .object({
+        title: z.string(),
+        titleTail: z.string(),
+        body: z.string(),
+        // Real WGS-84 coordinates for the Leaflet marker. Optional — when
+        // omitted, the detail page falls back to a centroid of the city.
+        geo: z
+          .object({ lat: z.number(), lng: z.number() })
+          .optional(),
+        pois: z.array(
+          z.object({ name: z.string(), distance: z.string() }),
+        ),
+      })
+      .optional(),
+    downloads: z
+      .array(
+        z.object({
+          label: z.string(),
+          sub: z.string(),
+          kind: z.enum(["pdf", "nda"]),
+          href: z.string(),
+        }),
+      )
+      .optional(),
+
+    slug: z.string().optional(),
+  }),
+  transform: async (document, context) => {
+    try {
+      const mdx = await compileMDX(context, document, {
+        rehypePlugins: [rehypeSlug, rehypeAutolinkHeadings],
+        remarkPlugins: [remarkGfm],
+      });
+      const slugger = new GithubSlugger();
+      return {
+        ...document,
+        slug: document.slug || slugger.slug(document.title),
+        mdx,
+      };
+    } catch (error) {
+      console.error("Error compiling MDX for:", document.title, error);
+      console.error("Error details:", error.stack);
+      throw error;
+    }
+  },
+});
+
 export default defineConfig({
   collections: [
     BlogPost,
@@ -511,5 +670,6 @@ export default defineConfig({
     IntegrationsPost,
     PersonPost,
     LocationPost,
+    ListingPost,
   ],
 });
