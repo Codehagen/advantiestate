@@ -5,11 +5,11 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useActionState, useMemo, useState } from "react";
 import {
-  subscribeNewsletter,
-  type NewsletterFormState,
-} from "@/app/actions/newsletter";
+  subscribeEiendomVarsel,
+  type EiendomVarselFormState,
+} from "@/app/actions/eiendom-varsel";
 
-const SAVED_SEARCH_INITIAL: NewsletterFormState = { status: "idle" };
+const SAVED_SEARCH_INITIAL: EiendomVarselFormState = { status: "idle" };
 
 export type ListingCardData = {
   slug: string;
@@ -428,7 +428,7 @@ export function ListingsBrowser({
 function SavedSearchAlert() {
   const pathname = usePathname();
   const [state, formAction, pending] = useActionState(
-    subscribeNewsletter,
+    subscribeEiendomVarsel,
     SAVED_SEARCH_INITIAL,
   );
 
@@ -455,6 +455,14 @@ function SavedSearchAlert() {
       ) : (
         <form action={formAction}>
           <input
+            type="text"
+            name="firstName"
+            placeholder="Navn"
+            aria-label="Navn"
+            autoComplete="name"
+            required
+          />
+          <input
             type="email"
             name="email"
             placeholder="ola.nordmann@firma.no"
@@ -462,7 +470,14 @@ function SavedSearchAlert() {
             autoComplete="email"
             required
           />
-          <input type="hidden" name="source" value="eiendommer" />
+          <input
+            type="tel"
+            name="phone"
+            placeholder="Telefon (valgfritt)"
+            aria-label="Telefon"
+            autoComplete="tel"
+            inputMode="tel"
+          />
           <input
             type="hidden"
             name="pageUrl"
