@@ -5459,7 +5459,10 @@ h1, h2, h3 {
 .ed-dl:hover .arr { color: var(--warm-grey); }
 .ed-dl.locked { background: transparent; }
 .ed-dl.locked .ico { background: var(--warm-grey); color: var(--warm-white); border-color: var(--warm-grey); }
-.ed-dl.locked .nm .sub { color: var(--accent); }
+/* Subtext stays warm-grey-85 (same as open cards) — the dark NDA icon block
+   already signals the gating, so the accent colour on light bg only hurt
+   readability (#cbeef2 on #f3f1ef ≈ 1.07:1, fails WCAG AA). */
+.ed-dl.locked .nm .sub { color: var(--warm-grey-85); }
 @media (max-width: 720px) {
   .ed-downloads { grid-template-columns: 1fr; }
 }
