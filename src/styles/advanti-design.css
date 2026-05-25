@@ -4332,7 +4332,9 @@ h1, h2, h3 {
   width: 100%; height: 100%; object-fit: cover;
   transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
-.ei-featured:hover .ei-featured-photo img { transform: scale(1.03); }
+@media (hover: hover) and (pointer: fine) {
+  .ei-featured:hover .ei-featured-photo img { transform: scale(1.03); }
+}
 .ei-featured-photo .ei-status { position: absolute; top: 18px; left: 18px; }
 .ei-featured-photo .ei-counter {
   position: absolute;
@@ -4500,7 +4502,9 @@ h1, h2, h3 {
   width: 100%; height: 100%; object-fit: cover;
   transition: transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
-.ei-card:hover .ei-card-photo img { transform: scale(1.045); }
+@media (hover: hover) and (pointer: fine) {
+  .ei-card:hover .ei-card-photo img { transform: scale(1.045); }
+}
 .ei-card-photo .ei-status { position: absolute; top: 14px; left: 14px; }
 .ei-card .top {
   display: flex;
@@ -4611,12 +4615,16 @@ h1, h2, h3 {
   align-items: center;
   padding: 26px 0;
   border-bottom: 1px solid rgba(243, 241, 239, 0.14);
-  transition: padding-left 0.25s ease;
+  /* transform — not padding — so the browser composites the hover shift
+     on the GPU instead of re-laying out the row each frame. */
+  transition: transform 0.25s ease;
   cursor: pointer;
   color: inherit;
   text-decoration: none;
 }
-.ei-offmarket-row:hover { padding-left: 12px; }
+@media (hover: hover) and (pointer: fine) {
+  .ei-offmarket-row:hover { transform: translateX(12px); }
+}
 .ei-offmarket-row .ref {
   font-family: var(--font-display);
   font-size: 14px;
@@ -4653,7 +4661,9 @@ h1, h2, h3 {
   text-align: right;
   transition: color 0.2s, transform 0.2s;
 }
-.ei-offmarket-row:hover .arr { color: var(--accent); transform: translateX(4px); }
+@media (hover: hover) and (pointer: fine) {
+  .ei-offmarket-row:hover .arr { color: var(--accent); transform: translateX(4px); }
+}
 .ei-offmarket-row:last-child { border-bottom: 0; }
 .ei-offmarket-foot {
   margin-top: 56px;
@@ -4781,8 +4791,10 @@ h1, h2, h3 {
   width: 100%; height: 100%; object-fit: cover;
   transition: transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
-.ed-gallery .g-main:hover img,
-.ed-gallery .g-side:hover img { transform: scale(1.03); }
+@media (hover: hover) and (pointer: fine) {
+  .ed-gallery .g-main:hover img,
+  .ed-gallery .g-side:hover img { transform: scale(1.03); }
+}
 .ed-gallery .ei-status { position: absolute; top: 18px; left: 18px; z-index: 2; }
 .ed-gallery .g-more {
   position: absolute;
@@ -5507,3 +5519,18 @@ h1, h2, h3 {
 /* Related */
 .ed-related { padding: 100px 0; }
 .ed-related .head-compact { margin-bottom: 0; }
+
+/* Reduced-motion override for the eiendommer photo/row transforms. The
+   colour-only hovers (border, bg) stay untouched — only the spatial
+   movement is silenced, which is what users with vestibular sensitivity
+   actually need disabled. */
+@media (prefers-reduced-motion: reduce) {
+  .ei-featured-photo img,
+  .ei-card-photo img,
+  .ed-gallery img,
+  .ei-offmarket-row,
+  .ei-offmarket-row .arr {
+    transition: none !important;
+    transform: none !important;
+  }
+}
