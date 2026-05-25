@@ -6,6 +6,44 @@ the AI SEO closure review (/plan-eng-review, 2026-05-24), and the AI-SEO researc
 
 ---
 
+## TODO 18 — Listings (eiendommer) feature — SHIPPED 2026-05-25
+
+- **What:** Public `/eiendommer` index + `/eiendommer/[slug]` detail pages.
+- **Outcome:** Shipped on branch `feat/eiendommer-listings`:
+  - New `ListingPost` content collection (typed frontmatter: status, type,
+    city, headline stats, gallery, facts, tenants, financials, location +
+    geo coords, downloads, megler).
+  - 9 listing MDX files seeded with explicit clean slugs (Sjøgata 7 with full
+    detail; 8 others with index-card data).
+  - `src/app/eiendommer/page.tsx` — SubHero + KPI band + sticky filter
+    (status/type/city) + featured + grid + saved-search alert + off-market
+    band + CTA.
+  - `src/app/eiendommer/[slug]/page.tsx` — gallery + headline stats + body
+    with sticky megler card + facts table + tenants table + dark financials
+    grid + Leaflet location map + downloads + CTA + related.
+  - Real Leaflet map (`PropertyMap` + `PropertyMapLeaflet`) reusing the
+    CartoDB tile config from `markedsinnsikt/maps/mapTheme.ts`.
+  - `RealEstateListing` JSON-LD per detail page, linked to the existing
+    `#organization` graph node.
+  - Nav, sitemap, siteConfig wired. ~640 new lines of `.ei-*`/`.ed-*` CSS in
+    `advanti-design.css`.
+  - **Design review pass:** /design-review found 4 issues (F1 sticky filter
+    overlaying dark band, F2 NDA subtext contrast 1.07:1, F3 chips 36 → 44px
+    touch target, F4 "Featured" → "Utvalgt" i18n). All fixed in atomic
+    commits.
+  - **Emil design-engineering pass:** removed `transition: all`, guarded
+    photo/row hover transforms behind `@media (hover: hover) and
+    (pointer: fine)`, swapped `.ei-offmarket-row` padding-left animation for
+    transform, added `@media (prefers-reduced-motion: reduce)` override.
+- **Follow-up content work (deferred):** the 8 stub listings have only
+  index-card data; their detail pages need facts/tenants/financials/location
+  populated when partners share the data. Adding `location.geo: {lat,lng}`
+  to each MDX enables the real Leaflet map (currently falls back to a CSS
+  mock for stubs).
+- **Completed:** 2026-05-25.
+
+---
+
 ## TODO 14 — HowTo schema pilot — SHIPPED 2026-05-24
 
 - **What:** Pilot HowTo schema on one help article and validate.
