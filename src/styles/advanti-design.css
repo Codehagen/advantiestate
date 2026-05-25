@@ -4943,6 +4943,16 @@ h1, h2, h3 {
 @media (max-width: 880px) {
   .ed-title { grid-template-columns: 1fr; gap: 24px; }
   .ed-title-actions { align-items: flex-start; }
+  /* Address row stacks vertically on mobile — the 1×14px separator pipe
+     between "Tromsø" and "Ref. AE-2026-014" wrapped to its own line under
+     flex-wrap, looking like a lost glyph. Hide the pipe, drop gap to 0,
+     let each line sit on its own row. */
+  .ed-title .addr {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+  .ed-title .addr .sep { display: none; }
 }
 
 /* Headline stats */
@@ -5290,6 +5300,20 @@ h1, h2, h3 {
   background: var(--warm-grey);
   color: var(--warm-white);
   padding: 80px 0;
+}
+/* Match the .ed-section .head two-column grid + mobile collapse so the
+   financials head doesn't need a brittle inline style. The detail-page
+   page.tsx previously hardcoded `gridTemplateColumns: "280px 1fr"` which
+   gave the H2 a 62px column at 390px and clipped "Forventet kontantstrøm" */
+.ed-fin .head {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 48px;
+  margin-bottom: 48px;
+  align-items: end;
+}
+@media (max-width: 880px) {
+  .ed-fin .head { grid-template-columns: 1fr; gap: 16px; }
 }
 .ed-fin .head h2 { color: var(--warm-white); }
 .ed-fin .head .pre {
