@@ -510,16 +510,7 @@ export default async function EiendomDetailPage({
       {listing.financials && (
         <section className="ed-fin">
           <div className="wrap">
-            <div
-              className="head"
-              style={{
-                display: "grid",
-                gridTemplateColumns: "280px 1fr",
-                gap: 48,
-                marginBottom: 48,
-                alignItems: "end",
-              }}
-            >
+            <div className="head">
               <div>
                 <div className="pre">03 · Økonomi</div>
               </div>
