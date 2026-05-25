@@ -4769,9 +4769,10 @@ h1, h2, h3 {
   grid-template-columns: 1fr 1fr;
   gap: 8px;
   width: 100%;
-  min-width: 380px;
+  min-width: 440px;
 }
-.ei-alert input {
+.ei-alert input,
+.ei-alert select {
   border: 1px solid var(--warm-grey);
   border-radius: 999px;
   padding: 11px 18px;
@@ -4781,12 +4782,27 @@ h1, h2, h3 {
   outline: none;
   color: var(--warm-grey);
   width: 100%;
+  appearance: none;
+  -webkit-appearance: none;
 }
-.ei-alert input:focus {
+.ei-alert select {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8' fill='none' stroke='%232c2825' stroke-width='1.4'><path d='M1 1.5l5 5 5-5'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+  background-size: 10px 7px;
+  padding-right: 36px;
+  cursor: pointer;
+}
+.ei-alert input:focus,
+.ei-alert select:focus {
   border-color: var(--warm-grey);
   box-shadow: 0 0 0 2px var(--accent);
 }
 .ei-alert input::placeholder {
+  color: var(--warm-grey-60, rgba(44, 40, 37, 0.55));
+}
+.ei-alert select:invalid,
+.ei-alert select option[value=""] {
   color: var(--warm-grey-60, rgba(44, 40, 37, 0.55));
 }
 .ei-alert button {

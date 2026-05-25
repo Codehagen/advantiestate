@@ -471,6 +471,24 @@ function SavedSearchAlert() {
             required
           />
           <input
+            type="text"
+            name="bedrift"
+            placeholder="Bedrift (valgfritt)"
+            aria-label="Bedrift"
+            autoComplete="organization"
+          />
+          <select name="sted" aria-label="Geografi" defaultValue="">
+            <option value="">Geografi (valgfritt)</option>
+            <option value="Bodø">Bodø</option>
+            <option value="Tromsø">Tromsø</option>
+            <option value="Harstad">Harstad</option>
+            <option value="Alta">Alta</option>
+            <option value="Narvik">Narvik</option>
+            <option value="Lofoten">Lofoten</option>
+            <option value="Mo i Rana">Mo i Rana</option>
+            <option value="Hele Nord-Norge">Hele Nord-Norge</option>
+          </select>
+          <input
             type="tel"
             name="phone"
             placeholder="Telefon (valgfritt)"
