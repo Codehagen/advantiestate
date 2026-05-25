@@ -3,6 +3,7 @@ import {
   allHelpPosts,
   allLocationPosts,
   allCustomersPosts,
+  allListingPosts,
 } from "content-collections";
 import { siteConfig } from "../siteConfig";
 
@@ -100,6 +101,28 @@ function buildBody(baseUrl: string): string {
       )
       .join("\n"),
   );
+
+  // Active mandates — surfaces the eiendommer inventory directly to AI engines
+  // (ChatGPT, Claude, Perplexity, Google AI Overviews). Listed by the same
+  // collection that drives the public /eiendommer index and sitemap, so the
+  // three sources cannot drift apart. Excludes sold listings.
+  const activeListings = [...allListingPosts]
+    .filter((listing) => listing.status !== "solgt")
+    .sort((a, b) => a.order - b.order);
+  if (activeListings.length > 0) {
+    sections.push(`## Eiendommer for salg`);
+    sections.push(
+      activeListings
+        .map((listing) =>
+          line(
+            `${listing.titleHead} ${listing.titleTail}`.replace(/\s+/g, " ").trim(),
+            `${baseUrl}/eiendommer/${listing.slug}`,
+            listing.summary,
+          ),
+        )
+        .join("\n"),
+    );
+  }
 
   sections.push(`## Hjelp og terminologi`);
   sections.push(

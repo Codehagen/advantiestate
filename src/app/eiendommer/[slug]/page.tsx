@@ -57,11 +57,17 @@ export async function generateMetadata({
   const { slug } = await params;
   const listing = getListingPost(slug);
   if (!listing) return;
+  // Drop the " | Advanti Estate" brand suffix — listing titles already pack
+  // address + m² + headline into ~50 chars; appending the brand pushes most
+  // listings past Google's SERP truncation at ~60. og:site_name + canonical
+  // already carry the brand. Use the per-listing OG card route so social
+  // shares show price/yield/BTA over the cover photo.
   return constructMetadata({
     path: `/eiendommer/${listing.slug}`,
-    title: `${listing.title} | Advanti Estate`,
+    title: listing.title,
     description: listing.summary,
-    image: listing.coverImage,
+    image: `/api/og/listing/${listing.slug}`,
+    imageAlt: listing.coverImageAlt,
   });
 }
 

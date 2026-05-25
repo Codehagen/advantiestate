@@ -134,6 +134,7 @@ export function constructMetadata({
   title = SITE_TITLE_FALLBACK,
   description = SITE_DESCRIPTION_FALLBACK,
   image = OG_IMAGE_DEFAULT,
+  imageAlt,
   noIndex = false,
   ogType = "website",
   publishedTime,
@@ -149,6 +150,10 @@ export function constructMetadata({
    *  route at /api/og/brand. Per-article routes (e.g. blog posts) pass
    *  their own URL like /api/og/blog/<slug> to override. */
   image?: string;
+  /** Optional alt text for the OG image. Falls back to OG_IMAGE_ALT (the
+   *  site-wide brand alt) when omitted. Pages with a per-asset OG card
+   *  (blog posts, listings) should pass their content-specific alt. */
+  imageAlt?: string;
   noIndex?: boolean;
   ogType?: "website" | "article";
   /** ISO date — only used when ogType is "article". */
@@ -163,7 +168,12 @@ export function constructMetadata({
   const metaDescription = normalizeMetaDescription(description);
   const canonicalUrl = `${siteConfig.url}${path}`;
   const ogImages = [
-    { url: image, width: 1200, height: 630, alt: OG_IMAGE_ALT },
+    {
+      url: image,
+      width: 1200,
+      height: 630,
+      alt: imageAlt ?? OG_IMAGE_ALT,
+    },
   ];
 
   // Build openGraph as one literal per type so TypeScript narrows it to the

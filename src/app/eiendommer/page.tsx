@@ -1,13 +1,16 @@
 import Link from "next/link";
 
 import { constructMetadata } from "@/lib/utils";
+import { siteConfig } from "@/app/siteConfig";
 import { getActiveListings } from "@/lib/content";
 import { SubHero } from "@/components/site/SubHero";
 import {
   ListingsBrowser,
   type ListingCardData,
 } from "@/components/eiendommer/ListingsBrowser";
-import { BreadcrumbStructuredData } from "@/components/StructuredData";
+import StructuredData, {
+  BreadcrumbStructuredData,
+} from "@/components/StructuredData";
 
 const CITY_LABELS: Record<string, string> = {
   bodo: "Bodø",
@@ -170,6 +173,44 @@ export default function EiendommerPage() {
   const featuredCard = allCards.find((card) => card.featured);
   const gridCards = allCards.filter((card) => !card.featured);
 
+  // ItemList JSON-LD — surfaces the entire mandate inventory as a machine
+  // readable list of RealEstateListing items. Direct AI Overview / Google
+  // rich-result lever for "commercial properties in [region]" queries.
+  // Each item links back to the detail page via @id matching the inline
+  // RealEstateListing graph node emitted there.
+  const itemListJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: "Næringseiendom til salgs i Nord-Norge",
+    description:
+      "Aktive salgsoppdrag formidlet av Advanti Estate i Bodø, Tromsø, Alta, Narvik, Harstad og Lofoten.",
+    numberOfItems: listings.length,
+    itemListOrder: "https://schema.org/ItemListOrderAscending",
+    itemListElement: listings.map((listing, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      item: {
+        "@type": "RealEstateListing",
+        "@id": `${siteConfig.url}/eiendommer/${listing.slug}#listing`,
+        url: `${siteConfig.url}/eiendommer/${listing.slug}`,
+        name: listing.title,
+        description: listing.summary,
+        image: listing.coverImage.startsWith("http")
+          ? listing.coverImage
+          : `${siteConfig.url}${listing.coverImage}`,
+        ...(listing.prisantydning
+          ? {
+              offers: {
+                "@type": "Offer",
+                priceCurrency: "NOK",
+                price: listing.prisantydning * 1_000_000,
+              },
+            }
+          : {}),
+      },
+    })),
+  };
+
   return (
     <>
       <BreadcrumbStructuredData
@@ -177,6 +218,18 @@ export default function EiendommerPage() {
           { name: "Hjem", url: "/" },
           { name: "Eiendommer for salg", url: "/eiendommer" },
         ]}
+      />
+      <StructuredData
+        type="service"
+        data={{
+          name: "Salg av næringseiendom i Nord-Norge",
+          description:
+            "Advanti Estate formidler salg av kontorbygg, logistikkanlegg, handelseiendom og kombinasjonsbygg i Nordland og Troms. Aktive mandater + off-market-portefølje for kvalifiserte investorer.",
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListJsonLd) }}
       />
 
       <SubHero

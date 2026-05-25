@@ -3,6 +3,7 @@ import { SubHero } from "@/components/site/SubHero";
 import { CtaStrip } from "@/components/site/CtaStrip";
 import { PhotoBand } from "@/components/site/PhotoBand";
 import { Faq, type FaqItem } from "@/components/site/Faq";
+import { ActiveListingsStrip } from "@/components/eiendommer/ActiveListingsStrip";
 import StructuredData, {
   BreadcrumbStructuredData,
 } from "@/components/StructuredData";
@@ -348,8 +349,19 @@ export default function SalgPage() {
         </div>
       </section>
 
+      <ActiveListingsStrip
+        eyebrow="05 — Aktuelle salgsoppdrag"
+        title={
+          <>
+            Eiendommer vi har <span className="italic">til salgs nå.</span>
+          </>
+        }
+        lede="Et utvalg av aktive mandater. Se hele inventaret på /eiendommer."
+        limit={3}
+      />
+
       <Faq
-        eyebrow="05 — Ofte stilte spørsmål"
+        eyebrow="06 — Ofte stilte spørsmål"
         title={
           <>
             Spørsmål om{" "}
