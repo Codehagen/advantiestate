@@ -77,6 +77,12 @@
       "@types/react": "19.0.4",
       "@types/react-dom": "19.0.2"
     },
-    "onlyBuiltDependencies": ["@parcel/watcher", "esbuild", "sharp", "unrs-resolver"]
-  }
+    "onlyBuiltDependencies": [
+      "@parcel/watcher",
+      "esbuild",
+      "sharp",
+      "unrs-resolver"
+    ]
+  },
+  "packageManager": "pnpm@10.26.1"
 }
