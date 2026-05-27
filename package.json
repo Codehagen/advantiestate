@@ -76,6 +76,7 @@
     "overrides": {
       "@types/react": "19.0.4",
       "@types/react-dom": "19.0.2"
-    }
+    },
+    "onlyBuiltDependencies": ["@parcel/watcher", "esbuild", "sharp", "unrs-resolver"]
   }
 }

@@ -285,10 +285,9 @@ export default function Home() {
                 <span className="italic">oppdatert kvartalsvis.</span>
               </h2>
               <p style={{ marginTop: 28 }}>
-                Vi sporer over 1 400 næringseiendommer på tvers av Bodø, Tromsø
-                og Alta — og videre nordover via Harstad, Narvik, Hammerfest og
-                Kirkenes. Resultatet er det skarpeste bildet av markedet du
-                finner nord for Trondheim.
+                Vi sporer over 1 400 næringseiendommer på tvers av Bodø, Tromsø,
+                Harstad, Narvik, Alta og Kirkenes. Resultatet er det skarpeste bildet
+                av markedet du finner nord for Trondheim.
               </p>
             </div>
           </div>
