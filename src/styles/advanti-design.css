@@ -4329,13 +4329,15 @@ h1, h2, h3 {
   display: grid;
   grid-template-columns: 1.15fr 1fr;
   gap: 56px;
-  align-items: stretch;
+  align-items: start;
   border-top: var(--hairline);
   border-bottom: var(--hairline);
   padding: 56px 0;
 }
 .ei-featured-photo {
   position: relative;
+  width: 100%;
+  min-width: 0;
   aspect-ratio: 4 / 3;
   overflow: hidden;
   background: var(--warm-grey-75);
@@ -4363,6 +4365,7 @@ h1, h2, h3 {
 }
 .ei-featured-body {
   display: flex;
+  min-width: 0;
   flex-direction: column;
   justify-content: space-between;
   gap: 32px;
@@ -4390,6 +4393,7 @@ h1, h2, h3 {
   font-weight: 400;
   line-height: 1.02;
   letter-spacing: -0.022em;
+  overflow-wrap: break-word;
   margin-top: 18px;
 }
 .ei-featured-body h2 .italic { font-style: italic; font-weight: 300; color: var(--warm-grey-85); }
