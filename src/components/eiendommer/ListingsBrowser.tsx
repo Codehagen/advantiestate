@@ -81,7 +81,6 @@ const TYPE_OPTIONS: { value: string; label: string }[] = [
 const CITY_OPTIONS: { value: string; label: string }[] = [
   { value: "alle", label: "Alle" },
   { value: "bodo", label: "Bodø" },
-  { value: "tromso", label: "Tromsø" },
   { value: "harstad", label: "Harstad" },
   { value: "alta", label: "Alta" },
   { value: "narvik", label: "Narvik" },
@@ -480,7 +479,6 @@ function SavedSearchAlert() {
           <select name="sted" aria-label="Geografi" defaultValue="">
             <option value="">Geografi (valgfritt)</option>
             <option value="Bodø">Bodø</option>
-            <option value="Tromsø">Tromsø</option>
             <option value="Harstad">Harstad</option>
             <option value="Alta">Alta</option>
             <option value="Narvik">Narvik</option>

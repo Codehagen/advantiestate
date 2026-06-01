@@ -51,15 +51,7 @@ const OFF_MARKET = [
     price: "~340",
     status: "Aktiv",
   },
-  {
-    ref: "OM-235",
-    titleHead: "Sentrumskvartal",
-    titleTail: "med utviklingspotensial, Tromsø.",
-    type: "Utvikling",
-    bta: "12 800",
-    price: "~260",
-    status: "Teaser",
-  },
+
   {
     ref: "OM-231",
     titleHead: "Single-tenant kontor —",
@@ -183,7 +175,7 @@ export default function EiendommerPage() {
     "@type": "ItemList",
     name: "Næringseiendom til salgs i Nord-Norge",
     description:
-      "Aktive salgsoppdrag formidlet av Advanti Estate i Bodø, Tromsø, Alta, Narvik, Harstad og Lofoten.",
+      "Aktive salgsoppdrag formidlet av Advanti Estate i Bodø, Alta, Narvik, Harstad og Lofoten.",
     numberOfItems: listings.length,
     itemListOrder: "https://schema.org/ItemListOrderAscending",
     itemListElement: listings.map((listing, index) => ({
