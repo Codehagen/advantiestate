@@ -4685,6 +4685,10 @@ h1, h2, h3 {
   font-weight: 300;
   letter-spacing: 0.01em;
   line-height: 1.4;
+  /* Wide KatexMath can exceed the block on narrow screens — scroll the
+     formula within the block instead of overflowing the whole page. */
+  max-width: 100%;
+  overflow-x: auto;
 }
 .ae-formula .ae-eq sub { font-style: normal; font-size: 0.62em; }
 .ae-formula .ae-desc {
