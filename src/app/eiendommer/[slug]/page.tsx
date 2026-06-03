@@ -9,6 +9,7 @@ import { BreadcrumbStructuredData } from "@/components/StructuredData";
 import { siteConfig } from "@/app/siteConfig";
 import { getActiveListings, getListingPost } from "@/lib/content";
 import { getListingGallery } from "@/lib/listing/gallery";
+import { getListingDownloads } from "@/lib/listing/downloads";
 import { constructMetadata } from "@/lib/utils";
 
 // Gallery comes from the CRM Supabase projection (published via CRM). ISR so a
@@ -100,6 +101,10 @@ export default async function EiendomDetailPage({
         : [{ src: listing.coverImage, alt: listing.coverImageAlt }];
   const coverSrc = dbGallery?.cover?.src ?? listing.coverImage;
   const photoCount = dbGallery?.photoCount ?? listing.photoCount;
+
+  // Downloads: CRM-published projection, MDX fallback.
+  const dbDownloads = await getListingDownloads(slug);
+  const downloads = dbDownloads ?? listing.downloads;
   const mainImg = gallery[0];
   const sideImgs = gallery.slice(1, 3);
 
@@ -629,7 +634,7 @@ export default async function EiendomDetailPage({
       )}
 
       {/* DOWNLOADS */}
-      {listing.downloads && listing.downloads.length > 0 && (
+      {downloads && downloads.length > 0 && (
         <section className="ed-section">
           <div className="wrap">
             <div className="head">
@@ -646,7 +651,7 @@ export default async function EiendomDetailPage({
               </div>
             </div>
             <div className="ed-downloads">
-              {listing.downloads.map((dl) => (
+              {downloads.map((dl) => (
                 <Link
                   key={dl.label}
                   href={dl.href}
