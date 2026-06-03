@@ -5,6 +5,7 @@ import { allHelpPosts } from "content-collections"
 import dynamic from "next/dynamic"
 import Link from "next/link"
 
+import BlurImage from "@/lib/blog/blur-image"
 import { HELP_CATEGORIES, POPULAR_ARTICLES } from "@/lib/blog/content"
 import { cx } from "@/lib/utils"
 
@@ -133,12 +134,10 @@ function StatStrip(props: {
     delta?: { dir: "up" | "down"; text: string }
   }[]
 }) {
+  const items = props.items ?? []
   return (
-    <div
-      className="ae-stat-strip"
-      style={{ ["--ae-cols" as any]: props.items.length }}
-    >
-      {props.items.map((s, i) => (
+    <div className="ae-stat-strip" style={{ ["--ae-cols" as any]: items.length }}>
+      {items.map((s, i) => (
         <div className="ae-stat" key={i}>
           <div className="ae-val">
             {s.value}
@@ -165,7 +164,7 @@ function Summary(props: {
     <div className="ae-summary">
       {props.title && <div className="ae-summary-head">{props.title}</div>}
       <div className="ae-grid">
-        {props.points.map((p, i) => (
+        {(props.points ?? []).map((p, i) => (
           <div className="ae-item" key={i}>
             <span className="ae-rn">{ROMAN[i] ?? i + 1}</span>
             <h5>{p.title}</h5>
@@ -177,18 +176,41 @@ function Summary(props: {
   )
 }
 
-/* -- STEPPER ---------------------------------------------- */
+/* -- STEPPER ----------------------------------------------
+   Supports optional per-step `formula` (rendered via the editorial
+   .ae-formula frame) and `image` — existing help articles rely on the
+   `formula` sub-prop, so dropping it silently hides their math. */
 function Stepper(props: {
-  items: { title: string; content: React.ReactNode }[]
+  items: {
+    title: string
+    content: React.ReactNode
+    image?: { src: string; alt: string; width?: number; height?: number }
+    formula?: { math: string; description?: string; mode?: "inline" | "block" }
+  }[]
 }) {
   return (
     <div className="ae-stepper">
-      {props.items.map((item, i) => (
+      {(props.items ?? []).map((item, i) => (
         <div className="ae-step" key={i}>
           <div className="ae-sn">{i + 1}</div>
           <div>
             <h4>{item.title}</h4>
             <div>{item.content}</div>
+            {item.formula && (
+              <MathBlock
+                formula={item.formula.math}
+                description={item.formula.description}
+                mode={item.formula.mode}
+              />
+            )}
+            {item.image && (
+              <ZoomImage
+                src={item.image.src}
+                alt={item.image.alt}
+                width={item.image.width || 800}
+                height={item.image.height || 400}
+              />
+            )}
           </div>
         </div>
       ))}
@@ -208,6 +230,11 @@ function Example(props: {
 }) {
   const fmt = (v: string | number) =>
     typeof v === "number" ? new Intl.NumberFormat("nb-NO").format(v) : v
+  const steps = props.steps ?? []
+  // Render the calculation column consistently across rows. If ANY row has a
+  // calculation, every row reserves the cell (empty when absent) so values
+  // stay in the same column. If no row has one, drop the column entirely.
+  const hasCalc = steps.some((s) => s.calculation)
   return (
     <div className="ae-example">
       <div className="ae-ehead">
@@ -216,10 +243,10 @@ function Example(props: {
       </div>
       <table>
         <tbody>
-          {props.steps.map((s, i) => (
+          {steps.map((s, i) => (
             <tr key={i} className={s.isResult ? "is-result" : undefined}>
               <td className="ae-elabel">{s.label}</td>
-              {s.calculation && <td className="ae-ecalc">{s.calculation}</td>}
+              {hasCalc && <td className="ae-ecalc">{s.calculation ?? ""}</td>}
               <td className="ae-eval">{fmt(s.value)}</td>
             </tr>
           ))}
@@ -276,10 +303,17 @@ function Quote(props: {
       {(props.author || role) && (
         <div className="ae-cite">
           {props.authorSrc && (
-            <div
-              className="ae-av"
-              style={{ backgroundImage: `url('${props.authorSrc}')` }}
-            />
+            // next/image (via BlurImage) so the avatar is optimized and
+            // honors next.config remotePatterns — a raw CSS background-image
+            // would bypass both and let any src trigger an unoptimized fetch.
+            <div className="ae-av">
+              <BlurImage
+                src={props.authorSrc}
+                alt={props.author ?? ""}
+                width={44}
+                height={44}
+              />
+            </div>
           )}
           <div className="meta">
             {props.author && <span className="name">{props.author}</span>}
@@ -430,7 +464,7 @@ function Timeline(props: {
 }) {
   return (
     <div className="ae-timeline">
-      {props.items.map((it, i) => (
+      {(props.items ?? []).map((it, i) => (
         <div className="ae-tl-item" key={i}>
           <div className="ae-tl-date">{it.date}</div>
           <h4>{it.title}</h4>
@@ -449,17 +483,17 @@ function Compare(props: {
   return (
     <div className="ae-compare">
       <div className="ae-col is-accent">
-        <div className="ae-col-head">{props.pro.head}</div>
+        <div className="ae-col-head">{props.pro?.head}</div>
         <ul>
-          {props.pro.items.map((it, i) => (
+          {(props.pro?.items ?? []).map((it, i) => (
             <li key={i}>{it}</li>
           ))}
         </ul>
       </div>
       <div className="ae-col is-con">
-        <div className="ae-col-head">{props.con.head}</div>
+        <div className="ae-col-head">{props.con?.head}</div>
         <ul>
-          {props.con.items.map((it, i) => (
+          {(props.con?.items ?? []).map((it, i) => (
             <li key={i}>{it}</li>
           ))}
         </ul>
@@ -477,7 +511,7 @@ function ReadMore(props: {
     <div className="ae-readmore">
       <div className="ae-rm-head">{props.title ?? "Les videre."}</div>
       <div className="ae-rm-list">
-        {props.items.map((it, i) => (
+        {(props.items ?? []).map((it, i) => (
           <Link className="ae-rm-item" href={it.href} key={i}>
             <div>
               <div className="ae-rm-pre">{it.pre}</div>
@@ -499,7 +533,7 @@ function Changelog(props: {
 }) {
   return (
     <div className="ae-changelog">
-      {props.items.map((it, i) => (
+      {(props.items ?? []).map((it, i) => (
         <Link className="ae-cl-item" href={it.href} key={i}>
           <div className="ae-cl-date">{it.date}</div>
           <div>

@@ -4584,11 +4584,11 @@ h1, h2, h3 {
 .ae-quote .ae-av {
   width: 44px; height: 44px;
   border-radius: 50%;
-  background-size: cover;
-  background-position: center;
+  overflow: hidden;
   background-color: var(--warm-grey-75);
   flex-shrink: 0;
 }
+.ae-quote .ae-av img { width: 100%; height: 100%; object-fit: cover; }
 .ae-quote .ae-cite .name { font-weight: 500; font-size: 14.5px; font-style: normal; }
 .ae-quote .ae-cite .role { font-size: 12.5px; color: var(--warm-grey-85); font-style: normal; }
 .ae-quote .ae-cite .meta { display: flex; flex-direction: column; }
