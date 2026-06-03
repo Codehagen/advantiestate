@@ -349,7 +349,17 @@ the AI SEO closure review (/plan-eng-review, 2026-05-24), and the AI-SEO researc
 
 ---
 
-## TODO 19 — Migrate the 21 existing blog articles to editorial MDX components
+## TODO 19 — Migrate the 21 existing blog articles to editorial MDX components — SHIPPED 2026-06-03
+
+- **Outcome:** All 21 articles migrated to the editorial components via a
+  20-agent workflow (additive/SEO-safe): bold-label lists → `<Summary>`,
+  calculations → `<Example>`, genuine fordeler/ulemper → `<Compare>`, real KPI
+  numbers → `<StatStrip>`, definitions → `<Fact>`, milestones → `<Timeline>`,
+  one `<Figure>` + building photo and one `key` Note per article. Verified:
+  build clean, 84 Playwright specs pass, headings preserved (no prose loss),
+  Compare semantics correct, StatStrip numbers verbatim, all Figure images
+  resolve. Branch `feat/blog-articles-editorial-migration`.
+- **Completed:** 2026-06-03.
 
 - **What:** Rewrite the existing `src/content/blog/*.mdx` articles to use the new
   editorial component family (`<Summary>`, `<Fact>`, `<StatStrip>`, `<Compare>`,

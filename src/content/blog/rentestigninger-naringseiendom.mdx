@@ -15,7 +15,11 @@ Rentestigninger har betydelig innvirkning på næringseiendomsmarkedet. De påvi
 
 Denne guiden forklarer hvordan rentestigninger påvirker verdien og hva du kan gjøre for å tilpasse deg nye forhold.
 
-<Note variant="warning">
+<Figure n="Fig. 01" caption="Når renten stiger, øker investorenes avkastningskrav — og yield-nivåene presser verdien av næringseiendom nedover.">
+  <Image src="/building/pexels-high-rise-clear-sky-32485809.jpg" alt="Næringsbygg sett mot klar himmel" width={1200} height={675} />
+</Figure>
+
+<Note variant="key">
 Rentestigninger har betydelig innvirkning på næringseiendomsmarkedet. De påvirker både finansiering, verdivurdering og investeringsbeslutninger. Det er viktig å forstå konsekvensene og tilpasse strategien din.
 </Note>
 
@@ -23,31 +27,49 @@ Rentestigninger har betydelig innvirkning på næringseiendomsmarkedet. De påvi
 
 ### Direkte påvirkning på finansiering
 
-**Høyere renter betyr:**
-- Høyere finansieringskostnader
-- Lavere belåningsgrad mulig
-- Tøffere lånevilkår
-- Høyere egenkapitalkrav
+Høyere renter slår først inn på finansieringen. Lånekostnadene øker, og bankene strammer samtidig inn på vilkårene.
 
-**Eksempel:**
-- Lån: 7 millioner kroner
-- Rente 4%: 280,000 kr/år
-- Rente 6%: 420,000 kr/år
-- **Økning: 140,000 kr/år**
+<Summary
+  title="Høyere renter betyr"
+  points={[
+    { title: "Høyere finansieringskostnader", description: "Rentekostnaden på lånet øker direkte med rentenivået." },
+    { title: "Lavere belåningsgrad mulig", description: "Bankene aksepterer en lavere andel lånefinansiering." },
+    { title: "Tøffere lånevilkår", description: "Strengere krav til betjeningsevne og sikkerhet." },
+    { title: "Høyere egenkapitalkrav", description: "Mer egenkapital må til for å få lånet i havn." },
+  ]}
+/>
+
+<Example
+  title="Renteøkning på et lån på 7 mill. kr"
+  steps={[
+    { label: "Rente 4 %", value: 280000 },
+    { label: "Rente 6 %", value: 420000 },
+    { label: "Økning", value: 140000, isResult: true },
+  ]}
+/>
 
 ### Indirekte påvirkning på verdi
 
-**Høyere renter påvirker:**
-- Diskontosats ved verdivurdering
-- Yield-nivåer i markedet
-- Investorenes avkastningskrav
-- Markedsverdien av eiendommer
+Renten påvirker også verdien indirekte, gjennom avkastningskravet investorene legger til grunn når de priser en eiendom.
 
-**Eksempel:**
-- Netto leieinntekt: 900,000 kr/år
-- Yield 5%: Verdi 18 millioner kroner
-- Yield 6%: Verdi 15 millioner kroner
-- **Verditap: 3 millioner kroner**
+<Summary
+  title="Høyere renter påvirker"
+  points={[
+    { title: "Diskontosats ved verdivurdering", description: "Fremtidige kontantstrømmer diskonteres hardere." },
+    { title: "Yield-nivåer i markedet", description: "Yield-kravet stiger når alternativ avkastning blir høyere." },
+    { title: "Investorenes avkastningskrav", description: "Kjøpere krever mer igjen for samme risiko." },
+    { title: "Markedsverdien av eiendommer", description: "Samlet effekt: lavere pris for samme leieinntekt." },
+  ]}
+/>
+
+<Example
+  title="Verdieffekt av høyere yield (netto leie 900 000 kr/år)"
+  steps={[
+    { label: "Yield 5 %", value: 18000000 },
+    { label: "Yield 6 %", value: 15000000 },
+    { label: "Verditap", value: 3000000, isResult: true },
+  ]}
+/>
 
 ## Rentestigninger og verdivurdering
 
@@ -55,42 +77,55 @@ Rentestigninger har betydelig innvirkning på næringseiendomsmarkedet. De påvi
 
 Ved DCF-analyse brukes diskontosatsen til å beregne nåverdien av fremtidige kontantstrømmer. Høyere renter gir høyere diskontosats og lavere verdi.
 
-**Formel:**
-```
-Verdi = Kontantstrøm / Diskontosats
-```
+<Math formula="\text{Verdi} = \dfrac{\text{Kontantstrøm}}{\text{Diskontosats}}" />
 
-**Eksempel:**
-- Kontantstrøm: 900,000 kr/år
-- Diskontosats 5%: Verdi 18 millioner kroner
-- Diskontosats 6%: Verdi 15 millioner kroner
-- **Verditap: 3 millioner kroner**
+<Example
+  title="Verdieffekt av høyere diskontosats (kontantstrøm 900 000 kr/år)"
+  steps={[
+    { label: "Diskontosats 5 %", value: 18000000 },
+    { label: "Diskontosats 6 %", value: 15000000 },
+    { label: "Verditap", value: 3000000, isResult: true },
+  ]}
+/>
 
 ### Yield-nivåer i markedet
 
 Høyere renter øker investorenes avkastningskrav, noe som øker yield-nivåene i markedet og reduserer verdien.
 
-**Eksempel:**
-- Netto leieinntekt: 900,000 kr/år
-- Yield 5%: Verdi 18 millioner kroner
-- Yield 6%: Verdi 15 millioner kroner
-- **Verditap: 3 millioner kroner**
+<Example
+  title="Verditap når yield stiger (netto leieinntekt 900 000 kr/år)"
+  steps={[
+    { label: "Yield 5 %", value: 18000000 },
+    { label: "Yield 6 %", value: 15000000 },
+    { label: "Verditap", value: 3000000, isResult: true },
+  ]}
+/>
 
 ## Finansiering og lånevilkår
 
 ### Endringer i lånevilkår
 
-**Før rentestigning:**
-- Rente: 4-5%
-- Belåningsgrad: Opptil 70%
-- Egenkapitalkrav: 30%
-- Gunstige vilkår
+Et stigende rentenivå strammer inn hele finansieringspakken. Slik ser bildet typisk ut før og etter en renteoppgang.
 
-**Etter rentestigning:**
-- Rente: 5-7%
-- Belåningsgrad: Opptil 60-65%
-- Egenkapitalkrav: 35-40%
-- Tøffere vilkår
+<Summary
+  title="Før rentestigning"
+  points={[
+    { title: "Rente", description: "4–5 %." },
+    { title: "Belåningsgrad", description: "Opptil 70 %." },
+    { title: "Egenkapitalkrav", description: "30 %." },
+    { title: "Vilkår", description: "Gunstige." },
+  ]}
+/>
+
+<Summary
+  title="Etter rentestigning"
+  points={[
+    { title: "Rente", description: "5–7 %." },
+    { title: "Belåningsgrad", description: "Opptil 60–65 %." },
+    { title: "Egenkapitalkrav", description: "35–40 %." },
+    { title: "Vilkår", description: "Tøffere." },
+  ]}
+/>
 
 ### Påvirkning på kjøpekraft
 
@@ -100,129 +135,128 @@ Høyere renter reduserer kjøpekraften:
 - Høyere månedlige kostnader
 - Færre potensielle kjøpere
 
-**Eksempel:**
-- Kjøpspris: 10 millioner kroner
-- Egenkapitalkrav 30%: 3 millioner kroner
-- Egenkapitalkrav 40%: 4 millioner kroner
-- **Økning: 1 million kroner**
+<Example
+  title="Økt egenkapitalkrav ved kjøpspris 10 mill. kr"
+  steps={[
+    { label: "Egenkapitalkrav 30 %", value: 3000000 },
+    { label: "Egenkapitalkrav 40 %", value: 4000000 },
+    { label: "Økning", value: 1000000, isResult: true },
+  ]}
+/>
 
 ## Strategier for investorer
 
 ### 1. Vurder finansiering
 
-**Fastrente vs. flytende rente:**
-- Fastrente gir forutsigbarhet
-- Flytende rente kan være lavere, men usikker
-- Vurder risiko vs. kostnad
-
-**Refinansiering:**
-- Vurder eksisterende lån
-- Sjekk muligheter for refinansiering
-- Vurder kostnader vs. gevinster
+<Summary
+  title="Finansiering."
+  points={[
+    { title: "Fastrente vs. flytende rente", description: "Fastrente gir forutsigbarhet, flytende rente kan være lavere men usikker — vei risiko mot kostnad." },
+    { title: "Refinansiering", description: "Gå gjennom eksisterende lån, sjekk muligheter for refinansiering og vurder kostnader mot gevinster." },
+  ]}
+/>
 
 ### 2. Fokus på kontantstrøm
 
-**Optimaliser leieinntekter:**
-- Markedsjuster leieprisene
-- Fyll tomme lokaler
-- Vurder leieøkninger
-
-**Reduser driftskostnader:**
-- Optimaliser energi- og vedlikeholdskostnader
-- Vurder felleskostnader
-- Dokumenter kostnadsbesparelser
+<Summary
+  title="Kontantstrøm."
+  points={[
+    { title: "Optimaliser leieinntekter", description: "Markedsjuster leieprisene, fyll tomme lokaler og vurder leieøkninger." },
+    { title: "Reduser driftskostnader", description: "Optimaliser energi- og vedlikeholdskostnader, vurder felleskostnader og dokumenter besparelsene." },
+  ]}
+/>
 
 ### 3. Vurder investeringer
 
-**Vurder ROI:**
-- Beregn avkastning på investeringer
-- Vurder kostnad vs. verdi
-- Fokus på kontantstrøm
-
-**Prioriter investeringer:**
-- Start med høyest ROI
-- Vurder langsiktig verdi
-- Planlegg systematisk
+<Summary
+  title="Investeringer."
+  points={[
+    { title: "Vurder ROI", description: "Beregn avkastning på investeringene, vei kostnad mot verdi og hold fokus på kontantstrøm." },
+    { title: "Prioriter investeringer", description: "Start med høyest ROI, vurder langsiktig verdi og planlegg systematisk." },
+  ]}
+/>
 
 ### 4. Vurder salg
 
-**Når vurdere salg:**
-- Hvis kontantstrømmen ikke dekker kostnader
-- Hvis verdien har falt betydelig
-- Hvis du trenger kapital til annet
-- Hvis markedet er gunstig
+<Summary
+  title="Når bør du vurdere salg?"
+  points={[
+    { title: "Kontantstrømmen svikter", description: "Hvis kontantstrømmen ikke lenger dekker kostnadene." },
+    { title: "Verdien har falt betydelig", description: "Hvis markedsverdien har fått et vesentlig fall." },
+    { title: "Du trenger kapital", description: "Hvis du trenger kapitalen til andre formål." },
+    { title: "Markedet er gunstig", description: "Hvis markedsforholdene taler for et salg nå." },
+  ]}
+/>
 
 ## Markedsforhold og trender
 
 ### Påvirkning på markedet
 
-**Kortsiktig (1-2 år):**
-- Redusert etterspørsel fra investorer
-- Lavere transaksjonsvolum
-- Press på priser
-- Fokus på kontantstrøm
+<Summary
+  title="Kortsiktig · 1–2 år."
+  points={[
+    { title: "Redusert etterspørsel", description: "Færre investorer er aktive i markedet." },
+    { title: "Lavere transaksjonsvolum", description: "Antall handler går ned." },
+    { title: "Press på priser", description: "Prisene presses nedover." },
+    { title: "Fokus på kontantstrøm", description: "Investorene vektlegger løpende avkastning." },
+  ]}
+/>
 
-**Langsiktig (3-5 år):**
-- Markedet tilpasser seg nye renter
-- Stabile yield-nivåer
-- Normalisert aktivitet
-- Fokus på kvalitet
+<Summary
+  title="Langsiktig · 3–5 år."
+  points={[
+    { title: "Markedet tilpasser seg", description: "Aktørene venner seg til det nye rentenivået." },
+    { title: "Stabile yield-nivåer", description: "Yield-kravene flater ut igjen." },
+    { title: "Normalisert aktivitet", description: "Transaksjonsvolumet tar seg opp." },
+    { title: "Fokus på kvalitet", description: "Kvalitetseiendommer skiller seg ut." },
+  ]}
+/>
 
 ### Regionale forskjeller
 
-**Nord-Norge:**
-- Mindre påvirkning enn sør
-- Lokale faktorer viktigere
-- Stabil etterspørsel
-- Moderat påvirkning
+<Summary
+  title="Nord-Norge."
+  points={[
+    { title: "Mindre påvirkning enn sør", description: "Renteeffekten slår mildere ut i nord." },
+    { title: "Lokale faktorer viktigere", description: "Lokale forhold styrer mer enn rentenivået." },
+    { title: "Stabil etterspørsel", description: "Etterspørselen holder seg jevn." },
+    { title: "Moderat påvirkning", description: "Samlet sett en dempet effekt." },
+  ]}
+/>
 
-**Nasjonalt:**
-- Større påvirkning i sentrale områder
-- Høyere renter påvirker mer
-- Større variasjon
-- Mer volatilitet
+<Summary
+  title="Nasjonalt."
+  points={[
+    { title: "Større påvirkning i sentrale områder", description: "De største byene merker renten mest." },
+    { title: "Høyere renter påvirker mer", description: "Sterkere utslag av renteendringer." },
+    { title: "Større variasjon", description: "Spennet mellom segmenter øker." },
+    { title: "Mer volatilitet", description: "Markedet svinger kraftigere." },
+  ]}
+/>
 
 ## Praktiske råd
 
 ### For eksisterende eiere
 
-**1. Vurder finansiering:**
-- Sjekk eksisterende lån
-- Vurder refinansiering
-- Vurder fastrente vs. flytende
-- Planlegg langsiktig
-
-**2. Optimaliser kontantstrøm:**
-- Markedsjuster leieprisene
-- Fyll tomme lokaler
-- Reduser driftskostnader
-- Dokumenter alt
-
-**3. Vurder investeringer:**
-- Fokus på ROI
-- Prioriter investeringer
-- Planlegg systematisk
-- Dokumenter gevinster
+<Summary
+  title="Tre grep for eksisterende eiere."
+  points={[
+    { title: "Vurder finansiering", description: "Sjekk eksisterende lån, vurder refinansiering og fastrente vs. flytende, og planlegg langsiktig." },
+    { title: "Optimaliser kontantstrøm", description: "Markedsjuster leieprisene, fyll tomme lokaler, reduser driftskostnader og dokumenter alt." },
+    { title: "Vurder investeringer", description: "Hold fokus på ROI, prioriter de viktigste investeringene, planlegg systematisk og dokumenter gevinstene." },
+  ]}
+/>
 
 ### For potensielle kjøpere
 
-**1. Vurder finansiering:**
-- Sjekk lånevilkår og renter
-- Vurder egenkapitalkrav
-- Planlegg finansiering
-- Vurder risiko
-
-**2. Vurder verdi:**
-- Få profesjonell verdivurdering
-- Vurder yield og avkastning
-- Sammenlign med markedet
-- Vurder langsiktig
-
-**3. Vurder timing:**
-- Vurder markedsforhold
-- Vurder renteutsikter
-- Planlegg langsiktig
-- Vær tålmodig
+<Summary
+  title="Tre grep for potensielle kjøpere."
+  points={[
+    { title: "Vurder finansiering", description: "Sjekk lånevilkår og renter, vurder egenkapitalkrav, planlegg finansieringen og vei risikoen." },
+    { title: "Vurder verdi", description: "Få en profesjonell verdivurdering, vurder yield og avkastning, sammenlign med markedet og tenk langsiktig." },
+    { title: "Vurder timing", description: "Vurder markedsforhold og renteutsikter, planlegg langsiktig og vær tålmodig." },
+  ]}
+/>
 
 ## Konklusjon
 
