@@ -8,7 +8,7 @@ import { PropertyMap } from "@/components/eiendommer/PropertyMap";
 import { BreadcrumbStructuredData } from "@/components/StructuredData";
 import { siteConfig } from "@/app/siteConfig";
 import { getActiveListings, getListingPost } from "@/lib/content";
-import { getListingGallery } from "@/lib/listing/gallery";
+import { getListingGallery, getListingCovers } from "@/lib/listing/gallery";
 import { getListingDownloads } from "@/lib/listing/downloads";
 import { constructMetadata } from "@/lib/utils";
 
@@ -121,6 +121,11 @@ export default async function EiendomDetailPage({
       return aSame - bSame || a.order - b.order;
     })
     .slice(0, 2);
+
+  // CRM-published covers (Supabase) for the related cards — same source as the
+  // hero gallery above, so the "Lignende oppdrag" thumbnails don't show a stale
+  // MDX photo after a publish. MDX cover is the fallback.
+  const relatedCovers = await getListingCovers(related.map((r) => r.slug));
 
   // RealEstateListing JSON-LD — schema.org type that AI Overviews and search
   // engines treat as a first-class property listing. Keeps the @id linked to
@@ -725,8 +730,8 @@ export default async function EiendomDetailPage({
                 >
                   <div className="ei-card-photo">
                     <Image
-                      src={other.coverImage}
-                      alt={other.coverImageAlt}
+                      src={relatedCovers[other.slug]?.src ?? other.coverImage}
+                      alt={relatedCovers[other.slug]?.alt ?? other.coverImageAlt}
                       fill
                       sizes="(max-width: 980px) 50vw, 33vw"
                       style={{ objectFit: "cover" }}

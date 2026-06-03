@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { getActiveListings } from "@/lib/content";
+import { getListingCovers } from "@/lib/listing/gallery";
 
 const STATUS_LABELS: Record<string, string> = {
   "til-salgs": "Til salgs",
@@ -53,7 +54,7 @@ interface ActiveListingsStripProps {
  * from advanti-design.css so it visually matches the public listings
  * grid.
  */
-export function ActiveListingsStrip({
+export async function ActiveListingsStrip({
   eyebrow,
   title,
   lede,
@@ -78,6 +79,10 @@ export function ActiveListingsStrip({
   const cards = sorted.slice(0, limit);
 
   if (cards.length === 0) return null;
+
+  // CRM-published covers (Supabase), keyed by slug; MDX cover is the fallback —
+  // same source as the /eiendommer grid so a publish updates every card.
+  const covers = await getListingCovers(cards.map((c) => c.slug));
 
   return (
     <section className="section section-divider">
@@ -105,8 +110,8 @@ export function ActiveListingsStrip({
               >
                 <div className="ei-card-photo">
                   <Image
-                    src={listing.coverImage}
-                    alt={listing.coverImageAlt}
+                    src={covers[listing.slug]?.src ?? listing.coverImage}
+                    alt={covers[listing.slug]?.alt ?? listing.coverImageAlt}
                     fill
                     sizes="(max-width: 680px) 100vw, (max-width: 980px) 50vw, 33vw"
                     style={{ objectFit: "cover" }}
