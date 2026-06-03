@@ -346,3 +346,45 @@ the AI SEO closure review (/plan-eng-review, 2026-05-24), and the AI-SEO researc
   `content-collections.ts` build-config errors scoped out via `@ts-nocheck`),
   `ignoreBuildErrors` flipped to `false`. `next build` now type-checks for real.
 - **Completed:** 2026-05-21 (commit `f63d3b7`, branch `redesign-editorial-port`).
+
+---
+
+## TODO 19 — Migrate the 21 existing blog articles to editorial MDX components
+
+- **What:** Rewrite the existing `src/content/blog/*.mdx` articles to use the new
+  editorial component family (`<Summary>`, `<Fact>`, `<StatStrip>`, `<Compare>`,
+  `<Timeline>`, richer `<Note>` variants) instead of the current plain-markdown
+  `**bold:**` lists.
+- **Why:** The editorial-components PR (/plan-eng-review, 2026-06-03) lands the
+  CSS + wrappers backward-compatibly, but the existing articles still read as flat
+  markdown and barely exercise the new components. The visual upgrade only fully
+  shows once articles adopt the patterns.
+- **Pros:** Articles gain scannable summaries, stat strips, comparison blocks; the
+  `key` callout variant and the editorial rhythm from `AUTHORING.md` come through.
+- **Cons:** Editorial-judgment work (which callouts, which summaries) per article;
+  21 files; content/SEO regression risk if headings or copy shift. Not mechanical.
+- **Context:** Foundation shipped in the editorial-components PR — `.ae-*` classes
+  in `advanti-design.css`, wrappers in `src/components/blog/mdx.tsx`, authoring
+  rulebook at `src/content/blog/AUTHORING.md`. Do this article-by-article post-merge,
+  following the guide. Start with the highest-traffic articles.
+- **Depends on / blocked by:** Editorial-components PR merged first.
+
+---
+
+## TODO 20 — Add the 5 best-practice example articles as live exemplars
+
+- **What:** Publish the 5 handoff example articles (markedspuls-nord-norge-2026,
+  dcf-analyse, kjope-vs-leie, verdivurdering-guide, investere-kontorlokaler) into
+  `src/content/blog/` as on-site rendered references.
+- **Why:** `AUTHORING.md` documents the patterns in prose, but live articles give
+  editors (and Claude Code) a rendered reference to copy from.
+- **Pros:** Concrete, composed exemplars exercising every component cluster.
+- **Cons:** Real published content — needs editorial sign-off and valid
+  `BLOG_CATEGORIES` slugs (invalid category → `notFound()`).
+- **Context / GOTCHA:** Three of the handoff filenames collide with existing
+  article slugs already in `src/content/blog/` (`dcf-analyse-naringseiendom.mdx`,
+  `kjope-vs-leie-naringseiendom.mdx`, `investere-kontorlokaler-nord-norge.mdx`).
+  Dropping them in as-is would overwrite live articles. Rename or merge before
+  publishing. Source files live in the handoff bundle's `best-practice/`.
+- **Depends on / blocked by:** Editorial-components PR merged first; slug-collision
+  resolution.

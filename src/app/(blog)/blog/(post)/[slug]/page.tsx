@@ -3,7 +3,6 @@ import { MDX } from "@/components/blog/mdx";
 import ScrollProgress from "@/components/blog/scroll-progress";
 import { CtaStrip } from "@/components/site/CtaStrip";
 import { NewsletterSection } from "@/components/site/NewsletterSection";
-import { ProseShell } from "@/components/site/ProseShell";
 import BlurImage from "@/lib/blog/blur-image";
 import { BLOG_CATEGORIES } from "@/lib/blog/content";
 import { getBlurDataURL } from "@/lib/blog/images";
@@ -258,15 +257,13 @@ export default async function BlogArticle({
 
           <div className="ks-article">
             <article className="ks-art-body">
-              <ProseShell>
-                <MDX
-                  code={data.mdx}
-                  images={images.map((image) => ({
-                    ...image,
-                    alt: data.title,
-                  }))}
-                />
-              </ProseShell>
+              <MDX
+                code={data.mdx}
+                images={images.map((image) => ({
+                  ...image,
+                  alt: data.title,
+                }))}
+              />
 
               {/* Author footer */}
               {authorMeta && (
