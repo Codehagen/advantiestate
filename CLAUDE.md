@@ -190,7 +190,7 @@ Remote image patterns allowed:
 ## Development Workflow
 
 1. **Adding New Service Pages**: Create under `src/app/tjenester/[service-name]/page.tsx`
-2. **Creating Blog Content**: Add MDX files to `src/content/blog/` with required frontmatter (title, categories, publishedAt, image, author, summary)
+2. **Creating Blog Content**: Add MDX files to `src/content/blog/` with required frontmatter (title, categories, publishedAt, image, author, summary). Follow the editorial component patterns in [`src/content/blog/AUTHORING.md`](./src/content/blog/AUTHORING.md) — use the `.ae-*` components (`Summary`, `Fact`, `StatStrip`, `Compare`, `Note`, …) instead of bold-label lists.
 3. **Building Charts**: Extend chart components in `src/components/` using existing patterns (DcfChart, and the Recharts charts in `src/components/markedsinnsikt/charts/`)
 4. **Map Features**: Use the Leaflet map components in `src/components/markedsinnsikt/maps/` (client-only, CartoDB tiles)
 5. **Market Analysis**: Components in `src/components/markedsinnsikt/`

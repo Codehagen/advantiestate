@@ -119,7 +119,7 @@ Path alias: `@/*` → `src/*`. Content collections alias: `content-collections`
 | Need to add… | Put it in |
 |---|---|
 | New service page | `src/app/tjenester/<slug>/page.tsx` (static, not dynamic route) |
-| New blog post | `src/content/blog/<slug>.mdx` with full frontmatter |
+| New blog post | `src/content/blog/<slug>.mdx` with full frontmatter; follow `src/content/blog/AUTHORING.md` (use the `.ae-*` editorial components) |
 | New help article | `src/content/help/<slug>.mdx` (incl. `updatedAt`) |
 | New location | `src/content/locations/<city>.mdx` (drives `/naringsmegler/<city>`) |
 | New chart | `src/components/markedsinnsikt/charts/` (Recharts) or `src/components/advanti/` |

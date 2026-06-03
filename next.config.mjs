@@ -117,6 +117,14 @@ const nextConfig = {
         pathname: "/**",
       },
       {
+        // Supabase Storage CDN — public `imagebank` bucket + render/resize
+        // endpoint. Serves https://<ref>.supabase.co/storage/v1/...
+        protocol: "https",
+        hostname: "kukzjreikqbgbolxvqaj.supabase.co",
+        port: "",
+        pathname: "/storage/v1/**",
+      },
+      {
         protocol: "https",
         hostname: "avatar.vercel.sh",
         port: "",

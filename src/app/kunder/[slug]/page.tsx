@@ -6,7 +6,6 @@ import { notFound } from "next/navigation";
 
 import { MDX } from "@/components/blog/mdx";
 import { CtaStrip } from "@/components/site/CtaStrip";
-import { ProseShell } from "@/components/site/ProseShell";
 import { getBlurDataURL } from "@/lib/blog/images";
 import { constructMetadata } from "@/lib/utils";
 import { getCustomerPost } from "@/lib/content";
@@ -301,9 +300,7 @@ export default async function CustomerStory({
         <div className="wrap">
           <div className="ks-article">
             <article className="ks-art-body" style={{ maxWidth: 760 }}>
-              <ProseShell>
-                <MDX code={data.mdx} images={images} />
-              </ProseShell>
+              <MDX code={data.mdx} images={images} />
             </article>
 
             {/* SIDEBAR */}

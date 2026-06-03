@@ -153,6 +153,41 @@ OPPDRAG archive · BLOG
 
 Find the matching banner before adding or changing styles.
 
+### BLOG editorial components — `.ae-*`
+
+The MDX article body (`src/components/blog/mdx.tsx`) renders a family of
+editorial components styled by `.ae-*` classes in the **BLOG** section of
+`advanti-design.css`. They follow the system: hairlines, restrained type,
+numbered labels, accent as a small detail, icon-free. The article wrapper
+carries **`.ks-prose`** (not Tailwind `prose`), so base typography is shared
+across blog, help, kunder, integrasjoner and eiendommer.
+
+| Component (MDX) | Class | Notes |
+|---|---|---|
+| `Note` | `.ae-note[.is-key/.is-caution/.is-positive]` | Variants `neutral·key·caution·positive`; legacy `info·warning·success` accepted. Max one `key` per article. |
+| `Aside` (`Info`) | `.ae-aside` | Margin note. |
+| `Fact` | `.ae-fact[.is-inline]` | Term + definition. |
+| `StatStrip` | `.ae-stat-strip` | Big numerals, hairline-divided. |
+| `Summary` | `.ae-summary` | Numbered I/II/III takeaways. |
+| `Stepper` | `.ae-stepper` | Numbered steps. |
+| `Example` | `.ae-example` | Calculation table; `isResult` row emphasized. |
+| `Prerequisites` | `.ae-prereq` | Accepts `items` or markdown `children`. |
+| `Quote` | `.ae-quote` | Editorial pull-quote (accepts legacy customer-quote props). |
+| `CTA` / `AnimatedCTA` | `.ae-cta[.is-light]` | `CTA` = editorial band; `AnimatedCTA` = legacy animated grid (opt-in). |
+| `Math`/`FormulaDisplay`/`Formula` | `.ae-formula[.is-light]` | Dark frame around `KatexMath`; `Formula` is children-based. |
+| `Figure` | `.ae-figure[.is-wide]` | Wraps `ZoomImage`/`BlurImage`. |
+| `Timeline` · `Compare` · `ReadMore` · `Changelog` | `.ae-timeline` · `.ae-compare` · `.ae-readmore` · `.ae-changelog` | |
+
+Two low-chroma support tokens are defined for these components:
+
+| Token | Value | Use |
+|---|---|---|
+| `--ae-caution` | `oklch(0.70 0.055 65)` (muted ochre) | caution **rules** only — never as label text (contrast) |
+| `--ae-positive` | `oklch(0.66 0.045 155)` (muted sage) | positive **rules** only — never as label text |
+
+Authoring patterns (when to use which component, the bold-list → `<Summary>`
+rule) live in [`src/content/blog/AUTHORING.md`](./src/content/blog/AUTHORING.md).
+
 ---
 
 ## 6. Gotchas / patterns
