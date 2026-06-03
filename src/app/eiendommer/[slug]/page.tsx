@@ -8,7 +8,13 @@ import { PropertyMap } from "@/components/eiendommer/PropertyMap";
 import { BreadcrumbStructuredData } from "@/components/StructuredData";
 import { siteConfig } from "@/app/siteConfig";
 import { getActiveListings, getListingPost } from "@/lib/content";
+import { getListingGallery } from "@/lib/listing/gallery";
 import { constructMetadata } from "@/lib/utils";
+
+// Gallery comes from the CRM Supabase projection (published via CRM). ISR so a
+// publish appears within the window without a redeploy. MDX stays the source of
+// truth for editorial copy + the slug list (generateStaticParams).
+export const revalidate = 600;
 
 const STATUS_LABELS: Record<string, string> = {
   "til-salgs": "Til salgs",
@@ -84,14 +90,16 @@ export default async function EiendomDetailPage({
     listing.statusLabel ?? STATUS_LABELS[listing.status] ?? listing.status;
   const cityLabel = CITY_LABELS[listing.city] ?? listing.city;
 
-  const gallery = listing.gallery && listing.gallery.length > 0
-    ? listing.gallery
-    : [
-        {
-          src: listing.coverImage,
-          alt: listing.coverImageAlt,
-        },
-      ];
+  // Prefer the CRM-published Supabase gallery; fall back to MDX, then cover.
+  const dbGallery = await getListingGallery(slug);
+  const gallery =
+    dbGallery && dbGallery.gallery.length > 0
+      ? dbGallery.gallery
+      : listing.gallery && listing.gallery.length > 0
+        ? listing.gallery
+        : [{ src: listing.coverImage, alt: listing.coverImageAlt }];
+  const coverSrc = dbGallery?.cover?.src ?? listing.coverImage;
+  const photoCount = dbGallery?.photoCount ?? listing.photoCount;
   const mainImg = gallery[0];
   const sideImgs = gallery.slice(1, 3);
 
@@ -122,9 +130,7 @@ export default async function EiendomDetailPage({
     url: listingUrl,
     name: listing.title,
     description: listing.summary,
-    image: listing.coverImage.startsWith("http")
-      ? listing.coverImage
-      : `${baseUrl}${listing.coverImage}`,
+    image: coverSrc.startsWith("http") ? coverSrc : `${baseUrl}${coverSrc}`,
     datePosted: listing.publishedAt,
     ...(listing.updatedAt ? { dateModified: listing.updatedAt } : {}),
     provider: {
@@ -212,10 +218,10 @@ export default async function EiendomDetailPage({
                   style={{ objectFit: "cover" }}
                 />
                 {index === sideImgs.length - 1 &&
-                  listing.photoCount &&
-                  listing.photoCount > gallery.length && (
+                  photoCount &&
+                  photoCount > gallery.length && (
                     <div className="g-more">
-                      <span className="ct">+ {listing.photoCount - gallery.length}</span>{" "}
+                      <span className="ct">+ {photoCount - gallery.length}</span>{" "}
                       bilder
                     </div>
                   )}

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { constructMetadata } from "@/lib/utils";
 import { siteConfig } from "@/app/siteConfig";
 import { getActiveListings } from "@/lib/content";
+import { getListingCovers } from "@/lib/listing/gallery";
 import { SubHero } from "@/components/site/SubHero";
 import {
   ListingsBrowser,
@@ -88,8 +89,13 @@ function formatEditorialDate(iso: string) {
   });
 }
 
-export default function EiendommerPage() {
+// ISR: pick up CRM-published covers without a redeploy.
+export const revalidate = 600;
+
+export default async function EiendommerPage() {
   const listings = getActiveListings();
+  // CRM-published covers (Supabase), keyed by slug; MDX cover is the fallback.
+  const covers = await getListingCovers(listings.map((l) => l.slug));
 
   // KPI totals
   const activeCount = listings.filter(
@@ -146,8 +152,8 @@ export default function EiendommerPage() {
     yieldNetto: listing.yieldNetto,
     yieldEstimat: listing.yieldEstimat ?? false,
     ferdig: listing.ferdig,
-    coverImage: listing.coverImage,
-    coverImageAlt: listing.coverImageAlt,
+    coverImage: covers[listing.slug]?.src ?? listing.coverImage,
+    coverImageAlt: covers[listing.slug]?.alt ?? listing.coverImageAlt,
     featured: listing.featured ?? false,
     featuredEyebrow: listing.featuredEyebrow,
     summary: listing.summary,
@@ -187,8 +193,8 @@ export default function EiendommerPage() {
         url: `${siteConfig.url}/eiendommer/${listing.slug}`,
         name: listing.title,
         description: listing.summary,
-        image: listing.coverImage.startsWith("http")
-          ? listing.coverImage
+        image: (covers[listing.slug]?.src ?? listing.coverImage).startsWith("http")
+          ? (covers[listing.slug]?.src ?? listing.coverImage)
           : `${siteConfig.url}${listing.coverImage}`,
         ...(listing.prisantydning
           ? {
