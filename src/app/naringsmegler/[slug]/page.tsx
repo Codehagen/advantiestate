@@ -23,6 +23,10 @@ function findStat(
   )?.value;
 }
 
+// ISR: the ActiveListingsStrip pulls CRM-published covers (Supabase); revalidate
+// so a publish appears without a redeploy, same window as /eiendommer.
+export const revalidate = 600;
+
 export async function generateStaticParams() {
   return allLocationPosts.map((location) => ({
     slug: location.slug,

@@ -10,6 +10,10 @@ import StructuredData, {
 
 const LAST_UPDATED = "2026-05-22";
 
+// ISR: the ActiveListingsStrip pulls CRM-published covers (Supabase); revalidate
+// so a publish appears without a redeploy, same window as /eiendommer.
+export const revalidate = 600;
+
 export const metadata = constructMetadata({
   path: "/tjenester/salg",
   title: "Salg av Næringseiendom i Nord-Norge | Advanti",
