@@ -5,7 +5,6 @@ import { notFound } from "next/navigation"
 
 import { CtaStrip } from "@/components/site/CtaStrip"
 import { NewsletterSection } from "@/components/site/NewsletterSection"
-import { ProseShell } from "@/components/site/ProseShell"
 import { MDX } from "@/components/blog/mdx"
 import { HELP_CATEGORIES } from "@/lib/blog/content"
 import { getBlurDataURL } from "@/lib/blog/images"
@@ -227,9 +226,7 @@ export default async function HelpArticle({
                 </div>
               )}
 
-              <ProseShell>
-                <MDX code={data.mdx} images={images} />
-              </ProseShell>
+              <MDX code={data.mdx} images={images} />
 
               {/* Feedback */}
               <div className="ks-feedback">

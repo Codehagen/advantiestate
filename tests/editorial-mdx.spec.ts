@@ -49,4 +49,21 @@ test("blog article renders editorial Note, Formula and Example components", asyn
   await expect(page.locator(".ae-note .ae-label").first()).toBeVisible();
   await expect(page.locator(".ae-formula .ae-eq").first()).toBeVisible();
   await expect(page.locator(".ae-example tr.is-result").first()).toBeVisible();
+  // Stepper (numbered step) and CTA (editorial band) are the two most-shipped
+  // editorial components after Note — assert they render here too.
+  await expect(page.locator(".ae-stepper .ae-step .ae-sn").first()).toBeVisible();
+  await expect(page.locator(".ae-cta h4").first()).toBeVisible();
+});
+
+test("Summary renders roman numerals (legacy iconName prop ignored)", async ({
+  page,
+}) => {
+  // esg-barekraft-naringseiendom passes the legacy `iconName` field on points;
+  // the editorial Summary must ignore it and render the I/II/III numerals.
+  await page.goto("/blog/esg-barekraft-naringseiendom", {
+    waitUntil: "domcontentloaded",
+  });
+  const summary = page.locator(".ae-summary").first();
+  await expect(summary).toBeVisible();
+  await expect(summary.locator(".ae-item .ae-rn").first()).toHaveText("I");
 });
