@@ -11,6 +11,10 @@ export default defineConfig({
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
   workers: process.env.CI ? 1 : undefined,
+  // Per-test timeout. Default is 30s; bumped to 60s because heavy /blog MDX
+  // pages occasionally take longer than 30s to settle on a cold CI runner,
+  // flaking page.goto. Only trips on a genuine hang, not normal slowness.
+  timeout: 60_000,
   reporter: "list",
   use: {
     baseURL: "http://localhost:3000",
