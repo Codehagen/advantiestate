@@ -21,6 +21,11 @@ const CITY_LABELS: Record<string, string> = {
   narvik: "Narvik",
   lofoten: "Lofoten",
   "mo-i-rana": "Mo i Rana",
+  stokmarknes: "Stokmarknes",
+  ulvsvag: "Ulvsvåg",
+  andenes: "Andenes",
+  lodingen: "Lødingen",
+  glomfjord: "Glomfjord",
 };
 
 const STATUS_LABELS: Record<string, string> = {
