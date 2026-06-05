@@ -23,6 +23,8 @@ const ROUTES = [
   "/karriere",
   "/naringsmegler",
   "/sjekkliste-verdivurdering",
+  "/eiendommer",
+  "/eiendommer/bodo-byport-stormyra",
 ];
 
 test.use({ viewport: { width: 375, height: 812 } });

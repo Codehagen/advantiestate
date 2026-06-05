@@ -4,6 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { MDX } from "@/components/blog/mdx";
+import { GalleryLightbox } from "@/components/eiendommer/GalleryLightbox";
 import { PropertyMap } from "@/components/eiendommer/PropertyMap";
 import { BreadcrumbStructuredData } from "@/components/StructuredData";
 import { siteConfig } from "@/app/siteConfig";
@@ -111,7 +112,6 @@ export default async function EiendomDetailPage({
         ? listing.gallery
         : [{ src: listing.coverImage, alt: listing.coverImageAlt }];
   const coverSrc = dbGallery?.cover?.src ?? listing.coverImage;
-  const photoCount = dbGallery?.photoCount ?? listing.photoCount;
 
   // Downloads: CRM-published projection, MDX fallback.
   const dbDownloads = await getListingDownloads(slug);
@@ -213,42 +213,56 @@ export default async function EiendomDetailPage({
             </span>
           </nav>
 
-          {/* GALLERY */}
-          <div className="ed-gallery">
-            <div className="g-main">
-              <div className={`ei-status ${listing.status}`}>
-                <span className="dot" />
-                {statusLabel}
-              </div>
-              <Image
-                src={mainImg.src}
-                alt={mainImg.alt}
-                fill
-                priority
-                sizes="(max-width: 880px) 100vw, 60vw"
-                style={{ objectFit: "cover" }}
-              />
-            </div>
-            {sideImgs.map((img, index) => (
-              <div className="g-side" key={`${img.src}-${index}`}>
+          {/* GALLERY — server-rendered grid; GalleryLightbox (client) adds the
+              click-to-enlarge lightbox over the full gallery via data-gallery-index. */}
+          <GalleryLightbox images={gallery}>
+            <div className="ed-gallery">
+              <div className="g-main">
+                <div className={`ei-status ${listing.status}`}>
+                  <span className="dot" />
+                  {statusLabel}
+                </div>
                 <Image
-                  src={img.src}
-                  alt={img.alt}
+                  src={mainImg.src}
+                  alt={mainImg.alt}
                   fill
-                  sizes="(max-width: 880px) 100vw, 30vw"
+                  priority
+                  sizes="(max-width: 880px) 100vw, 60vw"
                   style={{ objectFit: "cover" }}
                 />
-                {index === sideImgs.length - 1 &&
-                  photoCount &&
-                  photoCount > gallery.length && (
+                <button
+                  type="button"
+                  className="ed-tile-btn"
+                  data-gallery-index={0}
+                  aria-label={`Åpne bilde 1 av ${gallery.length}`}
+                />
+              </div>
+              {sideImgs.map((img, index) => (
+                <div className="g-side" key={`${img.src}-${index}`}>
+                  <Image
+                    src={img.src}
+                    alt={img.alt}
+                    fill
+                    sizes="(max-width: 880px) 100vw, 30vw"
+                    style={{ objectFit: "cover" }}
+                  />
+                  {/* Honest "+N" count: total photos minus the 3 visible tiles.
+                      photoCount is unreliable (can exceed the real array). */}
+                  {index === sideImgs.length - 1 && gallery.length > 3 && (
                     <div className="g-more">
-                      <span className="ct">+ {photoCount - gallery.length}</span>{" "}
-                      bilder
+                      <span className="ct">+ {gallery.length - 3}</span> bilder
                     </div>
                   )}
-              </div>
-            ))}
-          </div>
+                  <button
+                    type="button"
+                    className="ed-tile-btn"
+                    data-gallery-index={index + 1}
+                    aria-label={`Åpne bilde ${index + 2} av ${gallery.length}`}
+                  />
+                </div>
+              ))}
+            </div>
+          </GalleryLightbox>
 
           {/* TITLE BLOCK */}
           <div className="ed-title">
