@@ -38,7 +38,7 @@ for (const route of ROUTES) {
     // bug). next/image reserves layout space via width/height, so image decode
     // does not change document width.
     await page.waitForLoadState("load");
-    await page.evaluate(() => document.fonts.ready);
+    await page.evaluate(() => document.fonts.ready.then(() => {}));
     const { scrollWidth, clientWidth } = await page.evaluate(() => ({
       scrollWidth: document.documentElement.scrollWidth,
       clientWidth: document.documentElement.clientWidth,
