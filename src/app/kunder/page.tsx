@@ -25,40 +25,9 @@ const PRESENTATION: Record<
     year: string;
     kpis: { value: string; label: string }[];
   }
-> = {
-  corponor: {
-    image: "/building/pexels-pixabay-248877.jpg",
-    imageAlt: "Corponor utviklingsprosjekt",
-    category: "Salg & transaksjon",
-    year: "2024",
-    kpis: [
-      { value: "+15 %", label: "Over første tilbud" },
-      { value: "4 mnd", label: "Total prosess" },
-    ],
-  },
-  "investor-avkastning": {
-    image: "/building/pexels-abshky-18566965.jpg",
-    imageAlt: "Investor portefølje",
-    category: "Strategisk rådgivning",
-    year: "2025",
-    kpis: [
-      { value: "+25 %", label: "Total avkastning" },
-      { value: "+14 %", label: "Verdistigning" },
-    ],
-  },
-  "tomgang-full-utleie": {
-    image: "/building/pexels-abshky-18567185.jpg",
-    imageAlt: "Kontorbygg Bodø — utleie",
-    category: "Utleie & markedsanalyse",
-    year: "2025",
-    kpis: [
-      { value: "100 %", label: "Utleiegrad" },
-      { value: "+50 %", label: "Verdistigning" },
-    ],
-  },
-};
+> = {};
 
-const ORDER = ["corponor", "investor-avkastning", "tomgang-full-utleie"];
+const ORDER: string[] = [];
 
 export default function Customers() {
   // Render all customer stories, in a stable, intentional order; include any
@@ -136,6 +105,22 @@ export default function Customers() {
             </div>
           </div>
 
+          {stories.length === 0 ? (
+            <p className="lead" style={{ maxWidth: 560, marginTop: 24 }}>
+              Vi publiserer utvalgte case studies fortløpende etter hvert som
+              oppdrag sluttføres og kunden godkjenner publisering.{" "}
+              <Link
+                href="/kontakt"
+                style={{
+                  color: "var(--warm-grey)",
+                  borderBottom: "1px solid",
+                }}
+              >
+                Ta kontakt
+              </Link>{" "}
+              for å høre mer om hvordan vi jobber.
+            </p>
+          ) : (
           <div className="op-grid">
             {stories.map((story) => {
               const pres = PRESENTATION[story.slug];
@@ -180,6 +165,7 @@ export default function Customers() {
               );
             })}
           </div>
+          )}
 
           <div className="mi-footnote" style={{ marginTop: 48 }}>
             <span className="source">

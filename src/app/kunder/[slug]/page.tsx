@@ -25,99 +25,12 @@ const PRESENTATION: Record<
     results?: { value: string; unit?: string; label: string }[];
     advisors?: { name: string; role: string; avatar: string; slug?: string }[];
   }
-> = {
-  corponor: {
-    eyebrow: "Case study · 2024",
-    heroImage: "/building/pexels-pixabay-248877.jpg",
-    heroImageAlt: "Corponor utviklingsprosjekt, Bodø sentrum",
-    metaPeriod: "2024 · 4 måneder",
-    metaService: "Salg & Transaksjonsrådgivning",
-    metaProperty: "8 000 m² utviklingsprosjekt",
-    metaLocation: "Bodø sentrum",
-    results: [
-      {
-        value: "+15",
-        unit: "%",
-        label: "Over første tilbud — reflekterer prosjektets reelle verdi.",
-      },
-      {
-        value: "4",
-        unit: "mnd",
-        label: "Total prosesstid — mot estimerte 8 måneder.",
-      },
-      {
-        value: "200",
-        unit: "timer",
-        label: "Spart i intern arbeidstid for Corponor.",
-      },
-      {
-        value: "50",
-        unit: "mnok",
-        label: "Kapital frigjort for reinvestering i nye prosjekter.",
-      },
-    ],
-    advisors: [
-      {
-        name: "Christer Hagen",
-        role: "Partner · Lead",
-        avatar:
-          "https://imagedelivery.net/r-6-yk-gGPtjfbIST9-8uA/d08a8e8b-0285-4107-bc2c-973f93b27100/public",
-        slug: "christer-hagen",
-      },
-    ],
-  },
-  "investor-avkastning": {
-    eyebrow: "Case study · 2025",
-    heroImage: "/building/pexels-abshky-18566965.jpg",
-    heroImageAlt: "Investorportefølje av næringseiendom i Nord-Norge",
-    metaPeriod: "2025",
-    metaService: "Strategisk Rådgivning og Verdivurdering",
-    metaProperty: "Portefølje med 3 eiendommer",
-    metaLocation: "Nord-Norge",
-    results: [
-      {
-        value: "+25",
-        unit: "%",
-        label: "Høyere total avkastning på porteføljen.",
-      },
-      {
-        value: "+14",
-        unit: "%",
-        label: "Verdistigning gjennom strategisk optimalisering.",
-      },
-    ],
-  },
-  "tomgang-full-utleie": {
-    eyebrow: "Case study · 2025",
-    heroImage: "/building/pexels-abshky-18567185.jpg",
-    heroImageAlt: "Kontorbygg i Bodø sentrum",
-    metaPeriod: "2025 · 4 måneder",
-    metaService: "Utleieformidling og Markedsanalyse",
-    metaProperty: "1 200 m² kontorbygg",
-    metaLocation: "Bodø sentrum",
-    results: [
-      { value: "100", unit: "%", label: "Utleiegrad etter prosessen." },
-      {
-        value: "+50",
-        unit: "%",
-        label: "Verdistigning gjennom full utleie.",
-      },
-    ],
-  },
-};
+> = {};
 
 export async function generateStaticParams() {
-  return [
-    ...allCustomersPosts.map((post) => ({
-      slug: post.slug,
-    })),
-    {
-      slug: "hvordan-vi-hjalp-en-investor-realisere-25-høyere-avkastning",
-    },
-    {
-      slug: "hvordan-vi-hjalp-en-investor-realisere-25-hoyere-avkastning",
-    },
-  ];
+  return allCustomersPosts.map((post) => ({
+    slug: post.slug,
+  }));
 }
 
 export async function generateMetadata({

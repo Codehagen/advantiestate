@@ -2,7 +2,6 @@ import { render } from "@react-email/render"
 import { NextRequest } from "next/server"
 import { WelcomeEmail } from "@/emails/WelcomeEmail"
 import { MarketBriefingEmail } from "@/emails/MarketBriefingEmail"
-import { CaseStudyEmail } from "@/emails/CaseStudyEmail"
 import { SoftPitchEmail } from "@/emails/SoftPitchEmail"
 
 // Dev-only preview surface — render each email template to HTML so Christer
@@ -14,7 +13,6 @@ export const runtime = "nodejs"
 const TEMPLATES = {
   welcome: WelcomeEmail,
   "market-briefing": MarketBriefingEmail,
-  "case-study": CaseStudyEmail,
   "soft-pitch": SoftPitchEmail,
 } as const
 
