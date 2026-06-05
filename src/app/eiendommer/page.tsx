@@ -2,7 +2,7 @@ import Link from "next/link";
 
 import { constructMetadata } from "@/lib/utils";
 import { siteConfig } from "@/app/siteConfig";
-import { getActiveListings } from "@/lib/content";
+import { getListings } from "@/lib/listing/listings";
 import { getListingCovers } from "@/lib/listing/gallery";
 import { SubHero } from "@/components/site/SubHero";
 import {
@@ -21,6 +21,11 @@ const CITY_LABELS: Record<string, string> = {
   narvik: "Narvik",
   lofoten: "Lofoten",
   "mo-i-rana": "Mo i Rana",
+  stokmarknes: "Stokmarknes",
+  ulvsvag: "Ulvsvåg",
+  andenes: "Andenes",
+  lodingen: "Lødingen",
+  glomfjord: "Glomfjord",
 };
 
 const STATUS_LABELS: Record<string, string> = {
@@ -93,7 +98,7 @@ function formatEditorialDate(iso: string) {
 export const revalidate = 600;
 
 export default async function EiendommerPage() {
-  const listings = getActiveListings();
+  const listings = await getListings();
   // CRM-published covers (Supabase), keyed by slug; MDX cover is the fallback.
   const covers = await getListingCovers(listings.map((l) => l.slug));
 
@@ -117,10 +122,11 @@ export default async function EiendommerPage() {
       0,
     ) || 1);
 
-  const newestUpdated = listings
-    .map((listing) => listing.updatedAt ?? listing.publishedAt)
-    .sort()
-    .at(-1)!;
+  const newestUpdated =
+    listings
+      .map((listing) => listing.updatedAt ?? listing.publishedAt)
+      .sort()
+      .at(-1) ?? new Date().toISOString().slice(0, 10);
 
   // Status / type / city counts for filter chips
   const statusCounts: Record<string, number> = {};
@@ -136,11 +142,12 @@ export default async function EiendommerPage() {
   const allCards: ListingCardData[] = listings.map((listing, index) => ({
     slug: listing.slug,
     href: `/eiendommer/${listing.slug}`,
-    status: listing.status,
-    statusLabel: listing.statusLabel ?? STATUS_LABELS[listing.status],
-    type: listing.type,
+    status: listing.status as ListingCardData["status"],
+    statusLabel:
+      listing.statusLabel ?? STATUS_LABELS[listing.status] ?? listing.status,
+    type: listing.type as ListingCardData["type"],
     typeLabel: listing.typeLabel,
-    city: listing.city,
+    city: listing.city as ListingCardData["city"],
     cityLabel: CITY_LABELS[listing.city] ?? listing.city,
     titleHead: listing.titleHead,
     titleTail: listing.titleTail,
@@ -245,6 +252,8 @@ export default async function EiendommerPage() {
         lede="Et kuratert utvalg av eiendommer vi har til salgs i Nord-Norge — kontor, logistikk, handel og kombinasjonsbygg. Pluss konfidensielle oppdrag for kvalifiserte investorer."
       />
 
+      {listings.length > 0 ? (
+        <>
       {/* KPI BAND */}
       <section className="section-tight">
         <div className="wrap">
@@ -300,6 +309,19 @@ export default async function EiendommerPage() {
           total: listings.length,
         }}
       />
+        </>
+      ) : (
+        <section className="section">
+          <div className="wrap">
+            <p className="lead" style={{ maxWidth: 600 }}>
+              Vi har for øyeblikket ingen åpne salgsoppdrag publisert her. Nye
+              oppdrag legges ut fortløpende etter hvert som de gjøres
+              tilgjengelige — <Link href="/kontakt">ta kontakt</Link> for å høre
+              hva vi jobber med akkurat nå, inkludert off-market.
+            </p>
+          </div>
+        </section>
+      )}
 
       {/* OFF-MARKET BAND */}
       <section className="ei-offmarket">

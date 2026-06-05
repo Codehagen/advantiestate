@@ -7,7 +7,8 @@ import { MDX } from "@/components/blog/mdx";
 import { PropertyMap } from "@/components/eiendommer/PropertyMap";
 import { BreadcrumbStructuredData } from "@/components/StructuredData";
 import { siteConfig } from "@/app/siteConfig";
-import { getActiveListings, getListingPost } from "@/lib/content";
+import { getListing, getListings } from "@/lib/listing/listings";
+import { ListingProse } from "@/components/eiendommer/ListingProse";
 import { getListingGallery, getListingCovers } from "@/lib/listing/gallery";
 import { getListingDownloads } from "@/lib/listing/downloads";
 import { constructMetadata } from "@/lib/utils";
@@ -32,6 +33,11 @@ const CITY_LABELS: Record<string, string> = {
   narvik: "Narvik",
   lofoten: "Lofoten",
   "mo-i-rana": "Mo i Rana",
+  stokmarknes: "Stokmarknes",
+  ulvsvag: "Ulvsvåg",
+  andenes: "Andenes",
+  lodingen: "Lødingen",
+  glomfjord: "Glomfjord",
 };
 
 function formatInt(value: number) {
@@ -52,8 +58,12 @@ function formatEditorialDate(iso: string) {
   });
 }
 
+// CRM-published slugs not in the prebuilt set render on demand (then cache).
+export const dynamicParams = true;
+
 export async function generateStaticParams() {
-  return getActiveListings().map((listing) => ({ slug: listing.slug }));
+  const listings = await getListings();
+  return listings.map((listing) => ({ slug: listing.slug }));
 }
 
 export async function generateMetadata({
@@ -62,7 +72,7 @@ export async function generateMetadata({
   params: { slug: string };
 }): Promise<Metadata | undefined> {
   const { slug } = await params;
-  const listing = getListingPost(slug);
+  const listing = await getListing(slug);
   if (!listing) return;
   // Drop the " | Advanti Estate" brand suffix — listing titles already pack
   // address + m² + headline into ~50 chars; appending the brand pushes most
@@ -84,7 +94,7 @@ export default async function EiendomDetailPage({
   params: { slug: string };
 }) {
   const { slug } = await params;
-  const listing = getListingPost(slug);
+  const listing = await getListing(slug);
   if (!listing) notFound();
 
   const statusLabel =
@@ -113,7 +123,7 @@ export default async function EiendomDetailPage({
     : formatEditorialDate(listing.publishedAt);
 
   // Related: two other listings, preferring same type then proximity in order.
-  const related = getActiveListings()
+  const related = (await getListings())
     .filter((other) => other.slug !== listing.slug)
     .sort((a, b) => {
       const aSame = a.type === listing.type ? 0 : 1;
@@ -352,37 +362,57 @@ export default async function EiendomDetailPage({
                   )}
                 </p>
               )}
-              <MDX code={listing.mdx} images={[]} />
+              {listing.source === "crm" ? (
+                listing.body ? <ListingProse body={listing.body} /> : null
+              ) : (
+                <MDX code={listing.mdx!} images={[]} />
+              )}
             </div>
 
             <aside className="ed-megler">
               <div className="pre">Ansvarlig megler</div>
-              <div className="pp">
-                <Image
-                  src={listing.megler.avatar}
-                  alt={listing.megler.name}
-                  width={64}
-                  height={64}
-                />
-                <div className="nm">
-                  <div className="n">{listing.megler.name}</div>
-                  <div className="r">{listing.megler.role}</div>
-                </div>
-              </div>
-              <div className="contact">
-                <div>
-                  <div className="l">Mobil</div>
-                  <a href={`tel:${listing.megler.phone.replace(/\s/g, "")}`}>
-                    {listing.megler.phone}
-                  </a>
-                </div>
-                <div>
-                  <div className="l">E-post</div>
-                  <a href={`mailto:${listing.megler.email}`}>
-                    {listing.megler.email}
-                  </a>
-                </div>
-              </div>
+              {listing.megler ? (
+                <>
+                  <div className="pp">
+                    <Image
+                      src={listing.megler.avatar}
+                      alt={listing.megler.name}
+                      width={64}
+                      height={64}
+                    />
+                    <div className="nm">
+                      <div className="n">{listing.megler.name}</div>
+                      <div className="r">{listing.megler.role}</div>
+                    </div>
+                  </div>
+                  <div className="contact">
+                    <div>
+                      <div className="l">Mobil</div>
+                      <a href={`tel:${listing.megler.phone.replace(/\s/g, "")}`}>
+                        {listing.megler.phone}
+                      </a>
+                    </div>
+                    <div>
+                      <div className="l">E-post</div>
+                      <a href={`mailto:${listing.megler.email}`}>
+                        {listing.megler.email}
+                      </a>
+                    </div>
+                  </div>
+                </>
+              ) : (
+                <p
+                  style={{
+                    fontSize: 13,
+                    color: "var(--warm-grey-85)",
+                    lineHeight: 1.55,
+                    margin: "12px 0 20px",
+                  }}
+                >
+                  Ta kontakt for prospekt, datarom og visning — vi kobler deg
+                  med megleren som har ansvaret for oppdraget.
+                </p>
+              )}
               <div className="cta-row">
                 <Link href="/kontakt" className="btn btn-primary">
                   Be om prospekt <span className="arrow">→</span>
