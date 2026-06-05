@@ -27,17 +27,26 @@ const ROUTES = [
 
 test.use({ viewport: { width: 375, height: 812 } });
 
+// The overflow check must not depend on image loading: external avatar CDNs
+// (imagedelivery.net, avatar.vercel.sh) hang in CI where external egress is
+// slow/blocked, and the single-worker prod server optimizes many next/image
+// covers on demand — both push `load` past the 30s timeout. Abort every image
+// request: next/image reserves layout space via width/height, so document
+// width (the thing we measure) is unaffected, while `load` now fires fast with
+// CSS applied.
+test.beforeEach(async ({ page }) => {
+  await page.route(
+    /imagedelivery\.net|avatar\.vercel\.sh|\/_next\/image/,
+    (route) => route.abort(),
+  );
+});
+
 for (const route of ROUTES) {
   test(`no horizontal overflow at 375px — ${route}`, async ({ page }) => {
     const res = await page.goto(route);
     expect(res?.status()).toBeLessThan(400);
-    // Let late layout settle: the load event (fired by goto) plus web fonts,
-    // which affect text width. We deliberately avoid networkidle — pages like
-    // /blog fan out many on-demand next/image optimizations that keep the
-    // network busy past the 30s timeout in CI (a perf artifact, not an overflow
-    // bug). next/image reserves layout space via width/height, so image decode
-    // does not change document width.
-    await page.waitForLoadState("load");
+    // `load` (default) now resolves quickly since images are aborted, with CSS
+    // applied. Also wait for web fonts — they affect text width.
     await page.evaluate(() => document.fonts.ready.then(() => {}));
     const { scrollWidth, clientWidth } = await page.evaluate(() => ({
       scrollWidth: document.documentElement.scrollWidth,

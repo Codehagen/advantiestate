@@ -26,6 +26,18 @@ const JS_BUDGET_KB: Record<string, number> = {
   "/help/article/diskontert-kontantstrom": 710,
 };
 
+// Abort image requests (external avatar CDNs + the next/image optimizer) so
+// networkidle can settle in CI — external egress is slow/blocked there and the
+// single-worker prod server optimizes covers on demand, either of which would
+// otherwise hang the navigation past the 30s timeout. We only measure .js
+// transfer, so dropping images does not affect the budget.
+test.beforeEach(async ({ page }) => {
+  await page.route(
+    /imagedelivery\.net|avatar\.vercel\.sh|\/_next\/image/,
+    (route) => route.abort(),
+  );
+});
+
 for (const [route, budgetKb] of Object.entries(JS_BUDGET_KB)) {
   test(`JS budget: ${route}`, async ({ page }) => {
     await page.goto(route, { waitUntil: "networkidle" });
