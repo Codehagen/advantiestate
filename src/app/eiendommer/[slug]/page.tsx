@@ -38,6 +38,7 @@ const CITY_LABELS: Record<string, string> = {
   andenes: "Andenes",
   lodingen: "Lødingen",
   glomfjord: "Glomfjord",
+  steigen: "Steigen",
 };
 
 function formatInt(value: number) {
