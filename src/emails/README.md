@@ -1,6 +1,6 @@
 # Advanti email templates
 
-Four React Email templates, editorial-dark to match the OG cards
+Three React Email templates, editorial-dark to match the OG cards
 (`Newsreader` serif headlines, `Inter` caps eyebrows, light-blue accent dot).
 Rendered server-side via `@react-email/render` and sent through Resend.
 
@@ -11,8 +11,7 @@ Rendered server-side via `@react-email/render` and sent through Resend.
 | `_components.tsx` | Shared primitives (EditorialEmail wrapper, H1, Eyebrow, Lede, P, CTA) | — |
 | `WelcomeEmail.tsx` | First touch | Automatic on signup via `src/lib/email/subscribe.ts` |
 | `MarketBriefingEmail.tsx` | Drip #2 | Manual Broadcast, day +3 |
-| `CaseStudyEmail.tsx` | Drip #3 | Manual Broadcast, day +7 |
-| `SoftPitchEmail.tsx` | Drip #4 | Manual Broadcast, day +14 |
+| `SoftPitchEmail.tsx` | Drip #3 | Manual Broadcast, day +14 |
 
 ## Dev preview
 
@@ -20,7 +19,6 @@ Rendered server-side via `@react-email/render` and sent through Resend.
 pnpm dev
 open http://localhost:3000/api/email-preview/welcome
 open http://localhost:3000/api/email-preview/market-briefing
-open http://localhost:3000/api/email-preview/case-study
 open http://localhost:3000/api/email-preview/soft-pitch
 ```
 
@@ -40,8 +38,7 @@ public surface, only for Resend's Broadcast composer.
      `/api/email-preview/market-briefing` (right-click → View Source → copy)
    - Subject: `Hva vi ser i Nord-Norge akkurat nå`
    - Schedule or send immediately.
-3. **Day +7** — Same flow, `case-study` template. Subject: `Et konkret eksempel — Corponor-prosjektet`.
-4. **Day +14** — Same flow, `soft-pitch` template. Subject: `Skal vi snakkes?`.
+3. **Day +14** — Same flow, `soft-pitch` template. Subject: `Skal vi snakkes?`.
 
 A cron-driven script + Resend's broadcasts API can automate this once the
 list hits ~200 subscribers. For now, manual sends from the dashboard are

@@ -18,12 +18,7 @@ const HELP_ARTICLE_ALIASES: Record<string, string> = {
   "hva-er-naringseiendom-en-komplett-guide": "hva-er-naringseiendom",
 }
 
-const CUSTOMER_STORY_ALIASES: Record<string, string> = {
-  "hvordan-vi-hjalp-en-investor-realisere-25-høyere-avkastning":
-    "investor-avkastning",
-  "hvordan-vi-hjalp-en-investor-realisere-25-hoyere-avkastning":
-    "investor-avkastning",
-}
+const CUSTOMER_STORY_ALIASES: Record<string, string> = {}
 
 export const getBlogPost = cache((slug: string) =>
   allBlogPosts.find((post) => post.slug === slug),
