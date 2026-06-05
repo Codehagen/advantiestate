@@ -1,0 +1,4 @@
+# Active listings now come from Supabase (crm_property_listing_profiles,
+# is_public_ready=true) via lib/listing/listings.ts. Sample MDX listings were
+# moved to src/content/_listings-samples/. Drop a real .mdx here only as an
+# explicit fallback for a slug not yet published from the CRM.
