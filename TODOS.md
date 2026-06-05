@@ -398,3 +398,26 @@ the AI SEO closure review (/plan-eng-review, 2026-05-24), and the AI-SEO researc
   publishing. Source files live in the handoff bundle's `best-practice/`.
 - **Depends on / blocked by:** Editorial-components PR merged first; slug-collision
   resolution.
+
+---
+
+## TODO 21 — gallery.ts "unit-tested" comment is stale (no unit runner)
+
+- **What:** `src/lib/listing/gallery.ts:41` comments the `mapMediaToGallery`
+  mapper as "Pure mapper — unit-tested." The repo has no unit-test runner
+  (Playwright E2E only, `tests/*.spec.ts`) and the mapper is not referenced by
+  any test. Either correct the comment, or add a unit runner (vitest) + a real
+  test for `mapMediaToGallery`.
+- **Why:** A future dev reads "unit-tested" and trusts coverage that doesn't
+  exist — they may refactor the mapper without adding a test and ship a
+  regression silently.
+- **Pros:** Honest comment; if vitest is added, the pure mapper is a clean
+  first unit test and unlocks unit-testing the lightbox index math too.
+- **Cons:** Adding vitest is real infra the repo deliberately avoided (E2E-only
+  by choice); a comment-only fix is trivial but unrelated to current features.
+- **Context:** Surfaced during the lightbox /plan-eng-review (2026-06-05) while
+  confirming the test framework. `mapMediaToGallery` (gallery.ts:42-53) is pure
+  and side-effect-free — ideal unit-test candidate. The lightbox feature's own
+  nav/index logic is likewise pure and would benefit from a unit runner.
+- **Depends on / blocked by:** Nothing for the comment fix. The vitest path is a
+  standalone infra decision.
