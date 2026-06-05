@@ -24,7 +24,6 @@ const OFFICE: Record<string, string> = {
   "ole-ostensen": "Bergen",
   "havard-nome": "Alta",
   "tobias-bronder": "Bodø",
-  "thomas-knutsen-johansen": "Lofoten",
 };
 
 const MONTHS = [
@@ -48,10 +47,6 @@ function formatStarted(startedAt: string) {
   return `${MONTHS[date.getMonth()]} ${date.getFullYear()}`;
 }
 
-function formatExperience(years: number) {
-  return years > 0 ? `${years}+ års erfaring` : "Megler i Advanti-nettverket";
-}
-
 export async function generateStaticParams() {
   return allPersonPosts.map((person) => ({
     slug: person.slug,
@@ -68,7 +63,7 @@ export async function generateMetadata({ params }: PersonPageProps) {
 
   return constructMetadata({
     title: `${person.name} - ${person.role} | Advanti`,
-    description: `${person.name} er ${person.role} i Advanti-nettverket. Spesialiseringer: ${person.specializations.join(", ")}.`,
+    description: `${person.name} er ${person.role} i Advanti med ${person.yearsExperience} års erfaring. Spesialiseringer: ${person.specializations.join(", ")}.`,
     path: `/personer/${slug}`,
   });
 }
@@ -105,7 +100,7 @@ export default async function PersonPage({ params }: PersonPageProps) {
           email: person.email,
           phone: person.phone,
           slug: person.slug,
-          description: `${person.name} er ${person.role} i Advanti-nettverket.`,
+          description: `${person.name} er ${person.role} i Advanti med ${person.yearsExperience} års erfaring.`,
         }}
       />
 
@@ -140,7 +135,7 @@ export default async function PersonPage({ params }: PersonPageProps) {
                 className="eyebrow"
                 style={{ marginBottom: 24, display: "inline-flex" }}
               >
-                {formatExperience(person.yearsExperience)}
+                {person.yearsExperience}+ års erfaring
               </span>
               <h1>{person.name}</h1>
               <div className="role">{person.role}</div>
@@ -168,11 +163,7 @@ export default async function PersonPage({ params }: PersonPageProps) {
                 </div>
                 <div>
                   <div className="key">Erfaring</div>
-                  <div className="val">
-                    {person.yearsExperience > 0
-                      ? `${person.yearsExperience}+ år`
-                      : "Kontaktperson"}
-                  </div>
+                  <div className="val">{person.yearsExperience}+ år</div>
                 </div>
               </div>
             </div>

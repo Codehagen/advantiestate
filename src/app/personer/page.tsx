@@ -42,10 +42,6 @@ const PRESENTATION: Record<
     office: "Bodø",
     specialty: "Næringseiendom · Rådgivning",
   },
-  "thomas-knutsen-johansen": {
-    office: "Lofoten",
-    specialty: "Oppdragsansvar · Lofoten · Samarbeidssaker",
-  },
 };
 
 export default function PersonerPage() {
@@ -57,7 +53,6 @@ export default function PersonerPage() {
     "ole-ostensen",
     "havard-nome",
     "tobias-bronder",
-    "thomas-knutsen-johansen",
   ];
   const people = order
     .map((slug) => allPersonPosts.find((p) => p.slug === slug))
@@ -72,14 +67,14 @@ export default function PersonerPage() {
     <>
       <SubHero
         crumb={[{ label: "Hjem", href: "/" }, { label: "Vårt team" }]}
-        eyebrow="Vårt team · meglere og rådgivere"
+        eyebrow="Vårt team · 6 senior partnere"
         title={
           <>
             Erfarne rådgivere <br />
             <span className="italic">som svarer telefonen selv.</span>
           </>
         }
-        lede="Vi er et lite, dedikert team med solid erfaring fra næringseiendomsmarkedet. Hver klient møter rådgivere som følger saken tett — fra første samtale til signert avtale."
+        lede="Vi er et lite, dedikert team med 70+ års samlet erfaring fra næringseiendomsmarkedet. Hver klient møter senior rådgiver — fra første samtale til signert avtale."
       />
 
       {/* TEAM GRID */}
@@ -198,18 +193,18 @@ export default function PersonerPage() {
             </div>
             <div className="body">
               <p>
-                Vi er ikke et meglerhus med titalls juniorrådgivere. Vi er et
-                lite team av meglere og rådgivere som tar oppdrag selv — og det
-                er bevisst.{" "}
+                Vi er ikke et meglerhus med titalls juniorrådgivere. Vi er seks
+                partnere som tar oppdrag selv — og det er bevisst.{" "}
                 <strong>
                   Du møter ikke en juniorkonsulent i forhandlingen
                 </strong>
                 , du møter den samme personen du snakket med på første samtale.
               </p>
               <p>
-                Det betyr at hvert oppdrag er begrenset til hva teamet faktisk
-                kan levere godt på samtidig. Vi takker nei til oppdrag der vi
-                ikke har kapasitet — eller der vi tror andre kan løse det bedre.
+                Det betyr at hvert oppdrag er begrenset til hva seks mennesker
+                faktisk kan levere godt på samtidig. Vi takker nei til oppdrag
+                der vi ikke har kapasitet — eller der vi tror andre kan løse det
+                bedre.
               </p>
               <p>
                 Resultatet er klienter som kommer tilbake. Over 70 % av nye
