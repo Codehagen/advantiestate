@@ -6049,11 +6049,15 @@ h1, h2, h3 {
   align-items: baseline;
 }
 .ed-facts dt {
+  min-width: 0; /* allow the grid track to shrink below content min-width */
   font-size: 13px;
   letter-spacing: 0.06em;
   color: var(--warm-grey-85);
 }
 .ed-facts dd {
+  min-width: 0; /* shrinkable track + wrap, so long values (e.g. "Gnr. 38 /
+                   bnr. 251 · 13 657 m²") never force a 1–2px mobile overflow */
+  overflow-wrap: anywhere;
   margin: 0;
   font-family: var(--font-display);
   font-size: 17px;
