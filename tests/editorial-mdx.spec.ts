@@ -9,19 +9,11 @@ import { test, expect } from "@playwright/test";
  * Added with the .ae-* editorial component family (2026-06-03).
  */
 
-test("Quote renders legacy customer-quote props (title → role)", async ({
-  page,
-}) => {
-  // corponor.mdx passes the OLD shape: author / authorSrc / title / company /
-  // companySrc / text. The editorial .ae-quote must map `title` → `.role` and
-  // keep `author` → `.name` (company/companySrc intentionally dropped).
-  await page.goto("/kunder/corponor", { waitUntil: "domcontentloaded" });
-  const quote = page.locator(".ae-quote").first();
-  await expect(quote).toBeVisible();
-  await expect(quote.locator(".ae-q")).not.toBeEmpty();
-  await expect(quote.locator(".ae-cite .name")).toHaveText("Steffen Knudsen");
-  await expect(quote.locator(".ae-cite .role")).toHaveText("Daglig leder");
-});
+// NOTE: The "Quote renders legacy customer-quote props" case was removed when
+// the fabricated corponor.mdx case study (its only fixture) was deleted. No
+// content uses the legacy <Quote> shape anymore; the wrapper itself still
+// lives in src/components/blog/mdx.tsx. Re-add a case here if a real page
+// adopts <Quote> again.
 
 test("Prerequisites renders the legacy markdown-children form", async ({
   page,

@@ -62,7 +62,6 @@ const CONVERTED_IMAGES: {
     strict: false,
   },
   { route: "/kunder", selector: ".op-img img", strict: false },
-  { route: "/kunder/corponor", selector: ".op-hero .img img", strict: false },
 ];
 
 for (const { route, selector, strict } of CONVERTED_IMAGES) {
