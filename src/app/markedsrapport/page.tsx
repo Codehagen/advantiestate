@@ -1,6 +1,8 @@
+import Link from "next/link"
 import { constructMetadata } from "@/lib/utils"
 import { SubHero } from "@/components/site/SubHero"
 import { CtaStrip } from "@/components/site/CtaStrip"
+import { CITIES } from "@/components/markedsinnsikt/marketData"
 import { MarkedsrapportGate } from "./MarkedsrapportGate"
 
 export const metadata = constructMetadata({
@@ -102,6 +104,63 @@ export default function MarkedsrapportPage() {
                 </div>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Ungated, crawlbart HTML-sammendrag — de faktiske tallene, ikke bare
+          låst i PDF. Gir Google og AI-motorer noe å rangere/sitere; full
+          databredde + interaktive grafer ligger på /markedsinnsikt. */}
+      <section className="section section-divider" id="sammendrag">
+        <div className="wrap">
+          <div className="head-compact">
+            <span className="eyebrow">Sammendrag · Q4 2025</span>
+            <div>
+              <h2>
+                Markedet i tall, <span className="italic">by for by.</span>
+              </h2>
+              <p>
+                Næringseiendomsmarkedet i Nord-Norge går inn i 2026 med lav
+                ledighet og stabil etterspørsel. Tromsø er strammest med 3,4 %
+                kontorledighet og landsdelens laveste yield; de mindre byene
+                prises høyere, drevet av lavere likviditet snarere enn svak
+                etterspørsel. Tabellen under viser prime yield (kontor),
+                markedsleie og kontorledighet per by per Q4 2025.
+              </p>
+            </div>
+          </div>
+
+          <table className="mi-table">
+            <caption className="sr-only">
+              Prime yield, markedsleie og kontorledighet per by, Q4 2025
+            </caption>
+            <thead>
+              <tr>
+                <th>By</th>
+                <th className="r">Prime yield (kontor)</th>
+                <th className="r">Markedsleie kontor</th>
+                <th className="r">Kontorledighet</th>
+              </tr>
+            </thead>
+            <tbody>
+              {CITIES.map((c) => (
+                <tr key={c.id}>
+                  <td>{c.name}</td>
+                  <td className="r">{c.yield}</td>
+                  <td className="r">{c.leie}</td>
+                  <td className="r">{c.vac}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+
+          <div className="mi-footnote" style={{ marginTop: 24 }}>
+            <span className="source">
+              Tall er indikative og reflekterer prime kvalitet. Full segmentert
+              databredde (kontor, handel, logistikk) på{" "}
+              <Link href="/markedsinnsikt">markedsinnsikt</Link>.
+            </span>
+            <span>Q4 2025 · Advanti markedsdata</span>
           </div>
         </div>
       </section>
