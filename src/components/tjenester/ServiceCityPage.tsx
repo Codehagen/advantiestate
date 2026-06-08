@@ -97,7 +97,8 @@ export function ServiceCityPage({
           description: service.serviceSchemaDesc(city),
         }}
       />
-      <StructuredData type="faq" data={{ faqs: faqItems }} />
+      {/* FAQ schema is emitted by the <Faq> component below — no standalone
+          StructuredData here, or the page would carry two FAQPage blocks. */}
 
       <SubHero
         crumb={[
