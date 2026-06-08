@@ -32,6 +32,7 @@ const CITY_LABELS: Record<string, string> = {
 
 const STATUS_LABELS: Record<string, string> = {
   "til-salgs": "Til salgs",
+  "til-leie": "Til leie",
   reservert: "Reservert",
   kommer: "Kommer",
   solgt: "Solgt",
@@ -106,7 +107,10 @@ export default async function EiendommerPage() {
 
   // KPI totals
   const activeCount = listings.filter(
-    (listing) => listing.status === "til-salgs" || listing.status === "reservert",
+    (listing) =>
+      listing.status === "til-salgs" ||
+      listing.status === "til-leie" ||
+      listing.status === "reservert",
   ).length;
   const totalBta = listings.reduce((acc, listing) => acc + listing.bta, 0);
   const totalPrice = listings.reduce(
@@ -158,6 +162,7 @@ export default async function EiendommerPage() {
     bta: listing.bta,
     prisantydning: listing.prisantydning,
     prisantydningEstimat: listing.prisantydningEstimat ?? false,
+    leieKrM2: listing.leieKrM2,
     yieldNetto: listing.yieldNetto,
     yieldEstimat: listing.yieldEstimat ?? false,
     ferdig: listing.ferdig,
@@ -264,7 +269,7 @@ export default async function EiendommerPage() {
               <div className="label">Aktive oppdrag</div>
               <div className="val">
                 {activeCount}
-                <span className="unit">til salgs nå</span>
+                <span className="unit">aktive nå</span>
               </div>
               <div className="delta">Oppdatert {formatEditorialDate(newestUpdated)}</div>
             </div>

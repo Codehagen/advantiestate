@@ -5136,6 +5136,8 @@ h1, h2, h3 {
 }
 .ei-status.til-salgs { background: var(--warm-white); }
 .ei-status.til-salgs .dot { background: var(--accent); }
+.ei-status.til-leie { background: var(--light-blue); color: #0f5b62; }
+.ei-status.til-leie .dot { background: #0f8a93; }
 .ei-status.reservert { background: #f4ecdc; color: #6e5418; }
 .ei-status.reservert .dot { background: #c89327; }
 .ei-status.solgt { background: var(--warm-grey); color: var(--warm-white); }
