@@ -2,6 +2,7 @@
 
 import { useActionState } from "react"
 import { usePathname } from "next/navigation"
+import Link from "next/link"
 import {
   subscribeNewsletter,
   type NewsletterFormState,
@@ -9,21 +10,19 @@ import {
 
 const INITIAL: NewsletterFormState = { status: "idle" }
 
+const LINK_STYLE = {
+  color: "var(--warm-white)",
+  borderBottom: "1px solid",
+} as const
+
 /**
- * Email gate for the quarterly markedsrapport PDF. Pre-signup: editorial-dark
- * band with email form. Post-signup: same band collapses to a confirmation
- * + download CTA pointing at the file in /public/downloads/.
- *
- * The PDF is owned by Christer — drop a new file in /public/downloads/ and
- * bump RAPPORT_FILE in /markedsrapport/page.tsx for each quarterly issue.
+ * Email gate for the quarterly markedsrapport. Captures the lead and confirms
+ * the report is sent at the next issue — no immediate file download (the report
+ * is distributed by email each quarter). The live data summary lives on this
+ * page (#sammendrag) and on /markedsinnsikt, so visitors get value immediately
+ * while the gated PDF stays an email deliverable.
  */
-export function MarkedsrapportGate({
-  fileUrl,
-  label,
-}: {
-  fileUrl: string
-  label: string
-}) {
+export function MarkedsrapportGate({ label }: { label: string }) {
   const pathname = usePathname()
   const [state, formAction, pending] = useActionState(
     subscribeNewsletter,
@@ -38,49 +37,38 @@ export function MarkedsrapportGate({
         <div className="newsletter-inner">
           {submitted ? (
             <>
-              <span className="eyebrow center no-rule">Klar for nedlasting</span>
+              <span className="eyebrow center no-rule">Påmeldt</span>
               <h2>
-                Takk — her er{" "}
-                <span className="italic">rapporten din.</span>
+                Takk — du står <span className="italic">på listen.</span>
               </h2>
               <p>
                 {state.alreadySubscribed
-                  ? "Du er allerede på listen — her er den nyeste rapporten."
-                  : "Vi har lagt deg til på listen og sender en velkomsthilsen til innboksen din. Klikk under for å laste ned rapporten nå."}
+                  ? `Du er allerede påmeldt. Du får ${label} i innboksen ved neste utgivelse.`
+                  : `Vi har lagt deg til. Du får ${label} i innboksen ved neste utgivelse, sammen med det kvartalsvise markedsbrevet.`}
               </p>
-              <a
-                className="btn btn-primary"
-                href={fileUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{
-                  display: "inline-block",
-                  padding: "14px 28px",
-                  fontSize: "13px",
-                  background: "var(--warm-white)",
-                  color: "var(--warm-grey)",
-                  borderRadius: 999,
-                  textDecoration: "none",
-                  fontWeight: 500,
-                }}
-              >
-                Last ned {label} (PDF)
-              </a>
               <p className="newsletter-fineprint">
-                Neste utgave kommer i april. Du får den automatisk i innboksen.
+                Vil du ha tallene nå? Se{" "}
+                <Link href="/markedsinnsikt" style={LINK_STYLE}>
+                  markedsinnsikt
+                </Link>{" "}
+                eller{" "}
+                <Link href="/kontakt" style={LINK_STYLE}>
+                  ta kontakt
+                </Link>{" "}
+                for en vurdering av din eiendom.
               </p>
             </>
           ) : (
             <>
-              <span className="eyebrow center no-rule">Last ned rapporten</span>
+              <span className="eyebrow center no-rule">Få rapporten på epost</span>
               <h2>
                 Få {label.toLowerCase()}{" "}
-                <span className="italic">på epost.</span>
+                <span className="italic">ved neste utgivelse.</span>
               </h2>
               <p>
-                Skriv inn e-postadressen din — vi sender lenken til rapporten,
-                og melder deg samtidig på det kvartalsvise markedsbrevet. Du
-                kan melde deg av når som helst.
+                Skriv inn e-postadressen din, så sender vi {label} til deg ved
+                neste kvartalsvise utgivelse — og melder deg samtidig på
+                markedsbrevet. Du kan melde deg av når som helst.
               </p>
 
               <form className="newsletter-form" action={formAction}>
@@ -103,7 +91,7 @@ export function MarkedsrapportGate({
                   className="btn btn-primary"
                   disabled={pending}
                 >
-                  {pending ? "Sender …" : "Last ned"}
+                  {pending ? "Sender …" : "Meld meg på"}
                 </button>
               </form>
 
