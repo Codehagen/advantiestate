@@ -27,6 +27,7 @@ const CITY_LABELS: Record<string, string> = {
   lodingen: "Lødingen",
   glomfjord: "Glomfjord",
   steigen: "Steigen",
+  saltstraumen: "Saltstraumen",
 };
 
 const STATUS_LABELS: Record<string, string> = {
