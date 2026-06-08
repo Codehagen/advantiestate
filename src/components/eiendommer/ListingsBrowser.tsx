@@ -14,7 +14,7 @@ const SAVED_SEARCH_INITIAL: EiendomVarselFormState = { status: "idle" };
 export type ListingCardData = {
   slug: string;
   href: string;
-  status: "til-salgs" | "reservert" | "kommer" | "solgt";
+  status: "til-salgs" | "reservert" | "kommer" | "solgt" | "til-leie";
   statusLabel: string;
   type:
     | "kontor"
@@ -41,6 +41,7 @@ export type ListingCardData = {
   bta: number;
   prisantydning?: number;
   prisantydningEstimat: boolean;
+  leieKrM2?: number;
   yieldNetto?: number;
   yieldEstimat: boolean;
   ferdig?: string;
@@ -65,6 +66,7 @@ type Counts = {
 const STATUS_OPTIONS: { value: string; label: string }[] = [
   { value: "alle", label: "Alle" },
   { value: "til-salgs", label: "Til salgs" },
+  { value: "til-leie", label: "Til leie" },
   { value: "reservert", label: "Reservert" },
   { value: "kommer", label: "Kommer" },
   { value: "solgt", label: "Solgt" },
@@ -97,6 +99,11 @@ function formatInt(value: number): string {
 }
 
 function priceLabel(card: ListingCardData) {
+  if (card.status === "til-leie") {
+    return card.leieKrM2 !== undefined
+      ? { label: "Leie", value: formatInt(card.leieKrM2), unit: "kr/m²" }
+      : { label: "Leie", value: "På forespørsel", unit: "" };
+  }
   if (card.ferdig) {
     return {
       label: "Ferdig",

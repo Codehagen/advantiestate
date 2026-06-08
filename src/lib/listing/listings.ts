@@ -70,6 +70,7 @@ export interface Listing {
   bta: number
   prisantydning?: number
   prisantydningEstimat: boolean
+  leieKrM2?: number // asking rent NOK/m²/year — shown instead of price for "til-leie"
   yieldNetto?: number
   yieldEstimat: boolean
   utleiegrad?: number
@@ -204,6 +205,7 @@ interface ProfileRow {
   bta_m2: number | null
   prisantydning_nok: number | null
   prisantydning_estimat: boolean | null
+  leie_kr_m2: number | null
   yield_netto: number | null
   yield_estimat: boolean | null
   utleiegrad: number | null
@@ -252,6 +254,7 @@ const PROFILE_COLUMNS = [
   "bta_m2",
   "prisantydning_nok",
   "prisantydning_estimat",
+  "leie_kr_m2",
   "yield_netto",
   "yield_estimat",
   "utleiegrad",
@@ -323,6 +326,7 @@ function mapProfileToListing(row: ProfileRow): Listing {
     bta: row.bta_m2 ?? 0,
     prisantydning: nok(row.prisantydning_nok),
     prisantydningEstimat: row.prisantydning_estimat ?? false,
+    leieKrM2: row.leie_kr_m2 ?? undefined,
     yieldNetto: row.yield_netto ?? undefined,
     yieldEstimat: row.yield_estimat ?? false,
     utleiegrad: row.utleiegrad ?? undefined,

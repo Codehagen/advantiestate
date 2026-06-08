@@ -38,11 +38,11 @@ crm_cases (oppdrag)  →  crm_properties (eiendom)  →  crm_property_listing_pr
 
 ## 3. Nåværende tilstand
 
-> **Oppdatert 2026-06-08:** 3 salgsoppdrag publisert (ADV-112/113/114) — **14 profiler live nå** (var 11). Se §4B.
+> **Oppdatert 2026-06-08:** 3 salgsoppdrag (ADV-112/113/114) + 1 utleieoppdrag (ADV-115, Sjøgata 34/36) publisert — **15 profiler live nå** (var 11). «Til leie» er nå støttet (§6).
 
-- **14 profiler er live** (`is_public_ready = true`) — men de fleste mangler **bilder** (faller tilbake på placeholder-byggbilde). Flere mangler pris/yield/BTA.
+- **15 profiler er live** (`is_public_ready = true`) — men de fleste mangler **bilder** (faller tilbake på placeholder-byggbilde). Flere mangler pris/yield/BTA.
 - **1 profil ikke web-klar:** Bodø Byport (`bodo-byport-stormyra`) — drives fortsatt fra MDX, har 9 bilder.
-- **~22 aktive «markedsklare» oppdrag mangler fortsatt web-profil** (off-market, utleie, avventende + de med åpne spørsmål).
+- **~21 aktive «markedsklare» oppdrag mangler fortsatt web-profil** (off-market, resten av utleie, avventende + de med åpne spørsmål).
 
 Aktive faser i `case_fase` (rekkefølge): `oppdragsavtale_sendt → signert → sjekkliste_sendt → **markedsklart** → bud → bud_akseptert → due_diligence → kontrakt_ok → solgt`.
 «Markedsklart» og senere = aktivt i markedet. Alt under er for tidlig å publisere.
@@ -109,7 +109,7 @@ Web-modellen er **salgsorientert** (`website_status ∈ til-salgs / reservert / 
 | Adresse | By | Type | Ledig m² | Leie/yield | Megler |
 |---|---|---|---|---|---|
 | Storgata 42 | Tromsø | kontor | 450 | 1 850 kr/m² · yield 6,2 | *uten megler* |
-| Sjøgata 34/36 | Bodø | kontor | 320 (av 900) | 1 950 kr/m² · yield 7,1 | Christer Hagen |
+| ✅ Sjøgata 34/36 | Bodø | kontor | 320 (av 900) | 1 950 kr/m² · yield 7,1 | Christer Hagen — **Publisert ADV-115** |
 | Jernbaneveien 85 | Bodø | kontor | — | — | Mathias Nilsen |
 | Jernbaneveien 61 | Bodø | kontor | 840 | — | Christer Hagen |
 | Klinkerveien 7 | Bodø | industri | 949 | — | Christer Hagen |
@@ -233,16 +233,35 @@ from crm_property_listing_profiles where public_slug = 'sandgata-4b-bodo';
 
 ---
 
-## 6. Utleie — hva som må til (§4E)
+## 6. Utleie — «til leie» (✅ implementert 2026-06-08)
 
-Per nå viser `/eiendommer` kun salgsstatuser. For å vise de 13 utleieoppdragene ordentlig, velg én tilnærming:
+Status `til-leie` er nå støttet ende-til-ende:
+- DB: `website_status` tillater `'til-leie'`, og ny kolonne `leie_kr_m2` (NOK/m²/år).
+- Kode: «Til leie»-etikett + filter-chip + egen badge-farge (light-blue). Pris-cellen viser leie (kr/m²) i stedet for prisantydning, på både kort og detaljside (`listings.ts`, `page.tsx`, `[slug]/page.tsx`, `ListingsBrowser.tsx`, `advanti-design.css`).
+- **Demonstrator publisert:** Sjøgata 34/36 (ADV-115).
 
-1. **Minimal:** Legg til status `til-leie` (label «Til leie») i web-modellen og kort-rendering.
-   - Berørte steder: status-enum/label-mapping i `src/lib/listing/listings.ts`, statusfilter + KPI-telling i `src/app/eiendommer/page.tsx` (`activeCount`-filteret), og statusetikett på kort/detaljside.
-   - Bruk leiefelter i stedet for pris: `leie_nok_per_m2`, `ledig_m2`, evt. `yield_netto`.
-2. **Egen flate:** Eget filter/seksjon «Til leie» på siden, eller egen rute `/eiendommer/leie`.
+**Publiser et utleieoppdrag** (samme mal som §5.1, men):
+```sql
+-- website_status = 'til-leie', sett leie_kr_m2, og la bta_m2 være UTLEIBART areal
+insert into crm_property_listing_profiles (
+  property_id, public_slug, website_status, website_type, type_label, city_slug,
+  reference, title, title_head, title_tail, status_label, card_eyebrow,
+  sort_order, published_at, listing_updated_at, summary, body_mdx,
+  bta_m2, leie_kr_m2, prisantydning_estimat, yield_estimat,
+  address, megler, facts, is_public_ready
+) values (
+  '<property_id>', '<slug>', 'til-leie', 'kontor', 'Kontor', '<by>',
+  'ADV-1xx', '<tittel>', '<head>', '<tail>', 'Til leie', '<eyebrow>',
+  16, current_date, current_date, '<ingress>', '<brødtekst>',
+  320,            -- bta_m2 = utleibart areal
+  1950,           -- leie_kr_m2 (NOK/m²/år)
+  false, false,
+  '<adresse>', '<megler-jsonb>'::jsonb, '<facts-jsonb>'::jsonb,
+  false           -- kontroller, så true
+);
+```
 
-Anbefalt: alternativ 1 (minst arbeid, samler salg + leie ett sted). Tas som egen liten oppgave før utleie publiseres.
+De gjenstående 12 utleieoppdragene (§4E) er klare til publisering så snart **leiepris** og helst **ledig-fra/foto** er fylt inn per eiendom.
 
 ---
 

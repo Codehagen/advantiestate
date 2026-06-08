@@ -21,6 +21,7 @@ export const revalidate = 600;
 
 const STATUS_LABELS: Record<string, string> = {
   "til-salgs": "Til salgs",
+  "til-leie": "Til leie",
   reservert: "Reservert",
   kommer: "Kommer",
   solgt: "Solgt",
@@ -306,7 +307,16 @@ export default async function EiendomDetailPage({
                 </div>
               )}
             </div>
-            {listing.prisantydning !== undefined ? (
+            {listing.status === "til-leie" && listing.leieKrM2 !== undefined ? (
+              <div>
+                <div className="l">Leiepris</div>
+                <div className="v">
+                  {formatInt(listing.leieKrM2)}
+                  <span className="unit">kr/m²</span>
+                </div>
+                <div className="sub">Per år</div>
+              </div>
+            ) : listing.prisantydning !== undefined ? (
               <div>
                 <div className="l">Prisantydning</div>
                 <div className="v">
