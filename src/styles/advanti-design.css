@@ -1095,6 +1095,7 @@ h1, h2, h3 {
   overflow-wrap: break-word;
 }
 .subhero-photo {
+  position: relative;
   aspect-ratio: 4/5;
   overflow: hidden;
   background: var(--warm-grey-75);

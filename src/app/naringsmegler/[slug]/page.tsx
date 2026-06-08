@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { allLocationPosts } from "content-collections";
 
 import StructuredData, {
@@ -209,10 +210,13 @@ export default async function LocationPage({
               </div>
             </div>
             <div className="subhero-photo">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
+              <Image
                 src={location.hero.image}
                 alt={`Næringseiendom i ${location.name}`}
+                fill
+                priority
+                sizes="(max-width: 980px) 100vw, 45vw"
+                style={{ objectFit: "cover" }}
               />
             </div>
           </div>
@@ -510,14 +514,16 @@ export default async function LocationPage({
                     href={`/naringsmegler/${nearby.slug}`}
                   >
                     <div className="cy-image">
+                      <Image
+                        src={nearby.hero.image}
+                        alt={`${nearby.name} næringseiendom`}
+                        fill
+                        sizes="(max-width: 980px) 100vw, 33vw"
+                        style={{ objectFit: "cover" }}
+                      />
                       <span className="label">
                         _0{index + 1} · {nearby.region}
                       </span>
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        src={nearby.hero.image}
-                        alt={`${nearby.name} næringseiendom`}
-                      />
                     </div>
                     <div>
                       <span className="reg">{nearby.region}</span>

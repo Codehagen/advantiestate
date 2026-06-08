@@ -1,5 +1,6 @@
 import { allLocationPosts } from "content-collections";
 import Link from "next/link";
+import Image from "next/image";
 
 import StructuredData, {
   BreadcrumbStructuredData,
@@ -100,14 +101,16 @@ export default function NaringsmeglerHubPage() {
                   href={`/naringsmegler/${location.slug}`}
                 >
                   <div className="cy-image">
+                    <Image
+                      src={location.hero.image}
+                      alt={`${location.name} næringseiendom`}
+                      fill
+                      sizes="(max-width: 980px) 100vw, 33vw"
+                      style={{ objectFit: "cover" }}
+                    />
                     <span className="label">
                       {num} · {location.region}
                     </span>
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={location.hero.image}
-                      alt={`${location.name} næringseiendom`}
-                    />
                   </div>
                   <div>
                     <span className="reg">
