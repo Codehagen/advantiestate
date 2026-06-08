@@ -3,6 +3,7 @@ import { SubHero } from "@/components/site/SubHero"
 import { CtaStrip } from "@/components/site/CtaStrip"
 import { NewsletterSection } from "@/components/site/NewsletterSection"
 import { MarkedsinnsiktShell } from "@/components/markedsinnsikt/MarkedsinnsiktShell"
+import { MarketDataSummary } from "@/components/markedsinnsikt/MarketDataSummary"
 
 export const metadata = constructMetadata({
   path: "/markedsinnsikt",
@@ -78,6 +79,11 @@ export default function MarkedsinnsiktPage() {
           <MarkedsinnsiktShell />
         </div>
       </section>
+
+      {/* Server-rendered data tables — always in the initial HTML for crawlers
+          and AI engines (the shell above renders only the active tab + charts
+          client-side). */}
+      <MarketDataSummary />
 
       <NewsletterSection
         source="markedsinnsikt"

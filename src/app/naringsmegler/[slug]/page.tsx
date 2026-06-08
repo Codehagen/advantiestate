@@ -12,6 +12,11 @@ import { LocationMdx } from "@/components/locations/LocationMdx";
 import { ActiveListingsStrip } from "@/components/eiendommer/ActiveListingsStrip";
 import { siteConfig } from "@/app/siteConfig";
 import { constructMetadata } from "@/lib/utils";
+import {
+  SERVICE_SLUGS,
+  isServiceCity,
+  getServiceDef,
+} from "@/lib/service-cities";
 
 /** Picks the value of the first marketStat whose label matches a keyword. */
 function findStat(
@@ -434,6 +439,43 @@ export default async function LocationPage({
           </div>
         </div>
       </section>
+
+      {/* TJENESTER I BYEN — intern lenking til tjeneste×by-sidene */}
+      {isServiceCity(location.slug) && (
+        <section className="section section-divider">
+          <div className="wrap">
+            <div className="head-compact">
+              <span className="eyebrow">Tjenester i {location.name}</span>
+              <div>
+                <h2>
+                  Hva vi kan gjøre{" "}
+                  <span className="italic">i {location.name}.</span>
+                </h2>
+              </div>
+            </div>
+
+            <div className="feat-3">
+              {SERVICE_SLUGS.map((slug) => {
+                const svc = getServiceDef(slug);
+                if (!svc) return null;
+                return (
+                  <Link
+                    key={slug}
+                    className="feat"
+                    href={`/tjenester/${slug}/${location.slug}`}
+                  >
+                    <h3>
+                      {svc.label} i {location.name}
+                    </h3>
+                    <p>{svc.heroLede(location.name)}</p>
+                    <span className="eyebrow no-rule">Les mer →</span>
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* ANDRE BYER */}
       {suggestedNearby.length > 0 && (
