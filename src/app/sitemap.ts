@@ -6,10 +6,15 @@ import {
   allIntegrationsPosts,
   allPersonPosts,
   allLocationPosts,
-  allListingPosts,
 } from "content-collections";
 import { MetadataRoute } from "next";
 import { siteConfig } from "./siteConfig";
+import { getListings } from "@/lib/listing/listings";
+
+// ISR: the listing section is sourced from the CRM (Supabase). Revalidate on the
+// same window as the /eiendommer pages so a newly published mandate appears in
+// the sitemap without a redeploy.
+export const revalidate = 600;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = siteConfig.url;
@@ -115,10 +120,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.85,
   }));
 
-  // Active listing detail pages. `lastModified` prefers `updatedAt` for
-  // listings that have been re-priced or re-statused; falls back to
-  // `publishedAt` for fresh mandates.
-  const listingPages = allListingPosts.map((listing) => ({
+  // Active listing detail pages. Source of truth is the CRM (Supabase) via
+  // getListings(), with MDX listings folded in as a fallback — iterating the
+  // MDX collection alone would omit every CRM-published mandate that has no MDX
+  // file (the bulk of the live portfolio). `lastModified` prefers `updatedAt`
+  // for re-priced/re-statused listings; falls back to `publishedAt`.
+  const listings = await getListings();
+  const listingPages = listings.map((listing) => ({
     url: `${baseUrl}/eiendommer/${listing.slug}`,
     lastModified: new Date(listing.updatedAt ?? listing.publishedAt),
     changeFrequency: "weekly" as const,

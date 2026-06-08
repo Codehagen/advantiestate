@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import { getActiveListings } from "@/lib/content";
+import { getListings } from "@/lib/listing/listings";
 import { getListingCovers } from "@/lib/listing/gallery";
 
 const STATUS_LABELS: Record<string, string> = {
@@ -19,6 +19,15 @@ const CITY_LABELS: Record<string, string> = {
   narvik: "Narvik",
   lofoten: "Lofoten",
   "mo-i-rana": "Mo i Rana",
+  sortland: "Sortland",
+  svolvaer: "Svolvær",
+  hammerfest: "Hammerfest",
+  stokmarknes: "Stokmarknes",
+  ulvsvag: "Ulvsvåg",
+  andenes: "Andenes",
+  lodingen: "Lødingen",
+  glomfjord: "Glomfjord",
+  steigen: "Steigen",
   saltstraumen: "Saltstraumen",
   fauske: "Fauske",
 };
@@ -65,7 +74,7 @@ export async function ActiveListingsStrip({
   limit = 3,
   includeInactive = false,
 }: ActiveListingsStripProps) {
-  const all = getActiveListings();
+  const all = await getListings();
   const filtered = all.filter((listing) => {
     if (!includeInactive && listing.status === "solgt") return false;
     if (city && listing.city !== city) return false;
