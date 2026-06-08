@@ -3225,6 +3225,13 @@ h1, h2, h3 {
   color: var(--warm-grey-85);
   line-height: 1.55;
 }
+/* Related-services links under the article TOC — passes authority from the
+   high-traffic help articles to the commercial pages. */
+.ks-toc .toc-related {
+  margin-top: 32px;
+  padding-top: 20px;
+  border-top: var(--hairline);
+}
 
 /* Feedback widget */
 .ks-feedback {

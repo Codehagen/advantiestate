@@ -288,6 +288,17 @@ export default async function HelpArticle({
                 </Link>
               ))}
 
+              <div className="toc-related">
+                <div className="toc-label">Relaterte tjenester</div>
+                <Link href="/tjenester/verdivurdering">
+                  Verdivurdering av næringseiendom
+                </Link>
+                <Link href="/tjenester/salg">Salg av næringseiendom</Link>
+                <Link href="/tjenester/utleie">Utleie av næringseiendom</Link>
+                <Link href="/naringsmegler/bodo">Næringsmegler i Bodø</Link>
+                <Link href="/naringsmegler">Alle markeder i Nord-Norge</Link>
+              </div>
+
               <div className="toc-meta">
                 Skrevet av {authorName}.
                 <br />
