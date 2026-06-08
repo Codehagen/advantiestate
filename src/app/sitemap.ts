@@ -10,6 +10,7 @@ import {
 import { MetadataRoute } from "next";
 import { siteConfig } from "./siteConfig";
 import { getListings } from "@/lib/listing/listings";
+import { SERVICE_SLUGS, SERVICE_CITY_SLUGS } from "@/lib/service-cities";
 
 // ISR: the listing section is sourced from the CRM (Supabase). Revalidate on the
 // same window as the /eiendommer pages so a newly published mandate appears in
@@ -120,6 +121,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.85,
   }));
 
+  // Service × city landing pages (/tjenester/{service}/{by}) — enumerated from
+  // the curated allowlist that the routes' generateStaticParams use.
+  const serviceCityPages = SERVICE_CITY_SLUGS.flatMap((by) =>
+    SERVICE_SLUGS.map((service) => ({
+      url: `${baseUrl}/tjenester/${service}/${by}`,
+      changeFrequency: "weekly" as const,
+      priority: 0.75,
+    })),
+  );
+
   // Active listing detail pages. Source of truth is the CRM (Supabase) via
   // getListings(), with MDX listings folded in as a fallback — iterating the
   // MDX collection alone would omit every CRM-published mandate that has no MDX
@@ -143,6 +154,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...integrationPages,
     ...personPages,
     ...locationPages,
+    ...serviceCityPages,
     ...listingPages,
   ];
 }

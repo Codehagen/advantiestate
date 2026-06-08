@@ -3,14 +3,24 @@ import {
   allHelpPosts,
   allLocationPosts,
   allCustomersPosts,
-  allListingPosts,
 } from "content-collections";
 import { siteConfig } from "../siteConfig";
+import { getListings } from "@/lib/listing/listings";
+import {
+  SERVICE_SLUGS,
+  SERVICE_CITY_SLUGS,
+  getServiceDef,
+  getServiceCityLocation,
+} from "@/lib/service-cities";
 
-// llmstxt.org-compliant Markdown for AI engines (ChatGPT, Claude, Perplexity).
-// Hand-curated section headings + descriptions; auto-listed entries inside each
-// section from the same content collections that drive sitemap.ts.
-export const dynamic = "force-static";
+// llmstxt.org-compliant Markdown for AI engines (ChatGPT, Claude, Perplexity,
+// Google AI Overviews). Hand-curated section headings + descriptions; auto-listed
+// entries inside each section from the same sources that drive sitemap.ts.
+//
+// ISR (not force-static): the listing section is sourced from the CRM (Supabase)
+// via getListings(), so revalidate on the same window as /eiendommer + sitemap so
+// a newly published mandate is exposed to AI engines without a redeploy.
+export const revalidate = 600;
 
 const SERVICES: Array<{
   path: string;
@@ -61,20 +71,20 @@ function line(title: string, url: string, description?: string): string {
     : `- [${title}](${url})`;
 }
 
-function buildBody(baseUrl: string): string {
+async function buildBody(baseUrl: string): Promise<string> {
   const sections: string[] = [];
 
   // H1 + blockquote summary per llmstxt.org spec.
   sections.push(`# Advanti`);
   sections.push(
-    `> Næringsmegler i Nord-Norge. Salg, utleie, verdivurdering og rådgivning for næringseiendom i Nordland og Troms. Datadrevet, lokalt forankret, partnerstyrt.`,
+    `> Næringsmegler i Nord-Norge. Salg, utleie, verdivurdering og rådgivning for næringseiendom i Nordland, Troms og Finnmark. Datadrevet, lokalt forankret, partnerstyrt.`,
   );
 
   sections.push(
     [
       `Advanti er et meglerhus for næringseiendom med kontorer i Nord-Norge.`,
       `Vi kombinerer lokal markedskunnskap med kvantitativ analyse (DCF, yield, sensitivitet) for å hjelpe eiere, investorer og leietakere ta bedre beslutninger.`,
-      `Hovedmarkedet er Bodø, Tromsø, Alta, Narvik og Lofoten.`,
+      `Hovedmarkedene er Bodø, Tromsø, Alta, Harstad, Narvik, Mo i Rana og Lofoten.`,
       `Kontakt: ${siteConfig.contact?.email ?? "post@advantiestate.no"}.`,
     ].join(" "),
   );
@@ -85,6 +95,29 @@ function buildBody(baseUrl: string): string {
       "\n",
     ),
   );
+
+  // Service × city landing pages — the high-intent combinations ("salg av
+  // næringseiendom i Bodø" etc.) that AI engines map directly to a query.
+  const serviceCityLines: string[] = [];
+  for (const citySlug of SERVICE_CITY_SLUGS) {
+    const location = getServiceCityLocation(citySlug);
+    if (!location) continue;
+    for (const serviceSlug of SERVICE_SLUGS) {
+      const service = getServiceDef(serviceSlug);
+      if (!service) continue;
+      serviceCityLines.push(
+        line(
+          `${service.noun} i ${location.name}`,
+          `${baseUrl}/tjenester/${service.slug}/${location.slug}`,
+          service.metaDescription(location.name, location.region),
+        ),
+      );
+    }
+  }
+  if (serviceCityLines.length > 0) {
+    sections.push(`## Tjenester per by`);
+    sections.push(serviceCityLines.join("\n"));
+  }
 
   sections.push(`## Lokasjoner`);
   const orderedLocations = [...allLocationPosts].sort(
@@ -103,14 +136,15 @@ function buildBody(baseUrl: string): string {
   );
 
   // Active mandates — surfaces the eiendommer inventory directly to AI engines
-  // (ChatGPT, Claude, Perplexity, Google AI Overviews). Listed by the same
-  // collection that drives the public /eiendommer index and sitemap, so the
+  // (ChatGPT, Claude, Perplexity, Google AI Overviews). Source of truth is the
+  // CRM (Supabase) via getListings(), with MDX folded in as a fallback — the
+  // same source that drives the public /eiendommer index and sitemap, so the
   // three sources cannot drift apart. Excludes sold listings.
-  const activeListings = [...allListingPosts]
+  const activeListings = (await getListings())
     .filter((listing) => listing.status !== "solgt")
     .sort((a, b) => a.order - b.order);
   if (activeListings.length > 0) {
-    sections.push(`## Eiendommer for salg`);
+    sections.push(`## Eiendommer for salg og leie`);
     sections.push(
       activeListings
         .map((listing) =>
@@ -194,8 +228,8 @@ function buildBody(baseUrl: string): string {
   return sections.join("\n\n") + "\n";
 }
 
-export function GET(): Response {
-  const body = buildBody(siteConfig.url);
+export async function GET(): Promise<Response> {
+  const body = await buildBody(siteConfig.url);
   return new Response(body, {
     status: 200,
     headers: {

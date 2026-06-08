@@ -2148,6 +2148,18 @@ h1, h2, h3 {
 .mi-table .down { color: #b04a3a; }
 .mi-table .label-cell { font-weight: 500; color: var(--warm-grey); }
 
+/* Server-rendered data summary (MarketDataSummary) headings */
+.mi-data-h3 {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 400;
+  letter-spacing: -0.012em;
+  color: var(--warm-grey);
+  margin: 48px 0 4px;
+}
+.mi-data-h3:first-of-type { margin-top: 24px; }
+.mi-data-sub { color: var(--warm-grey-85); }
+
 /* Footnote */
 .mi-footnote {
   margin-top: 16px;
