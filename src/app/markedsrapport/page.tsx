@@ -12,10 +12,9 @@ export const metadata = constructMetadata({
     "Last ned Advanti sin kvartalsvise markedsrapport for næringseiendom i Nord-Norge. Yield, leiepriser, transaksjoner og kommentarer fra senior partner.",
 })
 
-// Update each quarter — RAPPORT_FILE is the path the post-signup download
-// button points at. Drop the new PDF in /public/downloads/ and bump these
-// constants when a new quarterly issue ships.
-const RAPPORT_FILE = "/downloads/markedsrapport-q4-2025.pdf"
+// Report label shown in the email-gate copy. Bump each quarter. The report is
+// distributed by email at each issue (no immediate file download), so there is
+// no PDF path to maintain here.
 const RAPPORT_LABEL = "Markedsrapport Q4 2025"
 
 const INSIDE = [
@@ -165,7 +164,7 @@ export default function MarkedsrapportPage() {
         </div>
       </section>
 
-      <MarkedsrapportGate fileUrl={RAPPORT_FILE} label={RAPPORT_LABEL} />
+      <MarkedsrapportGate label={RAPPORT_LABEL} />
 
       <CtaStrip
         eyebrow="Vil du ha rapporten tilpasset din eiendom?"
