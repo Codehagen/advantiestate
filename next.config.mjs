@@ -83,6 +83,13 @@ const nextConfig = {
         permanent: true,
       },
       {
+        // Legacy numeric blog pagination (/blog/2, /blog/3, …) → blog index.
+        // Real posts use non-numeric slugs, so this never catches an article.
+        source: "/blog/:page(\\d+)",
+        destination: "/blog",
+        permanent: true,
+      },
+      {
         source:
           "/kunder/hvordan-vi-hjalp-en-investor-realisere-25-høyere-avkastning",
         destination: "/kunder/investor-avkastning",
