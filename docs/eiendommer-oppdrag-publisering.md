@@ -278,3 +278,62 @@ Anbefalt: alternativ 1 (minst arbeid, samler salg + leie ett sted). Tas som egen
 3. **Offentlig e-post for meglere:** `@advanti.no` eller `@advantinord.no`?
 4. **Referansenummer:** hvilket `reference`-nummerserie skal nye listinger bruke (`ADV-1xx`)?
 5. **Utleie:** ønsker dere «til leie» på samme side (anbefalt) eller egen flate?
+
+---
+
+## 10. Intake-sjekkliste — hva vi trenger per eiendom (best practice)
+
+For hvert gjenstående oppdrag er dette informasjonen som bør på plass for en publisering av høy kvalitet. Kolonnenavn i parentes viser hvor det lagres i `crm_properties` (kilde) eller `crm_property_listing_profiles` (web-profil).
+
+### A. Minimum for å publisere i det hele tatt
+- [ ] **Eksakt adresse** + by + kommune (`adresse`, `by`, `kommune` → `address`, `city_slug`)
+- [ ] **Eiendomstype** — én av `kontor / logistikk / handel / kombi / hotell / utvikling / industri` (`website_type`) + visningsetikett (`type_label`)
+- [ ] **Status** — `til-salgs / reservert / kommer / solgt` (`website_status`)
+- [ ] **Areal (BTA, m²)** for salg (`total_m2` → `bta_m2`)
+- [ ] **Prisantydning i kroner** *eller* bevisst skjult («pris på forespørsel» = la feltet stå tomt) (`pris_nok` / `pris_skjult` → `prisantydning_nok`)
+- [ ] **Tildelt megler** med offentlig kontakt: navn, rolle, **e-post som faktisk er aktiv**, telefon, avatar-URL (`megler` jsonb)
+- [ ] **Kort ingress** (1–2 setninger til kort + topp) (`summary`) og **brødtekst** (`body_mdx`)
+- [ ] **Slug** (avledes: æ→ae, ø→o, å→a, mellomrom/skråstrek → `-`) (`public_slug`)
+- [ ] **Referanse** — neste ledige `ADV-xxx` (`reference`)
+
+### B. Anbefalt — løfter kvaliteten markant
+- [ ] **3–6 godkjente foto** (fasade, interiør, beliggenhet) — cover + galleri (`crm_property_listing_media`, `public_approved = true`). *Uten foto vises placeholder-byggbilde.*
+- [ ] **Netto yield (%)** + om det er estimat (`yield` → `yield_netto`, `yield_estimat`)
+- [ ] **Nøkkeltall/facts:** byggeår, tomteareal, standard, energimerking, regulering, eierform (`byggeår`, `tomteareal_m2`, `standard`, `energimerking`, `regulering` → `facts` jsonb)
+- [ ] **Beliggenhetstekst** + geo for kart + nærhetspunkter (avstand sentrum/E6/flyplass) (`lat`, `lng` → `location_*`, `geo_lat/lng`, `pois`)
+
+### C. For investeringseiendom (utleid bygg)
+- [ ] **Rent roll:** leietaker, areal, årlig leie, kontraktsutløp pr. enhet → driver WAULT (`crm_tenants` / `tenants`-felt)
+- [ ] **Økonomi:** brutto leie, eierkostnader, NOI (`brutto_leie_nok`, `eierkostnader_nok`, `noi_nok`)
+- [ ] **Utleiegrad (%)** og **WAULT (år)** (`utleiegrad`, `wault`)
+
+### D. For utleieoppdrag (krever «til leie»-status, jf. §6)
+- [ ] **Ledig areal** vs totalt (`ledig_m2`, `total_m2`)
+- [ ] **Leiepris** (kr/m²/år) eller intervall (`leie_nok_per_m2`)
+- [ ] **Ledig fra**-dato
+- [ ] **Felleskostnader** (`felleskostnader`)
+- [ ] Fasiliteter: parkering, møterom, ventilasjon/standard
+
+### E. For off-market (anonym teaser — §5.4)
+- [ ] Region (**ikke** eksakt adresse)
+- [ ] Type + størrelsesorden BTA
+- [ ] Prisorden (~MNOK)
+- [ ] Status-merke (`NDA` / `Aktiv`)
+- [ ] ❌ Aldri: adresse, eier, foto eller identifiserbare detaljer
+
+### F. Dokumenter (`crm_property_listing_downloads`)
+- [ ] **Salgsprospekt** (PDF, åpen) — `requires_nda = false`
+- [ ] Plantegninger
+- [ ] **DD-pakke** bak NDA — `requires_nda = true`
+- [ ] Energiattest, takst/verdivurdering, reguleringsplan
+
+### G. Samtykke & konfidensialitet (kritisk)
+- [ ] **Oppdragsgiver har godtatt offentlig markedsføring** (avgjør åpen publisering vs. off-market-teaser)
+- [ ] **Signert oppdragsavtale** foreligger (fase ≥ `markedsklart`)
+- [ ] Meglerens kontaktinfo er godkjent for offentlig visning
+- [ ] **GDPR:** ikke publiser navn på private personer som eiere uten samtykke (flere `eier`-felt er privatpersoner) — vis selskap, ev. «privat eier»
+
+### Praktisk per kategori
+- **Holdte salgsoppdrag (§4B):** Industriveien 8 → avklar status (reservert?) + skaff beskrivelse/geo. Havneterminalen 1 → avklar om den skal ut + tildel megler. Finneidkaiveien → skaff areal + pris.
+- **Utleie (§4E):** alle 13 mangler i hovedsak leiepris, ledig-fra og foto — pluss «til leie»-tilrettelegging.
+- **Off-market (§4C):** kun anonym teaser-tekst — ingen DB-profil.
