@@ -41,6 +41,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "/markedsinnsikt",
     "/markedsinnsikt/kart",
     "/markedsrapport",
+    "/presserom",
     "/karriere",
     "/kontakt",
     "/help",
