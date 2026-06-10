@@ -14,6 +14,12 @@ import {
   fmtPct1,
 } from "@/components/markedsinnsikt/marketData"
 
+/** "2026-01-15" → "15. januar 2026" — norsk datoformat i redaksjonell prose. */
+function fmtNorskDato(iso: string): string {
+  const d = new Date(`${iso}T12:00:00Z`)
+  return d.toLocaleDateString("nb-NO", { day: "numeric", month: "long", year: "numeric" })
+}
+
 // ---------------------------------------------------------------------------
 // Static generation
 // ---------------------------------------------------------------------------
@@ -80,7 +86,7 @@ export default async function KvartalArkivPage({
             <span className="italic">{release.quarter} (arkivert).</span>
           </>
         }
-        lede={`Fryst snapshot av markedstall for næringseiendom i Nord-Norge, publisert ${release.publishedAt}. Tallene reflekterer situasjonen ved publiseringstidspunktet og er ikke oppdatert.`}
+        lede={`Arkivert øyeblikksbilde av markedstall for næringseiendom i Nord-Norge, publisert ${fmtNorskDato(release.publishedAt)}. Tallene reflekterer situasjonen ved publiseringstidspunktet og er ikke oppdatert.`}
         metaRow={[
           { value: String(release.cities.length), label: "Byer" },
           { value: release.quarter, label: "Kvartal" },
