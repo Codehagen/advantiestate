@@ -10,12 +10,12 @@ done.
 | Plan | Title | Priority | Effort | Depends on | Status |
 |------|-------|----------|--------|------------|--------|
 | 001  | Fix the six broken CTA modals and secure the lead-capture funnel | P1 (contains P0 bug) | M | — | DONE (merged to main `a23c850`, 2026-06-10) |
-| 002  | Patch the Next.js CVEs (16.1.4 → ≥16.2.5) + React 19.x ride-along | P1 | S | — | TODO |
-| 003  | Route contact-form leads into the CRM pipeline (Supabase + Resend) | P1 | S | 001 | TODO |
-| 004  | Establish a unit-test baseline (Vitest) for the riskiest pure logic | P2 | M | — | TODO |
-| 005  | Make README, CLAUDE.md and .env.example tell the truth | P2 | S | — | TODO |
-| 006  | Parallelize the five sequential Supabase fetches on /eiendommer/[slug] | P3 | S | — | TODO |
-| 007  | Spike: quarterly market data out of TypeScript — design doc only | P3 | M | — | TODO |
+| 002  | Patch the Next.js CVEs (16.1.4 → ≥16.2.5) + React 19.x ride-along | P1 | S | — | DONE (next 16.2.9, react 19.2.7; merged `426cf0c`, 2026-06-10) |
+| 003  | Route contact-form leads into the CRM pipeline (Supabase + Resend) | P1 | S | 001 | DONE (merged `ba0672e`, 2026-06-10) |
+| 004  | Establish a unit-test baseline (Vitest) for the riskiest pure logic | P2 | M | — | DONE (29 tests; merged `3fc1ffe`, 2026-06-10) |
+| 005  | Make README, CLAUDE.md and .env.example tell the truth | P2 | S | — | DONE (merged `e9104e1`, 2026-06-10) |
+| 006  | Parallelize the five sequential Supabase fetches on /eiendommer/[slug] | P3 | S | — | DONE (merged `53a894e`, 2026-06-10) |
+| 007  | Spike: quarterly market data out of TypeScript — design doc only | P3 | M | — | DONE (doc at docs/market-data-collection-design.md; recommendation: Option C, keep TS + guardrails; merged `1b61b06`, 2026-06-10) |
 
 Status values: TODO | IN PROGRESS | DONE | BLOCKED (with one-line reason) | REJECTED (with one-line rationale)
 
