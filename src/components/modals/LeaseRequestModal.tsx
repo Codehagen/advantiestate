@@ -6,6 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import Modal from "@/components/blog/modal"
 import { RiCloseLine, RiBuilding4Line, RiCheckLine } from "@remixicon/react"
 import { useState, type Dispatch, type SetStateAction } from "react"
+import { submitCtaLead } from "@/app/actions/cta-lead"
 
 interface LeaseRequestModalProps {
   showModal: boolean
@@ -18,44 +19,36 @@ export default function LeaseRequestModal({
 }: LeaseRequestModalProps) {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSuccess, setIsSuccess] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setIsSubmitting(true)
+    setError(null)
 
     const formData = new FormData(e.currentTarget)
-    const data = {
-      name: `${formData.get("firstname")} ${formData.get("lastname")}`,
-      email: formData.get("email"),
-      phone: formData.get("phone"),
-      intent: formData.get("intent"),
-      propertyType: formData.get("propertyType"),
-      location: formData.get("location"),
-      desiredArea: formData.get("desiredArea"),
-      budgetRange: formData.get("budgetRange"),
-      moveInDate: formData.get("moveInDate"),
+    const result = await submitCtaLead({
       formType: "Utleie",
-    }
+      name: `${formData.get("firstname")} ${formData.get("lastname")}`,
+      email: String(formData.get("email") ?? ""),
+      phone: String(formData.get("phone") ?? "") || undefined,
+      pageUrl: window.location.pathname,
+      fields: {
+        Formål: String(formData.get("intent") ?? ""),
+        Eiendomstype: String(formData.get("propertyType") ?? ""),
+        Sted: String(formData.get("location") ?? ""),
+        "Ønsket areal": String(formData.get("desiredArea") ?? ""),
+        Budsjett: String(formData.get("budgetRange") ?? ""),
+        Innflytting: String(formData.get("moveInDate") ?? ""),
+      },
+    })
 
-    try {
-      // Send to Discord webhook or your backend
-      const response = await fetch("/api/discord-notification", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      })
-
-      if (response.ok) {
-        setIsSuccess(true)
-        setTimeout(() => {
-          setShowModal(false)
-          setIsSuccess(false)
-        }, 3000)
-      }
-    } catch (error) {
-      console.error("Error submitting form:", error)
-    } finally {
-      setIsSubmitting(false)
+    setIsSubmitting(false)
+    if (result.ok) {
+      setIsSuccess(true)
+      setTimeout(() => { setShowModal(false); setIsSuccess(false) }, 3000)
+    } else {
+      setError(result.error)
     }
   }
 
@@ -281,6 +274,7 @@ export default function LeaseRequestModal({
 
               {/* Submit Button */}
               <div className="mt-6">
+                {error && <p className="mb-3 text-sm text-red-600">{error}</p>}
                 <Button
                   type="submit"
                   disabled={isSubmitting}

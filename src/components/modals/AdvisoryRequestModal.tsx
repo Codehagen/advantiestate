@@ -6,6 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import Modal from "@/components/blog/modal"
 import { RiCloseLine, RiLightbulbLine, RiCheckLine } from "@remixicon/react"
 import { useState, type Dispatch, type SetStateAction } from "react"
+import { submitCtaLead } from "@/app/actions/cta-lead"
 
 interface AdvisoryRequestModalProps {
   showModal: boolean
@@ -18,40 +19,33 @@ export default function AdvisoryRequestModal({
 }: AdvisoryRequestModalProps) {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSuccess, setIsSuccess] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setIsSubmitting(true)
+    setError(null)
 
     const formData = new FormData(e.currentTarget)
-    const data = {
-      name: `${formData.get("firstname")} ${formData.get("lastname")}`,
-      email: formData.get("email"),
-      phone: formData.get("phone"),
-      company: formData.get("company"),
-      advisoryArea: formData.get("advisoryArea"),
-      description: formData.get("description"),
+    const result = await submitCtaLead({
       formType: "Rådgivning",
-    }
+      name: `${formData.get("firstname")} ${formData.get("lastname")}`,
+      email: String(formData.get("email") ?? ""),
+      phone: String(formData.get("phone") ?? "") || undefined,
+      pageUrl: window.location.pathname,
+      fields: {
+        Selskap: String(formData.get("company") ?? ""),
+        Område: String(formData.get("advisoryArea") ?? ""),
+        Beskrivelse: String(formData.get("description") ?? ""),
+      },
+    })
 
-    try {
-      const response = await fetch("/api/discord-notification", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      })
-
-      if (response.ok) {
-        setIsSuccess(true)
-        setTimeout(() => {
-          setShowModal(false)
-          setIsSuccess(false)
-        }, 3000)
-      }
-    } catch (error) {
-      console.error("Error submitting form:", error)
-    } finally {
-      setIsSubmitting(false)
+    setIsSubmitting(false)
+    if (result.ok) {
+      setIsSuccess(true)
+      setTimeout(() => { setShowModal(false); setIsSuccess(false) }, 3000)
+    } else {
+      setError(result.error)
     }
   }
 
@@ -161,6 +155,7 @@ export default function AdvisoryRequestModal({
               </div>
             </div>
             <div className="mt-6">
+              {error && <p className="mb-3 text-sm text-red-600">{error}</p>}
               <Button type="submit" disabled={isSubmitting} className="w-full">
                 {isSubmitting ? "Sender..." : "Send forespørsel"}
               </Button>
