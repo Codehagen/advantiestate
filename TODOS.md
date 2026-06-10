@@ -1,8 +1,53 @@
 # TODOS
 
 Deferred work captured during the editorial redesign port (/plan-eng-review, 2026-05-21),
-the AI SEO closure review (/plan-eng-review, 2026-05-24), and the AI-SEO research pass
-(/web-research, 2026-05-24).
+the AI SEO closure review (/plan-eng-review, 2026-05-24), the AI-SEO research pass
+(/web-research, 2026-05-24), and the presserom/entity review pipeline
+(/plan-ceo-review + /plan-eng-review + /design-review, 2026-06-10).
+
+---
+
+## TODO 19 — Pressevarsel: kvartalsvis e-post til presseliste — P2
+
+- **What:** «Få pressevarsel»-skjema på /presserom (lead → Supabase, gjenbruk
+  subscribe-flyten) + kvartalsvis utsendelse via Resend med tall, sitat og
+  lenke til kvartalets arkivside.
+- **Why:** Kvartalstallene venter i dag på å bli funnet; et varsel lander dem
+  i innboksen til nordnorske redaksjoner samme morgen de slippes.
+- **Context:** Besluttet utsatt i CEO-review 2026-06-10 (D3.1). Hele
+  infrastrukturen finnes (arkiv med permanente lenker, OG-kort, Resend,
+  lead-lagring). Spes: docs/designs/presserom-presskit-entitet.md.
+- **Depends on / blocked by:** En vedlikeholdt presseliste må eksistere og ha
+  en eier. Bygges tidligst ved neste kvartalsslipp (Q2 2026-release).
+- **Effort:** M (menneske ~2 dager / CC ~45 min).
+
+---
+
+## TODO 20 — Site-wide tittelsuffiks «| Advanti» → «| Advanti Estate» — P3
+
+- **What:** ~20 sider utenfor presserom/personer/om-oss har fortsatt
+  «| Advanti» som tittelsuffiks (grep `'| Advanti"' src/app`).
+- **Why:** Fullfører entitetsnormaliseringen fra PR #42 i synlige
+  SERP-titler; i dag spriker tittel-suffikset mot schema-navnet.
+- **Context:** Bevisst avgrenset i planen («kun sider planen berører»);
+  resten ble egen TODO. Ren mekanisk sweep + verifiser at ingen titler
+  bikker ~60 tegn.
+- **Effort:** S (CC ~10 min).
+
+---
+
+## TODO 21 — Design-review-rest: inline px-styles + global `.btn transition:all` — P3
+
+- **What:** (a) Harmoniser inline `style={{ margin/padding }}`-verdier i
+  presserom-/arkivsidene til klasser i advanti-design.css; (b) erstatt
+  global `.btn { transition: all }` med eksplisitte properties; (c) vurder
+  mi-table-tetthet på 375px (deles med markedsinnsikt).
+- **Why:** Flagget av /design-review + Codex 2026-06-10 som utsatt — (a) er
+  pre-eksisterende mønster fra PR #40, (b)/(c) er globale og fortjener egen
+  liten PR med visuell regresjonssjekk.
+- **Context:** Full audit:
+  ~/.gstack/projects/Codehagen-advantiestate/designs/design-audit-20260610/.
+- **Effort:** S-M (CC ~30 min samlet).
 
 ---
 

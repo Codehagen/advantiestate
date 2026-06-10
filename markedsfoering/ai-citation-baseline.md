@@ -75,6 +75,16 @@ Targeted at our core service-area + service-type combinations. Mix of:
 | 18 | sensitivitetsanalyse eiendom | how-to + terminology |
 | 19 | strategisk rådgivning næringseiendom | service |
 | 20 | Advanti vs Newsec Nord-Norge | comparison (replace Newsec with actual local competitor) |
+| 21 | prime yield Tromsø | presserom-data — måler om /presserom siteres som kilde |
+| 22 | prime yield Bodø næringseiendom | presserom-data |
+| 23 | kontorledighet Bodø | presserom-data |
+| 24 | markedsleie kontor Tromsø | presserom-data |
+| 25 | transaksjonsvolum næringseiendom Nord-Norge 2025 | presserom-data, tallfestet |
+
+> Query 21-25 lagt til 2026-06-10 da presserommet (markedstall + Dataset-schema
+> + CSV) gikk live — disse måler effekten av presserom-/entitetsarbeidet
+> (docs/designs/presserom-presskit-entitet.md, «Måling»). Forventet bevegelse
+> tidligst etter 1-2 måneder med crawling.
 
 ## Monthly runs
 
