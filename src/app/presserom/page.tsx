@@ -223,8 +223,17 @@ export default function PresseromPage() {
           </div>
 
           <p className="press-assets-note">
-            Logopakke og høyoppløste pressebilder sendes på forespørsel —
-            pressekit for nedlasting kommer.{" "}
+            <a
+              href="https://kukzjreikqbgbolxvqaj.supabase.co/storage/v1/object/public/press/christer-hagen-portrett.jpg"
+              download="advanti-estate-christer-hagen.jpg"
+              data-track="presskit-foto-christer"
+            >
+              Pressebilde: Christer Hagen (JPG, høy oppløsning) →
+            </a>
+          </p>
+          <p className="press-assets-note">
+            Logopakke og flere pressebilder sendes på forespørsel —
+            fullt pressekit for nedlasting kommer.{" "}
             <Link href="#kontakt">Kontakt oss.</Link>
           </p>
         </div>

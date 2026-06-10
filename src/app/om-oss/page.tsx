@@ -157,7 +157,10 @@ export default function About() {
               <div className="attr" style={{ marginTop: 24 }}>
                 <div
                   className="ph"
-                  style={{ backgroundImage: "url('/havard.jpg')" }}
+                  style={{
+                    backgroundImage:
+                      "url('https://kukzjreikqbgbolxvqaj.supabase.co/storage/v1/object/public/press/christer-hagen-portrett.jpg')",
+                  }}
                 />
                 <div className="who">
                   <strong>Christer Hagen</strong>
@@ -199,7 +202,7 @@ export default function About() {
                 style={{ backgroundColor: "var(--warm-grey-75)" }}
               >
                 <Image
-                  src="https://imagedelivery.net/r-6-yk-gGPtjfbIST9-8uA/d08a8e8b-0285-4107-bc2c-973f93b27100/public"
+                  src="https://kukzjreikqbgbolxvqaj.supabase.co/storage/v1/object/public/press/christer-hagen-portrett.jpg"
                   alt="Christer Hagen"
                   width={480}
                   height={600}
