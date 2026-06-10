@@ -292,7 +292,7 @@ export default function PresseromPage() {
                 <Link href="/personer/havard-nome">Håvard Nome</Link>
                 <span>Næringsmegler · Advanti Estate</span>
                 <span className="press-quote-source">
-                  Bygger på: kontorledighet kontor Tromsø 3,4 %, Bodø 4,6 %,
+                  Bygger på: kontorledighet Tromsø 3,4 %, Bodø 4,6 %,
                   Q4 2025
                 </span>
               </span>
