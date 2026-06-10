@@ -1,118 +1,53 @@
-<a href="https://github.com/Codehagen/advantiestate">
-  <!-- <img alt="Advanti" src="public/og.jpg"> -->
-  <h1 align="center">Advanti</h1>
-</a>
+# Advanti — advantiestate.no
 
-<p align="center">
-  Start at full speed with Advanti!
-</p>
+Marketing- og innholdsplattform for Advanti, næringsmegler i Nord-Norge:
+tjenestesider, markedsinnsikt, blogg/kunnskapsbase (MDX), eiendomsoppdrag
+publisert fra CRM, og lead-funnel (nyhetsbrev, verdivurdering-intake,
+kontaktskjema).
 
+## Stack
 
-<p align="center">
-  <a href="#introduction"><strong>Introduction</strong></a> ·
-  <a href="#installation"><strong>Installation</strong></a> ·
-  <a href="#tech-stack--features"><strong>Tech Stack + Features</strong></a> ·
-  <a href="#author"><strong>Author</strong></a> ·
-  <a href="#credits"><strong>Credits</strong></a>
-</p>
-<br/>
+- [Next.js 16](https://nextjs.org/) (App Router) + React 19 + TypeScript (strict)
+- [Tailwind CSS 3](https://tailwindcss.com/) med eget editorialt designsystem — se `DESIGN.md`
+- [Content Collections](https://www.content-collections.dev/) for typet MDX-innhold (`src/content/`)
+- [Supabase](https://supabase.com/) — CRM-sink for leads + CRM-publiserte eiendomsoppdrag (`supabase/migrations/`)
+- [Resend](https://resend.com/) — nyhetsbrev-audience + velkomstmail (`src/emails/`)
+- Discord webhooks — team-varsling om nye leads
+- [Recharts](https://recharts.org/) + [Leaflet](https://leafletjs.com/) (CartoDB-tiles) for markedsinnsikt
+- [Playwright](https://playwright.dev/) E2E-tester i `tests/` + [Vitest](https://vitest.dev/) enhetstester i `tests/unit/`
+- Deployes på [Vercel](https://vercel.com/); pakkehåndtering med pnpm
 
-## Introduction
-
-Welcome to Advanti, where we're revolutionizing property management and real estate analytics. Our platform offers comprehensive solutions for monitoring, tracking, and analyzing property-related data in real-time. Whether you're a property manager, real estate investor, or developer, Advanti provides the tools you need to make informed decisions and optimize your property portfolio.
-
-Key features of Advanti include:
-- Real-time property monitoring
-- Event tracking for property-related activities
-- Advanced data analytics for real estate insights
-- Integration with various property management tools
-- Customizable dashboards for at-a-glance information
-
-With Advanti, you'll have all the information you need at your fingertips to streamline your property management processes and maximize your real estate investments.
-
-## Directory Structure
-
-Advantiestate is a monorepo managed by [Turborepo](https://turbo.build/repo). The monorepo is split between `apps` and `packages` directories.
-
-    .
-    ├── apps                         # Its app workspace which contains
-    │    ├── www                     # Nextjs app which is deployed in Vercel
-    │    ├── api                     # Hono app that is our REST-api for our SDK
-    │    └── ...
-    ├── packages                     # are the shared packages that are used by the apps 
-    │    ├── db                      # Prisma DB connector
-    │    └── ui                      # Shared UI components (Tremor)
-    ├── tooling                      # are the shared configuration that are used by the apps and packages
-    │    ├── eslint                  # Shared eslint presets
-    │    ├── prettier                # Shared prettier configuration
-    │    ├── tailwind                # Shared tailwind configuration
-    │    └── typescript              # Shared tsconfig you can extend from
-    ├── LICENSE
-    └── README.md
-
-## Installation
-
-Clone & create this repo locally with the following command:
-
-```bash
-git clone https://github.com/Codehagen/advantiestate
-```
-
-1. Install dependencies using pnpm:
+## Kom i gang
 
 ```sh
 pnpm install
-```
-
-2. Copy `.env.example` to `.env.local` and update the variables.
-
-```sh
-cp .env.example .env.local
-```
-
-4. Input everything you need for the env.
-
-   1. Create [Neon Database](https://neon.tech/) Account
-   2. Create [Stripe](https://stripe.com) Account
-   3. Create [Google Console](https://console.cloud.google.com/) Account
-   4. Create [Resend](https://resend.com/) Account
-
-5. Start the development server from either yarn or turbo:
-
-```sh
-# To start the server
+cp .env.example .env.local   # fyll inn Resend-, Supabase- og Discord-verdier (se kommentarene i fila)
 pnpm dev
-
-# To push the DB schema
-pnpm --filter=db db:push
 ```
 
+Uten env-verdier kjører sidene fint; lead-funnel og CRM-oppdrag degraderer
+til no-op / MDX-fallback.
 
-## Tech Stack + Features
+## Kommandoer
 
-### Frameworks
+| Kommando               | Gjør |
+|------------------------|------|
+| `pnpm dev`             | Dev-server |
+| `pnpm build`           | Produksjonsbygg (feiler på TypeScript-feil) |
+| `pnpm start`           | Kjør produksjonsbygget |
+| `pnpm typecheck`       | `tsc --noEmit` |
+| `pnpm test:unit`       | Vitest-enhetstester (tests/unit/) |
+| `npx playwright test`  | E2E-suiten — bygger og starter prod-server selv |
 
-- [Next.js](https://nextjs.org/) – React framework for building performant apps with the best developer experience
-- [Prisma](https://www.prisma.io/) – Typescript-first ORM for Node.js
-- [React Email](https://react.email/) – Versatile email framework for efficient and flexible email development
+## Struktur
 
-### Platforms
+    src/app/          # App Router-sider (tjenester, markedsinnsikt, eiendommer, blogg, …)
+    src/app/actions/  # Server actions (lead-funnel)
+    src/components/   # UI + domenekomponenter
+    src/content/      # MDX-innhold (blog, help, listings, legal, …)
+    src/lib/          # E-post, Supabase, listings, utils
+    supabase/         # Migrasjoner + CRM-dokumentasjon
+    tests/            # Playwright-spesifikasjoner + tests/unit (Vitest)
+    plans/            # Implementasjonsplaner (advisor-generert)
 
-- [Vercel](https://vercel.com/) – Easily preview & deploy changes with git
-- [PlanetScale](https://planetscale.com/) – A cutting-edge database platform for seamless, scalable data management
-- [Resend](https://resend.com/) – A powerful email framework for streamlined email development
-
-## Contributing
-
-We love our contributors! Here's how you can contribute:
-
-- [Open an issue](https://github.com/Codehagen/advantiestate/issues) if you believe you've encountered a bug.
-- Make a [pull request](https://github.com/Codehagen/advantiestate/pull) to add new features/make quality-of-life improvements/fix bugs.
-
-<a href="https://github.com/codehagen/advantiestate/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=codehagen/advantiestate" />
-</a>
-
-## Repo Activity
-
-![Nextify repo activity – generated by Axiom](https://repobeats.axiom.co/api/embed/af6b76113d720e3fbc877398cd92809fd99e3121.svg "Repobeats analytics image")
+Se `CLAUDE.md` for agent-instruksjoner og `DESIGN.md` for designsystemet.
