@@ -32,7 +32,7 @@ export const AUTHORS: Record<string, AuthorMeta> = {
     name: "Christer Hagen",
     role: "Partner · Advanti Estate",
     image:
-      "https://imagedelivery.net/r-6-yk-gGPtjfbIST9-8uA/addc4b60-4c8f-47d7-10ab-6f9048432500/public",
+      "https://kukzjreikqbgbolxvqaj.supabase.co/storage/v1/object/public/press/christer-hagen-web.jpg",
     personSlug: "christer-hagen",
   },
   vsoraas: {
