@@ -205,11 +205,18 @@ export const LATEST_QUARTER = RELEASES[0].quarter;
   - Besøk https://advantiestate.no/presserom/arkiv/q1-2026/data.csv → last ned OK
   - Test OG-kort fra /presserom → nedlasting/deling OK
 
-### FASE 7: MONITORING (deferred)
+### FASE 7: PRESSEVARSEL-UTSENDELSE
 
-- [ ] **Pressevarsel (deferred til TODOS.md)** — når presselistesystem finnes
-  - Skjema «få pressevarsel» på presserommet (lead → Supabase)
-  - Kvartalsvis utsendelse via Resend med tall, sitat, lenke
+Påmeldingsskjemaet er live på /presserom (TODO 19, 2026-06-10): leads lagres
+med `source: "presserom"` i Resend-audiencen, Discord-digesten og Supabase
+(`web_signups`/`crm_leads`).
+
+- [ ] Hent mottakere: leads med source `presserom` (Supabase eller Resend)
+- [ ] Send kvartalsutsendelse via Resend: kvartalets nøkkeltall, ett sitat
+  fra sitatbanken, lenke til arkivutgivelsen (/presserom/arkiv/[slug]) og
+  CSV-en. Manuell utsendelse inntil volum forsvarer automatisering.
+- [ ] Krediteringspåminnelse i bunntekst («fritt til redaksjonell bruk med
+  kreditering Advanti Estate»)
 
 ---
 

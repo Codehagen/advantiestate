@@ -8,6 +8,7 @@ import { CITIES, LATEST_QUARTER } from "@/components/markedsinnsikt/marketData"
 import { LATEST_RELEASE } from "@/components/markedsinnsikt/marketReleases"
 import { siteConfig } from "@/app/siteConfig"
 import { KopierSitering } from "./KopierSitering"
+import { PressevarselForm } from "./PressevarselForm"
 
 export const metadata = constructMetadata({
   path: "/presserom",
@@ -406,6 +407,11 @@ export default function PresseromPage() {
               <div className="label">E-post</div>
               <a href={`mailto:${email}`}>{email}</a>
             </div>
+          </div>
+
+          {/* TODO 19: pressevarsel-påmelding — utsendelse skjer per kvartalsslipp (runbook FASE 7) */}
+          <div className="mt-10">
+            <PressevarselForm />
           </div>
         </div>
       </section>

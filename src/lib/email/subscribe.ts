@@ -19,6 +19,7 @@ export type SubscribeSource =
   | "verdivurdering-intake"
   | "kontakt"
   | "eiendommer"
+  | "presserom"
 
 export type SubscribeInput = {
   email: string

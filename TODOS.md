@@ -7,7 +7,7 @@ the AI SEO closure review (/plan-eng-review, 2026-05-24), the AI-SEO research pa
 
 ---
 
-## TODO 19 — Pressevarsel: kvartalsvis e-post til presseliste — P2
+## TODO 19 — Pressevarsel — SHIPPED 2026-06-10 (skjema + lagring; utsendelse = runbook FASE 7)
 
 - **What:** «Få pressevarsel»-skjema på /presserom (lead → Supabase, gjenbruk
   subscribe-flyten) + kvartalsvis utsendelse via Resend med tall, sitat og
@@ -23,7 +23,7 @@ the AI SEO closure review (/plan-eng-review, 2026-05-24), the AI-SEO research pa
 
 ---
 
-## TODO 20 — Site-wide tittelsuffiks «| Advanti» → «| Advanti Estate» — P3
+## TODO 20 — Site-wide tittelsuffiks «| Advanti» → «| Advanti Estate» — SHIPPED 2026-06-10
 
 - **What:** ~20 sider utenfor presserom/personer/om-oss har fortsatt
   «| Advanti» som tittelsuffiks (grep `'| Advanti"' src/app`).
@@ -36,7 +36,7 @@ the AI SEO closure review (/plan-eng-review, 2026-05-24), the AI-SEO research pa
 
 ---
 
-## TODO 21 — Design-review-rest: inline px-styles + global `.btn transition:all` — P3
+## TODO 21 — Design-review-rest — SHIPPED 2026-06-10 (mi-table-tetthet vurdert og beholdt)
 
 - **What:** (a) Harmoniser inline `style={{ margin/padding }}`-verdier i
   presserom-/arkivsidene til klasser i advanti-design.css; (b) erstatt

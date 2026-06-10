@@ -14,6 +14,7 @@ const SOURCE_LABEL: Record<SubscribeSource, string> = {
   "verdivurdering-intake": "Verdivurdering-intake (HØY INTENT)",
   kontakt: "Kontakt-skjema",
   eiendommer: "Eiendommer (varsel om nye oppdrag)",
+  presserom: "Presserom (pressevarsel — journalist!)",
 }
 
 // Pages that match a hard-intent signal get a high-priority colour stripe in
