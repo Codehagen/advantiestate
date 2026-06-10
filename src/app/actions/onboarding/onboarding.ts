@@ -1,6 +1,7 @@
 "use server";
 
 import { cookies } from "next/headers";
+import { checkRateLimit } from "@/lib/rate-limit";
 
 interface DiscordMessage {
   content: string;
@@ -27,6 +28,10 @@ interface OnboardingData {
 }
 
 export async function submitOnboarding(data: OnboardingData) {
+  if (!(await checkRateLimit("onboarding"))) {
+    return { success: false, error: "For mange forsøk. Prøv igjen om noen minutter." };
+  }
+
   try {
     // Send to Discord
     const webhookUrl = process.env.DISCORD_WEBHOOK_URL;
@@ -130,6 +135,10 @@ async function postToDiscordWebhook(
 }
 
 export async function submitContactInquiry(data: ContactInquiryData) {
+  if (!(await checkRateLimit("kontakt"))) {
+    return { success: false, error: "For mange forsøk. Prøv igjen om noen minutter." };
+  }
+
   try {
     // Build common embed fields
     const fields = [

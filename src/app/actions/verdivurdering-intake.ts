@@ -1,6 +1,7 @@
 "use server"
 
 import { subscribe } from "@/lib/email/subscribe"
+import { checkRateLimit } from "@/lib/rate-limit"
 
 export type IntakeResult = { ok: true } | { ok: false; error: string }
 
@@ -15,6 +16,10 @@ export type IntakeResult = { ok: true } | { ok: false; error: string }
 export async function subscribeVerdivurderingIntake(
   formData: FormData,
 ): Promise<IntakeResult> {
+  if (!(await checkRateLimit("verdivurdering"))) {
+    return { ok: false, error: "For mange forsøk. Prøv igjen om noen minutter." }
+  }
+
   const email = String(formData.get("email") ?? "")
   const firstName = String(formData.get("firstName") ?? "") || undefined
   const propertyType = String(formData.get("propertyType") ?? "")

@@ -1,6 +1,7 @@
 "use server"
 
 import { subscribe } from "@/lib/email/subscribe"
+import { checkRateLimit } from "@/lib/rate-limit"
 
 export type EiendomVarselFormState =
   | { status: "idle" }
@@ -11,6 +12,10 @@ export async function subscribeEiendomVarsel(
   _prev: EiendomVarselFormState,
   formData: FormData,
 ): Promise<EiendomVarselFormState> {
+  if (!(await checkRateLimit("eiendom-varsel"))) {
+    return { status: "error", message: "For mange forsøk. Prøv igjen om noen minutter." }
+  }
+
   const email = String(formData.get("email") ?? "")
   const firstName =
     String(formData.get("firstName") ?? "").trim() || undefined
