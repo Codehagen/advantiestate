@@ -3377,9 +3377,12 @@ h1, h2, h3 {
   display: flex;
   flex-direction: column;
   gap: 6px;
+  /* Hele siteringsteksten må være synlig — flex-item får ikke krympe under den */
+  flex: 1 1 100%;
 }
 .press-copy-input {
   width: 100%;
+  min-width: min(420px, 100%);
   max-width: 480px;
   padding: 9px 12px;
   font-size: 13px;
