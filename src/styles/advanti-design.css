@@ -3281,6 +3281,67 @@ h1, h2, h3 {
 .press-contact a:hover {
   color: var(--warm-grey);
 }
+/* Presskit — boilerplate factbox */
+.press-boilerplate {
+  padding: 32px 36px;
+  background: var(--accent-faint);
+  border: var(--hairline);
+  margin-bottom: 32px;
+}
+.press-boilerplate .label {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--warm-grey-85);
+  font-weight: 500;
+  margin-bottom: 14px;
+}
+.press-boilerplate p {
+  font-size: 16px;
+  line-height: 1.65;
+  color: var(--warm-grey);
+  max-width: 68ch;
+}
+/* Presskit — bruksvilkår block */
+.press-terms {
+  padding: 28px 0;
+  border-top: var(--hairline);
+  margin-bottom: 24px;
+}
+.press-terms .label {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--warm-grey-85);
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+.press-terms p {
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--warm-grey-85);
+  max-width: 68ch;
+}
+.press-terms a {
+  border-bottom: 1px solid var(--warm-grey-75);
+}
+.press-terms a:hover {
+  color: var(--warm-grey);
+}
+/* Presskit — asset download placeholder note */
+.press-assets-note {
+  font-size: 15px;
+  color: var(--warm-grey-85);
+  line-height: 1.6;
+  padding-top: 20px;
+  border-top: var(--hairline);
+}
+.press-assets-note a {
+  border-bottom: 1px solid var(--warm-grey-75);
+}
+.press-assets-note a:hover {
+  color: var(--warm-grey);
+}
 
 /* Feedback widget */
 .ks-feedback {

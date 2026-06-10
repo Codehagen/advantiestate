@@ -9,9 +9,9 @@ import { siteConfig } from "@/app/siteConfig"
 
 export const metadata = constructMetadata({
   path: "/presserom",
-  title: "Presserom — markedstall for media | Advanti",
+  title: "Presserom — markedstall for media | Advanti Estate",
   description:
-    "Markedstall for næringseiendom i Nord-Norge, fritt til bruk for media med kildehenvisning til Advanti. Yield, leie og ledighet per by, sitat og pressekontakt.",
+    "Markedstall for næringseiendom i Nord-Norge, fritt til bruk for media med kildehenvisning til Advanti Estate. Yield, leie og ledighet per by, sitat og pressekontakt.",
 })
 
 export default function PresseromPage() {
@@ -153,11 +153,54 @@ export default function PresseromPage() {
         </div>
       </section>
 
-      {/* 03 — SITAT */}
+      {/* 03 — PRESSEKIT */}
+      <section className="section section-divider" id="pressekit">
+        <div className="wrap">
+          <div className="head-compact">
+            <span className="eyebrow">03 — Pressekit</span>
+            <div>
+              <h2>
+                Klar til <span className="italic">bruk.</span>
+              </h2>
+            </div>
+          </div>
+
+          <div className="press-boilerplate">
+            <div className="label">Om Advanti Estate</div>
+            <p>
+              Advanti Estate er en kommersiell eiendomsrådgiver med kontor i
+              Bodø, spesialisert på næringseiendom i Nord-Norge. Vi tilbyr
+              megling, verdsettelse og markedsanalyse — og er regionens
+              ledende kilde for data om prime yield, markedsleie og
+              kontorledighet per by.
+            </p>
+          </div>
+
+          <div className="press-terms" id="bruksvilkar">
+            <div className="label">Bruksvilkår</div>
+            <p>
+              Tallene og sitatene på denne siden er fritt tilgjengelig for
+              redaksjonell bruk. Vi ber om kreditering{" "}
+              <strong>«Advanti Estate»</strong> med lenke til{" "}
+              <a href="https://advantiestate.no">advantiestate.no</a>.
+              Ta kontakt for originalfiler, høyoppløste portretter eller
+              logofiler.
+            </p>
+          </div>
+
+          <p className="press-assets-note">
+            Logopakke og høyoppløste pressebilder sendes på forespørsel —
+            pressekit for nedlasting kommer.{" "}
+            <Link href="#kontakt">Kontakt oss.</Link>
+          </p>
+        </div>
+      </section>
+
+      {/* 04 — SITAT */}
       <section className="section">
         <div className="wrap">
           <div className="head-compact">
-            <span className="eyebrow">03 — Sitat fra senior partner</span>
+            <span className="eyebrow">04 — Sitat fra senior partner</span>
             <div>
               <h2>
                 Til <span className="italic">fri gjengivelse.</span>
@@ -170,18 +213,18 @@ export default function PresseromPage() {
             for investorer. Med forventede rentekutt tror vi på moderat
             yield-kompresjon og økt transaksjonsvolum gjennom året.»
             <span className="by">
-              Christer Hagen
+              <Link href="/personer/christer-hagen">Christer Hagen</Link>
               <span>Partner / Næringsmegler MNEF · Advanti Estate</span>
             </span>
           </blockquote>
         </div>
       </section>
 
-      {/* 04 — PRESSEKONTAKT */}
+      {/* 05 — PRESSEKONTAKT */}
       <section className="section section-divider" id="kontakt">
         <div className="wrap">
           <div className="head-compact">
-            <span className="eyebrow">04 — Pressekontakt</span>
+            <span className="eyebrow">05 — Pressekontakt</span>
             <div>
               <h2>
                 For kommentar <span className="italic">og intervju.</span>

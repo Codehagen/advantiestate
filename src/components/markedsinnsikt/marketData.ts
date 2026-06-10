@@ -5,8 +5,10 @@
 // drift apart. Pure data + formatters — no "use client", importable from both
 // server and client components. Ported verbatim from markedsinnsikt.js.
 import type { MapCity } from "./types"
+import { LATEST_RELEASE } from "./marketReleases"
 
-export const LATEST_QUARTER = "Q4 2025"
+/** Current quarter label — derived from the versioned release register. */
+export const LATEST_QUARTER = LATEST_RELEASE.quarter
 
 export const QUARTERS = [
   "Q1 21", "Q2 21", "Q3 21", "Q4 21",
@@ -70,15 +72,31 @@ export const TX = [
   { date: "Jun 25", name: "Mo i Rana Industripark", loc: "Logistikk · 22 600 m²", seg: "Logistikk", value: "245 mnok", yield: "7,2 %" },
 ]
 
-export const CITIES: MapCity[] = [
-  { id: "bodo", name: "Bodø", lat: 67.28, lon: 14.4, yield: "6,35 %", leie: "2 400 kr/m²", vac: "4,6 %", note: "Hovedkontor for Advanti. Voksende logistikkhubb." },
-  { id: "tromso", name: "Tromsø", lat: 69.65, lon: 18.95, yield: "6,10 %", leie: "2 950 kr/m²", vac: "3,4 %", note: "Største kontormarkedet i Nord-Norge." },
-  { id: "alta", name: "Alta", lat: 69.97, lon: 23.27, yield: "6,75 %", leie: "1 950 kr/m²", vac: "6,2 %", note: "Sterkt handelsmarked i Finnmark." },
-  { id: "mo", name: "Mo i Rana", lat: 66.32, lon: 14.14, yield: "6,80 %", leie: "1 750 kr/m²", vac: "5,4 %", note: "Industri og logistikk. Stor industriutbygging." },
-  { id: "narvik", name: "Narvik", lat: 68.44, lon: 17.43, yield: "6,90 %", leie: "1 820 kr/m²", vac: "7,5 %", note: "Transport- og næringspark. Lavere likviditet." },
-  { id: "harstad", name: "Harstad", lat: 68.8, lon: 16.55, yield: "6,55 %", leie: "1 875 kr/m²", vac: "5,8 %", note: "Stabilt kontor- og handelsmarked." },
-]
+// ---------------------------------------------------------------------------
+// Formatters (used both here and by csv.ts / OG routes)
+// ---------------------------------------------------------------------------
 
 export const fmtNoComma = (v: number) => v.toFixed(2).replace(".", ",")
 export const fmtPct1 = (v: number) => `${v.toFixed(1).replace(".", ",")} %`
 export const fmtNum = (v: number) => v.toLocaleString("no-NO")
+/** Prime yield display string, e.g. "6,35 %" (two decimal places). */
+export const fmtYieldPct = (v: number) => `${fmtNoComma(v)} %`
+/** Market rent display string, e.g. "2 400 kr/m²" (regular-space thousands). */
+export const fmtLeieKrM2 = (v: number) =>
+  `${v.toLocaleString("no-NO").replace(/ /g, " ")} kr/m²`
+
+// ---------------------------------------------------------------------------
+// CITIES — derived from the versioned release register
+// ---------------------------------------------------------------------------
+
+/** City market data for the latest release, with display strings. */
+export const CITIES: MapCity[] = LATEST_RELEASE.cities.map((c) => ({
+  id: c.id,
+  name: c.name,
+  lat: c.lat,
+  lon: c.lon,
+  yield: fmtYieldPct(c.yieldPct),
+  leie: fmtLeieKrM2(c.leieKrM2),
+  vac: fmtPct1(c.vacPct),
+  note: c.note,
+}))

@@ -32,7 +32,7 @@ export default function StructuredData({
               name: data.name,
               provider: {
                 "@type": "LocalBusiness",
-                name: "Advanti",
+                name: "Advanti Estate",
                 url: baseUrl,
                 telephone: contact.phone,
                 email: contact.email,
@@ -66,7 +66,8 @@ export default function StructuredData({
               url: `${baseUrl}/personer/${data.slug}`,
               worksFor: {
                 "@type": "Organization",
-                name: "Advanti",
+                "@id": `${baseUrl}/#organization`,
+                name: "Advanti Estate",
                 url: baseUrl,
               },
               description: data.description || data.role,
@@ -80,8 +81,8 @@ export default function StructuredData({
           // describe the same company. The matching @id makes search engines
           // merge them into one entity instead of two unconnected ones.
           "@id": `${baseUrl}/#organization`,
-          name: "Advanti",
-          alternateName: "Advanti Næringseiendom",
+          name: "Advanti Estate",
+          alternateName: ["Advanti", "Advanti Næringseiendom"],
           url: baseUrl,
           logo: `${baseUrl}/icon-512x512.png`,
           description:
@@ -111,7 +112,7 @@ export default function StructuredData({
           foundingDate: "2024",
           numberOfEmployees: {
             "@type": "QuantitativeValue",
-            value: 4,
+            value: 6,
           },
         };
 
@@ -121,7 +122,7 @@ export default function StructuredData({
           "@type": "RealEstateAgent",
           // Same @id as the organization block — see the comment there.
           "@id": `${baseUrl}/#organization`,
-          name: "Advanti",
+          name: "Advanti Estate",
           url: baseUrl,
           logo: `${baseUrl}/icon-512x512.png`,
           image: [`${baseUrl}/opengraph-image.jpg`],
@@ -257,15 +258,15 @@ export default function StructuredData({
         return {
           "@context": "https://schema.org",
           "@type": "WebSite",
-          name: "Advanti",
+          name: "Advanti Estate",
           url: baseUrl,
           description:
-            "Advanti - Din partner for næringseiendom i Nord-Norge. Ekspertise innen salg, kjøp, utleie og verdivurdering.",
+            "Advanti Estate - Din partner for næringseiendom i Nord-Norge. Ekspertise innen salg, kjøp, utleie og verdivurdering.",
           publisher: {
             "@type": "Organization",
             // Link the website's publisher to the shared organization node.
             "@id": `${baseUrl}/#organization`,
-            name: "Advanti",
+            name: "Advanti Estate",
             logo: {
               "@type": "ImageObject",
               url: `${baseUrl}/icon-512x512.png`,
@@ -313,10 +314,8 @@ export default function StructuredData({
             name: authorName,
           },
           publisher: {
-            // Standalone node, not linked to #organization: this block's name
-            // ("Advanti Estate") differs from the Organization's ("Advanti"),
-            // so a shared @id would merge conflicting names into one entity.
             "@type": "Organization",
+            "@id": `${baseUrl}/#organization`,
             name: "Advanti Estate",
             logo: {
               "@type": "ImageObject",

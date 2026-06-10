@@ -6,16 +6,16 @@ import Link from "next/link";
 
 export const metadata = constructMetadata({
   path: "/om-oss",
-  title: "Om Advanti | Din Næringsmegler i Nord-Norge",
+  title: "Om Advanti Estate | Din Næringsmegler i Nord-Norge",
   description:
-    "Advanti er din erfarne partner for kjøp, salg og utleie av næringseiendom i Nord-Norge. Vi tilbyr lokal kunnskap og skreddersydde løsninger.",
+    "Advanti Estate er din erfarne partner for kjøp, salg og utleie av næringseiendom i Nord-Norge. Vi tilbyr lokal kunnskap og skreddersydde løsninger.",
 });
 
 export default function About() {
   return (
     <>
       <SubHero
-        crumb={[{ label: "Hjem", href: "/" }, { label: "Om Advanti" }]}
+        crumb={[{ label: "Hjem", href: "/" }, { label: "Om Advanti Estate" }]}
         eyebrow="Om Advanti Estate"
         title={
           <>
@@ -23,7 +23,7 @@ export default function About() {
             <span className="italic">i Nord-Norge.</span>
           </>
         }
-        lede="Med solid erfaring og lokal kunnskap er Advanti den naturlige partneren for kjøp, salg, utleie og verdivurdering av næringseiendom. Vi leverer profesjonell rådgivning og skreddersydde løsninger — basert på data og dyp lokal forankring."
+        lede="Med solid erfaring og lokal kunnskap er Advanti Estate den naturlige partneren for kjøp, salg, utleie og verdivurdering av næringseiendom. Vi leverer profesjonell rådgivning og skreddersydde løsninger — basert på data og dyp lokal forankring."
         photo={{
           src: "/building/pexels-pixabay-248877.jpg",
           alt: "Næringsbygg, Tromsø",
@@ -199,7 +199,7 @@ export default function About() {
                 style={{ backgroundColor: "var(--warm-grey-75)" }}
               >
                 <Image
-                  src="/havard.jpg"
+                  src="https://imagedelivery.net/r-6-yk-gGPtjfbIST9-8uA/d08a8e8b-0285-4107-bc2c-973f93b27100/public"
                   alt="Christer Hagen"
                   width={480}
                   height={600}
@@ -207,7 +207,9 @@ export default function About() {
                 />
               </div>
               <div className="member-meta">
-                <h3>Christer Hagen</h3>
+                <Link href="/personer/christer-hagen">
+                  <h3>Christer Hagen</h3>
+                </Link>
                 <div className="role">Partner &amp; daglig leder</div>
               </div>
               <div className="member-contact">
@@ -221,9 +223,22 @@ export default function About() {
             </div>
 
             <div className="member">
-              <div className="portrait" />
+              <div
+                className="portrait"
+                style={{ backgroundColor: "var(--warm-grey-75)" }}
+              >
+                <Image
+                  src="/havard.jpg"
+                  alt="Håvard Nome"
+                  width={480}
+                  height={600}
+                  sizes="(max-width: 768px) 100vw, 480px"
+                />
+              </div>
               <div className="member-meta">
-                <h3>Håvard Nome</h3>
+                <Link href="/personer/havard-nome">
+                  <h3>Håvard Nome</h3>
+                </Link>
                 <div className="role">Partner · Næringsmegler</div>
               </div>
               <div className="member-contact">
@@ -272,7 +287,7 @@ export default function About() {
             <span className="eyebrow">04 — Tallene</span>
             <div>
               <h2 style={{ color: "var(--warm-white)" }}>
-                Advanti i{" "}
+                Advanti Estate i{" "}
                 <span
                   style={{
                     fontStyle: "italic",
