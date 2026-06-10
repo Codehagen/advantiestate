@@ -253,6 +253,24 @@ export default function PresseromPage() {
             </a>
           </p>
           <p className="press-assets-note">
+            <a
+              href="https://kukzjreikqbgbolxvqaj.supabase.co/storage/v1/object/public/press/ole-ostensen-portrett.jpg"
+              download="advanti-estate-ole-ostensen.jpg"
+              data-track="presskit-foto-ole"
+            >
+              Pressebilde: Ole Østensen (JPG, høy oppløsning) →
+            </a>
+          </p>
+          <p className="press-assets-note">
+            <a
+              href="https://kukzjreikqbgbolxvqaj.supabase.co/storage/v1/object/public/press/tobias-bronder-portrett.jpg"
+              download="advanti-estate-tobias-bronder.jpg"
+              data-track="presskit-foto-tobias"
+            >
+              Pressebilde: Tobias Bronder (JPG, høy oppløsning) →
+            </a>
+          </p>
+          <p className="press-assets-note">
             Logopakke og flere pressebilder sendes på forespørsel —
             fullt pressekit for nedlasting kommer.{" "}
             <Link href="#kontakt">Kontakt oss.</Link>
