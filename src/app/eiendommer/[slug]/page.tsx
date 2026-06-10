@@ -99,7 +99,17 @@ export default async function EiendomDetailPage({
   params: { slug: string };
 }) {
   const { slug } = await params;
-  const listing = await getListing(slug);
+
+  // The four fetches are independent of each other (gallery/downloads key on
+  // slug, not on the listing row; the all-listings query feeds the related
+  // cards) — run them in parallel. Only the related-covers lookup needs a
+  // prior result. Same pattern as onboarding.ts / PERFORMANCE_PLAN.md 4.1.
+  const [listing, dbGallery, dbDownloads, allListings] = await Promise.all([
+    getListing(slug),
+    getListingGallery(slug),
+    getListingDownloads(slug),
+    getListings(),
+  ]);
   if (!listing) notFound();
 
   const statusLabel =
@@ -107,7 +117,6 @@ export default async function EiendomDetailPage({
   const cityLabel = CITY_LABELS[listing.city] ?? listing.city;
 
   // Prefer the CRM-published Supabase gallery; fall back to MDX, then cover.
-  const dbGallery = await getListingGallery(slug);
   const gallery =
     dbGallery && dbGallery.gallery.length > 0
       ? dbGallery.gallery
@@ -117,7 +126,6 @@ export default async function EiendomDetailPage({
   const coverSrc = dbGallery?.cover?.src ?? listing.coverImage;
 
   // Downloads: CRM-published projection, MDX fallback.
-  const dbDownloads = await getListingDownloads(slug);
   const downloads = dbDownloads ?? listing.downloads;
   const mainImg = gallery[0];
   const sideImgs = gallery.slice(1, 3);
@@ -127,7 +135,7 @@ export default async function EiendomDetailPage({
     : formatEditorialDate(listing.publishedAt);
 
   // Related: two other listings, preferring same type then proximity in order.
-  const related = (await getListings())
+  const related = allListings
     .filter((other) => other.slug !== listing.slug)
     .sort((a, b) => {
       const aSame = a.type === listing.type ? 0 : 1;
