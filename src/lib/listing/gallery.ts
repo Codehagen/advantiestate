@@ -38,7 +38,7 @@ interface ProfileRow {
   photo_count: number | null
 }
 
-/** Pure mapper — unit-tested. */
+/** Pure mapper — unit-tested in tests/unit/gallery.test.ts. */
 export function mapMediaToGallery(
   rows: MediaRow[],
   profile: ProfileRow,
