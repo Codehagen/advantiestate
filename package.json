@@ -8,6 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
+    "test": "playwright test",
+    "test:unit": "vitest run",
     "indexnow:submit": "bash scripts/indexnow-submit.sh"
   },
   "dependencies": {
@@ -32,10 +34,10 @@
     "leaflet": "^1.9.4",
     "motion": "^12.3.1",
     "ms": "^2.1.3",
-    "next": "16.1.4",
+    "next": "16.2.9",
     "proj4": "^2.15.0",
-    "react": "19.0.0",
-    "react-dom": "19.0.0",
+    "react": "19.2.7",
+    "react-dom": "19.2.7",
     "react-katex": "^3.0.1",
     "react-leaflet": "^5.0.0",
     "react-medium-image-zoom": "^5.2.13",
@@ -56,11 +58,11 @@
     "@types/leaflet": "^1.9.21",
     "@types/ms": "^2.1.0",
     "@types/node": "^22.10.5",
-    "@types/react": "19.0.4",
-    "@types/react-dom": "19.0.2",
+    "@types/react": "19.2.17",
+    "@types/react-dom": "19.2.3",
     "@types/react-katex": "^3.0.4",
     "eslint": "^8.57.1",
-    "eslint-config-next": "16.1.4",
+    "eslint-config-next": "16.2.9",
     "fumadocs-core": "^15.0.8",
     "github-slugger": "^2.0.0",
     "postcss": "^8.4.49",
@@ -70,12 +72,13 @@
     "rehype-slug": "^6.0.0",
     "shiki": "^1.26.1",
     "tailwindcss": "^3.4.17",
-    "typescript": "^5.7.3"
+    "typescript": "^5.7.3",
+    "vitest": "^4.1.8"
   },
   "pnpm": {
     "overrides": {
-      "@types/react": "19.0.4",
-      "@types/react-dom": "19.0.2"
+      "@types/react": "^19.2.0",
+      "@types/react-dom": "^19.2.0"
     },
     "onlyBuiltDependencies": [
       "@parcel/watcher",

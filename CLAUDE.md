@@ -7,8 +7,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 **Advanti** - A commercial real estate platform for Northern Norway, specializing in property valuation, brokerage, market analysis, and transaction advisory. The platform provides sophisticated financial modeling (DCF analysis, yield calculations) and data-driven insights for commercial properties (næringseiendom).
 
 **Tech Stack:**
-- Next.js 16.1.4 (App Router) with TypeScript
-- React 19.0.0
+- Next.js 16.2.x (App Router) with TypeScript
+- React 19.2.x
 - Tailwind CSS with custom design system
 - Content Collections for MDX content management
 - Recharts for data visualization
@@ -139,14 +139,12 @@ import { allBlogPosts, allHelpPosts } from "content-collections"
 - Custom charts: AreaChart, BarChart, LineChart, ComboChart, DcfChart, YieldLineChart
 - Form components with validation
 - Data tables with sorting/filtering
-- Mapbox integration for property visualization
+- Leaflet + react-leaflet (CartoDB tiles) for property and market maps
 
 ### Styling Patterns
 
-- Dark mode support via `selector` strategy
 - Custom Tailwind animations for accordions, dialogs, slide transitions
 - Responsive design with mobile-first approach
-- Custom font family: `NanumPenScript` for handwriting effect
 - Tailwind Forms plugin for consistent form styling
 
 ### Norwegian Language & SEO
@@ -176,7 +174,7 @@ Remote image patterns allowed:
 **Important settings in next.config.mjs:**
 - MDX support via `@next/mdx`
 - Content Collections integration via `@content-collections/next`
-- ESLint and TypeScript errors ignored during builds (intentional for rapid iteration)
+- TypeScript errors fail the build (`typescript.ignoreBuildErrors: false` in next.config.mjs)
 - Page extensions: `.js`, `.jsx`, `.md`, `.mdx`, `.ts`, `.tsx`
 
 ### TypeScript Configuration

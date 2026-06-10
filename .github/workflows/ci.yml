@@ -24,6 +24,8 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
+      - run: pnpm test:unit
+
       - run: pnpm exec playwright install --with-deps chromium
 
       # Playwright's webServer runs `pnpm build && pnpm start`, so this single

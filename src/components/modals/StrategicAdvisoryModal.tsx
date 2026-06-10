@@ -5,6 +5,7 @@ import { Input } from "@/components/Input"
 import Modal from "@/components/blog/modal"
 import { RiCloseLine, RiRoadMapLine, RiCheckLine } from "@remixicon/react"
 import { useState, type Dispatch, type SetStateAction } from "react"
+import { submitCtaLead } from "@/app/actions/cta-lead"
 
 interface StrategicAdvisoryModalProps {
   showModal: boolean
@@ -17,41 +18,34 @@ export default function StrategicAdvisoryModal({
 }: StrategicAdvisoryModalProps) {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSuccess, setIsSuccess] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setIsSubmitting(true)
+    setError(null)
 
     const formData = new FormData(e.currentTarget)
-    const data = {
-      name: `${formData.get("firstname")} ${formData.get("lastname")}`,
-      email: formData.get("email"),
-      phone: formData.get("phone"),
-      company: formData.get("company"),
-      challenge: formData.get("challenge"),
-      goals: formData.get("goals"),
-      timeline: formData.get("timeline"),
+    const result = await submitCtaLead({
       formType: "Strategisk Rådgivning",
-    }
+      name: `${formData.get("firstname")} ${formData.get("lastname")}`,
+      email: String(formData.get("email") ?? ""),
+      phone: String(formData.get("phone") ?? "") || undefined,
+      pageUrl: window.location.pathname,
+      fields: {
+        Selskap: String(formData.get("company") ?? ""),
+        Utfordring: String(formData.get("challenge") ?? ""),
+        Mål: String(formData.get("goals") ?? ""),
+        Tidshorisont: String(formData.get("timeline") ?? ""),
+      },
+    })
 
-    try {
-      const response = await fetch("/api/discord-notification", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      })
-
-      if (response.ok) {
-        setIsSuccess(true)
-        setTimeout(() => {
-          setShowModal(false)
-          setIsSuccess(false)
-        }, 3000)
-      }
-    } catch (error) {
-      console.error("Error submitting form:", error)
-    } finally {
-      setIsSubmitting(false)
+    setIsSubmitting(false)
+    if (result.ok) {
+      setIsSuccess(true)
+      setTimeout(() => { setShowModal(false); setIsSuccess(false) }, 3000)
+    } else {
+      setError(result.error)
     }
   }
 
@@ -163,6 +157,7 @@ export default function StrategicAdvisoryModal({
               </div>
             </div>
             <div className="mt-6">
+              {error && <p className="mb-3 text-sm text-red-600">{error}</p>}
               <Button type="submit" disabled={isSubmitting} className="w-full">
                 {isSubmitting ? "Sender..." : "Send forespørsel"}
               </Button>

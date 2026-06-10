@@ -1,6 +1,8 @@
 "use server";
 
 import { cookies } from "next/headers";
+import { checkRateLimit } from "@/lib/rate-limit";
+import { subscribe } from "@/lib/email/subscribe";
 
 interface DiscordMessage {
   content: string;
@@ -27,6 +29,10 @@ interface OnboardingData {
 }
 
 export async function submitOnboarding(data: OnboardingData) {
+  if (!(await checkRateLimit("onboarding"))) {
+    return { success: false, error: "For mange forsøk. Prøv igjen om noen minutter." };
+  }
+
   try {
     // Send to Discord
     const webhookUrl = process.env.DISCORD_WEBHOOK_URL;
@@ -130,68 +136,66 @@ async function postToDiscordWebhook(
 }
 
 export async function submitContactInquiry(data: ContactInquiryData) {
+  if (!(await checkRateLimit("kontakt"))) {
+    return { success: false, error: "For mange forsøk. Prøv igjen om noen minutter." };
+  }
+
   try {
-    // Build common embed fields
-    const fields = [
-      { name: "Navn", value: data.name },
-      { name: "E-post", value: data.email },
-      { name: "Telefon", value: data.phone },
-      { name: "Ønsket tjeneste", value: data.service },
-    ];
-
-    if (data.message) {
-      fields.push({
-        name: "Melding",
-        value: data.message.length > 1024 ? data.message.substring(0, 1021) + "..." : data.message,
-      });
-    }
-
-    fields.push({ name: "Tidspunkt", value: new Date().toLocaleString("nb-NO") });
-
-    const contactMessage: DiscordMessage = {
-      content: "",
-      embeds: [
-        {
-          title: "📬 Ny henvendelse fra nettsiden",
-          description: `${data.name} har sendt inn en forespørsel om ${data.service.toLowerCase()}.`,
-          color: 0x00aaff,
-          fields,
-        },
-      ],
+    const intake: Record<string, string | undefined> = {
+      Telefon: data.phone,
+      Tjeneste: data.service,
+      Beskjed: data.message,
     };
 
-    // The primary (#team) and secondary (#nettside-henvendelser) webhooks are
-    // independent — fire them in parallel instead of one after the other.
-    // postToDiscordWebhook never throws (it catches internally and returns a
-    // boolean), so Promise.all cannot short-circuit. See PERFORMANCE_PLAN.md 4.1.
-    const primaryUrl = process.env.DISCORD_WEBHOOK_URL;
+    // Full pipeline: Resend (audience + welcome), Discord #team digest
+    // (high-intent stripe), Supabase crm_leads + crm_activities. The
+    // "kontakt" source is already wired end-to-end in lib/email and
+    // lib/supabase — see leads.ts HIGH_INTENT.
+    const pipeline = subscribe({
+      email: data.email,
+      firstName: data.name,
+      source: "kontakt",
+      pageUrl: "/kontakt",
+      intake,
+    });
+
+    // Secondary channel (#nettside-henvendelser) — not covered by subscribe().
     const nettsideUrl = process.env.DISCORD_NETTSIDE_WEBHOOK_URL;
+    const nettsidePost = nettsideUrl
+      ? postToDiscordWebhook(nettsideUrl, {
+          content: "",
+          embeds: [
+            {
+              title: "📬 Ny nettside-henvendelse",
+              description: `**${data.name}** — ${data.service}`,
+              color: 0x00ff88,
+              fields: [
+                { name: "Navn", value: data.name },
+                { name: "E-post", value: data.email },
+                { name: "Telefon", value: data.phone },
+                { name: "Ønsket tjeneste", value: data.service },
+                ...(data.message
+                  ? [
+                      {
+                        name: "Melding",
+                        value:
+                          data.message.length > 1024
+                            ? data.message.substring(0, 1021) + "..."
+                            : data.message,
+                      },
+                    ]
+                  : []),
+              ],
+            },
+          ],
+        })
+      : Promise.resolve(false);
 
-    const nettsideMessage: DiscordMessage = {
-      content: "",
-      embeds: [
-        {
-          title: "📬 Ny nettside-henvendelse",
-          description: `**${data.name}** — ${data.service}`,
-          color: 0x00ff88,
-          fields,
-        },
-      ],
-    };
+    const [result] = await Promise.all([pipeline, nettsidePost]);
 
-    await Promise.all([
-      primaryUrl
-        ? postToDiscordWebhook(primaryUrl, contactMessage)
-        : Promise.resolve(false),
-      nettsideUrl
-        ? postToDiscordWebhook(nettsideUrl, nettsideMessage)
-        : Promise.resolve(false),
-    ]);
-
-    if (!primaryUrl && !nettsideUrl) {
-      throw new Error("Discord webhook URL not configured");
+    if (!result.ok) {
+      return { success: false, error: result.error };
     }
-
     return { success: true };
   } catch (error) {
     console.error("Error submitting contact inquiry:", error);

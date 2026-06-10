@@ -5,6 +5,7 @@ import { Input } from "@/components/Input"
 import Modal from "@/components/blog/modal"
 import { RiCloseLine, RiTeamLine, RiCheckLine } from "@remixicon/react"
 import { useState, type Dispatch, type SetStateAction } from "react"
+import { submitCtaLead } from "@/app/actions/cta-lead"
 
 interface ConsultationModalProps {
   showModal: boolean
@@ -17,41 +18,34 @@ export default function ConsultationModal({
 }: ConsultationModalProps) {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSuccess, setIsSuccess] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setIsSubmitting(true)
+    setError(null)
 
     const formData = new FormData(e.currentTarget)
-    const data = {
-      name: `${formData.get("firstname")} ${formData.get("lastname")}`,
-      email: formData.get("email"),
-      phone: formData.get("phone"),
-      company: formData.get("company"),
-      serviceType: formData.get("serviceType"),
-      preferredDate: formData.get("preferredDate"),
-      message: formData.get("message"),
+    const result = await submitCtaLead({
       formType: "Konsultasjon",
-    }
+      name: `${formData.get("firstname")} ${formData.get("lastname")}`,
+      email: String(formData.get("email") ?? ""),
+      phone: String(formData.get("phone") ?? "") || undefined,
+      pageUrl: window.location.pathname,
+      fields: {
+        Selskap: String(formData.get("company") ?? ""),
+        Tjeneste: String(formData.get("serviceType") ?? ""),
+        "Ønsket dato": String(formData.get("preferredDate") ?? ""),
+        Melding: String(formData.get("message") ?? ""),
+      },
+    })
 
-    try {
-      const response = await fetch("/api/discord-notification", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      })
-
-      if (response.ok) {
-        setIsSuccess(true)
-        setTimeout(() => {
-          setShowModal(false)
-          setIsSuccess(false)
-        }, 3000)
-      }
-    } catch (error) {
-      console.error("Error submitting form:", error)
-    } finally {
-      setIsSubmitting(false)
+    setIsSubmitting(false)
+    if (result.ok) {
+      setIsSuccess(true)
+      setTimeout(() => { setShowModal(false); setIsSuccess(false) }, 3000)
+    } else {
+      setError(result.error)
     }
   }
 
@@ -229,6 +223,7 @@ export default function ConsultationModal({
 
               {/* Submit Button */}
               <div className="mt-6">
+                {error && <p className="mb-3 text-sm text-red-600">{error}</p>}
                 <Button
                   type="submit"
                   disabled={isSubmitting}
