@@ -4,7 +4,7 @@ import { constructMetadata } from "@/lib/utils";
 
 export const metadata = constructMetadata({
   path: "/verktoy/roi-kalkulator",
-  title: "ROI Kalkulator | Advanti",
+  title: "ROI Kalkulator | Advanti Estate",
   description:
     "Beregn avkastning på investering (ROI) for næringseiendom. Få oversikt over total avkastning inkludert leieinntekter og verdiøkning over tid.",
 });

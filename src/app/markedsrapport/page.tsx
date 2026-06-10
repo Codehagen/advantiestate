@@ -7,7 +7,7 @@ import { MarkedsrapportGate } from "./MarkedsrapportGate"
 
 export const metadata = constructMetadata({
   path: "/markedsrapport",
-  title: "Markedsrapport Q4 2025 — næringseiendom Nord-Norge | Advanti",
+  title: "Markedsrapport Q4 2025 — næringseiendom Nord-Norge | Advanti Estate",
   description:
     "Last ned Advanti sin kvartalsvise markedsrapport for næringseiendom i Nord-Norge. Yield, leiepriser, transaksjoner og kommentarer fra senior partner.",
 })

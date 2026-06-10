@@ -5,7 +5,7 @@ import Link from "next/link";
 
 export const metadata = constructMetadata({
   path: "/tjenester",
-  title: "Tjenester innen Næringseiendom i Nord-Norge | Advanti",
+  title: "Tjenester innen Næringseiendom i Nord-Norge | Advanti Estate",
   description:
     "Profesjonell salg og verdivurdering av næringseiendom i Nord-Norge. Vi tilbyr også utleie, transaksjoner og strategisk rådgivning for eiendomsbesittere.",
 });

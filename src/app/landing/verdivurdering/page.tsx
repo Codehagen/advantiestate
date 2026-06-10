@@ -6,7 +6,7 @@ import { RiShieldCheckLine, RiUserStarLine, RiBuildingLine } from "@remixicon/re
 export const metadata = constructMetadata({
   path: "/landing/verdivurdering",
   noIndex: true, // paid-ads landing page — keep out of the organic index
-  title: "Uforpliktende Verdivurdering av Næringseiendom i Nord-Norge | Advanti",
+  title: "Uforpliktende Verdivurdering av Næringseiendom i Nord-Norge | Advanti Estate",
   description:
     "Få en profesjonell verdivurdering av din næringseiendom basert på lokal markedsinnsikt i Nord-Norge. Vi svarer innen 24 timer. Uforpliktende samtale.",
 });

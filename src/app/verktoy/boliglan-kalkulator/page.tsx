@@ -4,7 +4,7 @@ import { constructMetadata } from "@/lib/utils";
 
 export const metadata = constructMetadata({
   path: "/verktoy/boliglan-kalkulator",
-  title: "Boliglån Kalkulator | Advanti",
+  title: "Boliglån Kalkulator | Advanti Estate",
   description:
     "Beregn månedlige kostnader, total rentekostnad og nedbetalingsplan for næringslån. Få oversikt over finansieringen av din næringseiendom.",
 });

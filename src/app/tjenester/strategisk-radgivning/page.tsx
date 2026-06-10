@@ -11,7 +11,7 @@ const LAST_UPDATED = "2026-05-22";
 
 export const metadata = constructMetadata({
   path: "/tjenester/strategisk-radgivning",
-  title: "Strategisk Rådgivning Næringseiendom | Advanti",
+  title: "Strategisk Rådgivning Næringseiendom | Advanti Estate",
   description:
     "Advanti tilbyr strategisk rådgivning for eiendomsinvestorer og -utviklere i Nord-Norge, inkludert porteføljestrategi, akkvisisjon og exit-strategi.",
 });

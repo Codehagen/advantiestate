@@ -7,7 +7,7 @@ import Link from "next/link";
 
 export const metadata = constructMetadata({
   path: "/personer",
-  title: "Vårt Team | Advanti",
+  title: "Vårt Team | Advanti Estate",
   description:
     "Møt teamet bak Advanti - erfarne næringsmeglere og rådgivere med dyp kompetanse innen næringseiendom i Nord-Norge.",
 });

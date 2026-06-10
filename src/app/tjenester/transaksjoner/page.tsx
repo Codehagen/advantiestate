@@ -11,7 +11,7 @@ const LAST_UPDATED = "2026-05-22";
 
 export const metadata = constructMetadata({
   path: "/tjenester/transaksjoner",
-  title: "Transaksjoner Næringseiendom | Advanti",
+  title: "Transaksjoner Næringseiendom | Advanti Estate",
   description:
     "Advanti bistår med kjøp og salg av næringseiendom i Nord-Norge. Ekspertise gjennom hele transaksjonsprosessen fra verdivurdering til overtakelse.",
 });

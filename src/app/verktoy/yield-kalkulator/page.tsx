@@ -5,7 +5,7 @@ import { AnimatedCTA } from "@/components/ui/AnimatedCTA";
 
 export const metadata = constructMetadata({
   path: "/verktoy/yield-kalkulator",
-  title: "Yield Kalkulator | Advanti",
+  title: "Yield Kalkulator | Advanti Estate",
   description:
     "Beregn brutto og netto yield for næringseiendom. Få umiddelbar oversikt over avkastning basert på leieinntekter og driftskostnader.",
 });

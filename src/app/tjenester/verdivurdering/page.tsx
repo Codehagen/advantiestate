@@ -11,7 +11,7 @@ const LAST_UPDATED = "2026-05-22";
 
 export const metadata = constructMetadata({
   path: "/tjenester/verdivurdering",
-  title: "Verdivurdering av Næringseiendom | Advanti",
+  title: "Verdivurdering av Næringseiendom | Advanti Estate",
   description:
     "Trenger du verdivurdering av næringseiendom? Advanti tilbyr profesjonelle analyser og verdivurderinger i Nord-Norge for et solid beslutningsgrunnlag.",
 });

@@ -4,7 +4,7 @@ import { constructMetadata } from "@/lib/utils"
 
 export const metadata = constructMetadata({
   path: "/markedsinnsikt/kart",
-  title: "Markedskart — indikative prissoner i Bodø | Advanti",
+  title: "Markedskart — indikative prissoner i Bodø | Advanti Estate",
   description:
     "Interaktivt kart over indikative leieprissoner for næringseiendom i Bodø. Slå på offisielle eiendomsgrenser fra Kartverket.",
 })

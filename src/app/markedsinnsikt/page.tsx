@@ -7,7 +7,7 @@ import { MarketDataSummary } from "@/components/markedsinnsikt/MarketDataSummary
 
 export const metadata = constructMetadata({
   path: "/markedsinnsikt",
-  title: "Markedsinnsikt for næringseiendom | Advanti",
+  title: "Markedsinnsikt for næringseiendom | Advanti Estate",
   description:
     "Få tilgang til omfattende markedsdata og analyser for næringseiendom. Utforsk sanntids markedstrender og yield-analyser for smarte investeringer..",
 })

@@ -11,7 +11,7 @@ const LAST_UPDATED = "2026-05-22";
 
 export const metadata = constructMetadata({
   path: "/tjenester/radgivning",
-  title: "Markedsdata og Rådgivning Næringseiendom | Advanti",
+  title: "Markedsdata og Rådgivning Næringseiendom | Advanti Estate",
   description:
     "Advanti leverer markedsdata og kvantitativ rådgivning for næringseiendom i Nord-Norge. Egne databaser, kvartalsvise markedsrapporter og datatilgang via API.",
 });

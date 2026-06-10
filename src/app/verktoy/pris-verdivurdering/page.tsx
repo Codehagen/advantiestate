@@ -6,7 +6,7 @@ import { CalculatorCTA } from "@/components/verktoy/CalculatorCTA";
 
 export const metadata = constructMetadata({
   path: "/verktoy/pris-verdivurdering",
-  title: "Pris på Verdivurdering Kalkulator | Estimat for Næringseiendom | Advanti",
+  title: "Pris på Verdivurdering Kalkulator | Estimat for Næringseiendom | Advanti Estate",
   description:
     "Beregn estimert pris for verdivurdering av næringseiendom basert på størrelse, kompleksitet og formål. Få en indikasjon på kostnaden før du bestiller en profesjonell verdsettelse.",
 });

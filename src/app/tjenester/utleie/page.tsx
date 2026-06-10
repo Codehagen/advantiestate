@@ -11,7 +11,7 @@ const LAST_UPDATED = "2026-05-22";
 
 export const metadata = constructMetadata({
   path: "/tjenester/utleie",
-  title: "Utleie av Næringseiendom | Advanti",
+  title: "Utleie av Næringseiendom | Advanti Estate",
   description:
     "Advanti tilbyr skreddersydde løsninger for utleie av kontor, handel- og logistikkeiendom, samt leietaker- og gårdeierrådgivning i Nord-Norge.",
 });

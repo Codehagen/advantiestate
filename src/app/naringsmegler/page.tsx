@@ -10,7 +10,7 @@ import { SubHero } from "@/components/site/SubHero";
 import { constructMetadata } from "@/lib/utils";
 
 export const metadata = constructMetadata({
-  title: "Næringsmegler i Nord-Norge | Advanti",
+  title: "Næringsmegler i Nord-Norge | Advanti Estate",
   description:
     "Næringsmegler i Nord-Norge med lokal tilstedeværelse. Advanti bistår med salg, utleie og verdivurdering av næringseiendom i sentrale byer.",
   path: "/naringsmegler",

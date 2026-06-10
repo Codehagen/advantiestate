@@ -16,7 +16,7 @@ export const revalidate = 600;
 
 export const metadata = constructMetadata({
   path: "/tjenester/salg",
-  title: "Salg av Næringseiendom i Nord-Norge | Advanti",
+  title: "Salg av Næringseiendom i Nord-Norge | Advanti Estate",
   description:
     "Planlegger du salg av næringseiendom? Advanti bistår deg gjennom hele salgsprosessen, fra verdivurdering og markedsføring til forhandlinger og oppgjør.",
 });

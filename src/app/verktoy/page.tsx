@@ -13,7 +13,7 @@ import Balancer from "react-wrap-balancer";
 
 export const metadata = constructMetadata({
   path: "/verktoy",
-  title: "Verktøy for Næringseiendom | Advanti",
+  title: "Verktøy for Næringseiendom | Advanti Estate",
   description:
     "Bruk våre profesjonelle kalkulatorer for yield, ROI, boliglån og mer. Få umiddelbare beregninger for næringseiendomsinvesteringer i Nord-Norge.",
 });
