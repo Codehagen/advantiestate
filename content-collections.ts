@@ -373,6 +373,7 @@ export const PersonPost = defineCollection({
       }),
     ),
     certifications: z.array(z.string()).optional(),
+    linkedin: z.string().url().optional(),
     specializations: z.array(z.string()),
     notableProjects: z
       .array(

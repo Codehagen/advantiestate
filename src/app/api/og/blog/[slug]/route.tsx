@@ -4,31 +4,11 @@ import { BLOG_CATEGORIES } from "@/lib/blog/content"
 import { calculateReadingTime } from "@/lib/blog/utils"
 import { getBlogPost } from "@/lib/content"
 import { loadOgFonts } from "@/lib/og/fonts"
+import { AUTHORS } from "@/lib/authors"
 
 export const runtime = "nodejs"
 
 const SIZE = { width: 1200, height: 630 }
-
-// Mirrors AUTHOR_META in src/app/(blog)/blog/(post)/[slug]/page.tsx — kept
-// colocated so the OG handler doesn't reach into a page module. Adding a new
-// blog author means updating both places.
-const AUTHOR_META: Record<
-  string,
-  { name: string; role: string; avatar: string }
-> = {
-  codehagen: {
-    name: "Christer Hagen",
-    role: "Partner · Advanti Estate",
-    avatar:
-      "https://imagedelivery.net/r-6-yk-gGPtjfbIST9-8uA/addc4b60-4c8f-47d7-10ab-6f9048432500/public",
-  },
-  vsoraas: {
-    name: "Vegard Søraas",
-    role: "Partner · Advanti Estate",
-    avatar:
-      "https://imagedelivery.net/r-6-yk-gGPtjfbIST9-8uA/76037f97-384f-4681-176e-5b8a0ba71300/public",
-  },
-}
 
 const MONTHS_SHORT = [
   "JAN",
@@ -93,7 +73,7 @@ export async function GET(
       .map((c) => BLOG_CATEGORIES.find((bc) => bc.slug === c))
       .find((c) => c !== undefined)
 
-    const authorMeta = AUTHOR_META[post.author]
+    const authorMeta = AUTHORS[post.author]
     const readingTime = post.mdx ? calculateReadingTime(post.mdx) : 5
 
     return new ImageResponse(
@@ -106,7 +86,7 @@ export async function GET(
           readtime={`${readingTime} min lesing`}
           authorName={authorMeta?.name ?? post.author}
           authorRole={authorMeta?.role ?? "Advanti Estate"}
-          authorAvatar={authorMeta?.avatar ?? null}
+          authorAvatar={authorMeta?.image ?? null}
         />
       ),
       { ...SIZE, fonts },

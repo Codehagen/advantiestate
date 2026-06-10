@@ -12,6 +12,7 @@ import {
   getServiceDef,
   getServiceCityLocation,
 } from "@/lib/service-cities";
+import { RELEASES } from "@/components/markedsinnsikt/marketReleases";
 
 // llmstxt.org-compliant Markdown for AI engines (ChatGPT, Claude, Perplexity,
 // Google AI Overviews). Hand-curated section headings + descriptions; auto-listed
@@ -75,14 +76,14 @@ async function buildBody(baseUrl: string): Promise<string> {
   const sections: string[] = [];
 
   // H1 + blockquote summary per llmstxt.org spec.
-  sections.push(`# Advanti`);
+  sections.push(`# Advanti Estate`);
   sections.push(
     `> Næringsmegler i Nord-Norge. Salg, utleie, verdivurdering og rådgivning for næringseiendom i Nordland, Troms og Finnmark. Datadrevet, lokalt forankret, partnerstyrt.`,
   );
 
   sections.push(
     [
-      `Advanti er et meglerhus for næringseiendom med kontorer i Nord-Norge.`,
+      `Advanti Estate er et meglerhus for næringseiendom med kontorer i Nord-Norge.`,
       `Vi kombinerer lokal markedskunnskap med kvantitativ analyse (DCF, yield, sensitivitet) for å hjelpe eiere, investorer og leietakere ta bedre beslutninger.`,
       `Hovedmarkedene er Bodø, Tromsø, Alta, Harstad, Narvik, Mo i Rana og Lofoten.`,
       `Kontakt: ${siteConfig.contact?.email ?? "post@advantiestate.no"}.`,
@@ -178,6 +179,37 @@ async function buildBody(baseUrl: string): Promise<string> {
         line(post.title, `${baseUrl}/kunder/${post.slug}`, post.summary),
       )
       .join("\n"),
+  );
+
+  // ## Presserom — machine-readable market data for journalists and AI engines.
+  // Stable URL contracts: /presserom/markedstall.csv always points to the latest
+  // release; each archive slug points to a frozen quarterly snapshot.
+  sections.push(`## Presserom og markedsdata`);
+  sections.push(
+    [
+      line(
+        "Presserom",
+        `${baseUrl}/presserom`,
+        "Markedstall for næringseiendom i Nord-Norge til fri bruk for media med kreditering «Advanti Estate · advantiestate.no».",
+      ),
+      line(
+        "Markedstall CSV (stabil, siste utgivelse)",
+        `${baseUrl}/presserom/markedstall.csv`,
+        "Maskinlesbar CSV med prime yield, markedsleie og kontorledighet per by. UTF-8 BOM, semikolonseparert. Oppdateres kvartalsvis.",
+      ),
+      line(
+        "Kvartalsarkiv",
+        `${baseUrl}/presserom/arkiv`,
+        "Permanente arkivsider for alle kvartalsutgivelser — fryst snapshot per kvartal.",
+      ),
+      ...RELEASES.map((r) =>
+        line(
+          `Markedstall ${r.quarter} (arkiv)`,
+          `${baseUrl}/presserom/arkiv/${r.slug}`,
+          `Fryst snapshot publisert ${r.publishedAt}. CSV: ${baseUrl}/presserom/arkiv/${r.slug}/data.csv`,
+        ),
+      ),
+    ].join("\n"),
   );
 
   // ## Optional per llmstxt.org spec — secondary content the AI should treat

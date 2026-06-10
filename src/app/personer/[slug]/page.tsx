@@ -101,6 +101,8 @@ export default async function PersonPage({ params }: PersonPageProps) {
           phone: person.phone,
           slug: person.slug,
           description: `${person.name} er ${person.role} i Advanti med ${person.yearsExperience} års erfaring.`,
+          specializations: person.specializations,
+          linkedin: person.linkedin,
         }}
       />
 

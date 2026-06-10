@@ -11,6 +11,7 @@ import { MetadataRoute } from "next";
 import { siteConfig } from "./siteConfig";
 import { getListings } from "@/lib/listing/listings";
 import { SERVICE_SLUGS, SERVICE_CITY_SLUGS } from "@/lib/service-cities";
+import { RELEASES } from "@/components/markedsinnsikt/marketReleases";
 
 // ISR: the listing section is sourced from the CRM (Supabase). Revalidate on the
 // same window as the /eiendommer pages so a newly published mandate appears in
@@ -42,6 +43,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "/markedsinnsikt/kart",
     "/markedsrapport",
     "/presserom",
+    "/presserom/arkiv",
     "/karriere",
     "/kontakt",
     "/help",
@@ -132,6 +134,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     })),
   );
 
+  // Quarterly archive pages — one per published release slug.
+  const archivePages = RELEASES.map((r) => ({
+    url: `${baseUrl}/presserom/arkiv/${r.slug}`,
+    lastModified: new Date(r.publishedAt),
+    changeFrequency: "yearly" as const,
+    priority: 0.6,
+  }));
+
   // Active listing detail pages. Source of truth is the CRM (Supabase) via
   // getListings(), with MDX listings folded in as a fallback — iterating the
   // MDX collection alone would omit every CRM-published mandate that has no MDX
@@ -156,6 +166,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...personPages,
     ...locationPages,
     ...serviceCityPages,
+    ...archivePages,
     ...listingPages,
   ];
 }

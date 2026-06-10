@@ -9,6 +9,7 @@ import { getBlurDataURL } from "@/lib/blog/images";
 import { calculateReadingTime } from "@/lib/blog/utils";
 import { constructMetadata } from "@/lib/utils";
 import { getBlogPost } from "@/lib/content";
+import { AUTHORS, getAuthorName } from "@/lib/authors";
 import { allBlogPosts } from "content-collections";
 import { Metadata } from "next";
 import Link from "next/link";
@@ -16,28 +17,6 @@ import { notFound } from "next/navigation";
 import StructuredData, {
   BreadcrumbStructuredData,
 } from "@/components/StructuredData";
-
-// Author name mapping
-const AUTHOR_NAMES: Record<string, string> = {
-  codehagen: "Christer Hagen",
-  vsoraas: "Vegard Søraas",
-};
-
-const AUTHOR_META: Record<string, { name: string; role: string; image: string }> =
-  {
-    codehagen: {
-      name: "Christer Hagen",
-      role: "Partner · Advanti Estate",
-      image:
-        "https://imagedelivery.net/r-6-yk-gGPtjfbIST9-8uA/addc4b60-4c8f-47d7-10ab-6f9048432500/public",
-    },
-    vsoraas: {
-      name: "Vegard Søraas",
-      role: "Partner · Advanti Estate",
-      image:
-        "https://imagedelivery.net/r-6-yk-gGPtjfbIST9-8uA/76037f97-384f-4681-176e-5b8a0ba71300/public",
-    },
-  };
 
 const MONTHS_SHORT = [
   "JAN",
@@ -90,7 +69,7 @@ export async function generateMetadata({
     ogType: "article",
     publishedTime: post.publishedAt,
     modifiedTime: post.updatedAt,
-    authors: [AUTHOR_NAMES[post.author] || post.author],
+    authors: [getAuthorName(post.author)],
   });
 }
 
@@ -137,8 +116,8 @@ export default async function BlogArticle({
   const readingTime = data.mdx
     ? calculateReadingTime(data.mdx)
     : null;
-  const authorMeta = AUTHOR_META[data.author];
-  const authorName = AUTHOR_NAMES[data.author] || data.author;
+  const authorMeta = AUTHORS[data.author];
+  const authorName = getAuthorName(data.author);
   const toc = data.tableOfContents ?? [];
 
   return (

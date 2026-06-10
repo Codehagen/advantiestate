@@ -1,4 +1,5 @@
 import { siteConfig } from "@/app/siteConfig";
+import { AUTHORS } from "@/lib/authors";
 
 interface StructuredDataProps {
   type?:
@@ -53,26 +54,39 @@ export default function StructuredData({
               description: data.description,
             }
           : null;
-      case "person":
-        return data
-          ? {
-              "@context": "https://schema.org",
-              "@type": "Person",
-              name: data.name,
-              jobTitle: data.role,
-              image: data.avatar,
-              email: data.email,
-              telephone: data.phone,
-              url: `${baseUrl}/personer/${data.slug}`,
-              worksFor: {
-                "@type": "Organization",
-                "@id": `${baseUrl}/#organization`,
-                name: "Advanti Estate",
-                url: baseUrl,
-              },
-              description: data.description || data.role,
-            }
-          : null;
+      case "person": {
+        if (!data) return null;
+        const personSchema: Record<string, unknown> = {
+          "@context": "https://schema.org",
+          "@type": "Person",
+          // Canonical @id for this person entity. Matches the @id emitted on
+          // Article.author for posts written by this person, so that search
+          // engines merge blog authorship and the profile page into one node.
+          "@id": `${baseUrl}/personer/${data.slug}#person`,
+          name: data.name,
+          jobTitle: data.role,
+          image: data.avatar,
+          email: data.email,
+          telephone: data.phone,
+          url: `${baseUrl}/personer/${data.slug}`,
+          worksFor: {
+            "@type": "Organization",
+            "@id": `${baseUrl}/#organization`,
+            name: "Advanti Estate",
+            url: baseUrl,
+          },
+          description: data.description || data.role,
+        };
+        // T4: sameAs (LinkedIn) — only when URL is present in frontmatter.
+        if (data.linkedin) {
+          personSchema.sameAs = [data.linkedin];
+        }
+        // T4: knowsAbout from specializations array.
+        if (Array.isArray(data.specializations) && data.specializations.length > 0) {
+          personSchema.knowsAbout = data.specializations;
+        }
+        return personSchema;
+      }
       case "organization":
         return {
           "@context": "https://schema.org",
@@ -301,6 +315,20 @@ export default function StructuredData({
         // Get author name from author username if available
         const authorName = data.authorName || data.author || "Advanti Estate";
 
+        // Build author node. When the author handle maps to a /personer profile,
+        // add @id and url so the article authorship merges with the person entity.
+        const authorPersonSlug = data.author
+          ? AUTHORS[data.author]?.personSlug
+          : undefined;
+        const authorNode: Record<string, unknown> = {
+          "@type": "Person",
+          name: authorName,
+        };
+        if (authorPersonSlug) {
+          authorNode["@id"] = `${baseUrl}/personer/${authorPersonSlug}#person`;
+          authorNode["url"] = `${baseUrl}/personer/${authorPersonSlug}`;
+        }
+
         const schema: any = {
           "@context": "https://schema.org",
           "@type": "Article",
@@ -309,10 +337,7 @@ export default function StructuredData({
           image: [articleImage],
           datePublished: data.publishedAt,
           dateModified: data.updatedAt || data.publishedAt,
-          author: {
-            "@type": "Person",
-            name: authorName,
-          },
+          author: authorNode,
           publisher: {
             "@type": "Organization",
             "@id": `${baseUrl}/#organization`,
