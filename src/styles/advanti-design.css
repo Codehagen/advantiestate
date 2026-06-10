@@ -3354,12 +3354,23 @@ h1, h2, h3 {
   border-top: var(--hairline);
 }
 .press-table-actions a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
   font-size: 13px;
   color: var(--warm-grey-85);
-  border-bottom: 1px solid var(--warm-grey-75);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-color: var(--warm-grey-75);
   transition: color 0.18s ease;
 }
 .press-table-actions a:hover { color: var(--warm-grey); }
+/* Lenker i mi-table (kun arkivsidene har dem): 44px hit-area uten visuell endring */
+.mi-table a {
+  display: inline-block;
+  padding: 13px 0;
+  margin: -13px 0;
+}
 
 /* KopierSitering — clipboard fallback (vedtak 2B) */
 .press-copy-fallback {
