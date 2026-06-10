@@ -179,7 +179,7 @@ function mapMdxToListing(post: MdxListing): Listing {
 }
 
 // Shape of the columns we read from crm_property_listing_profiles.
-interface ProfileRow {
+export interface ProfileRow {
   public_slug: string
   website_status: string | null
   website_type: string | null
@@ -277,7 +277,7 @@ const PROFILE_COLUMNS = [
   "downloads",
 ].join(", ")
 
-function mapProfileToListing(row: ProfileRow): Listing {
+export function mapProfileToListing(row: ProfileRow): Listing {
   const slug = row.public_slug
   const titleHead = row.title_head ?? row.title ?? slug
   const titleTail = row.title_tail ?? ""

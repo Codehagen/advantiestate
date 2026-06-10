@@ -22,7 +22,7 @@ const HIGH_INTENT: SubscribeSource[] = [
 
 // Visitor-facing Norwegian terms → crm_leads `property_type` enum values.
 // The enum is: kontor, industri, lager, butikk, senter, tomt.
-function mapPropertyType(value: string | undefined): string[] {
+export function mapPropertyType(value: string | undefined): string[] {
   if (!value) return []
   const v = value.toLowerCase()
   if (v.startsWith("kontor")) return ["kontor"]
@@ -155,7 +155,7 @@ async function insertCrmLead(
   }
 }
 
-function buildActivitySummary(
+export function buildActivitySummary(
   args: RecordSignupArgs,
   intake: Record<string, string | number | undefined>,
 ): string {
