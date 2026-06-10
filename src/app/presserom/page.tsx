@@ -235,6 +235,24 @@ export default function PresseromPage() {
             </a>
           </p>
           <p className="press-assets-note">
+            <a
+              href="https://kukzjreikqbgbolxvqaj.supabase.co/storage/v1/object/public/press/mathias-nilssen-portrett.jpg"
+              download="advanti-estate-mathias-nilssen.jpg"
+              data-track="presskit-foto-mathias"
+            >
+              Pressebilde: Mathias Nilssen (JPG) →
+            </a>
+          </p>
+          <p className="press-assets-note">
+            <a
+              href="https://kukzjreikqbgbolxvqaj.supabase.co/storage/v1/object/public/press/daniel-adamsen-portrett.jpg"
+              download="advanti-estate-daniel-adamsen.jpg"
+              data-track="presskit-foto-daniel"
+            >
+              Pressebilde: Daniel Adamsen (JPG) →
+            </a>
+          </p>
+          <p className="press-assets-note">
             Logopakke og flere pressebilder sendes på forespørsel —
             fullt pressekit for nedlasting kommer.{" "}
             <Link href="#kontakt">Kontakt oss.</Link>
