@@ -101,7 +101,7 @@ export default async function KvartalArkivPage({
             <span className="eyebrow">Nøkkeltall · {release.quarter}</span>
             <div>
               <h2>
-                Fryst <span className="italic">snapshot.</span>
+                Arkivert <span className="italic">øyeblikksbilde.</span>
               </h2>
               <p>
                 Prime yield (kontor), markedsleie og kontorledighet per by.
@@ -135,7 +135,7 @@ export default async function KvartalArkivPage({
             </tbody>
           </table>
 
-          <div className="mi-footnote" style={{ marginTop: 24 }}>
+          <div className="mi-footnote mt-6">
             <span className="source">
               Tall er indikative og reflekterer prime kvalitet.
             </span>
@@ -145,15 +145,7 @@ export default async function KvartalArkivPage({
           </div>
 
           {/* Datostempel + nedlasting */}
-          <div
-            style={{
-              marginTop: 32,
-              display: "flex",
-              gap: 16,
-              flexWrap: "wrap",
-              alignItems: "center",
-            }}
-          >
+          <div className="press-meta-row">
             <a
               href={`/presserom/arkiv/${release.slug}/data.csv`}
               download

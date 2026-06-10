@@ -86,7 +86,7 @@ export default function PresseromPage() {
             </div>
           </div>
 
-          <div className="mi-kpis" style={{ marginBottom: 40 }}>
+          <div className="mi-kpis mb-10">
             <div className="mi-kpi">
               <div className="label">Byer dekket</div>
               <div className="val">{CITIES.length}</div>
@@ -137,7 +137,7 @@ export default function PresseromPage() {
             </tbody>
           </table>
 
-          <div className="mi-footnote" style={{ marginTop: 24 }}>
+          <div className="mi-footnote mt-6">
             <span className="source">
               Tall er indikative og reflekterer prime kvalitet.
             </span>
@@ -160,14 +160,7 @@ export default function PresseromPage() {
       </section>
 
       {/* 02 — SLIK SITERER DU */}
-      <section
-        className="section"
-        style={{
-          background: "var(--accent-faint)",
-          borderTop: "var(--hairline)",
-          borderBottom: "var(--hairline)",
-        }}
-      >
+      <section className="section section-accent">
         <div className="wrap">
           <div className="head-compact">
             <span className="eyebrow">02 — Bruk av tallene</span>

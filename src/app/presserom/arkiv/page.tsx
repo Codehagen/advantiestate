@@ -44,7 +44,7 @@ export default function ArkivIndexPage() {
             <span className="eyebrow">Utgivelser — nyeste først</span>
           </div>
 
-          <table className="mi-table" style={{ marginTop: 24 }}>
+          <table className="mi-table mt-6">
             <caption className="sr-only">Alle kvartalsutgivelser</caption>
             <thead>
               <tr>
@@ -74,7 +74,7 @@ export default function ArkivIndexPage() {
             </tbody>
           </table>
 
-          <div className="mi-footnote" style={{ marginTop: 24 }}>
+          <div className="mi-footnote mt-6">
             <span>
               <Link href="/presserom">← Tilbake til presserom</Link>
             </span>

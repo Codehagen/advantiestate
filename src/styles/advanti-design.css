@@ -358,7 +358,12 @@ h1, h2, h3 {
   font-weight: 500;
   letter-spacing: -0.005em;
   border-radius: 999px;
-  transition: all 0.22s ease;
+  transition:
+    background-color 0.22s ease,
+    color 0.22s ease,
+    border-color 0.22s ease,
+    transform 0.22s ease,
+    box-shadow 0.22s ease;
   white-space: nowrap;
 }
 .btn-primary {
@@ -3341,6 +3346,22 @@ h1, h2, h3 {
 }
 .press-assets-note a:hover {
   color: var(--warm-grey);
+}
+
+/* Accent-band: seksjon med faint accent-vask og hairlines (presserom 02 m.fl.) */
+.section-accent {
+  background: var(--accent-faint);
+  border-top: var(--hairline);
+  border-bottom: var(--hairline);
+}
+
+/* Arkivside — datostempel + nedlastingsrad */
+.press-meta-row {
+  margin-top: 32px;
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  align-items: center;
 }
 
 /* Presserom — copy/download action row below market table */
