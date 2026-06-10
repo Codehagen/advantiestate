@@ -231,7 +231,7 @@ export default function About() {
                 style={{ backgroundColor: "var(--warm-grey-75)" }}
               >
                 <Image
-                  src="/havard.jpg"
+                  src="https://kukzjreikqbgbolxvqaj.supabase.co/storage/v1/object/public/press/havard-nome-web.jpg"
                   alt="Håvard Nome"
                   width={480}
                   height={600}

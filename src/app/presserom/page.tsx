@@ -232,6 +232,15 @@ export default function PresseromPage() {
             </a>
           </p>
           <p className="press-assets-note">
+            <a
+              href="https://kukzjreikqbgbolxvqaj.supabase.co/storage/v1/object/public/press/havard-nome-portrett.jpg"
+              download="advanti-estate-havard-nome.jpg"
+              data-track="presskit-foto-havard"
+            >
+              Pressebilde: Håvard Nome (JPG, høy oppløsning) →
+            </a>
+          </p>
+          <p className="press-assets-note">
             Logopakke og flere pressebilder sendes på forespørsel —
             fullt pressekit for nedlasting kommer.{" "}
             <Link href="#kontakt">Kontakt oss.</Link>
