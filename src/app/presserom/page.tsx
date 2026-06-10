@@ -202,12 +202,31 @@ export default function PresseromPage() {
           <div className="press-boilerplate">
             <div className="label">Om Advanti Estate</div>
             <p>
-              Advanti Estate er en kommersiell eiendomsrådgiver med kontor i
-              Bodø, spesialisert på næringseiendom i Nord-Norge. Vi tilbyr
-              megling, verdsettelse og markedsanalyse — og er regionens
+              Advanti Estate er en kommersiell eiendomsrådgiver med kontorer i
+              Bodø og Alta, spesialisert på næringseiendom i Nord-Norge. Vi
+              tilbyr megling, verdsettelse og markedsanalyse — og er regionens
               ledende kilde for data om prime yield, markedsleie og
-              kontorledighet per by.
+              kontorledighet per by. Advanti Estate er merkenavnet til
+              Eiendomsmegler Nord AS.
             </p>
+            <div className="pk-fact">
+              <div className="f">
+                <div className="k">Etablert</div>
+                <div className="vv">2022</div>
+              </div>
+              <div className="f">
+                <div className="k">Kontorer</div>
+                <div className="vv">Bodø · Alta</div>
+              </div>
+              <div className="f">
+                <div className="k">Juridisk enhet</div>
+                <div className="vv">Eiendomsmegler Nord AS · 927 102 234 MVA</div>
+              </div>
+              <div className="f">
+                <div className="k">Marked</div>
+                <div className="vv">Nord-Norge</div>
+              </div>
+            </div>
           </div>
 
           <div className="press-terms" id="bruksvilkar">
