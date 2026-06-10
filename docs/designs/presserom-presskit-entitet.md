@@ -318,7 +318,7 @@ PR 1 (ingen asset-avhengighet — unntak T1 trenger Q2-tall fra eier):
 - [ ] **T17 (P1, CC ~10min)** — aeo — llms.txt: presserom + arkiv + CSV-URL-er.
 
 PR 2 (blokkert på eier-assets):
-- [ ] **T18 (P1, CC ~30min + opplasting)** — assets — Supabase press-bucket (public read, no write, cache-headere, navngiving), opplasting, verifiser 200, avatar-bytte i 6 MDX, Person.image, presskit-nedlastingskort med `data-track`-attributter (2.2A), logopakke-ZIP.
+- [x] **T18 (FERDIG 2026-06-10)** — assets — Supabase press-bucket (public read, no write, cache-headere, navngiving), opplasting, verifiser 200, avatar-bytte i 6 MDX, Person.image, presskit-nedlastingskort med `data-track`-attributter (2.2A), logopakke-ZIP.
 
 ## Parallellisering (eksekverings-lanes for subagenter)
 

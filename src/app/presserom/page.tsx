@@ -7,8 +7,14 @@ import StructuredData, { BreadcrumbStructuredData } from "@/components/Structure
 import { CITIES, LATEST_QUARTER } from "@/components/markedsinnsikt/marketData"
 import { LATEST_RELEASE } from "@/components/markedsinnsikt/marketReleases"
 import { siteConfig } from "@/app/siteConfig"
+import Image from "next/image"
+
 import { KopierSitering } from "./KopierSitering"
+import { FargeKopier } from "./FargeKopier"
 import { PressevarselForm } from "./PressevarselForm"
+
+const PRESS_BUCKET =
+  "https://kukzjreikqbgbolxvqaj.supabase.co/storage/v1/object/public/press"
 
 export const metadata = constructMetadata({
   path: "/presserom",
@@ -207,14 +213,202 @@ export default function PresseromPage() {
           <div className="press-terms" id="bruksvilkar">
             <div className="label">Bruksvilkår</div>
             <p>
-              Tallene og sitatene på denne siden er fritt tilgjengelig for
-              redaksjonell bruk. Vi ber om kreditering{" "}
+              Tallene, sitatene, logoene og pressebildene på denne siden er
+              fritt tilgjengelig for redaksjonell bruk. Vi ber om kreditering{" "}
               <strong>«Advanti Estate»</strong> med lenke til{" "}
-              <a href="https://advantiestate.no">advantiestate.no</a>.
-              Ta kontakt for originalfiler, høyoppløste portretter eller
-              logofiler.
+              <a href="https://advantiestate.no">advantiestate.no</a>. Behold
+              punktumet og fritt rom rundt logoen; ikke endre farger eller
+              proporsjoner.
             </p>
           </div>
+
+          {/* Ordmerke — fra Claude Design-handoff advanti/presserom.html */}
+          <div className="press-terms">
+            <div className="label">Ordmerke — den primære logoen</div>
+            <p>
+              Ordmerket «Advanti.» — med det lyseblå punktumet — er hovedlogoen.
+              Velg <strong>transparent</strong> for å legge logoen rett på foto
+              eller farge, eller en <strong>ferdig flate</strong> der du trenger
+              en garantert bakgrunn.
+            </p>
+          </div>
+
+          <div className="pk-grid">
+            <div className="pk-card">
+              <div className="pk-preview pk-checker-light">
+                <span className="pk-badge">Transparent</span>
+                <Image
+                  src={`${PRESS_BUCKET}/logo/advanti-wordmark-dark.png`}
+                  alt="Advanti Estate ordmerke, mørk, transparent bakgrunn"
+                  width={1258}
+                  height={496}
+                  sizes="(max-width: 880px) 90vw, 360px"
+                />
+              </div>
+              <div className="pk-foot">
+                <div className="pk-info">
+                  <div className="t">Mørk logo</div>
+                  <div className="s">PNG · transparent · for lyse flater</div>
+                </div>
+                <a
+                  className="pk-dl"
+                  href={`${PRESS_BUCKET}/logo/advanti-wordmark-dark.png`}
+                  download="advanti-estate-wordmark-dark.png"
+                  data-track="presskit-logo-wordmark-dark"
+                >
+                  <span className="ic">↓</span> Last ned
+                </a>
+              </div>
+            </div>
+
+            <div className="pk-card">
+              <div className="pk-preview pk-checker-dark on-dark">
+                <span className="pk-badge">Transparent</span>
+                <Image
+                  src={`${PRESS_BUCKET}/logo/advanti-wordmark-light.png`}
+                  alt="Advanti Estate ordmerke, lys, transparent bakgrunn"
+                  width={1258}
+                  height={496}
+                  sizes="(max-width: 880px) 90vw, 360px"
+                />
+              </div>
+              <div className="pk-foot">
+                <div className="pk-info">
+                  <div className="t">Lys logo</div>
+                  <div className="s">PNG · transparent · for mørke flater</div>
+                </div>
+                <a
+                  className="pk-dl"
+                  href={`${PRESS_BUCKET}/logo/advanti-wordmark-light.png`}
+                  download="advanti-estate-wordmark-light.png"
+                  data-track="presskit-logo-wordmark-light"
+                >
+                  <span className="ic">↓</span> Last ned
+                </a>
+              </div>
+            </div>
+
+            <div className="pk-card">
+              <div className="pk-preview pk-solid-white">
+                <span className="pk-badge">#F3F1EF</span>
+                <Image
+                  src={`${PRESS_BUCKET}/logo/advanti-wordmark-on-warmwhite.png`}
+                  alt="Advanti Estate ordmerke på warm-white"
+                  width={1258}
+                  height={496}
+                  sizes="(max-width: 880px) 90vw, 360px"
+                />
+              </div>
+              <div className="pk-foot">
+                <div className="pk-info">
+                  <div className="t">På warm-white</div>
+                  <div className="s">PNG · ferdig flate #F3F1EF</div>
+                </div>
+                <a
+                  className="pk-dl"
+                  href={`${PRESS_BUCKET}/logo/advanti-wordmark-on-warmwhite.png`}
+                  download="advanti-estate-wordmark-warmwhite.png"
+                  data-track="presskit-logo-wordmark-warmwhite"
+                >
+                  <span className="ic">↓</span> Last ned
+                </a>
+              </div>
+            </div>
+
+            <div className="pk-card">
+              <div className="pk-preview pk-solid-grey on-dark">
+                <span className="pk-badge">#2C2825</span>
+                <Image
+                  src={`${PRESS_BUCKET}/logo/advanti-wordmark-on-warmgrey.png`}
+                  alt="Advanti Estate ordmerke på warm-grey"
+                  width={1258}
+                  height={496}
+                  sizes="(max-width: 880px) 90vw, 360px"
+                />
+              </div>
+              <div className="pk-foot">
+                <div className="pk-info">
+                  <div className="t">På warm-grey</div>
+                  <div className="s">PNG · ferdig flate #2C2825</div>
+                </div>
+                <a
+                  className="pk-dl"
+                  href={`${PRESS_BUCKET}/logo/advanti-wordmark-on-warmgrey.png`}
+                  download="advanti-estate-wordmark-warmgrey.png"
+                  data-track="presskit-logo-wordmark-warmgrey"
+                >
+                  <span className="ic">↓</span> Last ned
+                </a>
+              </div>
+            </div>
+          </div>
+
+          {/* Monogram */}
+          <div className="press-terms">
+            <div className="label">Monogram «A.»</div>
+            <p>
+              Det kompakte merket for profilbilder, app-ikoner og steder der
+              ordmerket blir for smalt. Samme fire varianter.
+            </p>
+          </div>
+
+          <div className="pk-mono-grid">
+            {[
+              { fil: "advanti-monogram-dark", lab: "Mørk", sub: "Transparent", preview: "pk-checker-light" },
+              { fil: "advanti-monogram-light", lab: "Lys", sub: "Transparent", preview: "pk-checker-dark" },
+              { fil: "advanti-monogram-on-warmwhite", lab: "Warm-white", sub: "#F3F1EF", preview: "pk-solid-white" },
+              { fil: "advanti-monogram-on-warmgrey", lab: "Warm-grey", sub: "#2C2825", preview: "pk-solid-grey" },
+            ].map((m) => (
+              <div key={m.fil} className="pk-mono-card">
+                <div className={`pk-mono-preview ${m.preview}`}>
+                  <Image
+                    src={`${PRESS_BUCKET}/logo/${m.fil}.png`}
+                    alt={`Advanti monogram, ${m.lab.toLowerCase()}`}
+                    width={463}
+                    height={416}
+                    sizes="(max-width: 880px) 45vw, 200px"
+                  />
+                </div>
+                <div className="pk-mono-foot">
+                  <span className="lab">
+                    {m.lab}
+                    <span className="s">{m.sub}</span>
+                  </span>
+                  <a
+                    className="pk-dl"
+                    href={`${PRESS_BUCKET}/logo/${m.fil}.png`}
+                    download={`advanti-estate-${m.fil}.png`}
+                    data-track={`presskit-logo-${m.fil}`}
+                  >
+                    <span className="ic">↓</span> PNG
+                  </a>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Merkefarger — klikk for å kopiere HEX */}
+          <div className="press-terms">
+            <div className="label">Merkefarger</div>
+            <p>
+              Varme nøytraler bærer alt; det lyseblå punktumet er den eneste
+              aksenten som lyser. Klikk på en farge for å kopiere HEX-koden.
+            </p>
+          </div>
+
+          <FargeKopier />
+
+          {/* Logopakke + pressebilder */}
+          <p className="press-assets-note">
+            <a
+              className="pk-dl"
+              href={`${PRESS_BUCKET}/advanti-estate-logopakke.zip`}
+              download
+              data-track="presskit-logopakke-zip"
+            >
+              <span className="ic">↓</span> Last ned alt — logopakke (PNG + SVG, ZIP · 178 KB)
+            </a>
+          </p>
 
           <p className="press-assets-note">
             <a
@@ -269,11 +463,6 @@ export default function PresseromPage() {
             >
               Pressebilde: Tobias Bronder (JPG, høy oppløsning) →
             </a>
-          </p>
-          <p className="press-assets-note">
-            Logopakke og flere pressebilder sendes på forespørsel —
-            fullt pressekit for nedlasting kommer.{" "}
-            <Link href="#kontakt">Kontakt oss.</Link>
           </p>
         </div>
       </section>
