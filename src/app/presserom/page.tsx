@@ -31,7 +31,29 @@ export const SETT_I_MEDIA: {
   tittel: string
   url: string
   personSlug?: string
-}[] = []
+}[] = [
+  {
+    medium: "EiendomsWatch",
+    dato: "21. mai 2026",
+    tittel: "Advanti Estate styrker laget i Bodø: – Én dag skulle vi jobbe sammen",
+    url: "https://eiendomswatch.no/nyheter/kontor/article19317409.ece",
+    personSlug: "mathias-nilssen",
+  },
+  {
+    medium: "Avisa Nordland",
+    dato: "21. mai 2026",
+    tittel: "Mathias Nilssen og Christer Hagen satser sammen",
+    url: "https://www.an.no/mathias-nilssen-og-christer-hagen-satser-sammen/s/5-4-2379116",
+    personSlug: "christer-hagen",
+  },
+  {
+    medium: "Bodø Nu",
+    dato: "10. februar 2026",
+    tittel: "Vil dominere næringseiendom i nord – og inspirere andre gründere",
+    url: "https://www.bodonu.no/vil-dominere-naringseiendom-i-nord-og-inspirere-andre-gr-ndere/s/5-159-237851",
+    personSlug: "christer-hagen",
+  },
+]
 
 export default function PresseromPage() {
   const phone = siteConfig.contact.phone
