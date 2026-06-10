@@ -3343,6 +3343,124 @@ h1, h2, h3 {
   color: var(--warm-grey);
 }
 
+/* Presserom — copy/download action row below market table */
+.press-table-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 24px;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: var(--hairline);
+}
+.press-table-actions a {
+  font-size: 13px;
+  color: var(--warm-grey-85);
+  border-bottom: 1px solid var(--warm-grey-75);
+  transition: color 0.18s ease;
+}
+.press-table-actions a:hover { color: var(--warm-grey); }
+
+/* KopierSitering — clipboard fallback (vedtak 2B) */
+.press-copy-fallback {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.press-copy-input {
+  width: 100%;
+  max-width: 480px;
+  padding: 9px 12px;
+  font-size: 13px;
+  font-family: var(--font-body);
+  color: var(--warm-grey);
+  background: var(--warm-white);
+  border: var(--hairline);
+  border-radius: 4px;
+  outline-offset: 2px;
+}
+.press-copy-hint {
+  font-size: 12px;
+  color: var(--warm-grey-85);
+  font-style: italic;
+}
+
+/* Sitatbank — compact 2-column grid for secondary quotes */
+.press-quote-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 40px 48px;
+  margin-top: 48px;
+  padding-top: 40px;
+  border-top: var(--hairline);
+}
+.press-quote-grid .press-quote {
+  font-size: clamp(15px, 1.6vw, 20px);
+  max-width: none;
+  margin: 0;
+}
+@media (max-width: 768px) {
+  .press-quote-grid { grid-template-columns: 1fr; }
+}
+
+/* Sitatbank — etterprøvbar kildeangivelse under hvert sitat (vedtak D6.5 #9) */
+.press-quote .by .press-quote-source {
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  color: var(--warm-grey-85);
+  font-style: italic;
+  margin-top: 4px;
+}
+
+/* Sitatbank — introlinjepar øverst i seksjonen */
+.press-quote-intro {
+  font-size: 14px;
+  color: var(--warm-grey-85);
+  margin-top: 4px;
+  line-height: 1.55;
+}
+
+/* Sett i media — medie-omtale-liste */
+.press-media-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-top: 8px;
+}
+.press-media-item {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  padding: 16px 0;
+  border-bottom: var(--hairline);
+  font-size: 15px;
+  line-height: 1.45;
+  flex-wrap: wrap;
+}
+.press-media-item:first-child { border-top: var(--hairline); }
+.press-media-medium {
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 500;
+  color: var(--warm-grey-85);
+  min-width: 80px;
+  flex-shrink: 0;
+}
+.press-media-date {
+  font-size: 12px;
+  color: var(--warm-grey-85);
+  flex-shrink: 0;
+}
+.press-media-title a {
+  color: var(--warm-grey);
+  border-bottom: 1px solid var(--warm-grey-75);
+  transition: color 0.18s ease;
+}
+.press-media-title a:hover { color: var(--warm-grey); border-bottom-color: var(--warm-grey); }
+
 /* Feedback widget */
 .ks-feedback {
   margin: 64px 0 0;

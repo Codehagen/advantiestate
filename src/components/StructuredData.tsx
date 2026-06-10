@@ -10,7 +10,8 @@ interface StructuredDataProps {
     | "faq"
     | "howto"
     | "person"
-    | "service";
+    | "service"
+    | "dataset";
   data?: any;
 }
 
@@ -423,6 +424,50 @@ export default function StructuredData({
             text: s.text,
           })),
         };
+
+      case "dataset": {
+        if (!data) return null;
+        // Derive ISO temporal coverage from quarter label, e.g. "Q4 2025" → "2025-10/2025-12".
+        const qMatch = (data.quarter as string | undefined)?.match(/Q(\d)\s+(\d{4})/)
+        let temporalCoverage: string = data.quarter ?? ""
+        if (qMatch) {
+          const q = parseInt(qMatch[1], 10)
+          const yr = qMatch[2]
+          const start = String((q - 1) * 3 + 1).padStart(2, "0")
+          const end = String(q * 3).padStart(2, "0")
+          temporalCoverage = `${yr}-${start}/${yr}-${end}`
+        }
+        return {
+          "@context": "https://schema.org",
+          "@type": "Dataset",
+          "@id": `${baseUrl}/presserom#dataset`,
+          name: `Markedstall næringseiendom Nord-Norge — ${data.quarter}`,
+          description:
+            "Kvartalsvise markedstall for næringseiendom i Nord-Norge: prime yield (kontor), markedsleie og kontorledighet per by. Frigitt til redaksjonell bruk med kreditering.",
+          url: `${baseUrl}/presserom`,
+          creator: {
+            "@id": `${baseUrl}/#organization`,
+          },
+          license: `${baseUrl}/presserom#bruksvilkar`,
+          temporalCoverage,
+          spatialCoverage: {
+            "@type": "Place",
+            name: "Nord-Norge",
+          },
+          variableMeasured: [
+            "Prime yield kontor",
+            "Markedsleie kontor",
+            "Kontorledighet",
+          ],
+          dateModified: data.publishedAt,
+          distribution: {
+            "@type": "DataDownload",
+            encodingFormat: "text/csv",
+            contentUrl: `${baseUrl}/presserom/markedstall.csv`,
+          },
+          inLanguage: "nb-NO",
+        };
+      }
 
       default:
         return null;
