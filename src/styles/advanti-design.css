@@ -3100,6 +3100,10 @@ h1, h2, h3 {
   line-height: 1.0;
   margin-bottom: 28px;
   text-wrap: balance;
+  /* Norwegian compounds ("Næringseiendomsmarkedet") exceed 375px viewports as
+     single words at display size; hyphenate with break-word as fallback. */
+  hyphens: auto;
+  overflow-wrap: break-word;
 }
 .ks-art-title .italic { font-style: italic; font-weight: 300; color: var(--warm-grey-85); }
 .ks-art-lede {
