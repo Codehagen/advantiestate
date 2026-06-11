@@ -523,3 +523,27 @@ the AI SEO closure review (/plan-eng-review, 2026-05-24), the AI-SEO research pa
   reframe). Se ceo-plans/2026-06-11-analyseportal.md for hele resonnementet.
 - **Effort:** M (human, mest ikke-kode) · **Priority:** P1 (før neste kvartalsslipp)
 - **Depends on / blocked by:** Eierbeslutning hos partnerne; frist: før 15. juli 2026.
+
+---
+
+## TODO 25 — Nav-flash på sider med mørk hero
+
+- **What:** Første frame(s) på mørk-hero-sider rendres med solid/scrolled
+  nav-stil før IntersectionObserveren flipper til transparent.
+- **Why:** Synlig lys stripe-blink over mørke heroer ved last (gjelder også
+  forsiden) — undergraver det polerte førsteinntrykket.
+- **Context:** Funnet av /design-review 2026-06-11 på /analyseportal; flagget,
+  ikke fikset (delt chrome i Nav.tsx, blast radius = alle sider). Mulig fix:
+  initialiser transparent når #hero-sentinel finnes i DOM ved første render.
+- **Effort:** S · **Priority:** P3
+
+---
+
+## TODO 26 — Pre-eksisterende 375px-overflow på /blog og /markedsinnsikt
+
+- **What:** Mobile-overflow-testen feiler på /blog (425px) og /markedsinnsikt
+  (478px — shellens egen fanerad, ikke KPI-båndet).
+- **Why:** Horisontal scroll på mobil; testene er røde og maskerer nye regressjoner.
+- **Context:** Bevist pre-eksisterende på ren trestruktur + ren build under
+  /autoplan-verifiseringen 2026-06-11. Ikke relatert til analyseportal-arbeidet.
+- **Effort:** S/M · **Priority:** P2
