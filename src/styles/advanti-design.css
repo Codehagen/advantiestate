@@ -2431,7 +2431,7 @@ h1, h2, h3 {
 .mi-metric-pills button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .mi-metric-pills button[aria-selected="true"] { background: var(--warm-grey); color: var(--warm-white); }
 .mi-map-legend { display: inline-flex; align-items: center; gap: 12px; font-size: 12px; color: var(--warm-grey-85); }
-.mi-map-legend .lg-cap { font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; font-size: 11px; }
+.mi-map-legend .lg-cap { font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; font-size: 11px; white-space: nowrap; }
 .mi-map-legend .lg-bar { width: 96px; height: 9px; border-radius: 999px; display: inline-block; border: 1px solid rgba(44, 40, 37, 0.08); }
 .mi-map-legend .lg-range { font-variant-numeric: tabular-nums; }
 .mi-map-legend .lg-range b { color: var(--warm-grey); font-weight: 600; }
