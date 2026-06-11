@@ -161,6 +161,21 @@ OPPDRAG archive · BLOG
 
 Find the matching banner before adding or changing styles.
 
+The **NÆRINGSMEGLER** section (`.cy-*`) styles the city pages
+(`/naringsmegler/[slug]`, 2026-06 design-handoff upgrade): hero trust line
+(`.cy-trustline`, avatars via next/image), proof band (`.cy-proof`,
+count-based columns via `data-count`, render-gated behind
+`proofStatsVerified` in frontmatter), market block (`.cy-chartcard` server-
+rendered SVG + `.cy-tip` client tooltip — data ONLY through the whitelist
+`src/components/naringsmegler/cityMarketData.ts`, never synthetic series),
+why-band (`.cy-why`), service grid (`.cy-services`), reference deals
+(`.cy-deals`, gated: ≥2 deals with `verified: true`; `.no-photo` variant),
+lead form + location/coverage panel (`.cy-lead`/`.cy-form`/`.cy-loc`,
+Leaflet for office cities only), and the dark FAQ (`.cy-faq-section` +
+`.faq-dark` — dark-section colours live in CSS, not inline). `.btn-sm` is
+the compact button variant (44px floor on coarse pointers). Section numbers
+are computed from rendered sections — never hardcoded.
+
 The **ANALYSEPORTAL** section (end of file, `.ap-*`) styles `/analyseportal`:
 dark hero + KPI ticker, sticky sector tabs (offset by `--nav-h`, controls
 sticky ≥1080px only), chart cards on `--paper`, hairline insights grid, right
