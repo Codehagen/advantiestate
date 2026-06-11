@@ -563,6 +563,10 @@ the AI SEO closure review (/plan-eng-review, 2026-05-24), the AI-SEO research pa
 - **Context:** Fra /autoplan CEO-review 2026-06-11 (E6, begge modellene flagget).
   Kopien er myket til «vanligvis samme dag» som mitigering; ops-modellen gjenstår.
 - **Depends on:** Ingen tekniske. Eier: Christer/Tobias.
+- **Også (red team /ship 2026-06-11, D3=B):** subscribe() svelger runtime-feil
+  i Discord+Supabase og gir ok:true — intake-payload (tlf/by/adresse) kan
+  mistes stille. Lead-ops bør inkludere per-destinasjon-utfall + varsling
+  når en HIGH_INTENT-intake ikke ble persistert.
 - **Effort:** M (prosess, ikke kode) · **Priority:** P2
 
 ---
@@ -604,3 +608,19 @@ the AI SEO closure review (/plan-eng-review, 2026-05-24), the AI-SEO research pa
 - **Context:** Fra /autoplan 2026-06-11. Avvent trafikkdata (jf. analytics-
   beslutning E4) før kutt.
 - **Effort:** S (analyse) · **Priority:** P3
+
+---
+
+## TODO 31 — Samtykke: intake-skjemaer melder leads inn i nyhetsbrev-audiencen
+
+- **What:** subscribe()-pipelinen upserter alle intake-innsendinger
+  (verdivurdering, kontakt, naringsmegler) i Resend-nyhetsbrev-audiencen og
+  sender velkomst-nyhetsbrev — mens skjemaene lover «kun til vurdering».
+  Trolig fix: skipAudience/skipWelcome-flagg for intake-kilder + eksplisitt
+  opt-in-checkbox for nyhetsbrev; kvittering kan sendes uten innmelding.
+- **Why:** GDPR art. 6 / markedsføringsloven: markedsføringsinnmelding uten
+  samtykke; skjemaløftet og praksis spriker.
+- **Context:** Funnet av red team i /ship pre-landing review 2026-06-11
+  (gjelder hele pipelinen, ikke bare bysidene — bevisst utsatt fra PR-en,
+  beslutning D2=B). Filer: src/lib/email/subscribe.ts, src/emails/WelcomeEmail.
+- **Effort:** M (human ~2t / CC ~15 min + juridisk avklaring) · **Priority:** P1
