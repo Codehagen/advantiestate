@@ -1979,7 +1979,10 @@ h1, h2, h3 {
   font-weight: 300;
 }
 .mi-kpi .delta {
-  display: inline-flex;
+  /* Block-level flex: keeps the delta on its own line under the big value.
+     inline-flex let short deltas ("→ 0 bps") flow up beside the value once
+     the KPI band switched to derived (shorter) delta strings. */
+  display: flex;
   align-items: center;
   gap: 8px;
   margin-top: 16px;
