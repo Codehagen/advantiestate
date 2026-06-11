@@ -7848,7 +7848,7 @@ h1, h2, h3 {
 .ap-focus-val .u { font-size: 0.35em; font-style: italic; color: var(--warm-grey-85); margin-left: 4px; }
 .ap-focus-delta { font-size: 13px; color: var(--warm-grey-85); margin-top: 12px; }
 
-.ap-delta { font-weight: 600; font-variant-numeric: tabular-nums; }
+.ap-delta { font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap; }
 .ap-delta.up { color: var(--delta-up); }
 .ap-delta.down { color: var(--delta-down); }
 .ap-delta.flat { color: var(--warm-grey-85); }
