@@ -7895,8 +7895,20 @@ h1, h2, h3 {
 .ap-tip-name { color: rgba(243,241,239,0.8); }
 .ap-tip-val { margin-left: auto; font-weight: 600; font-variant-numeric: tabular-nums; }
 
-/* table — horizontal scroll on narrow screens */
+/* table — horizontal scroll on narrow screens, with scroll-shadow cue
+   (background-attachment local/scroll trick: shadows appear only when
+   there is more table to scroll to on that side) */
 .ap-tablewrap { overflow-x: auto; margin-top: 36px; }
+.ap-tablewrap,
+.ap-seo-tables > div {
+  background:
+    linear-gradient(to right, var(--warm-white) 40%, rgba(243, 241, 239, 0)) left / 28px 100%,
+    linear-gradient(to left, var(--warm-white) 40%, rgba(243, 241, 239, 0)) right / 28px 100%,
+    radial-gradient(farthest-side at 0 50%, rgba(44, 40, 37, 0.16), transparent) left / 12px 100%,
+    radial-gradient(farthest-side at 100% 50%, rgba(44, 40, 37, 0.16), transparent) right / 12px 100%;
+  background-repeat: no-repeat;
+  background-attachment: local, local, scroll, scroll;
+}
 .ap-table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
 .ap-tablewrap .ap-table { min-width: 560px; }
 .ap-table thead th { font-size: 10.5px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--warm-grey-85); font-weight: 600; text-align: left; padding: 0 16px 12px; border-bottom: 1.5px solid var(--warm-grey); }
