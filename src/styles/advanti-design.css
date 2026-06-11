@@ -7693,7 +7693,7 @@ h1, h2, h3 {
 .ap-hero .crumb {
   font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase;
   color: rgba(243,241,239,0.55); font-weight: 500; margin-bottom: 44px;
-  display: flex; gap: 10px; align-items: center;
+  display: flex; gap: 10px; align-items: center; flex-wrap: wrap;
 }
 .ap-hero .crumb a { color: rgba(243,241,239,0.55); }
 .ap-hero .crumb a:hover { color: var(--warm-white); }
@@ -7832,6 +7832,8 @@ h1, h2, h3 {
   .ap-seg button { padding: 12px 16px; }
   .ap-action { padding: 12px 17px; }
   .ap-sectortab { padding: 20px 26px; }
+  .ap-leg { padding: 10px 4px; }
+  .ap-hero .crumb a { padding: 10px 0; margin: -10px 0; }
 }
 
 /* ── main grid ── */
