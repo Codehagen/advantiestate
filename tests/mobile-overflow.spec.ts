@@ -10,6 +10,10 @@ const ROUTES = [
   "/",
   "/blog",
   "/blog/markedspuls-nord-norge-2025-2026",
+  // Regression: ISSUE-001 (/qa 2026-06-11) — long Norwegian compound words in
+  // article H1s ("Næringseiendomsmarkedet…") overflowed 375px; this article is
+  // the canary for the hyphens:auto fix on .ks-art-title.
+  "/blog/naringseiendomsmarkedet-mo-i-rana-2026",
   "/blog/category/valuation",
   "/markedsinnsikt",
   "/markedsinnsikt/kart",
