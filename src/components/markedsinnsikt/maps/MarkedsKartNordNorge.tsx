@@ -128,10 +128,17 @@ export function MarkedsKartNordNorge() {
   const [selected, setSelected] = useState<string>("bodo")
   const [hovered, setHovered] = useState<string | null>(null)
 
-  // #yield / #leie / #ledighet deep links (shareable metric state).
+  // #yield / #leie / #ledighet deep links (shareable metric state) — applied
+  // on load AND on same-page hash changes (pasted/clicked deep links while
+  // already on the page).
   useEffect(() => {
-    const hash = window.location.hash.slice(1)
-    if (METRIC_KEYS.includes(hash as MetricKey)) setMetric(hash as MetricKey)
+    const apply = () => {
+      const hash = window.location.hash.slice(1)
+      if (METRIC_KEYS.includes(hash as MetricKey)) setMetric(hash as MetricKey)
+    }
+    apply()
+    window.addEventListener("hashchange", apply)
+    return () => window.removeEventListener("hashchange", apply)
   }, [])
 
   const pickMetric = useCallback((m: MetricKey) => {
