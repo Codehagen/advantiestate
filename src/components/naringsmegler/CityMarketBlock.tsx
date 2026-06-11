@@ -35,6 +35,10 @@ const PAD = { t: 18, r: 16, b: 34, l: 38 }
 const Y_MIN = 2.5
 const Y_MAX = 7.0
 const TICKS = [3, 4, 5, 6, 7]
+const QUARTERS_PER_YEAR = 4
+
+/** Value one year (4 quarters) before the series' last point. */
+const yearAgo = (arr: number[]) => arr[arr.length - 1 - QUARTERS_PER_YEAR]!
 
 function sparkSvg(arr: number[], color: string) {
   const w = 92
@@ -119,9 +123,7 @@ export function CityMarketBlock({ slug }: { slug: string }) {
 
   // ── tiles ──────────────────────────────────────────────────────────────
   const yieldLast = YIELD_KONTOR_HIST[YIELD_KONTOR_HIST.length - 1]!
-  const yieldYoY = Math.round(
-    (yieldLast - YIELD_KONTOR_HIST[YIELD_KONTOR_HIST.length - 5]!) * 100,
-  )
+  const yieldYoY = Math.round((yieldLast - yearAgo(YIELD_KONTOR_HIST)) * 100)
   const yieldDelta: Delta =
     yieldYoY === 0
       ? { text: "→ uendret", cls: "flat", note: "siste 12 mnd · Nord-Norge" }
@@ -134,7 +136,7 @@ export function CityMarketBlock({ slug }: { slug: string }) {
   const leieHist = getLeieHist(city)
   const leieLast = leieHist ? leieHist[leieHist.length - 1]! : null
   const leieYoY = leieHist
-    ? (leieHist[leieHist.length - 1]! / leieHist[leieHist.length - 5]! - 1) * 100
+    ? (leieHist[leieHist.length - 1]! / yearAgo(leieHist) - 1) * 100
     : null
 
   const vacancy = getVacancySnapshot(city)

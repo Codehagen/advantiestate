@@ -16,9 +16,9 @@ test.beforeEach(async ({ page }) => {
 
 test("metric pills switch metric and write the URL hash", async ({ page }) => {
   await page.goto("/markedsinnsikt/kart", { waitUntil: "domcontentloaded" });
-  const leiePill = page.getByRole("tab", { name: "Markedsleie" });
+  const leiePill = page.getByRole("button", { name: "Markedsleie" });
   await leiePill.click();
-  await expect(leiePill).toHaveAttribute("aria-selected", "true");
+  await expect(leiePill).toHaveAttribute("aria-pressed", "true");
   await expect(page).toHaveURL(/#leie$/);
   // Legend follows the metric.
   await expect(page.locator(".mi-map-legend .lg-cap")).toHaveText(
@@ -34,10 +34,23 @@ test("deep link #ledighet preselects the metric", async ({ page }) => {
   await page.goto("/markedsinnsikt/kart#ledighet", {
     waitUntil: "domcontentloaded",
   });
-  await expect(page.getByRole("tab", { name: "Ledighet" })).toHaveAttribute(
-    "aria-selected",
+  await expect(page.getByRole("button", { name: "Ledighet" })).toHaveAttribute(
+    "aria-pressed",
     "true",
   );
+});
+
+test("map pin selects city via click and keyboard", async ({ page }) => {
+  await page.goto("/markedsinnsikt/kart", { waitUntil: "domcontentloaded" });
+  // Click path — the map's primary affordance.
+  await page.getByRole("button", { name: /^Harstad:/ }).click();
+  await expect(page.locator(".mi-map-info h3")).toHaveText("Harstad");
+  // Keyboard path — focus a pin and press Enter.
+  const tromsoPin = page.getByRole("button", { name: /^Tromsø:/ });
+  await tromsoPin.focus();
+  await page.keyboard.press("Enter");
+  await expect(page.locator(".mi-map-info h3")).toHaveText("Tromsø");
+  await expect(tromsoPin).toHaveAttribute("aria-pressed", "true");
 });
 
 test("selecting a city updates the panel and broker link", async ({

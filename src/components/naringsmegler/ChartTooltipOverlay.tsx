@@ -7,7 +7,7 @@
 // OUTSIDE the chart's role="img" element, so the interactive layer stays
 // reachable for assistive tech.
 
-import { useCallback, useRef, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 
 export type ChartPoint = {
   /** viewBox coords of the yield point */
@@ -41,6 +41,7 @@ export function ChartTooltipOverlay({
 }: Props) {
   const [active, setActive] = useState<number | null>(null)
   const hideTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const rootRef = useRef<HTMLDivElement>(null)
 
   const show = useCallback((i: number) => {
     if (hideTimer.current) clearTimeout(hideTimer.current)
@@ -50,11 +51,27 @@ export function ChartTooltipOverlay({
     hideTimer.current = setTimeout(() => setActive(null), 80)
   }, [])
 
+  // Touch has no mouseleave: dismiss when a touch lands outside the overlay,
+  // so the first tap doesn't leave a permanently stuck tooltip. Also clear
+  // the pending hide timer on unmount.
+  useEffect(() => {
+    const onTouchOutside = (e: TouchEvent) => {
+      if (rootRef.current && !rootRef.current.contains(e.target as Node)) {
+        setActive(null)
+      }
+    }
+    document.addEventListener("touchstart", onTouchOutside, { passive: true })
+    return () => {
+      document.removeEventListener("touchstart", onTouchOutside)
+      if (hideTimer.current) clearTimeout(hideTimer.current)
+    }
+  }, [])
+
   const colW = viewW / points.length
   const pt = active != null ? points[active] : null
 
   return (
-    <div className="overlay">
+    <div className="overlay" ref={rootRef}>
       <svg viewBox={`0 0 ${viewW} ${viewH}`} onMouseLeave={hide}>
         {points.map((p, i) => (
           <rect

@@ -2429,7 +2429,13 @@ h1, h2, h3 {
 }
 .mi-metric-pills button:hover { color: var(--warm-grey); }
 .mi-metric-pills button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-.mi-metric-pills button[aria-selected="true"] { background: var(--warm-grey); color: var(--warm-white); }
+.mi-metric-pills button[aria-pressed="true"] { background: var(--warm-grey); color: var(--warm-white); }
+@media (pointer: coarse) { .mi-metric-pills button { min-height: 44px; } }
+
+/* Small button variant — compact CTAs in panels (e.g. markedskart by-panel).
+   Coarse pointers get the 44px touch-target floor back. */
+.btn-sm { font-size: 12px; padding: 11px 18px; }
+@media (pointer: coarse) { .btn-sm { min-height: 44px; } }
 .mi-map-legend { display: inline-flex; align-items: center; gap: 12px; font-size: 12px; color: var(--warm-grey-85); }
 .mi-map-legend .lg-cap { font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; font-size: 11px; white-space: nowrap; }
 .mi-map-legend .lg-bar { width: 96px; height: 9px; border-radius: 999px; display: inline-block; border: 1px solid rgba(44, 40, 37, 0.08); }
@@ -4535,9 +4541,10 @@ h1, h2, h3 {
 }
 .cy-trustline .avstack { display: inline-flex; }
 .cy-trustline .avstack span {
-  width: 30px; height: 30px; border-radius: 50%; background-size: cover; background-position: center;
+  width: 30px; height: 30px; border-radius: 50%; overflow: hidden;
   border: 2px solid var(--warm-white); margin-left: -9px; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
 }
+.cy-trustline .avstack span img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .cy-trustline .avstack span:first-child { margin-left: 0; }
 .cy-trustline b { color: var(--warm-grey); font-weight: 600; }
 .subhero-photo .photo-cap {
@@ -4569,9 +4576,20 @@ h1, h2, h3 {
 @media (max-width: 860px) {
   .cy-proof .wrap,
   .cy-proof[data-count="3"] .wrap { grid-template-columns: 1fr 1fr; }
-  .cy-proof .p { padding: 34px 24px !important; border-right: 0; border-bottom: 1px solid rgba(243, 241, 239, 0.14); }
+  /* Match the base rules' specificity instead of !important. */
+  .cy-proof .p,
+  .cy-proof .p:last-child,
+  .cy-proof .p:not(:first-child) {
+    padding: 34px 24px; border-right: 0;
+    border-bottom: 1px solid rgba(243, 241, 239, 0.14);
+  }
   .cy-proof .p:nth-child(2n) { border-left: 1px solid rgba(243, 241, 239, 0.14); }
   .cy-proof .p:nth-last-child(-n + 2) { border-bottom: 0; }
+  /* 3 stats on a 2-col grid: row two holds only item 3 — item 2 (top right)
+     must KEEP its bottom hairline or the row divider stops half-way. */
+  .cy-proof[data-count="3"] .p:nth-last-child(2) {
+    border-bottom: 1px solid rgba(243, 241, 239, 0.14);
+  }
 }
 
 /* ---- by-side: markedsblokk (chart + nøkkeltall-fliser) ---- */
@@ -4651,7 +4669,9 @@ h1, h2, h3 {
 .cy-svc:hover .go { gap: 13px; }
 @media (max-width: 720px) {
   .cy-services { grid-template-columns: 1fr; }
-  .cy-svc { padding: 28px 0 !important; border-right: 0 !important; }
+  .cy-svc,
+  .cy-svc:not(:nth-child(2n)),
+  .cy-svc:nth-child(2n) { padding: 28px 0; border-right: 0; }
 }
 
 /* ---- by-side: referanseoppdrag (gated: ≥2 verifiserte) ---- */
@@ -4711,7 +4731,8 @@ h1, h2, h3 {
 .cy-form .fnote a { color: var(--warm-grey); border-bottom: 1px solid var(--warm-grey-75); }
 .cy-form .fdone { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 28px 0; }
 .cy-form .fdone .ok { width: 52px; height: 52px; border-radius: 50%; background: var(--accent-faint); color: #2f7a86; display: flex; align-items: center; justify-content: center; font-size: 24px; margin-bottom: 18px; }
-.cy-form .fdone h4 { font-family: var(--font-display); font-size: 24px; font-weight: 400; letter-spacing: -0.015em; margin-bottom: 8px; }
+/* h3 (not h4) — the receipt replaces the form's h3, so the section keeps h2 → h3. */
+.cy-form .fdone h3 { font-family: var(--font-display); font-size: 24px; font-weight: 400; letter-spacing: -0.015em; margin-bottom: 8px; }
 .cy-form .fdone p { font-size: 14px; color: var(--warm-grey-85); max-width: 36ch; }
 /* Honeypot — visually removed, still focusable-by-bots. */
 .cy-form .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
@@ -4734,6 +4755,12 @@ h1, h2, h3 {
 .cy-loc .lcover { font-size: 14.5px; color: rgba(243, 241, 239, 0.8); line-height: 1.6; margin-bottom: 20px; max-width: 40ch; }
 
 /* ---- by-side: FAQ på mørk seksjon ---- */
+/* Section scope: all dark-section head colours live here, not inline in TSX. */
+.cy-faq-section { background: var(--warm-grey); color: var(--warm-white); }
+.cy-faq-section .eyebrow { color: rgba(243, 241, 239, 0.6); }
+.cy-faq-section h2 { color: var(--warm-white); }
+.cy-faq-section h2 .italic { color: var(--accent); }
+.cy-faq-section .head-compact p { color: rgba(243, 241, 239, 0.7); }
 .faq-dark details { border-color: rgba(243, 241, 239, 0.16); }
 .faq-dark summary { color: var(--warm-white); }
 .faq-dark summary:hover { color: rgba(243, 241, 239, 0.68); }

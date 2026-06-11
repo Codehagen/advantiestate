@@ -17,11 +17,7 @@ import { CityMarketBlock } from "@/components/naringsmegler/CityMarketBlock";
 import { PORTAL_CITY_BY_SLUG } from "@/components/naringsmegler/cityMarketData";
 import { siteConfig } from "@/app/siteConfig";
 import { constructMetadata } from "@/lib/utils";
-import {
-  SERVICE_SLUGS,
-  isServiceCity,
-  type ServiceSlug,
-} from "@/lib/service-cities";
+import { isServiceCity, type ServiceSlug } from "@/lib/service-cities";
 
 /** Picks the value of the first marketStat whose label matches a keyword. */
 function findStat(
@@ -34,9 +30,11 @@ function findStat(
 }
 
 // Service grid — the four jobs the design's section 03 lists. The three
-// SERVICE_SLUGS link to /tjenester/<svc>/<city> when the city has service
-// pages; rådgivning always links to the generic service page.
-const SERVICES: Array<{
+// service-city slugs link to /tjenester/<svc>/<city> when the city has
+// service pages; rådgivning always links to the generic service page.
+// (Named CITY_SERVICE_CARDS to avoid colliding with the canonical SERVICES
+// record in src/lib/service-cities.ts.)
+const CITY_SERVICE_CARDS: Array<{
   slug: ServiceSlug | "radgivning";
   title: string;
   body: (city: string) => string;
@@ -275,11 +273,13 @@ export default async function LocationPage({
               <div className="cy-trustline">
                 {teamAvatars.length > 0 && (
                   <span className="avstack" aria-hidden="true">
+                    {/* next/image, NOT background-image: the press-bucket web
+                        variants are full-size; unoptimized they'd cost
+                        hundreds of KB above the fold for 30px circles. */}
                     {teamAvatars.slice(0, 3).map((src) => (
-                      <span
-                        key={src}
-                        style={{ backgroundImage: `url('${src}')` }}
-                      />
+                      <span key={src}>
+                        <Image src={src} alt="" width={30} height={30} />
+                      </span>
                     ))}
                   </span>
                 )}
@@ -449,11 +449,9 @@ export default async function LocationPage({
           </div>
 
           <div className="cy-services">
-            {SERVICES.map((service, index) => {
+            {CITY_SERVICE_CARDS.map((service, index) => {
               const cityLink =
-                service.slug !== "radgivning" &&
-                SERVICE_SLUGS.includes(service.slug as ServiceSlug) &&
-                isServiceCity(location.slug);
+                service.slug !== "radgivning" && isServiceCity(location.slug);
               const href = cityLink
                 ? `/tjenester/${service.slug}/${location.slug}`
                 : `/tjenester/${service.slug}`;
@@ -724,14 +722,17 @@ export default async function LocationPage({
                     }
                   : null
               }
-              geo={
-                hasOfficeAddress
-                  ? {
-                      latitude: Number.parseFloat(location.geo.latitude),
-                      longitude: Number.parseFloat(location.geo.longitude),
-                    }
-                  : null
-              }
+              geo={(() => {
+                // geo fields are free-form frontmatter strings — a decimal
+                // comma typo would crash Leaflet client-side with [NaN, NaN].
+                const lat = Number.parseFloat(location.geo.latitude);
+                const lng = Number.parseFloat(location.geo.longitude);
+                return hasOfficeAddress &&
+                  Number.isFinite(lat) &&
+                  Number.isFinite(lng)
+                  ? { latitude: lat, longitude: lng }
+                  : null;
+              })()}
               mapUrl={mapUrl}
               phone={location.phone}
               email={location.email}
@@ -741,27 +742,19 @@ export default async function LocationPage({
         </div>
       </section>
 
-      {/* FAQ — mørk seksjon */}
-      <section
-        className="section"
-        style={{ background: "var(--warm-grey)", color: "var(--warm-white)" }}
-      >
+      {/* FAQ — mørk seksjon (fargene bor i .cy-faq-section, advanti-design.css) */}
+      <section className="section cy-faq-section">
         <div className="wrap">
           <div className="head-compact">
-            <span
-              className="eyebrow"
-              style={{ color: "rgba(243,241,239,0.6)" }}
-            >
+            <span className="eyebrow">
               {num("faq")} — Ofte stilte spørsmål
             </span>
             <div>
-              <h2 style={{ color: "var(--warm-white)" }}>
+              <h2>
                 Spørsmål om næringsmegling <br />
-                <span className="italic" style={{ color: "var(--accent)" }}>
-                  i {location.name}.
-                </span>
+                <span className="italic">i {location.name}.</span>
               </h2>
-              <p style={{ color: "rgba(243,241,239,0.7)" }}>
+              <p>
                 Finner du ikke svaret? Ta kontakt — vi setter av tid til en
                 uforpliktende samtale uansett.
               </p>

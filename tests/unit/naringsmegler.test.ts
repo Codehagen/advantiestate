@@ -90,14 +90,21 @@ describe("cityMarketData honest-data rule (autoplan E2)", () => {
 // high-intent "naringsmegler" source.
 // ---------------------------------------------------------------------------
 
-const subscribeMock = vi.fn(async () => ({ ok: true as const, alreadySubscribed: false }))
-const rateLimitMock = vi.fn(async () => true)
+const subscribeMock = vi.fn(
+  async (): Promise<{ ok: true; alreadySubscribed: boolean } | { ok: false; error: string }> => ({
+    ok: true,
+    alreadySubscribed: false,
+  }),
+)
+const rateLimitMock = vi.fn(async (_scope: string) => true)
 
 vi.mock("@/lib/email/subscribe", () => ({
   subscribe: (...args: unknown[]) => subscribeMock(...(args as [])),
 }))
 vi.mock("@/lib/rate-limit", () => ({
-  checkRateLimit: () => rateLimitMock(),
+  // Forward the scope arg so tests can assert the bucket key — a typo'd key
+  // would silently share or split another form's rate-limit budget.
+  checkRateLimit: (scope: string) => rateLimitMock(scope),
 }))
 
 import { submitCityLead } from "@/app/actions/naringsmegler-lead"
@@ -112,7 +119,7 @@ function leadForm(overrides: Record<string, string> = {}): FormData {
     adresse: "Sentrum, Bodø",
     by: "Bodø",
     slug: "bodo",
-    firma_web: "",
+    kontakt_url_x: "",
     ...overrides,
   }
   for (const [k, v] of Object.entries(base)) fd.set(k, v)
@@ -130,18 +137,51 @@ describe("submitCityLead", () => {
     const result = await submitCityLead(leadForm())
     expect(result).toEqual({ ok: true })
     expect(subscribeMock).toHaveBeenCalledTimes(1)
+    // The bucket key matters: a typo'd scope shares another form's budget.
+    expect(rateLimitMock).toHaveBeenCalledWith("naringsmegler")
     const arg = subscribeMock.mock.calls[0]![0] as Record<string, unknown>
     expect(arg.source).toBe("naringsmegler")
     expect(arg.pageUrl).toBe("/naringsmegler/bodo")
-    expect((arg.intake as Record<string, string>).Telefon).toBe(
-      "+47 999 88 777",
-    )
+    const intake = arg.intake as Record<string, string>
+    expect(intake.Telefon).toBe("+47 999 88 777")
+    // "Sted" is the key the CRM sink reads for behov_geografi
+    // (src/lib/supabase/leads.ts) — "By" would silently drop the geography.
+    expect(intake.Sted).toBe("Bodø")
   })
 
   it("honeypot filled → silent success, pipeline never touched", async () => {
-    const result = await submitCityLead(leadForm({ firma_web: "spambot.io" }))
+    const result = await submitCityLead(
+      leadForm({ kontakt_url_x: "spambot.io" }),
+    )
     expect(result).toEqual({ ok: true })
     expect(subscribeMock).not.toHaveBeenCalled()
+  })
+
+  it("propagates a subscribe() failure to the caller", async () => {
+    subscribeMock.mockResolvedValueOnce({
+      ok: false,
+      error: "Tjenesten er midlertidig utilgjengelig.",
+    })
+    const result = await submitCityLead(leadForm())
+    expect(result).toEqual({
+      ok: false,
+      error: "Tjenesten er midlertidig utilgjengelig.",
+    })
+  })
+
+  it("neutralizes Discord markdown and newlines in free-text fields", async () => {
+    await submitCityLead(
+      leadForm({ adresse: "Storgata 1\n**E-post:** [evil](https://x)" }),
+    )
+    const intake = (subscribeMock.mock.calls[0]![0] as Record<string, unknown>)
+      .intake as Record<string, string>
+    expect(intake["Adresse/område"]).not.toMatch(/[\r\n*_`~|[\]]/)
+  })
+
+  it("rejects a forged slug into a safe pageUrl", async () => {
+    await submitCityLead(leadForm({ slug: "../**[lenke]**" }))
+    const arg = subscribeMock.mock.calls[0]![0] as Record<string, unknown>
+    expect(arg.pageUrl).toBe("/naringsmegler/ukjent")
   })
 
   it("rejects when required fields are missing", async () => {

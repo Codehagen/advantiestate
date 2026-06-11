@@ -4,12 +4,15 @@
 // Four states (idle / pending / error / success) per the autoplan design spec:
 // pending disables the button («Sender …»), errors render inline under the
 // button as a live region, and the success receipt moves focus to its heading
-// so the state change is announced.
+// so the state change is announced. A thrown/rejected action (network drop
+// mid-submit) lands in the same inline error state — never the route error
+// boundary, which would destroy the visitor's typed lead.
 
 import { useRef, useState, useTransition } from "react"
 import { track } from "@vercel/analytics"
 
 import { submitCityLead } from "@/app/actions/naringsmegler-lead"
+import { PROPERTY_TYPES } from "./leadConstants"
 
 type Props = {
   cityName: string
@@ -22,21 +25,31 @@ export function CityLeadForm({ cityName, slug, phone }: Props) {
   const [error, setError] = useState<string | null>(null)
   const [sent, setSent] = useState(false)
   const doneHeading = useRef<HTMLHeadingElement>(null)
+  // Synchronous double-submit guard: `pending` only flips after a re-render,
+  // so two clicks in the same frame would both dispatch the action.
+  const submitting = useRef(false)
 
   function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
-    if (pending) return
+    if (submitting.current) return
+    submitting.current = true
     const formData = new FormData(e.currentTarget)
     setError(null)
     startTransition(async () => {
-      const result = await submitCityLead(formData)
-      if (result.ok) {
-        setSent(true)
-        track("naringsmegler_lead", { city: slug })
-        // Move focus to the receipt so the state change is announced.
-        requestAnimationFrame(() => doneHeading.current?.focus())
-      } else {
-        setError(result.error)
+      try {
+        const result = await submitCityLead(formData)
+        if (result.ok) {
+          setSent(true)
+          track("naringsmegler_lead", { city: slug })
+          // Move focus to the receipt so the state change is announced.
+          requestAnimationFrame(() => doneHeading.current?.focus())
+        } else {
+          setError(result.error)
+        }
+      } catch {
+        setError(`Noe gikk galt. Prøv igjen — eller ring oss på ${phone}.`)
+      } finally {
+        submitting.current = false
       }
     })
   }
@@ -50,9 +63,9 @@ export function CityLeadForm({ cityName, slug, phone }: Props) {
           <div className="ok" aria-hidden="true">
             ✓
           </div>
-          <h4 ref={doneHeading} tabIndex={-1}>
+          <h3 ref={doneHeading} tabIndex={-1}>
             Takk — vi tar kontakt.
-          </h4>
+          </h3>
           <p>
             Henvendelsen er registrert. En av partnerne tar kontakt, vanligvis
             samme dag.
@@ -73,15 +86,16 @@ export function CityLeadForm({ cityName, slug, phone }: Props) {
         får et skriftlig tilbud før vi starter — ingen skjulte kostnader.
       </p>
 
-      {/* Honeypot — hidden from users, tempting for bots. */}
+      {/* Honeypot — hidden from users, tempting for bots. Name avoids
+          autofill heuristics (no "firma"/"web"/"company" tokens). */}
       <div className="hp" aria-hidden="true">
-        <label htmlFor={`cy-hp-${slug}`}>Firma web</label>
+        <label htmlFor={`cy-hp-${slug}`}>Ikke fyll ut dette feltet</label>
         <input
           id={`cy-hp-${slug}`}
-          name="firma_web"
+          name="kontakt_url_x"
           type="text"
           tabIndex={-1}
-          autoComplete="off"
+          autoComplete="one-time-code"
         />
       </div>
       <input type="hidden" name="slug" value={slug} />
@@ -127,11 +141,9 @@ export function CityLeadForm({ cityName, slug, phone }: Props) {
           <label htmlFor="cy-type">Eiendomstype</label>
           <select id="cy-type" name="type" defaultValue="">
             <option value="">Velg type</option>
-            <option>Kontor</option>
-            <option>Handel</option>
-            <option>Logistikk / lager</option>
-            <option>Kombinert bygg</option>
-            <option>Annet</option>
+            {PROPERTY_TYPES.map((t) => (
+              <option key={t}>{t}</option>
+            ))}
           </select>
         </div>
         <div className="cy-field">

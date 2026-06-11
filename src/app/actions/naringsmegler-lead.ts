@@ -1,23 +1,26 @@
 "use server"
 
+import { PROPERTY_TYPES } from "@/components/naringsmegler/leadConstants"
 import { subscribe } from "@/lib/email/subscribe"
 import { checkRateLimit } from "@/lib/rate-limit"
 
 export type CityLeadResult = { ok: true } | { ok: false; error: string }
 
-// The eiendomstype <select> options — anything else in the field is a bot
-// or a tampered request, not a user.
-const PROPERTY_TYPES = [
-  "Kontor",
-  "Handel",
-  "Logistikk / lager",
-  "Kombinert bygg",
-  "Annet",
-]
+// Hidden routing fields are attacker-controlled like everything else —
+// constrain to slug shape so forged values can't smuggle text into the
+// Discord digest / CRM via pageUrl.
+const SLUG_RE = /^[a-z0-9-]{1,40}$/
 
-/** Trim + hard-cap a free-text field before it flows into Discord/Supabase. */
+/**
+ * Trim + hard-cap a field, and neutralize Discord-markdown metacharacters and
+ * newlines — intake values are interpolated into embed markdown that the team
+ * reads as trusted (`**${k}:** ${v}`), so a submitter must not be able to
+ * forge extra labelled lines or masked links.
+ */
 function clean(v: FormDataEntryValue | null, max: number): string {
   return String(v ?? "")
+    .replace(/[\r\n*_`~|[\]]/g, " ")
+    .replace(/\s+/g, " ")
     .trim()
     .slice(0, max)
 }
@@ -29,15 +32,18 @@ function clean(v: FormDataEntryValue | null, max: number): string {
  * "naringsmegler" HIGH_INTENT source).
  *
  * Hardening beyond the older intake actions (autoplan eng review F7):
- * every field is trimmed and length-capped, eiendomstype is validated
- * against the actual option list, and a honeypot field returns a silent
+ * every field is trimmed, length-capped and markdown-neutralized,
+ * eiendomstype is validated against the shared option list, hidden routing
+ * fields must match slug shape, and a honeypot field returns a silent
  * success so bots can't tell they were filtered.
  */
 export async function submitCityLead(
   formData: FormData,
 ): Promise<CityLeadResult> {
   // Honeypot: real users never see or fill this field. Silent "success".
-  if (clean(formData.get("firma_web"), 50)) {
+  // Logged so a false-positive spike (autofill heuristics) is observable.
+  if (clean(formData.get("kontakt_url_x"), 50)) {
+    console.warn("naringsmegler-lead: honeypot hit — submission dropped")
     return { ok: true }
   }
 
@@ -54,12 +60,13 @@ export async function submitCityLead(
   const type = clean(formData.get("type"), 50)
   const adresse = clean(formData.get("adresse"), 400)
   const by = clean(formData.get("by"), 100)
-  const slug = clean(formData.get("slug"), 100)
+  const rawSlug = clean(formData.get("slug"), 100)
+  const slug = SLUG_RE.test(rawSlug) ? rawSlug : "ukjent"
 
   if (!navn || !tlf || !epost) {
     return { ok: false, error: "Fyll ut navn, telefon og e-post." }
   }
-  if (type && !PROPERTY_TYPES.includes(type)) {
+  if (type && !(PROPERTY_TYPES as readonly string[]).includes(type)) {
     return { ok: false, error: "Ugyldig eiendomstype." }
   }
 
@@ -69,7 +76,9 @@ export async function submitCityLead(
     source: "naringsmegler",
     pageUrl: `/naringsmegler/${slug}`,
     intake: {
-      By: by,
+      // "Sted" is the key the CRM sink reads for behov_geografi
+      // (src/lib/supabase/leads.ts) — same contract as the other intakes.
+      Sted: by || undefined,
       Eiendomstype: type || undefined,
       "Adresse/område": adresse || undefined,
       Telefon: tlf,

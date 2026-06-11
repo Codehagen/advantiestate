@@ -1,3 +1,5 @@
+import fs from "node:fs";
+import path from "node:path";
 import { test, expect } from "@playwright/test";
 
 /**
@@ -16,19 +18,12 @@ import { test, expect } from "@playwright/test";
  * 5/10min in-memory rate-limit budget shared across specs.
  */
 
-// All location content files. Update when src/content/locations changes.
-const CITY_SLUGS = [
-  "bodo",
-  "tromso",
-  "harstad",
-  "alta",
-  "narvik",
-  "mo-i-rana",
-  "hammerfest",
-  "sortland",
-  "svolvaer",
-  "lofoten",
-];
+// Derived from the content directory so a new city page can never silently
+// ship without render coverage (the slug↔portal-key silent-failure class).
+const CITY_SLUGS = fs
+  .readdirSync(path.join(__dirname, "..", "src", "content", "locations"))
+  .filter((f) => f.endsWith(".mdx"))
+  .map((f) => f.replace(/\.mdx$/, ""));
 
 test.beforeEach(async ({ page }) => {
   // Same image-abort rationale as mobile-overflow.spec.ts: external CDNs and
@@ -122,8 +117,8 @@ test("lead form defaults are honest (bodo)", async ({ page }) => {
   for (const field of ["#cy-navn", "#cy-tlf", "#cy-epost"]) {
     await expect(page.locator(field)).toHaveAttribute("required", "");
   }
-  // The honeypot is off-screen but present for bots.
-  await expect(page.locator('input[name="firma_web"]')).toHaveCount(1);
+  // The honeypot is off-screen but present for bots (autofill-safe name).
+  await expect(page.locator('input[name="kontakt_url_x"]')).toHaveCount(1);
 });
 
 test("structured data survives the restructure (bodo)", async ({ page }) => {

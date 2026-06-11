@@ -41,15 +41,13 @@ test("markedskart reacts to same-page hash changes (ISSUE-001)", async ({
   await page.goto("/markedsinnsikt/kart#yield", {
     waitUntil: "domcontentloaded",
   });
-  await expect(page.getByRole("tab", { name: "Prime yield" })).toHaveAttribute(
-    "aria-selected",
-    "true",
-  );
+  await expect(
+    page.getByRole("button", { name: "Prime yield" }),
+  ).toHaveAttribute("aria-pressed", "true");
   await page.evaluate(() => {
     window.location.hash = "#leie";
   });
-  await expect(page.getByRole("tab", { name: "Markedsleie" })).toHaveAttribute(
-    "aria-selected",
-    "true",
-  );
+  await expect(
+    page.getByRole("button", { name: "Markedsleie" }),
+  ).toHaveAttribute("aria-pressed", "true");
 });

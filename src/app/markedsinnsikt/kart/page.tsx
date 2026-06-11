@@ -13,13 +13,15 @@ export const metadata = constructMetadata({
 })
 
 // Stamp derived from the release register — never hand-edited copy.
+// UTC getters: publishedAt is date-only ISO (UTC midnight); local-TZ getters
+// would render the previous day on any build machine west of UTC.
 function publishedStamp(): string {
   const d = new Date(LATEST_RELEASE.publishedAt)
   const months = [
     "JAN", "FEB", "MAR", "APR", "MAI", "JUN",
     "JUL", "AUG", "SEP", "OKT", "NOV", "DES",
   ]
-  return `OPPDATERT ${d.getDate()}. ${months[d.getMonth()]} ${d.getFullYear()}`
+  return `OPPDATERT ${d.getUTCDate()}. ${months[d.getUTCMonth()]} ${d.getUTCFullYear()}`
 }
 
 export default function MarkedskartPage() {

@@ -15,6 +15,7 @@ import { useCallback, useEffect, useMemo, useState } from "react"
 import Link from "next/link"
 
 import { LATEST_RELEASE } from "@/components/markedsinnsikt/marketReleases"
+import { PORTAL_CITY_BY_SLUG } from "@/components/naringsmegler/cityMarketData"
 
 type MetricKey = "yield" | "leie" | "ledighet"
 
@@ -49,15 +50,12 @@ const METRICS: Record<
 }
 const METRIC_KEYS = Object.keys(METRICS) as MetricKey[]
 
-// Release ids → /naringsmegler location slugs ("mo" is the only mismatch).
-const BROKER_SLUG: Record<string, string> = {
-  bodo: "bodo",
-  tromso: "tromso",
-  alta: "alta",
-  mo: "mo-i-rana",
-  narvik: "narvik",
-  harstad: "harstad",
-}
+// City display name → /naringsmegler location slug, DERIVED from the
+// unit-tested PORTAL_CITY_BY_SLUG map (single source of truth — no second
+// hand-maintained slug list that can drift when a city is added/renamed).
+const BROKER_SLUG_BY_NAME: Record<string, string> = Object.fromEntries(
+  Object.entries(PORTAL_CITY_BY_SLUG).map(([slug, name]) => [name, slug]),
+)
 
 const CITIES: KartCity[] = LATEST_RELEASE.cities.map((c) => ({
   id: c.id,
@@ -173,13 +171,14 @@ export function MarkedsKartNordNorge() {
   return (
     <>
       <div className="mi-map-toolbar">
-        <div className="mi-metric-pills" role="tablist" aria-label="Nøkkeltall">
+        {/* Segmented control, not tabs: tab semantics promise aria-controls/
+            arrow-key navigation we don't implement — aria-pressed is honest. */}
+        <div className="mi-metric-pills" role="group" aria-label="Nøkkeltall">
           {METRIC_KEYS.map((key) => (
             <button
               key={key}
               type="button"
-              role="tab"
-              aria-selected={metric === key}
+              aria-pressed={metric === key}
               onClick={() => pickMetric(key)}
             >
               {METRICS[key].label}
@@ -291,18 +290,13 @@ export function MarkedsKartNordNorge() {
           ))}
           <div className="city-links">
             <Link
-              href={`/naringsmegler/${BROKER_SLUG[selectedCity.id] ?? selectedCity.id}`}
-              className="btn btn-dark"
-              style={{ fontSize: 12, padding: "11px 18px" }}
+              href={`/naringsmegler/${BROKER_SLUG_BY_NAME[selectedCity.name] ?? selectedCity.id}`}
+              className="btn btn-dark btn-sm"
             >
               Næringsmegler i {selectedCity.name}{" "}
               <span className="arrow">→</span>
             </Link>
-            <Link
-              href="/analyseportal"
-              className="btn btn-outline"
-              style={{ fontSize: 12, padding: "11px 18px" }}
-            >
+            <Link href="/analyseportal" className="btn btn-outline btn-sm">
               Se i Analyseportalen
             </Link>
           </div>
