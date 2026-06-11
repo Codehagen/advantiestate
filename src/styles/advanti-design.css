@@ -1926,7 +1926,9 @@ h1, h2, h3 {
 }
 
 @media (max-width: 980px) {
-  .mi-shell { grid-template-columns: 1fr; gap: 24px; }
+  /* minmax(0,…): a bare 1fr track inherits the content's min-content width
+     (wide tables) and overflows the viewport. */
+  .mi-shell { grid-template-columns: minmax(0, 1fr); gap: 24px; }
   .mi-nav {
     position: static;
     flex-direction: row;
@@ -2136,6 +2138,12 @@ h1, h2, h3 {
    these are the few things that need CSS. */
 
 /* Data table */
+/* Scroll container for data tables on narrow screens — preserves table
+   semantics (display:block on <table> drops the a11y table role). Shares the
+   scroll-shadow overflow cue with .ap-tablewrap (ANALYSEPORTAL section). */
+.mi-tablewrap { overflow-x: auto; }
+.mi-tablewrap .mi-table { min-width: 520px; }
+
 .mi-table {
   width: 100%;
   border-collapse: collapse;
@@ -4634,8 +4642,9 @@ h1, h2, h3 {
 .bg-feature .img img { width: 100%; height: 100%; object-fit: cover; }
 .bg-feature .pre {
   display: flex;
-  gap: 12px;
+  gap: 8px 12px;
   align-items: center;
+  flex-wrap: wrap;
   font-size: 11px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -4655,6 +4664,10 @@ h1, h2, h3 {
   letter-spacing: -0.025em;
   line-height: 1.04;
   margin-bottom: 20px;
+  /* Norwegian compounds ("Næringseiendomsmarkedet") exceed the mobile column
+     as single words; hyphenate (html[lang=nb]) with break-word as fallback. */
+  hyphens: auto;
+  overflow-wrap: break-word;
 }
 .bg-feature h2 .italic { font-style: italic; font-weight: 300; color: var(--warm-grey-85); }
 .bg-feature p {
@@ -4677,7 +4690,8 @@ h1, h2, h3 {
 }
 .bg-feature a:hover .more { gap: 14px; }
 @media (max-width: 880px) {
-  .bg-feature { grid-template-columns: 1fr; gap: 32px; }
+  /* minmax(0,…): bare 1fr inherits the unwrappable meta-row's min-content. */
+  .bg-feature { grid-template-columns: minmax(0, 1fr); gap: 32px; }
 }
 
 .bg-grid {
@@ -7902,7 +7916,8 @@ h1, h2, h3 {
    there is more table to scroll to on that side) */
 .ap-tablewrap { overflow-x: auto; margin-top: 36px; }
 .ap-tablewrap,
-.ap-seo-tables > div {
+.ap-seo-tables > div,
+.mi-tablewrap {
   background:
     linear-gradient(to right, var(--warm-white) 40%, rgba(243, 241, 239, 0)) left / 28px 100%,
     linear-gradient(to left, var(--warm-white) 40%, rgba(243, 241, 239, 0)) right / 28px 100%,

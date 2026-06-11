@@ -526,7 +526,7 @@ the AI SEO closure review (/plan-eng-review, 2026-05-24), the AI-SEO research pa
 
 ---
 
-## TODO 25 — Nav-flash på sider med mørk hero
+## TODO 25 — Nav-flash på sider med mørk hero — SHIPPED 2026-06-11
 
 - **What:** Første frame(s) på mørk-hero-sider rendres med solid/scrolled
   nav-stil før IntersectionObserveren flipper til transparent.
@@ -539,7 +539,7 @@ the AI SEO closure review (/plan-eng-review, 2026-05-24), the AI-SEO research pa
 
 ---
 
-## TODO 26 — Pre-eksisterende 375px-overflow på /blog og /markedsinnsikt
+## TODO 26 — Pre-eksisterende 375px-overflow på /blog og /markedsinnsikt — SHIPPED 2026-06-11
 
 - **What:** Mobile-overflow-testen feiler på /blog (425px) og /markedsinnsikt
   (478px — shellens egen fanerad, ikke KPI-båndet).

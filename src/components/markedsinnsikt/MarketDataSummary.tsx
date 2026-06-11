@@ -59,6 +59,7 @@ export function MarketDataSummary() {
 
         {/* Per-by snapshot */}
         <h3 className="mi-data-h3">Markedsoversikt per by</h3>
+        <div className="mi-tablewrap">
         <table className="mi-table">
           <caption className="sr-only">
             Prime yield, markedsleie og ledighet for kontor per by, {LATEST_QUARTER}
@@ -84,9 +85,11 @@ export function MarketDataSummary() {
             ))}
           </tbody>
         </table>
+        </div>
 
         {/* Prime yield per segment */}
         <h3 className="mi-data-h3">Prime yield per segment</h3>
+        <div className="mi-tablewrap">
         <table className="mi-table">
           <caption className="sr-only">
             Prime yield per segment i Nord-Norge, {LATEST_QUARTER}
@@ -106,9 +109,11 @@ export function MarketDataSummary() {
             ))}
           </tbody>
         </table>
+        </div>
 
         {/* Markedsleie per segment & by */}
         <h3 className="mi-data-h3">Markedsleie per by og segment</h3>
+        <div className="mi-tablewrap">
         <table className="mi-table">
           <caption className="sr-only">
             Prime markedsleie i kr/m²/år per by og segment, {LATEST_QUARTER}
@@ -130,9 +135,11 @@ export function MarketDataSummary() {
             ))}
           </tbody>
         </table>
+        </div>
 
         {/* Ledighet per by & segment */}
         <h3 className="mi-data-h3">Ledighet per by og segment</h3>
+        <div className="mi-tablewrap">
         <table className="mi-table">
           <caption className="sr-only">
             Andel ledig næringsareal i prosent per by og segment, {LATEST_QUARTER}
@@ -156,9 +163,11 @@ export function MarketDataSummary() {
             ))}
           </tbody>
         </table>
+        </div>
 
         {/* Recent transactions */}
         <h3 className="mi-data-h3">Utvalgte transaksjoner 2025</h3>
+        <div className="mi-tablewrap">
         <table className="mi-table">
           <caption className="sr-only">
             Utvalgte næringseiendomstransaksjoner i Nord-Norge, 2025
@@ -187,6 +196,7 @@ export function MarketDataSummary() {
             ))}
           </tbody>
         </table>
+        </div>
 
         <div className="mi-footnote" style={{ marginTop: 24 }}>
           <span className="source">

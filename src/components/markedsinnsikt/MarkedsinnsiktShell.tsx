@@ -220,6 +220,7 @@ function YieldView() {
         />
       </div>
 
+      <div className="mi-tablewrap">
       <table className="mi-table">
         <thead>
           <tr>
@@ -265,6 +266,7 @@ function YieldView() {
           })}
         </tbody>
       </table>
+      </div>
 
       <div className="mi-footnote">
         <span className="source">
@@ -405,6 +407,7 @@ function LeieView() {
         />
       </div>
 
+      <div className="mi-tablewrap">
       <table className="mi-table">
         <thead>
           <tr>
@@ -448,6 +451,7 @@ function LeieView() {
           })}
         </tbody>
       </table>
+      </div>
 
       <div className="mi-footnote">
         <span className="source">
