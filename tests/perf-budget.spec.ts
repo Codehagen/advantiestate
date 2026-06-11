@@ -17,6 +17,8 @@ const JS_BUDGET_KB: Record<string, number> = {
   "/": 250,
   // markedsinnsikt — loads recharts (charts are the page's content).
   "/markedsinnsikt": 380,
+  // analyseportal — recharts via dynamic import; same class as markedsinnsikt.
+  "/analyseportal": 380,
   // Plain article — no chart, no math. The Phase 2.0 guard: this MUST stay
   // near the homepage baseline, never balloon toward the chart-article number.
   "/blog/advanti-lansering-nord-norge": 490,

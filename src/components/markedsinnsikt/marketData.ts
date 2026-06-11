@@ -63,13 +63,16 @@ export const VACANCY = [
   { city: "Mo i Rana", kontor: 5.4, handel: 4.0, logistikk: 2.8 },
 ]
 
+// Transactions are shown ANONYMIZED (type + area, no addresses/names): the
+// rows are illustrative market examples, and naming identifiable properties
+// with prices/yields would attribute deal terms to real parties.
 export const TX = [
-  { date: "Des 25", name: "Storgata 73, Tromsø", loc: "Kontortårn · 11 400 m²", seg: "Kontor", value: "285 mnok", yield: "5,9 %" },
-  { date: "Nov 25", name: "Bodø Logistikkpark — fase 2", loc: "Logistikk · 18 200 m²", seg: "Logistikk", value: "215 mnok", yield: "6,8 %" },
-  { date: "Okt 25", name: "AMFI Alta — anchor", loc: "Handel · 6 800 m²", seg: "Handel", value: "118 mnok", yield: "6,5 %" },
-  { date: "Sep 25", name: "Tromsdalen Næringspark", loc: "Komb. · 9 400 m²", seg: "Kombinasjon", value: "164 mnok", yield: "6,3 %" },
-  { date: "Aug 25", name: "Sjøgata 15, Bodø", loc: "Kontor · 4 200 m²", seg: "Kontor", value: "98 mnok", yield: "6,1 %" },
-  { date: "Jun 25", name: "Mo i Rana Industripark", loc: "Logistikk · 22 600 m²", seg: "Logistikk", value: "245 mnok", yield: "7,2 %" },
+  { date: "Des 25", name: "Kontoreiendom, Tromsø sentrum", loc: "Kontortårn · 11 400 m²", seg: "Kontor", city: "Tromsø", value: "285 mnok", yield: "5,9 %" },
+  { date: "Nov 25", name: "Logistikkanlegg, Bodø", loc: "Logistikk · 18 200 m²", seg: "Logistikk", city: "Bodø", value: "215 mnok", yield: "6,8 %" },
+  { date: "Okt 25", name: "Handelsseksjon, Alta", loc: "Handel · 6 800 m²", seg: "Handel", city: "Alta", value: "118 mnok", yield: "6,5 %" },
+  { date: "Sep 25", name: "Kombinasjonsbygg, Tromsdalen", loc: "Komb. · 9 400 m²", seg: "Kombinasjon", city: "Tromsø", value: "164 mnok", yield: "6,3 %" },
+  { date: "Aug 25", name: "Kontoreiendom, Bodø sentrum", loc: "Kontor · 4 200 m²", seg: "Kontor", city: "Bodø", value: "98 mnok", yield: "6,1 %" },
+  { date: "Jun 25", name: "Industri og logistikk, Mo i Rana", loc: "Logistikk · 22 600 m²", seg: "Logistikk", city: "Mo i Rana", value: "245 mnok", yield: "7,2 %" },
 ]
 
 // ---------------------------------------------------------------------------

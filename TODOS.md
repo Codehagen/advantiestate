@@ -466,3 +466,60 @@ the AI SEO closure review (/plan-eng-review, 2026-05-24), the AI-SEO research pa
   nav/index logic is likewise pure and would benefit from a unit runner.
 - **Depends on / blocked by:** Nothing for the comment fix. The vitest path is a
   standalone infra decision.
+
+---
+
+## TODO 22 — Analyseportal: Excel/PNG-eksport utover CSV
+
+- **What:** Legg til Excel- (xlsx) og PNG-eksport (chart snapshot) på
+  /analyseportal i tillegg til CSV.
+- **Why:** Investorer og analytikere limer tall inn i egne modeller; xlsx
+  bevarer typer, PNG gjør grafene delbare i presentasjoner.
+- **Pros:** Hever portalens "verktøy"-følelse; lav risiko (ren klient).
+- **Cons:** xlsx-bibliotek øker bundle; PNG-eksport av Recharts krever
+  html-to-image-aktig avhengighet. Vent til bruksdata (analyseportal_csv_download)
+  viser at eksport faktisk brukes.
+- **Context:** Deferred fra /autoplan CEO-review 2026-06-11 (E6). CSV med
+  formel-escaping shippes i grunnscopet.
+- **Effort:** M (human) → S (CC) · **Priority:** P3
+- **Depends on / blocked by:** Analyseportalen shippet; bruksdata fra A3-eventene.
+
+---
+
+## TODO 23 — Konkurrentpass for markedsdata: KBNN, EM1 Nord-Norge, DNB Næringsmegling
+
+- **What:** 30-minutters strukturert landskapspass på de reelle Nord-Norge-
+  dataaktørene: SpareBank 1 Nord-Norge (KBNN/Konjunkturbarometer),
+  EiendomsMegler 1 Nord-Norge, DNB Næringsmegling — pluss AI-søkeflater
+  (hvem siteres for "yield Tromsø"-spørsmål i dag?).
+- **Why:** Analyseportalens konkurranseramme bygger i dag på ett datapunkt
+  (Akershus Eiendom, Oslo-fokusert). Begge review-modellene (Claude + Codex)
+  flagget dette uavhengig. Wedge-påstanden "ingen i Nord-Norge har interaktiv
+  portal" er plausibel men uverifisert.
+- **Pros:** Informerer både copy (hva kan vi ærlig påstå) og datastrategi
+  (hva må være proprietært for å vinne sitering).
+- **Cons:** Ren research, ingen kode; kan avdekke at wedgen er svakere enn antatt.
+- **Context:** Deferred fra /autoplan CEO-review 2026-06-11 (A5/F6). Lansering
+  gjør ingen markedsleder-påstander i copy inntil dette er gjort.
+- **Effort:** S (human) → S (CC) · **Priority:** P2
+- **Depends on / blocked by:** Ingen.
+
+---
+
+## TODO 24 — Kvartalsvis data-release-operativmodell (eier, kilder, kadens)
+
+- **What:** Definér operativmodellen bak markedsdataene: navngitt eier, kilder
+  per serie (egne oppdrag, tinglysing, Finn, KBNN, SSB/Norges Bank for makro),
+  metodenotat per sektor, og en kvartalskadens med publiseringsdato.
+- **Why:** Begge review-modellene konvergerte uavhengig på samme reframe:
+  bindingen er datatilførsel, ikke presentasjon. Portalen (og markedsinnsikt,
+  presserom, nyhetsbrev) er outputs av et release-system som i dag ikke har
+  eier eller kadens. "Neste oppdatering 15. juli 2026" er allerede publisert
+  offentlig — noen må eie at den holdes.
+- **Pros:** Gjør TODO 5 (content collections) og TODO 7 (stale stamps)
+  løsbare permanent; forsvarbar metodikk er det konkurrenter ikke kan kopiere.
+- **Cons:** Organisatorisk arbeid, ikke kode; krever partner-tid.
+- **Context:** Deferred fra /autoplan CEO-review 2026-06-11 (UC1/F2/Codex 10x-
+  reframe). Se ceo-plans/2026-06-11-analyseportal.md for hele resonnementet.
+- **Effort:** M (human, mest ikke-kode) · **Priority:** P1 (før neste kvartalsslipp)
+- **Depends on / blocked by:** Eierbeslutning hos partnerne; frist: før 15. juli 2026.

@@ -16,6 +16,7 @@ type Source =
   | "blog"
   | "help"
   | "markedsinnsikt"
+  | "analyseportal"
   | "service"
   | "markedsrapport"
 

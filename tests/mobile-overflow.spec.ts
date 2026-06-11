@@ -13,6 +13,7 @@ const ROUTES = [
   "/blog/category/valuation",
   "/markedsinnsikt",
   "/markedsinnsikt/kart",
+  "/analyseportal",
   "/tjenester",
   "/tjenester/verdivurdering",
   "/om-oss",

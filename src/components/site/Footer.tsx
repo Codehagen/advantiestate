@@ -13,6 +13,7 @@ const ADVANTI = [
   { href: "/om-oss", label: "Om oss" },
   { href: "/kunder", label: "Utvalgte oppdrag" },
   { href: "/markedsinnsikt", label: "Markedsinnsikt" },
+  { href: "/analyseportal", label: "Analyseportal" },
   { href: "/investorportal", label: "Investorportal" },
   { href: "/blog", label: "Artikler" },
   { href: "/presserom", label: "Presserom" },

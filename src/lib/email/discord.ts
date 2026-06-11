@@ -8,6 +8,7 @@ const SOURCE_LABEL: Record<SubscribeSource, string> = {
   blog: "Blog footer",
   help: "Kunnskapsbase footer",
   markedsinnsikt: "Markedsinnsikt",
+  analyseportal: "Analyseportal (datainteressert!)",
   service: "Tjeneste-side",
   "sjekkliste-verdivurdering": "Sjekkliste-PDF (verdivurdering)",
   markedsrapport: "Markedsrapport (lead magnet)",

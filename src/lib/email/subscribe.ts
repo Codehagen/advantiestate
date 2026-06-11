@@ -13,6 +13,7 @@ export type SubscribeSource =
   | "blog"
   | "help"
   | "markedsinnsikt"
+  | "analyseportal"
   | "service"
   | "sjekkliste-verdivurdering"
   | "markedsrapport"

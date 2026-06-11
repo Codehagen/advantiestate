@@ -53,6 +53,14 @@ color names in `tailwind.config`.
 - `--accent`, `--accent-soft`, `--accent-faint` alias the light-blue trio —
   **use the `--accent*` vars** for accent styling (they are the swappable layer).
 - `--hairline` = `1px solid var(--warm-grey-75)` — the standard divider.
+- `--paper` = `#fff` — card/surface lift on the warm-white page (analyseportal
+  chart cards, sparks, rail cards). Use it instead of hardcoding `#fff`.
+- `--delta-up` / `--delta-down` (+ `-dark` hero variants) — delta TEXT colours
+  for KPI/table deltas, tuned to pass 4.5:1 at small sizes. Distinct from the
+  `--ae-*` pair (which is rules-only). Always pair with an arrow — colour is
+  never the only signal.
+- `--nav-h` = scrolled fixed-nav height — sticky elements that stack beneath
+  the nav (analyseportal sector tabs/controls/rail) offset from this var.
 
 ### Layout
 
@@ -152,6 +160,15 @@ OPPDRAG archive · BLOG
 ```
 
 Find the matching banner before adding or changing styles.
+
+The **ANALYSEPORTAL** section (end of file, `.ap-*`) styles `/analyseportal`:
+dark hero + KPI ticker, sticky sector tabs (offset by `--nav-h`, controls
+sticky ≥1080px only), chart cards on `--paper`, hairline insights grid, right
+rail (`.ap-rail-card.is-dark` = the dark analyst card — a variant class, NOT a
+dark-mode rule). One `:focus-visible` convention and `pointer: coarse` touch
+targets live there too. Chart palette is `PORTAL_PALETTE` in
+`src/components/markedsinnsikt/portalSeries.ts`, not the markedsinnsikt
+chart theme.
 
 ### BLOG editorial components — `.ae-*`
 

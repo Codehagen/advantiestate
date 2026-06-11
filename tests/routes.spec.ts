@@ -20,6 +20,7 @@ const STATIC_ROUTES = [
   "/personer",
   "/markedsinnsikt",
   "/markedsinnsikt/kart",
+  "/analyseportal",
   "/blog",
   "/help",
   "/kunder",

@@ -1,4 +1,6 @@
+import Link from "next/link"
 import { constructMetadata } from "@/lib/utils"
+import { MI_KPIS } from "@/components/markedsinnsikt/portalSeries"
 import { SubHero } from "@/components/site/SubHero"
 import { CtaStrip } from "@/components/site/CtaStrip"
 import { NewsletterSection } from "@/components/site/NewsletterSection"
@@ -29,47 +31,42 @@ export default function MarkedsinnsiktPage() {
         lede="Vi sporer +1 400 næringseiendommer i Nord-Norge — kvartal for kvartal. Yield, markedsleie, transaksjons­volum og ledighet, segmentert på kontor, handel og logistikk, by for by."
       />
 
-      {/* KPI BAND */}
+      {/* KPI BAND — derived from the shared release-anchored series (no
+          hardcoded numbers: portal and overview can never drift apart). */}
       <section className="section-tight">
         <div className="wrap">
           <div className="mi-kpis">
-            <div className="mi-kpi">
-              <div className="label">Prime yield kontor</div>
-              <div className="val">
-                6,10<span className="unit">%</span>
+            {MI_KPIS.map((k) => (
+              <div className="mi-kpi" key={k.label}>
+                <div className="label">{k.label}</div>
+                <div className="val">
+                  {k.value}
+                  <span className="unit">{k.unit}</span>
+                </div>
+                <div className="delta">
+                  <span
+                    className={
+                      k.dir === "up"
+                        ? "arrow-up"
+                        : k.dir === "down"
+                          ? "arrow-down"
+                          : undefined
+                    }
+                  >
+                    {k.dir === "up" ? "▲ " : k.dir === "down" ? "▼ " : "→ "}
+                    {k.delta.replace(/^[+−]/, "")}
+                  </span>{" "}
+                  {k.sub}
+                </div>
               </div>
-              <div className="delta">
-                <span className="arrow-up">▲ 15 bps</span> siste 12 mnd · Tromsø
-              </div>
-            </div>
-            <div className="mi-kpi">
-              <div className="label">5 års SWAP (NOK)</div>
-              <div className="val">
-                3,82<span className="unit">%</span>
-              </div>
-              <div className="delta">
-                <span className="arrow-down">▼ 8 bps</span> siste kvartal
-              </div>
-            </div>
-            <div className="mi-kpi">
-              <div className="label">Transaksjons­volum 2025</div>
-              <div className="val">
-                4,8<span className="unit">mrd</span>
-              </div>
-              <div className="delta">
-                <span className="arrow-up">▲ 18 %</span> mot 2024
-              </div>
-            </div>
-            <div className="mi-kpi">
-              <div className="label">Kontorledighet Tromsø</div>
-              <div className="val">
-                3,4<span className="unit">%</span>
-              </div>
-              <div className="delta">
-                <span className="arrow-down">▼ 60 bps</span> YoY · stramt marked
-              </div>
-            </div>
+            ))}
           </div>
+          <p className="mi-deeplink">
+            <Link href="/analyseportal">
+              Gå dypere i analyseportalen — interaktive serier, prognoser og
+              CSV-eksport →
+            </Link>
+          </p>
         </div>
       </section>
 
