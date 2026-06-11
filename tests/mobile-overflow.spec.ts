@@ -27,6 +27,11 @@ const ROUTES = [
   "/help",
   "/karriere",
   "/naringsmegler",
+  // City-page template after the 2026-06 design upgrade — both variants:
+  // bodo = maximal (chart, tiles, lead grid, dark FAQ), sortland = minimal
+  // (coverage tier) where the conditional layout risks live.
+  "/naringsmegler/bodo",
+  "/naringsmegler/sortland",
   "/sjekkliste-verdivurdering",
   "/eiendommer",
   "/eiendommer/bodo-byport-stormyra",

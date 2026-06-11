@@ -550,3 +550,57 @@ the AI SEO closure review (/plan-eng-review, 2026-05-24), the AI-SEO research pa
 - **Context:** Bevist pre-eksisterende på ren trestruktur + ren build under
   /autoplan-verifiseringen 2026-06-11. Ikke relatert til analyseportal-arbeidet.
 - **Effort:** S/M · **Priority:** P2
+
+---
+
+## TODO 27 — Lead-ops bak «svar vanligvis samme dag» (SLA, eier, oppfølging)
+
+- **What:** Operativ eierskapsmodell for naringsmegler-leads: per-by ansvarlig +
+  ferie-fallback, tid-til-første-svar målt, oppfølgingsmal. I dag: Discord-varsel +
+  Resend-kvittering, ingen SLA-sporing.
+- **Why:** De nye bysidene gjentar svartids-løftet flere steder; ett tapt
+  Discord-varsel i ferien bryter akkurat løftet siden selger på.
+- **Context:** Fra /autoplan CEO-review 2026-06-11 (E6, begge modellene flagget).
+  Kopien er myket til «vanligvis samme dag» som mitigering; ops-modellen gjenstår.
+- **Depends on:** Ingen tekniske. Eier: Christer/Tobias.
+- **Effort:** M (prosess, ikke kode) · **Priority:** P2
+
+---
+
+## TODO 28 — Konkurranse-wedge i whyPoints per by
+
+- **What:** Skjerp «Hvorfor Advanti»-punktene per by fra generisk profesjonalitet
+  til konkret wedge (datagrunnlag +1 400 eiendommer, kjøpernettverk utenfor
+  Nordland, senior partner på hvert oppdrag — med tall der de finnes).
+- **Why:** Codex CEO-voice: «siden risikerer å si 'vi er profesjonelle' i et
+  penere layout» — wedgen er det konkurrenter ikke kan kopiere.
+- **Context:** Fra /autoplan 2026-06-11 (E7). Template skipper med design-kopien;
+  dette er en redaksjonell skjerping per by etterpå.
+- **Effort:** S/M (redaksjonelt) · **Priority:** P3
+
+---
+
+## TODO 29 — Bysidene inn i kvartalsrunbooken (TODO 24) + «sist verifisert»
+
+- **What:** Fold /naringsmegler/[slug]-innholdet (marketStats-ranger, FAQ-tall,
+  proofStats) inn i kvartals-release-operativmodellen fra TODO 24, med
+  per-by verifiseringsdato.
+- **Why:** 10 byer × proofStats/FAQ-ranger blir foreldet uten eier — «stale deal
+  counter» er den forutsigbare flausen om 6 måneder (begge CEO-voices).
+- **Context:** Fra /autoplan 2026-06-11. Runbook-utkastet i TODO 24 dekker i dag
+  bare portal-seriene.
+- **Depends on:** TODO 24 ratifisering.
+- **Effort:** S · **Priority:** P2
+
+---
+
+## TODO 30 — Vurder beskjæring/sammenslåing av tynne bysider
+
+- **What:** Evaluer om 10 bysider er riktig: Svolvær vs Lofoten overlapper;
+  Hammerfest/Sortland har verken kontor, portaldata eller oppdrag. Færre,
+  sterkere sider kan rangere bedre enn ti tynne.
+- **Why:** Claude CEO-voice #8: thin-content-risiko; programmatic-SEO-mønster
+  uten substans kan svekke hele klyngen.
+- **Context:** Fra /autoplan 2026-06-11. Avvent trafikkdata (jf. analytics-
+  beslutning E4) før kutt.
+- **Effort:** S (analyse) · **Priority:** P3

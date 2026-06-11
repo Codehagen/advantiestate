@@ -454,6 +454,46 @@ export const LocationPost = defineCollection({
         detail: z.string().optional(),
       }),
     ),
+    // Lead contact for the office/coverage panel. Optional — falls back to
+    // siteConfig contact where unset.
+    email: z.string().optional(),
+    // Proof band (dark stats under the hero). Render-gated: the band renders
+    // ONLY when proofStatsVerified is true, so draft numbers can never leak
+    // to production (autoplan E1, 2026-06-11).
+    proofStats: z
+      .array(
+        z.object({
+          value: z.string(),
+          unit: z.string().optional(),
+          label: z.string(),
+        }),
+      )
+      .min(2)
+      .max(4)
+      .optional(),
+    proofStatsVerified: z.boolean().default(false),
+    // «Hvorfor Advanti i {by}» — four numbered points.
+    whyPoints: z
+      .array(z.object({ title: z.string(), body: z.string() }))
+      .optional(),
+    // Reference deals. Per-deal verified flag — the section renders only when
+    // ≥2 deals carry verified: true (no fictional transactions published).
+    // image optional: real deals may lack photography (no-photo card variant).
+    referenceDeals: z
+      .array(
+        z.object({
+          tag: z.string(),
+          role: z.string(),
+          title: z.string(),
+          image: z.string().optional(),
+          verified: z.boolean().default(false),
+          stats: z.array(z.object({ value: z.string(), label: z.string() })),
+        }),
+      )
+      .min(2)
+      .optional(),
+    openingHours: z.string().optional(),
+    heroCaption: z.string().optional(),
     localCaseStudy: z.object({
       title: z.string(),
       summary: z.string(),

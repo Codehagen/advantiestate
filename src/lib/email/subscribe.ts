@@ -22,6 +22,7 @@ export type SubscribeSource =
   | "eiendommer"
   | "presserom"
   | "investorportal"
+  | "naringsmegler"
 
 export type SubscribeInput = {
   email: string

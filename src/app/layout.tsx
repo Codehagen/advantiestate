@@ -1,3 +1,4 @@
+import { Analytics } from "@vercel/analytics/next";
 import { GoogleTagManager } from "@/components/analytics/GoogleTagManager";
 import { TrackingListener } from "@/components/analytics/TrackingListener";
 import { Footer } from "@/components/site/Footer";
@@ -48,6 +49,7 @@ export default function RootLayout({
         <Nav />
         {children}
         <Footer />
+        <Analytics />
       </body>
     </html>
   );
