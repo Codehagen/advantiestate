@@ -25,5 +25,13 @@ export function CityLocationMapClient({
   lng: number
   label: string
 }) {
-  return <PropertyMapLeaflet lat={lat} lng={lng} label={label} zoom={14} />
+  return (
+    <PropertyMapLeaflet
+      lat={lat}
+      lng={lng}
+      label={label}
+      zoom={14}
+      zoomControl={false}
+    />
+  )
 }
