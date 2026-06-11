@@ -283,8 +283,11 @@ export default async function LocationPage({
                     ))}
                   </span>
                 )}
+                {/* Copy tier keyed on officeAddress, NOT team presence — every
+                    city lists its responsible partners, but «lokalt team» is
+                    only true where we have an office (autoplan E3). */}
                 <span>
-                  {teamAvatars.length > 0 ? (
+                  {hasOfficeAddress ? (
                     <>
                       <b>Lokalt team i {location.name}</b> · svar vanligvis
                       samme dag · uforpliktende
