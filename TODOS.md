@@ -506,7 +506,7 @@ the AI SEO closure review (/plan-eng-review, 2026-05-24), the AI-SEO research pa
 
 ---
 
-## TODO 24 — Kvartalsvis data-release-operativmodell (eier, kilder, kadens)
+## TODO 24 — Kvartalsvis data-release-operativmodell (eier, kilder, kadens) — UTKAST KLART 2026-06-11
 
 - **What:** Definér operativmodellen bak markedsdataene: navngitt eier, kilder
   per serie (egne oppdrag, tinglysing, Finn, KBNN, SSB/Norges Bank for makro),
@@ -523,6 +523,9 @@ the AI SEO closure review (/plan-eng-review, 2026-05-24), the AI-SEO research pa
   reframe). Se ceo-plans/2026-06-11-analyseportal.md for hele resonnementet.
 - **Effort:** M (human, mest ikke-kode) · **Priority:** P1 (før neste kvartalsslipp)
 - **Depends on / blocked by:** Eierbeslutning hos partnerne; frist: før 15. juli 2026.
+- **Status:** Ratifiseringsklart utkast i `docs/markedsdata-operativmodell.md`
+  (eier-forslag, kilder per serie, kadens, ærlighetsregler, åpne beslutninger).
+  Gjenstår: partnermøtet beslutter §6-punktene.
 
 ---
 
