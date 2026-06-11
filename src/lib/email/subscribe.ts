@@ -20,6 +20,7 @@ export type SubscribeSource =
   | "kontakt"
   | "eiendommer"
   | "presserom"
+  | "investorportal"
 
 export type SubscribeInput = {
   email: string
