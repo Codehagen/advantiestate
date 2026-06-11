@@ -49,7 +49,9 @@ export default function RootLayout({
         <Nav />
         {children}
         <Footer />
-        <Analytics />
+        {/* Only on real Vercel deploys — locally/CI the insights script 404s
+            and trips the zero-console-error test assertions. */}
+        {process.env.VERCEL ? <Analytics /> : null}
       </body>
     </html>
   );
