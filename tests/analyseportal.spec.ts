@@ -132,6 +132,52 @@ test("city chips and legend keep a min-1 guard", async ({ page }) => {
   await expect(page.locator(".ap-legend .ap-leg:not(.off)")).toBeDisabled()
 })
 
+// Regression for FINDING-001 (design review 2026-06-11): --nav-h was 62px while
+// the real scrolled nav is 75–77px, sliding the sticky tabs behind the nav and
+// the controls under the tabs. Asserts the sticky stack at 375/768/1440.
+for (const [w, h] of [
+  [375, 812],
+  [768, 1024],
+  [1440, 900],
+] as const) {
+  test(`sticky stack unoccluded when scrolled at ${w}px`, async ({ page }) => {
+    await page.setViewportSize({ width: w, height: h })
+    await page.goto("/analyseportal", { waitUntil: "networkidle" })
+    await page.evaluate(() => window.scrollTo(0, 1200))
+    // Let the nav's scrolled-state transition (0.35s) settle.
+    await page.waitForTimeout(500)
+    const m = await page.evaluate(() => {
+      const nav = document.querySelector(".nav")!.getBoundingClientRect()
+      const tabs = document
+        .querySelector(".ap-sectornav-clip")!
+        .getBoundingClientRect()
+      const controls = document
+        .querySelector(".ap-controls")!
+        .getBoundingClientRect()
+      return {
+        navBottom: nav.bottom,
+        tabsTop: tabs.top,
+        tabsBottom: tabs.bottom,
+        controlsTop: controls.top,
+        controlsSticky:
+          getComputedStyle(document.querySelector(".ap-controls")!).position ===
+          "sticky",
+      }
+    })
+    // Tabs must start at/below the nav's bottom edge (1px slop).
+    expect(m.tabsTop, `tabs occluded by nav at ${w}px`).toBeGreaterThanOrEqual(
+      m.navBottom - 1,
+    )
+    // Desktop only: the sticky controls must clear the tab bar too.
+    if (w >= 1080 && m.controlsSticky) {
+      expect(
+        m.controlsTop,
+        `controls occluded by tabs at ${w}px`,
+      ).toBeGreaterThanOrEqual(m.tabsBottom - 1)
+    }
+  })
+}
+
 test("arrow keys move between sector tabs (APG pattern)", async ({ page }) => {
   await page.goto("/analyseportal", { waitUntil: "networkidle" })
   await page.locator("#ap-tab-yield").focus()
