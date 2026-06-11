@@ -2,7 +2,13 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
+
+// useLayoutEffect on the client so the sentinel check runs BEFORE first paint
+// (no solid-nav flash on dark-hero pages); useEffect during SSR to keep React
+// quiet — the server render never paints anyway.
+const useIsoLayoutEffect =
+  typeof window !== "undefined" ? useLayoutEffect : useEffect;
 
 const LINKS = [
   { href: "/tjenester", label: "Tjenester" },
@@ -33,13 +39,16 @@ export function Nav() {
   const [scrolled, setScrolled] = useState(true);
   const [menuOpen, setMenuOpen] = useState(false);
 
-  useEffect(() => {
+  useIsoLayoutEffect(() => {
     const sentinel = document.getElementById("hero-sentinel");
     if (!sentinel) {
       setScrolled(true);
       return;
     }
-    setScrolled(false);
+    // Compute the real state synchronously (pre-paint) instead of defaulting
+    // to transparent: a reload restored mid-page must start solid, a load at
+    // the top of a dark hero must start transparent — neither may flash.
+    setScrolled(sentinel.getBoundingClientRect().top <= 72);
     const io = new IntersectionObserver(
       // Solid only once the hero's base has scrolled up behind the nav.
       // Reading the sentinel's own `top` (rather than just `isIntersecting`)
