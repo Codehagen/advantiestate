@@ -18,6 +18,7 @@ const HIGH_INTENT: SubscribeSource[] = [
   "verdivurdering-intake",
   "kontakt",
   "eiendommer",
+  "naringsmegler",
 ]
 
 // Visitor-facing Norwegian terms → crm_leads `property_type` enum values.

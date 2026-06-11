@@ -17,6 +17,7 @@ const SOURCE_LABEL: Record<SubscribeSource, string> = {
   eiendommer: "Eiendommer (varsel om nye oppdrag)",
   presserom: "Presserom (pressevarsel — journalist!)",
   investorportal: "Investorportal (kvalifisert kjøper!)",
+  naringsmegler: "Næringsmegler bysider (HØY INTENT — lokal selger!)",
 }
 
 // Pages that match a hard-intent signal get a high-priority colour stripe in
@@ -27,6 +28,7 @@ const HIGH_INTENT: SubscribeSource[] = [
   "kontakt",
   "eiendommer",
   "investorportal",
+  "naringsmegler",
 ]
 const WARM_GREY = 0x2c2825
 const LIGHT_BLUE = 0xcbeef2

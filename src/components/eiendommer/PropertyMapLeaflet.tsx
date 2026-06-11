@@ -17,6 +17,8 @@ interface PropertyMapLeafletProps {
   label: string;
   /** Override the default street-level zoom (15) when needed. */
   zoom?: number;
+  /** Hide the +/- control for small embeds (e.g. the city-page location panel). */
+  zoomControl?: boolean;
 }
 
 /**
@@ -31,6 +33,7 @@ export function PropertyMapLeaflet({
   lng,
   label,
   zoom = 15,
+  zoomControl = true,
 }: PropertyMapLeafletProps) {
   return (
     <MapContainer
@@ -38,6 +41,7 @@ export function PropertyMapLeaflet({
       zoom={zoom}
       minZoom={5}
       maxZoom={TILE_MAX_ZOOM}
+      zoomControl={zoomControl}
       scrollWheelZoom={false}
       style={{ height: "100%", width: "100%" }}
     >
