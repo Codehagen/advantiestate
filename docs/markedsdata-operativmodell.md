@@ -17,7 +17,7 @@ at den holdes.
 
 | Rolle | Ansvar | Forslag |
 |---|---|---|
-| **Release-eier** | Holder kadensen; signerer av at tallene kan publiseres; eier «Neste oppdatering»-datoen | _Foreslått: Håvard Nome (analytikerkortet på portalen peker allerede på ham)_ |
+| **Release-eier** | Holder kadensen; signerer av at tallene kan publiseres; eier «Neste oppdatering»-datoen | _Foreslått: Christer Hagen (fronter analytikerkortet på portalen)_ |
 | Datainnsamler | Henter/oppdaterer kildene per serie (se §2) innen frist | _Foreslått: samme + megler-rotasjon for transaksjonsbekreftelser_ |
 | Teknisk utfører | Kjører runbooken i portalSeries.ts, ser testene grønne, deployer | Utvikler/CC — mekanisk når tallene foreligger |
 

@@ -30,7 +30,7 @@ function quarterToIso(quarter: string): string {
 }
 
 export default function AnalyseportalPage() {
-  const analystPost = allPersonPosts.find((p) => p.slug === "havard-nome")
+  const analystPost = allPersonPosts.find((p) => p.slug === "christer-hagen")
   const analyst = analystPost
     ? {
         name: analystPost.name,
