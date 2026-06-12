@@ -232,7 +232,7 @@ function MapController({
   // Hjelpefunksjon: respekterer prefers-reduced-motion (sjekkes per kall)
   const moveTo = useCallback(
     (lat: number, lon: number, zoom: number) => {
-      const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches
+      const reduced = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches ?? false
       if (reduced) map.setView([lat, lon], zoom)
       else map.flyTo([lat, lon], zoom)
     },
@@ -260,7 +260,7 @@ function MapController({
     lastViewN.current = viewRequest.n
 
     const { kind, id } = viewRequest
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    const reduced = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches ?? false
 
     if (kind === "zones") {
       const zs = ZONE_SETS_BY_CITY[selectedRef.current] ?? null
@@ -302,7 +302,9 @@ export function MarkedsKartLeafletCelle({
   // Touch-enheter: deaktiver pan (én-finger-scroll scroller siden i stedet).
   // Trygt i useState-initializer siden komponen aldri SSR-es (ssr:false).
   const [isCoarse] = useState(
-    () => typeof window !== "undefined" && window.matchMedia("(pointer: coarse)").matches,
+    () =>
+      typeof window !== "undefined" &&
+      (window.matchMedia?.("(pointer: coarse)")?.matches ?? false),
   )
 
   const layerByIdRef = useRef<Map<string, Path>>(new Map())

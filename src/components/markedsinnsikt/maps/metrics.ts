@@ -34,9 +34,11 @@ function hexToRgb(h: string): [number, number, number] {
   return [(n >> 16) & 255, (n >> 8) & 255, n & 255]
 }
 export function lerpColor(a: string, b: string, t: number): string {
+  // Clamp: t utenfor [0,1] ville gitt stille feilfarger (CSS klipper 0–255)
+  const tc = Math.max(0, Math.min(1, t))
   const A = hexToRgb(a)
   const B = hexToRgb(b)
-  return `rgb(${Math.round(A[0] + (B[0] - A[0]) * t)},${Math.round(A[1] + (B[1] - A[1]) * t)},${Math.round(A[2] + (B[2] - A[2]) * t)})`
+  return `rgb(${Math.round(A[0] + (B[0] - A[0]) * tc)},${Math.round(A[1] + (B[1] - A[1]) * tc)},${Math.round(A[2] + (B[2] - A[2]) * tc)})`
 }
 
 // #yield / #leie / #ledighet deep-link-hook. Hash leses i mount-effect, ALDRI

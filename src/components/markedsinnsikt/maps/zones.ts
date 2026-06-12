@@ -202,6 +202,8 @@ export const ZONE_SETS_BY_CITY: Record<string, CityZoneSet> = { bodo: BODO_ZONES
 export function publishedZones(s: CityZoneSet): ZoneCollection {
   return {
     type: "FeatureCollection",
-    features: s.zones.features.filter((f) => f.properties.segments !== null),
+    features: s.zones.features.filter(
+      (f) => f.properties.segments !== null && f.properties.reviewedBy !== null,
+    ),
   }
 }

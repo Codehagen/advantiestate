@@ -86,4 +86,39 @@ describe("publishedZones — kanttilfelle: alle soner er utkast", () => {
     expect(result.features).toHaveLength(0)
     expect(result.type).toBe("FeatureCollection")
   })
+
+  it("ekskluderer soner med tall men UTEN intern gjennomgang (reviewedBy: null)", () => {
+    // Honest-data-gaten krever BÅDE segments OG reviewedBy — tall som ikke er
+    // gjennomgått skal aldri publiseres (kryssmodell-funn i adversarial review).
+    const unreviewed: CityZoneSet = {
+      cityId: "test",
+      center: [68, 14],
+      zoom: 13,
+      minZoneZoom: 11,
+      asOf: "Q4 2025",
+      disclaimer: "",
+      zones: {
+        type: "FeatureCollection",
+        features: [
+          {
+            type: "Feature",
+            properties: {
+              id: "b",
+              name: "B",
+              segments: {
+                kontor: { minKrM2: 1000, maxKrM2: 2000 },
+                handel: { minKrM2: 1000, maxKrM2: 2000 },
+                logistikk: { minKrM2: 1000, maxKrM2: 2000 },
+              },
+              reviewedBy: null,
+              reviewedAt: null,
+              sourceNote: "tall uten review",
+            },
+            geometry: { type: "Polygon", coordinates: [[]] },
+          },
+        ],
+      },
+    }
+    expect(publishedZones(unreviewed).features).toHaveLength(0)
+  })
 })

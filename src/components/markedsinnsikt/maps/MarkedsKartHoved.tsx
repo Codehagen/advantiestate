@@ -154,12 +154,17 @@ export function MarkedsKartHoved() {
   useEffect(() => {
     setPinnedZoneId(null)
     setHoveredZoneId(null)
+    // WMS-laget hører til sonevisningen — uten denne ville laget fortsette å
+    // hente GeoNorge-tiles etter bybytte mens togglen (eneste av-knapp) er
+    // skjult (codex-funn).
+    setShowCadastre(false)
   }, [selected])
 
   useEffect(() => {
     if (zoneSet && zoom < zoneSet.minZoneZoom) {
       setPinnedZoneId(null)
       setHoveredZoneId(null)
+      setShowCadastre(false)
     }
   }, [zoom, zoneSet])
 
