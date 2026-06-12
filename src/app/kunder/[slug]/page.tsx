@@ -283,7 +283,7 @@ export default async function CustomerStory({
                 )}
               </div>
 
-              {data.companyFounded && (
+              {data.companyFounded > 0 && (
                 <>
                   <div className="toc-label">Etablert</div>
                   <p
