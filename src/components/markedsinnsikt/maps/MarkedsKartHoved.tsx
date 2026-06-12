@@ -179,11 +179,19 @@ export function MarkedsKartHoved() {
     setPinnedZoneId((cur) => (id === null || cur === id ? null : id))
   }, [])
 
-  const handleChipClick = useCallback((id: string) => {
-    setPinnedZoneId((cur) => (cur === id ? null : id))
-    viewNRef.current += 1
-    setViewRequest({ kind: "zone-bounds", id, n: viewNRef.current })
-  }, [])
+  const handleChipClick = useCallback(
+    (id: string) => {
+      // Toggle: andre klikk på samme chip LØSNER pinnen — da skal kartet stå
+      // i ro, ikke fly mot sonen brukeren nettopp lukket (red-team-funn).
+      const isPinning = pinnedZoneId !== id
+      setPinnedZoneId(isPinning ? id : null)
+      if (isPinning) {
+        viewNRef.current += 1
+        setViewRequest({ kind: "zone-bounds", id, n: viewNRef.current })
+      }
+    },
+    [pinnedZoneId],
+  )
 
   const handleReset = useCallback(() => {
     setPinnedZoneId(null)
@@ -196,12 +204,6 @@ export function MarkedsKartHoved() {
   const scrollToPanel = useCallback((e: React.MouseEvent) => {
     e.preventDefault()
     document.getElementById("mi-map-info")?.scrollIntoView({ behavior: "smooth" })
-  }, [])
-
-  // ── Tabell-klikk: setter selected OG trigger selected-effekt i barnet ────────
-  const handleTableRowClick = useCallback((id: string) => {
-    setSelected(id)
-    // selected-effekten i MapController flyr til by
   }, [])
 
   return (
@@ -446,12 +448,12 @@ export function MarkedsKartHoved() {
                 <tr
                   key={c.id}
                   className={c.id === selected ? "active" : ""}
-                  onClick={() => handleTableRowClick(c.id)}
+                  onClick={() => handleSelectCity(c.id)}
                   tabIndex={0}
                   onKeyDown={(e) => {
                     if (e.key === "Enter" || e.key === " ") {
                       e.preventDefault()
-                      handleTableRowClick(c.id)
+                      handleSelectCity(c.id)
                     }
                   }}
                   aria-label={`${c.name}, velg by`}

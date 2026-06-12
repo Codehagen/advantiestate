@@ -34,6 +34,13 @@ describe("METRICS.fmt", () => {
   it("ledighet.fmt viser én desimal med komma", () => {
     expect(METRICS.ledighet.fmt(3.1)).toBe("3,1 %")
   })
+
+  it("leie.fmt avrunder og bruker no-NO-tusenskilletegn (NBSP) med kr-suffiks", () => {
+    // toLocaleString("no-NO") gir U+00A0 som tusenskilletegn — regresjon her
+    // betyr typisk at Node mangler full ICU-data i miljøet.
+    expect(METRICS.leie.fmt(2500)).toBe("2\u00a0500 kr")
+    expect(METRICS.leie.fmt(1800.7)).toBe("1\u00a0801 kr")
+  })
 })
 
 // formatRange — kanttilfelle: minKrM2 = 0 skal ikke gi tusenskilletegn-feil

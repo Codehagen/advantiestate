@@ -2749,7 +2749,7 @@ h1, h2, h3 {
     background: var(--paper);
     border: var(--hairline);
     padding: 10px 14px;
-    font-size: 13px;
+    font-size: 14px;
     pointer-events: auto;
   }
 }
@@ -2785,7 +2785,7 @@ h1, h2, h3 {
   border-top: var(--hairline);
 }
 .mi-zone-source-note {
-  font-size: 11px;
+  font-size: 12px;
   color: var(--warm-grey-85);
   margin: 10px 0 6px;
   line-height: 1.45;
@@ -2807,7 +2807,7 @@ h1, h2, h3 {
 /* Bodø-only-note i panel (byer uten soner) */
 .mi-map-info-zone-note {
   margin-top: 18px;
-  font-size: 13px;
+  font-size: 14px;
   color: var(--warm-grey-85);
   line-height: 1.5;
 }

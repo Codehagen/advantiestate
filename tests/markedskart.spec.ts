@@ -49,6 +49,15 @@ test("deep link #ledighet preselects the metric", async ({ page }) => {
     "aria-pressed",
     "true",
   );
+  // hashchange-lytteren (samme side, ny hash): pickMetric bruker
+  // history.replaceState som IKKE fyrer hashchange — kun en faktisk
+  // hash-navigasjon treffer lytteren i useMetricHash.
+  await page.evaluate(() => {
+    window.location.hash = "#leie";
+  });
+  await expect(
+    page.getByRole("button", { name: "Markedsleie" }),
+  ).toHaveAttribute("aria-pressed", "true");
 });
 
 test("map pin selects city via click and keyboard", async ({ page }) => {
@@ -109,7 +118,15 @@ test("Se prissoner CTA zooms to zones, chip pins sone, Escape releases", async (
   // uansett skilletegn mellom 3 og 500 (regular space, NBSP, U+202F etc.)
   await expect(block).toContainText(/3.500/);
 
-  // Escape løsner pin — sone-blokken forsvinner
+  // Andre klikk på samme chip LØSNER pinnen (toggle-grenen i handleChipClick)
+  // — og kartet skal stå i ro, ikke fly mot sonen som ble lukket.
+  await sentrumChip.click();
+  await expect(block).not.toBeVisible();
+  await expect(sentrumChip).toHaveAttribute("aria-pressed", "false");
+
+  // Pin på nytt og løsne med Escape — tastaturveien
+  await sentrumChip.click();
+  await expect(block).toBeVisible();
   await page.keyboard.press("Escape");
   await expect(block).not.toBeVisible();
 });
