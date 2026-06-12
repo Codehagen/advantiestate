@@ -17,7 +17,7 @@ design system, see [`DESIGN.md`](./DESIGN.md).
 
 ## Tech stack
 
-- Next.js 16.1.4 (App Router) + React 19
+- Next.js 16.2.9 (App Router) + React 19
 - TypeScript (strict; `tsc --noEmit` enforced at build)
 - Tailwind CSS + semantic classes from `src/styles/advanti-design.css`
 - `@content-collections/core` for MDX content
@@ -31,7 +31,9 @@ pnpm dev          # dev server (http://localhost:3000)
 pnpm build        # production build (type-checked, content-collections compiled)
 pnpm start        # serve production build
 pnpm lint         # eslint
-pnpm test         # playwright (incl. perf-budget spec)
+pnpm typecheck    # tsc --noEmit (type-check without building)
+pnpm test:unit    # Vitest unit tests (tests/unit/)
+pnpm test         # playwright E2E (incl. perf-budget spec)
 ```
 
 When using `npx prisma generate`, pass `--no-engine`.
@@ -63,8 +65,8 @@ src/
 │   └── StructuredData.tsx        # All JSON-LD schemas (Organization, Article, FAQ, Breadcrumb, …)
 ├── content/                      # MDX content
 │   ├── blog/                     # categories: company, valuation, market-analysis, casestudies
-│   ├── help/                     # categories: overview, getting-started, terms, analysis, valuation
-│   ├── changelog/ customers/ integrations/ legal/ locations/ people/
+│   ├── help/                     # categories: overview, getting-started, terms, analysis, valuation, for-investors
+│   ├── changelog/ customers/ integrations/ legal/ locations/ people/ listings/
 ├── lib/                          # Utilities (formatters, chartUtils, coordinateUtils, hooks/, blog/); navigation.ts (site IA registry); navigationServer.ts (server-only city helper); jsonLd.tsx (safe JSON-LD emission)
 ├── styles/                       # advanti-design.css (semantic classes, ~95KB)
 └── types/                        # TS type defs
@@ -87,14 +89,15 @@ Path alias: `@/*` → `src/*`. Content collections alias: `content-collections`
 - All MDX requires its collection's frontmatter (validated by Zod in
   `content-collections.ts`).
 - `publishedAt` / `updatedAt` use `YYYY-MM-DD` (regex-validated where present).
-- `BlogPost` requires `author`, `summary`, `image`, `categories`.
-- `HelpPost` and `LegalPost` already carry `updatedAt`; `BlogPost` does not
-  (yet — see TODO 15).
+- `BlogPost` requires `author`, `summary`, `image`, `categories`; `updatedAt` is optional.
+- `HelpPost` and `LegalPost` carry required `updatedAt`.
 
 ### SEO + structured data
 - Every dynamic route exports `generateMetadata`.
-- `StructuredData.tsx` exposes typed schema generators; `BreadcrumbStructuredData`
-  is injected on all blog/help/services/location pages.
+- `StructuredData.tsx` exposes typed schema generators. Most pages now use
+  `<Breadcrumbs>` (from `components/site/Breadcrumbs.tsx`) which co-emits
+  `BreadcrumbList` JSON-LD; `BreadcrumbStructuredData` from `StructuredData.tsx`
+  is retained on pages not yet migrated (blog post, naringsmegler hub, presserom).
 - `FAQPage` schema comes from `src/components/site/Faq.tsx` — one `items` array
   drives both the visible accordion and the JSON-LD so they cannot drift.
 - robots.ts explicitly allows GPTBot, ClaudeBot, PerplexityBot, Google-Extended,

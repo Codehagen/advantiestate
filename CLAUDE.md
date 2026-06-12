@@ -85,11 +85,14 @@ src/
 │   └── data/                     # Data table components
 ├── content/                      # MDX content files
 │   ├── blog/                     # Blog posts (categories: company, valuation, market-analysis, casestudies)
-│   ├── help/                     # Help articles (categories: overview, getting-started, terms, analysis, valuation)
+│   ├── help/                     # Help articles (categories: overview, getting-started, terms, analysis, valuation, for-investors)
 │   ├── changelog/                # Product changelog
 │   ├── customers/                # Customer case studies
 │   ├── integrations/             # Integration guides
-│   └── legal/                    # Legal documents
+│   ├── legal/                    # Legal documents
+│   ├── people/                   # Team member profiles (PersonPost → /personer/[slug])
+│   ├── locations/                # City pages (LocationPost → /naringsmegler/[slug])
+│   └── listings/                 # Property listings from CRM (ListingPost → /eiendommer/[slug])
 ├── lib/
 │   ├── utils.ts                  # Utility functions
 │   ├── chartUtils.ts             # Chart-related utilities
@@ -106,14 +109,17 @@ src/
 
 ### Content Management System
 
-The project uses **@content-collections** for type-safe MDX content management. Content is defined in `content-collections.ts` with six main collections:
+The project uses **@content-collections** for type-safe MDX content management. Content is defined in `content-collections.ts` with nine main collections:
 
 1. **BlogPost** - Articles with categories (company, valuation, market-analysis, casestudies)
 2. **ChangelogPost** - Product updates
 3. **CustomersPost** - Client case studies with company metadata
-4. **HelpPost** - Documentation with categories (overview, getting-started, terms, analysis, valuation)
+4. **HelpPost** - Documentation with categories (overview, getting-started, terms, analysis, valuation, for-investors)
 5. **LegalPost** - Legal pages
 6. **IntegrationsPost** - Third-party integration guides
+7. **PersonPost** - Team member profiles (drives `/personer/[slug]`)
+8. **LocationPost** - City/location pages (drives `/naringsmegler/[slug]`)
+9. **ListingPost** - Property listings published from CRM (drives `/eiendommer/[slug]`)
 
 **Key Features:**
 - Automatic slug generation from titles
@@ -170,6 +176,9 @@ The platform is primarily in Norwegian (bokmål). Key SEO terms:
 
 Remote image patterns allowed:
 - `imagedelivery.net/**` (CDN)
+- `kukzjreikqbgbolxvqaj.supabase.co/**` (Supabase Storage — property images)
+- `images.pexels.com/**` (stock photos)
+- `images.finncdn.no/**` (Finn.no listing images)
 - `avatar.vercel.sh/**` (avatars)
 - `randomuser.me/**` (placeholder users)
 
