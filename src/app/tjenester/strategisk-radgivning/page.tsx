@@ -3,9 +3,8 @@ import { SubHero } from "@/components/site/SubHero";
 import { CtaStrip } from "@/components/site/CtaStrip";
 import { PhotoBand } from "@/components/site/PhotoBand";
 import { Faq, type FaqItem } from "@/components/site/Faq";
-import StructuredData, {
-  BreadcrumbStructuredData,
-} from "@/components/StructuredData";
+import StructuredData from "@/components/StructuredData";
+import { Breadcrumbs } from "@/components/site/Breadcrumbs";
 
 const LAST_UPDATED = "2026-05-22";
 
@@ -42,16 +41,6 @@ const FAQ_ITEMS: FaqItem[] = [
 export default function StrategiskRadgivningPage() {
   return (
     <>
-      <BreadcrumbStructuredData
-        items={[
-          { name: "Hjem", url: "/" },
-          { name: "Tjenester", url: "/tjenester" },
-          {
-            name: "Strategisk Rådgivning",
-            url: "/tjenester/strategisk-radgivning",
-          },
-        ]}
-      />
       <StructuredData
         type="service"
         data={{
@@ -62,11 +51,7 @@ export default function StrategiskRadgivningPage() {
       />
 
       <SubHero
-        crumb={[
-          { label: "Hjem", href: "/" },
-          { label: "Tjenester", href: "/tjenester" },
-          { label: "Strategisk rådgivning" },
-        ]}
+        breadcrumbs={<Breadcrumbs path="/tjenester/strategisk-radgivning" />}
         eyebrow="Tjeneste 06 · Strategi"
         title={
           <>
