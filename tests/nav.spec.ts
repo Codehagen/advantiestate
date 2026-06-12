@@ -35,6 +35,57 @@ test.describe("Desktop nav groups", () => {
     await expect(page.locator("#nav-panel-tjenester")).toHaveClass(/open/);
   });
 
+  test("same button toggles: second click closes the panel", async ({
+    page,
+  }) => {
+    await page.goto("/");
+    const innsiktBtn = page.getByRole("button", { name: "Innsikt" });
+    await innsiktBtn.click();
+    await expect(innsiktBtn).toHaveAttribute("aria-expanded", "true");
+    await innsiktBtn.click();
+    await expect(innsiktBtn).toHaveAttribute("aria-expanded", "false");
+    await expect(page.locator("#nav-panel-innsikt")).not.toHaveClass(/open/);
+  });
+
+  test("navigating via a panel link closes the open group", async ({
+    page,
+  }) => {
+    await page.goto("/");
+    const innsiktBtn = page.getByRole("button", { name: "Innsikt" });
+    await innsiktBtn.click();
+    await page
+      .locator("#nav-panel-innsikt a", { hasText: "Markedsinnsikt" })
+      .first()
+      .click();
+    await page.waitForURL(/\/markedsinnsikt/);
+    // Panelet skal være lukket etter rutebytte — ikke stå åpent over ny side.
+    await expect(innsiktBtn).toHaveAttribute("aria-expanded", "false");
+    await expect(page.locator("#nav-panel-innsikt")).not.toHaveClass(/open/);
+  });
+
+  test("Nav eier --nav-h: variabelen settes på documentElement", async ({
+    page,
+  }) => {
+    await page.goto("/");
+    // AnalyseportalShell og .nav-panel posisjonerer mot --nav-h — den må
+    // skrives av Nav sin border-box-observer, ikke stå på CSS-fallbacken.
+    await expect
+      .poll(async () =>
+        page.evaluate(() =>
+          document.documentElement.style.getPropertyValue("--nav-h"),
+        ),
+      )
+      .toMatch(/^\d+px$/);
+    const navH = await page.evaluate(() =>
+      parseInt(
+        document.documentElement.style.getPropertyValue("--nav-h"),
+        10,
+      ),
+    );
+    expect(navH).toBeGreaterThanOrEqual(60);
+    expect(navH).toBeLessThanOrEqual(120);
+  });
+
   test("Enter key opens a group panel", async ({ page }) => {
     await page.goto("/");
     const innsiktBtn = page.getByRole("button", { name: "Innsikt" });
