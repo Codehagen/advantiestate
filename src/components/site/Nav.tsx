@@ -247,7 +247,7 @@ export function Nav({ cities }: NavProps) {
         </div>
 
         <Link
-          href="/kontakt"
+          href="/verktoy/pris-verdivurdering"
           className="nav-cta"
           onClick={() => trackEvent("cta_verdivurdering", { source: "nav" })}
         >
@@ -510,7 +510,7 @@ export function Nav({ cities }: NavProps) {
         </div>
 
         <Link
-          href="/kontakt"
+          href="/verktoy/pris-verdivurdering"
           className="nav-cta nav-mobile-cta"
           onClick={() => {
             setMenuOpen(false);

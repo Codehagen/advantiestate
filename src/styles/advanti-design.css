@@ -8826,3 +8826,43 @@ h1, h2, h3 {
 /* recharts surface tweaks (scoped to the portal wrap) */
 .ap-wrap .recharts-cartesian-axis-tick text { font-family: var(--font-body); }
 .ap-wrap .recharts-surface { overflow: visible; }
+
+/* ── SeOgsa — redaksjonell kryss­lenkblokk ─────────────────────────────────
+   Brukes på /naringsmegler/[slug], /help/category/[slug],
+   /markedsinnsikt (data-sektorer), og inline i MarkedsKartHoved.
+   Én jobb per blokk; max 3 lenker; aldri knapper/kort/skygger.
+   ────────────────────────────────────────────────────────────────────────── */
+.seogsa {
+  padding-top: 28px;
+  border-top: var(--hairline);
+  margin-top: 48px;
+}
+.seogsa-heading {
+  font-family: var(--font-body);
+  font-size: 10.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--warm-grey-85);
+  margin-bottom: 14px;
+}
+.seogsa-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+.seogsa-link {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--warm-grey);
+  border-bottom: 1px solid var(--warm-grey-75);
+  padding-bottom: 1px;
+  transition: border-color 0.15s;
+}
+.seogsa-link:hover { border-color: var(--warm-grey); }
+.seogsa-arrow { font-size: 11px; color: var(--warm-grey-85); }
+.seogsa-note { display: block; font-size: 12px; color: var(--warm-grey-85); margin-top: 2px; }

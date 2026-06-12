@@ -8,6 +8,7 @@ import { Fragment, useEffect, useState } from "react"
 import dynamic from "next/dynamic"
 import Link from "next/link"
 import { MapErrorBoundary } from "./MapErrorBoundary"
+import { trackEvent } from "@/lib/analytics"
 import {
   QUARTERS,
   RATES,
@@ -71,6 +72,38 @@ const SECTOR_COLORS = [
   "var(--warm-grey-85)",
   "var(--warm-grey-85)",
 ]
+
+// ════════════════════════════════════════════════════════════════════════
+// SE OGSÅ — Gå dypere (data-sektorene yield/leie/tx/ledighet)
+// ════════════════════════════════════════════════════════════════════════
+
+const GA_DYPERE_LINKS = [
+  { href: "/markedsinnsikt/kart", label: "Markedskartet" },
+  { href: "/markedsrapport", label: "Markedsrapport" },
+  { href: "/help/article/prime-yield", label: "Prime yield forklart" },
+] as const
+
+function GaDypereBlock({ from }: { from: string }) {
+  return (
+    <div className="seogsa" style={{ marginTop: 56 }}>
+      <div className="seogsa-heading">Gå dypere</div>
+      <ul className="seogsa-list">
+        {GA_DYPERE_LINKS.map(({ href, label }) => (
+          <li key={href}>
+            <Link
+              href={href}
+              className="seogsa-link"
+              onClick={() => trackEvent("seogsa_click", { from, to: href })}
+            >
+              {label}
+              <span className="seogsa-arrow">→</span>
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
+}
 
 type SectorId =
   | "yield"
@@ -305,6 +338,8 @@ function YieldView() {
           </p>
         </div>
       </div>
+
+      <GaDypereBlock from="yield" />
     </div>
   )
 }
@@ -489,6 +524,8 @@ function LeieView() {
           </p>
         </div>
       </div>
+
+      <GaDypereBlock from="leie" />
     </div>
   )
 }
@@ -619,6 +656,8 @@ function TxView() {
         </span>
         <span>+47 transaksjoner sporet i 2025</span>
       </div>
+
+      <GaDypereBlock from="tx" />
     </div>
   )
 }
@@ -757,6 +796,8 @@ function LedighetView() {
           </p>
         </div>
       </div>
+
+      <GaDypereBlock from="ledighet" />
     </div>
   )
 }
