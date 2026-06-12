@@ -63,9 +63,8 @@ const PRESENTATION: Record<
     metaProperty: "Kontorbygg",
     metaLocation: "Bodø",
     results: [
-      { value: "1 500 → 3 000", unit: "kr/m²", label: "Årsleie" },
-      { value: "2", unit: "×", label: "Leienivå etter reforhandling" },
-      { value: "Lengre", unit: "", label: "Bindingstid på ny kontrakt" },
+      { value: "3 000", unit: "kr/m²", label: "Ny årsleie per m² — fra 1 500" },
+      { value: "2×", label: "Leienivå etter reforhandling, med lengre bindingstid" },
     ],
   },
 };
