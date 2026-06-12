@@ -208,7 +208,13 @@ export function MarkedsKartHoved() {
   // Scroll til panel på mobil (fra mini-overlay-lenke)
   const scrollToPanel = useCallback((e: React.MouseEvent) => {
     e.preventDefault()
-    document.getElementById("mi-map-info")?.scrollIntoView({ behavior: "smooth" })
+    // Motion-guard (samme mønster som moveTo i kartcellen): smooth kun når
+    // brukeren ikke har bedt om redusert bevegelse.
+    const reduced =
+      window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches ?? false
+    document.getElementById("mi-map-info")?.scrollIntoView({
+      behavior: reduced ? "auto" : "smooth",
+    })
   }, [])
 
   return (

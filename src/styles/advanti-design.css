@@ -2830,7 +2830,9 @@ h1, h2, h3 {
   font-variant-numeric: tabular-nums;
 }
 .mi-rank-table th.mi-rank-secondary {
-  color: var(--warm-grey-75);
+  /* Dempet via font-weight, IKKE via hairline-tokenen som tekstfarge
+     (#d7d0c8 på warm-white er ~1,3:1 — ulesbart). */
+  color: var(--warm-grey-85);
   font-weight: 400;
 }
 .mi-rank-table tbody tr {

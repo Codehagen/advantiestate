@@ -49,7 +49,13 @@ export function useMetricHash(): [MetricKey, (m: MetricKey) => void] {
   useEffect(() => {
     const apply = () => {
       const hash = window.location.hash.slice(1)
-      if (METRIC_KEYS.includes(hash as MetricKey)) setMetric(hash as MetricKey)
+      if (METRIC_KEYS.includes(hash as MetricKey)) {
+        setMetric(hash as MetricKey)
+      } else if (hash === "") {
+        // Manuelt fjernet hash skal ikke la forrige metric stå — URL og
+        // tilstand holdes synkrone ved å falle tilbake til default.
+        setMetric("yield")
+      }
     }
     apply()
     window.addEventListener("hashchange", apply)

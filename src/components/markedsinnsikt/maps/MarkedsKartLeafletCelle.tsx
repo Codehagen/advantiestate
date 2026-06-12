@@ -129,7 +129,7 @@ function CityMarker({ city, isSelected, onSelectCity }: CityMarkerProps) {
       click: () => onSelectCity(city.id),
       mouseover: () => setIsHovered(true),
       mouseout: () => setIsHovered(false),
-      keypress: (e: unknown) => {
+      keydown: (e: unknown) => {
         const oe = (e as { originalEvent?: KeyboardEvent }).originalEvent
         if (oe?.key === "Enter" || oe?.key === " ") {
           oe.preventDefault()
@@ -378,7 +378,7 @@ export function MarkedsKartLeafletCelle({
 
       layer.on("click", () => onZonePin(props.id))
 
-      layer.on("keypress", (e: unknown) => {
+      layer.on("keydown", (e: unknown) => {
         const oe = (e as { originalEvent?: KeyboardEvent }).originalEvent
         if (oe?.key === "Enter" || oe?.key === " ") {
           oe.preventDefault()
