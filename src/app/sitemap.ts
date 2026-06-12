@@ -71,7 +71,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }));
 
   // Help category pages — `lastModified` omitted (no true modified date).
-  const helpCategories = HELP_CATEGORIES.map((category) => ({
+  // Categories with zero articles are excluded until they have content —
+  // they render an empty state and would be thin pages in the index.
+  const helpCategories = HELP_CATEGORIES.filter((category) =>
+    allHelpPosts.some((post) =>
+      (post.categories as string[]).includes(category.slug),
+    ),
+  ).map((category) => ({
     url: `${baseUrl}/help/category/${category.slug}`,
     changeFrequency: "weekly" as const,
     priority: 0.7,

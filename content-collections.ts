@@ -222,6 +222,9 @@ export const HelpPost = defineCollection({
         ]),
       )
       .default(["overview"]),
+    // Optional original publish date. When absent, the article page falls
+    // back to updatedAt for schema.org datePublished.
+    publishedAt: z.string().optional(),
     related: z.array(z.string()).optional(),
     excludeHeadingsFromSearch: z.boolean().optional(),
     // Opt-in HowTo schema. Only set on genuine step-by-step procedural
@@ -232,6 +235,13 @@ export const HelpPost = defineCollection({
     howto: z.boolean().optional(),
     step: z
       .array(z.object({ name: z.string(), text: z.string() }))
+      .min(2)
+      .optional(),
+    // Opt-in FAQ. Same policy as `howto`/`step` above: the emitted FAQPage
+    // JSON-LD MUST mirror a visible FAQ section on the page, so the article
+    // page renders this exact array as visible content AND as schema.
+    faq: z
+      .array(z.object({ question: z.string(), answer: z.string() }))
       .min(2)
       .optional(),
     slug: z.string().optional(),

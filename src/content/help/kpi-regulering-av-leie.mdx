@@ -1,0 +1,116 @@
+---
+title: KPI-regulering av leie
+publishedAt: 2026-06-12
+updatedAt: 2026-06-12
+summary: "KPI-regulering justerer leien med konsumprisindeksen. Lær klausulen, hva 100 % KPI betyr i praksis, og hvorfor det er avgjørende i kontantstrømsanalysen."
+author: codehagen
+categories:
+  - terms
+related:
+  - markedsleie-og-leieniva
+  - kontantstromsanalyse
+  - brutto-leieinntekter
+slug: kpi-regulering-av-leie
+faq:
+  - question: "Hva betyr 100 % KPI-regulering?"
+    answer: "100 % KPI-regulering betyr at leien justeres med den fulle prosentvise endringen i konsumprisindeksen (KPI) fra ett år til det neste. Er KPI opp 3,5 %, øker leien med 3,5 %. Ingen del av inflasjonen absorberes av utleier — hele økningen veltes over på leietaker."
+  - question: "Når reguleres leien med KPI?"
+    answer: "Reguleringstidspunktet er avtalt i kontrakten — vanligvis på leiens første dag i hvert kalenderår, eller på leieforholdet ettårsjubileum. Endringen baserer seg typisk på KPI fra et referansepunkt (for eksempel oktober) ett år tilbake til samme tidspunkt inneværende år."
+  - question: "Kan partene avtale noe annet enn 100 % KPI?"
+    answer: "Ja. Leieregulering er avtalefritt i næringseiendom. Partene kan avtale 100 % KPI, en fast prosent per år, KPI begrenset til et tak, KPI med et gulv, eller markedsleieregulering til bestemte tidspunkter. Det er forhandlingsmakt og markedsbalansen som avgjør hva som avtales."
+---
+
+## Hva er KPI-regulering av leie?
+
+KPI-regulering er en klausul i næringsleiekontrakten som gir utleier rett — og ofte plikt — til å justere leien i samsvar med endringen i konsumprisindeksen (KPI). Hensikten er å bevare leieinntektenes kjøpekraft over tid. Uten KPI-regulering vil realverdien av en fast leie gradvis eroderes av inflasjonen.
+
+KPI-regulering er markedsstandard i norske næringsleiekontrakter og fremgår normalt av bransjens standardkontrakter (meglerstandarden). For [kontantstrømsanalyse](/help/article/kontantstromsanalyse) og verdivurdering er KPI-klausulen en av de mest verdirelevante bestemmelsene i avtalen.
+
+## Hvordan klausulen typisk er formulert
+
+Den vanligste formuleringen er **100 % KPI**: leien justeres hvert år med den prosentvise endringen i Statistisk sentralbyrås konsumprisindeks mellom to definerte referansemåneder.
+
+Et regneeksempel med generiske tall illustrerer mekanismen:
+
+<Math
+  formula="\text{Ny leie} = \text{Gammel leie} \times \left(1 + \frac{\Delta \text{KPI}}{100}\right)"
+  description="ΔKPI er den prosentvise endringen i konsumprisindeksen mellom to referansemåneder"
+/>
+
+Hvis gammel leie er 1 000 000 kr og KPI har steget 3,0 % siden referansepunktet:
+
+<Math
+  formula="\text{Ny leie} = 1\,000\,000 \times (1 + 0{,}03) = 1\,030\,000 \text{ kr}"
+  description="Generisk eksempel: 3 % KPI-vekst gir 30 000 kr høyere årsleie"
+/>
+
+Beløpene er kun illustrative; det er mekanismen som er poenget.
+
+## Betydningen for kontantstrømsanalysen
+
+I en [kontantstrømsanalyse](/help/article/kontantstromsanalyse) fremskrives leieinntektene år for år. KPI-reguleringsklausulen definerer vekstraten på den kontraktsfestede leien: med 100 % KPI-regulering vokser leien med KPI-antagelsen i modellen.
+
+<Note variant="info">
+  I en DCF-modell brukes typisk en langsiktig KPI-antagelse — for eksempel sentralbankens inflasjonsmål — som leievekstrate for KPI-regulerte kontrakter. Den faktiske KPI vil avvike, men antagelsen setter riktig strukturell vekst i modellen.
+</Note>
+
+Dersom kontrakten har **leietak (cap)** eller **leiegulv (floor)** på KPI-reguleringen, endres fremskrivingen: leien kan da ikke stige mer enn taket eller falle under gulvet, uansett hva KPI faktisk gjør. Dette begrenser oppsiden for utleier men gir leietaker forutsigbarhet.
+
+En [brutto leieinntekt](/help/article/brutto-leieinntekter)-analyse som ignorerer KPI-klausulen — og antar flat leie — vil systematisk undervurdere fremtidige leieinntekter i inflasjonsscenarier.
+
+## Forhandlingspunkter
+
+KPI-regulering er avtalefritt og forhandles mellom partene. De viktigste diskusjonspunktene er:
+
+**Andelen av KPI:** 100 % er standard, men i et svakt leiemarked kan leietaker forhandle frem en lavere andel — for eksempel 80 % KPI.
+
+**Tak og gulv:** Et maksimalt reguleringstak (for eksempel «ikke mer enn 4 % per år») gir leietaker forutsigbarhet. Et gulv («ikke mindre enn 2 % per år») sikrer utleier mot deflasjon eller lav inflasjon.
+
+**Referansemåned:** Valget av referansemåned (oktober er vanligst, men januar, juni og andre brukes) påvirker det konkrete reguleringstidspunktet og størrelsen det aktuelle regnskapsåret.
+
+**Markedsleieregulering:** I noen kontrakter suppleres KPI-regulering med rett til markedsleieregulering ved bestemte tidspunkter — for eksempel hvert femte år. Da kan leien justeres til markedsleie uavhengig av KPI-utviklingen.
+
+<Note variant="success">
+  I sterke leiemarkeder vil utleier foretrekke ren KPI uten tak. I leietakermarkeder er et tak på reguleringen gjerne en forutsetning for å få signert. Forhandlingen reflekterer alltid maktbalansen mellom partene.
+</Note>
+
+<Summary
+  title="Nøkkelpunkter om KPI-regulering"
+  points={[
+    {
+      title: "Bevarer realverdien",
+      description: "KPI-regulering sikrer at leieinntektenes kjøpekraft ikke eroderes av inflasjon over kontraktens løpetid.",
+      iconName: "barChart"
+    },
+    {
+      title: "100 % er standard",
+      description: "Den vanligste klausulen justerer leien med den fulle prosentvise KPI-endringen mellom to referansemåneder.",
+      iconName: "scales"
+    },
+    {
+      title: "Avgjørende i kontantstrømsanalysen",
+      description: "KPI-klausulen definerer vekstraten på leien i en DCF-modell. Å ignorere den gir systematisk feilprisede fremtidsinntekter.",
+      iconName: "lineChart"
+    },
+    {
+      title: "Forhandlbart",
+      description: "Andelen av KPI, tak, gulv og referansemåned er alle forhandlbare. Utfallet avhenger av maktbalansen mellom utleier og leietaker.",
+      iconName: "lightbulb"
+    }
+  ]}
+/>
+
+<CTA
+  badge="Modeller leievekst"
+  title="Fremskriv leieinntekter presist med Advanti"
+  description="Advanti lar deg bygge kontantstrømsmodeller med KPI-antagelser, tak og gulv — og ser hva ulike inflasjonsscenarier betyr for verdivurderingen."
+  primaryAction={{
+    label: "Prøv Advanti",
+    href: "/kontakt"
+  }}
+  secondaryAction={{
+    label: "Se alle funksjoner",
+    href: "/tjenester"
+  }}
+  size="default"
+/>

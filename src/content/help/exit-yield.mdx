@@ -1,0 +1,115 @@
+---
+title: Exit yield og terminalverdi
+publishedAt: 2026-06-12
+updatedAt: 2026-06-12
+summary: "Exit yield er avkastningskravet for terminalverdien i DCF. Lær hva det er, hvorfor det settes høyere enn inngangs-yield, og hva det betyr for verdivurderingen."
+author: codehagen
+categories:
+  - terms
+  - valuation
+related:
+  - diskontert-kontantstrom
+  - hva-er-yield
+  - sensitivitetsanalyse
+slug: exit-yield
+faq:
+  - question: "Hva er exit yield?"
+    answer: "Exit yield er det avkastningskravet man forutsetter at markedet vil bruke for å prise eiendommen ved slutten av analyseperioden i en DCF-modell. Det brukes til å beregne terminalverdien — estimert salgsverdi — på slutten av DCF-horisonten."
+  - question: "Hvorfor settes exit yield ofte høyere enn dagens yield?"
+    answer: "Exit yield settes gjerne høyere enn dagens inngangs-yield for å reflektere at eiendommen vil ha eldet, at leiekontrakter vil ha kortere gjenværende tid, og at fremtiden er usikker. Det er et forsiktighetsprinsipp som hindrer at en modell systematisk overvurderer langsiktig terminalverdi."
+  - question: "Hvilken del av verdien representerer terminalverdien?"
+    answer: "I en typisk 10-års DCF-analyse for næringseiendom vil terminalverdien utgjøre en svært betydelig andel av total nåverdi — ofte mer enn halvparten. Det gjør valget av exit yield til en av de mest verdipåvirkende forutsetningene i hele analysen."
+---
+
+## Hva er exit yield?
+
+[Exit yield](/help/article/exit-yield) er det avkastningskravet man forventer at markedet vil legge til grunn for å prise eiendommen på et fremtidig salgstidspunkt — typisk ved slutten av en [DCF-analyse](/help/article/diskontert-kontantstrom). Exit yield brukes til å beregne **terminalverdien**: det estimerte provenyet fra et hypotetisk salg etter analyseperiodens siste år.
+
+Begrepet er uløselig knyttet til DCF-metodikken og er en av de mest verdipåvirkende forutsetningene i enhver kontantstrømsbasert verdivurdering.
+
+## Terminalverdien i DCF-modellen
+
+I en [DCF-analyse](/help/article/diskontert-kontantstrom) modelleres kontantstrømmene år for år gjennom en analyseperiode — vanligvis fem til ti år. På slutten av perioden trenger man et estimat på hva eiendommen kan selges for. Det er terminalverdien.
+
+Terminalverdien beregnes ved å dele netto driftsinntekt (NOI) for det første året etter analyseperioden på exit yield:
+
+<Math
+  formula="\text{Terminalverdi} = \frac{\text{NOI}_{n+1}}{\text{Exit yield}}"
+  description="NOI n+1 er netto driftsinntekt i det første året etter analyseperioden; exit yield er det forventede avkastningskravet ved salg"
+/>
+
+Terminalverdien neddiskonteres deretter tilbake til analysetidspunktet med diskonteringsrenten, og legges til summen av de diskonterte årlige kontantstrømmene for å finne total nåverdi.
+
+## Exit yield versus dagens yield
+
+Et naturlig spørsmål er om man ikke bare kan bruke dagens [yield](/help/article/hva-er-yield) som exit yield. Svaret er at det kan man teknisk sett gjøre, men det er ofte for optimistisk — og det er to viktige grunner til det.
+
+**Eiendommen eldes.** Etter en analyseperiode på for eksempel ti år vil bygget ha eldet teknisk og funksjonelt. Vedlikeholdsbehov øker, og standarden relativt til nyere bygg i markedet svekkes. Markedet vil typisk kreve høyere avkastning for å kompensere for økt risiko.
+
+**Leiekontrakter har kortere gjenværende tid.** Verdien av sikre, langsiktige kontrakter — som kanskje var en av verdigrunnlagene ved kjøpet — er redusert ved re-salg fordi kontraktene nå er nærmere forfall.
+
+<Note variant="info">
+  En vanlig tilnærming er å sette exit yield noe høyere enn inngangs-yield — for eksempel ett kvart til ett halvt prosentpoeng — for å reflektere usikkerhet og aldring. Men det finnes ingen fast regel; valget må begrunnes konkret ut fra eiendomstype, beliggenhet og kontraktsstruktur.
+</Note>
+
+## Sensitiviteten for exit yield
+
+Fordi terminalverdien typisk utgjør en svært betydelig andel av total nåverdi i en DCF-modell, er verdivurderingen særlig følsom for valget av exit yield. En liten endring i exit yield kan gi store utslag på konklusjonen.
+
+Dette er årsaken til at [sensitivitetsanalyse](/help/article/sensitivitetsanalyse) er uunnværlig i enhver seriøs DCF-modell: man bør alltid beregne hvordan nåverdien endres dersom exit yield settes høyere eller lavere enn basisantagelsen.
+
+Et typisk sensitivitetsdisplay viser nåverdi for ulike kombinasjoner av diskonteringsrente og exit yield i en matrise — slik at leseren ser hvilke forutsetninger som er kritiske og hvilke scenarier som er rimelige.
+
+## Praktisk anvendelse
+
+Valg av exit yield krever vurdering av:
+
+1. **Eiendomstype og segment** — Noen segmenter er mer konjunkturfølsomme enn andre, noe som taler for konservative exit-antagelser.
+2. **Leietakerkvalitet og gjenværende kontraktstid** — Jo kortere gjenværende kontraktstid ved exit-tidspunktet, desto høyere risiko og typisk høyere exit yield.
+3. **Bygg- og beliggenhetskvalitet** — Sentral beliggenhet og høy teknisk standard gir grunnlag for lavere exit yield enn periferi og vedlikeholdskrevende bygg.
+4. **Markedsutvikling** — Forventninger om renteutviklingen og generell markedsprisingstrend er sentrale innspill.
+
+<Note variant="success">
+  Dokumenter alltid begrunnelsen for valg av exit yield. En ubegrunnet exit yield er en svakhet som gjør verdivurderingen vanskelig å etterprøve og kritisere konstruktivt.
+</Note>
+
+<Summary
+  title="Nøkkelpunkter om exit yield og terminalverdi"
+  points={[
+    {
+      title: "Hva det er",
+      description: "Exit yield er det forventede avkastningskravet ved et fremtidig salg, og brukes til å beregne terminalverdien i en DCF-analyse.",
+      iconName: "barChart"
+    },
+    {
+      title: "Typisk satt høyere",
+      description: "Exit yield settes gjerne høyere enn inngangs-yield for å reflektere aldring, kortere kontrakter og fremtidig usikkerhet.",
+      iconName: "scales"
+    },
+    {
+      title: "Stor verdipåvirkning",
+      description: "Terminalverdien utgjør en svært stor andel av total nåverdi. Valg av exit yield er en av de mest verdipåvirkende forutsetningene i analysen.",
+      iconName: "lineChart"
+    },
+    {
+      title: "Alltid sensitivitetstest",
+      description: "Fordi exit yield er så verdisensitiv, bør sensitivitetsanalyse alltid vise verdien under ulike exit yield-scenarier.",
+      iconName: "lightbulb"
+    }
+  ]}
+/>
+
+<CTA
+  badge="Verdsett riktig"
+  title="Bygg presise DCF-modeller med Advanti"
+  description="Advanti gir deg verktøy for DCF-analyse med sensitivitetstesting på exit yield, diskonteringsrente og leievekst."
+  primaryAction={{
+    label: "Prøv Advanti",
+    href: "/kontakt"
+  }}
+  secondaryAction={{
+    label: "Se alle funksjoner",
+    href: "/tjenester"
+  }}
+  size="default"
+/>

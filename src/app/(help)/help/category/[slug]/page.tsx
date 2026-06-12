@@ -60,6 +60,10 @@ export async function generateMetadata({
 
   const { title, description } = category
 
+  const hasArticles = allHelpPosts.some((post) =>
+    (post.categories as string[]).includes(slug),
+  )
+
   return constructMetadata({
     path: `/help/category/${slug}`,
     title: `${title} – Advanti Hjelpesenter`,
@@ -67,6 +71,7 @@ export async function generateMetadata({
     image: `/api/og/help?title=${encodeURIComponent(
       title,
     )}&summary=${encodeURIComponent(description)}`,
+    noIndex: !hasArticles,
   })
 }
 
