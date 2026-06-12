@@ -2712,7 +2712,11 @@ h1, h2, h3 {
 @media (max-width: 880px) {
   .mi-zone-mini {
     position: absolute;
-    bottom: 60px;  /* over rail (12px + 36px knapp + 12px luft) */
+    /* Railen stabler til TO rader på smale skjermer (chips venstre, WMS/reset
+       høyre — hver gruppe wrapper internt). Verste fall med 44px coarse-knapper:
+       12 + 44 + 6 + 44 = 106px — mini må klarere det, ellers blokkerer den
+       Sentrum-chipen (mobilnavigasjonen). */
+    bottom: 112px;
     left: 12px;
     right: 12px;
     z-index: 800;
