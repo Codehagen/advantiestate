@@ -1,28 +1,14 @@
 import Link from "next/link";
-
-const TJENESTER = [
-  { href: "/tjenester/verdivurdering", label: "Verdivurdering" },
-  { href: "/tjenester/salg", label: "Salg" },
-  { href: "/tjenester/transaksjoner", label: "Transaksjonsrådgivning" },
-  { href: "/tjenester/utleie", label: "Utleie" },
-  { href: "/tjenester/radgivning", label: "Markedsdata" },
-  { href: "/tjenester/strategisk-radgivning", label: "Strategisk rådgivning" },
-];
-
-const ADVANTI = [
-  { href: "/om-oss", label: "Om oss" },
-  { href: "/kunder", label: "Utvalgte oppdrag" },
-  { href: "/markedsinnsikt", label: "Markedsinnsikt" },
-  { href: "/analyseportal", label: "Analyseportal" },
-  { href: "/investorportal", label: "Investorportal" },
-  { href: "/blog", label: "Artikler" },
-  { href: "/presserom", label: "Presserom" },
-  { href: "/karriere", label: "Karriere" },
-  { href: "/kontakt", label: "Kontakt" },
-];
+import { footerColumns } from "@/lib/navigation";
+import { getCities } from "@/lib/navigationServer";
+import { FooterCityLinks } from "./FooterCityLinks";
 
 /** Shared site footer with the large editorial wordmark. */
-export function Footer() {
+export async function Footer() {
+  const cities = getCities();
+  const tjenester = footerColumns.tjenester;
+  const advanti = footerColumns.advanti;
+
   return (
     <footer className="footer">
       <div className="wrap">
@@ -46,9 +32,9 @@ export function Footer() {
           <div className="footer-col">
             <h4>Tjenester</h4>
             <ul>
-              {TJENESTER.map((l) => (
-                <li key={l.href}>
-                  <Link href={l.href}>{l.label}</Link>
+              {tjenester.map((l) => (
+                <li key={l.path}>
+                  <Link href={l.path}>{l.label}</Link>
                 </li>
               ))}
             </ul>
@@ -57,12 +43,17 @@ export function Footer() {
           <div className="footer-col">
             <h4>Advanti</h4>
             <ul>
-              {ADVANTI.map((l) => (
-                <li key={l.href}>
-                  <Link href={l.href}>{l.label}</Link>
+              {advanti.map((l) => (
+                <li key={l.path}>
+                  <Link href={l.path}>{l.label}</Link>
                 </li>
               ))}
             </ul>
+          </div>
+
+          <div className="footer-col">
+            <h4>Byer vi dekker</h4>
+            <FooterCityLinks cities={cities} />
           </div>
 
           <div className="footer-col">

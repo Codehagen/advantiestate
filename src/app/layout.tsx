@@ -3,6 +3,7 @@ import { GoogleTagManager } from "@/components/analytics/GoogleTagManager";
 import { TrackingListener } from "@/components/analytics/TrackingListener";
 import { Footer } from "@/components/site/Footer";
 import { Nav } from "@/components/site/Nav";
+import { getCities } from "@/lib/navigationServer";
 import { baseMetadata } from "@/lib/utils";
 import type { Viewport } from "next";
 import { Inter } from "next/font/google";
@@ -27,11 +28,15 @@ export const viewport: Viewport = {
   themeColor: "#2c2825",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // Derived from content-collections at build time — passed to the Nav
+  // client component so it never imports content-collections itself.
+  const cities = getCities();
+
   return (
     <html
       lang="nb"
@@ -46,7 +51,7 @@ export default function RootLayout({
       <body className="min-h-screen antialiased selection:bg-light-blue selection:text-warm-grey">
         <GoogleTagManager />
         <TrackingListener />
-        <Nav />
+        <Nav cities={cities} />
         {children}
         <Footer />
         {/* Only on real Vercel deploys — locally/CI the insights script 404s
