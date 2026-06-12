@@ -656,7 +656,7 @@ the AI SEO closure review (/plan-eng-review, 2026-05-24), the AI-SEO research pa
 - **Context:** Gaten finnes og fungerer teknisk (MarkedsrapportGate.tsx);
   spørsmålet er om den selger. Naturlig frist: neste rapportutgave 15. juli 2026
   (henger sammen med TODO 24 kvartalsrunbook). CEO-plan:
-  ~/.gstack/projects/Codehagen-advantiestate/ceo-plans/2026-06-12-nav-ia-redesign.md
+  (intern CEO-plan, 2026-06-12)
 - **Effort:** S (human ~3t / CC ~20 min + innholdsvurdering) · **Priority:** P2
 - **Depends on:** IA-redesign PR 1 (trafikk-ruting) + rapport_bestill-event (PR 2)
 

@@ -7,6 +7,7 @@
 import { Fragment, useEffect, useState } from "react"
 import dynamic from "next/dynamic"
 import Link from "next/link"
+import { SeOgsa } from "@/components/site/SeOgsa"
 import { MapErrorBoundary } from "./MapErrorBoundary"
 import { trackEvent } from "@/lib/analytics"
 import {
@@ -75,35 +76,14 @@ const SECTOR_COLORS = [
 
 // ════════════════════════════════════════════════════════════════════════
 // SE OGSÅ — Gå dypere (data-sektorene yield/leie/tx/ledighet)
+// Delt konstant — alle fire sektorvisninger bruker de samme tre lenkene.
 // ════════════════════════════════════════════════════════════════════════
 
 const GA_DYPERE_LINKS = [
   { href: "/markedsinnsikt/kart", label: "Markedskartet" },
   { href: "/markedsrapport", label: "Markedsrapport" },
   { href: "/help/article/prime-yield", label: "Prime yield forklart" },
-] as const
-
-function GaDypereBlock({ from }: { from: string }) {
-  return (
-    <div className="seogsa" style={{ marginTop: 56 }}>
-      <div className="seogsa-heading">Gå dypere</div>
-      <ul className="seogsa-list">
-        {GA_DYPERE_LINKS.map(({ href, label }) => (
-          <li key={href}>
-            <Link
-              href={href}
-              className="seogsa-link"
-              onClick={() => trackEvent("seogsa_click", { from, to: href })}
-            >
-              {label}
-              <span className="seogsa-arrow">→</span>
-            </Link>
-          </li>
-        ))}
-      </ul>
-    </div>
-  )
-}
+]
 
 type SectorId =
   | "yield"
@@ -339,7 +319,7 @@ function YieldView() {
         </div>
       </div>
 
-      <GaDypereBlock from="yield" />
+      <SeOgsa heading="Gå dypere" from="sektor-yield" links={GA_DYPERE_LINKS} />
     </div>
   )
 }
@@ -525,7 +505,7 @@ function LeieView() {
         </div>
       </div>
 
-      <GaDypereBlock from="leie" />
+      <SeOgsa heading="Gå dypere" from="sektor-leie" links={GA_DYPERE_LINKS} />
     </div>
   )
 }
@@ -657,7 +637,7 @@ function TxView() {
         <span>+47 transaksjoner sporet i 2025</span>
       </div>
 
-      <GaDypereBlock from="tx" />
+      <SeOgsa heading="Gå dypere" from="sektor-tx" links={GA_DYPERE_LINKS} />
     </div>
   )
 }
@@ -797,7 +777,7 @@ function LedighetView() {
         </div>
       </div>
 
-      <GaDypereBlock from="ledighet" />
+      <SeOgsa heading="Gå dypere" from="sektor-ledighet" links={GA_DYPERE_LINKS} />
     </div>
   )
 }

@@ -92,6 +92,28 @@ test("rapport_bestill-event fyrer ved klikk på gate-lenkene (8A-baseline)", asy
   ).toBe(true);
 });
 
+test("seogsa_click fyrer fra yield-visningens Gå dypere-blokk", async ({
+  page,
+}) => {
+  await page.addInitScript(() => {
+    (window as { dataLayer?: unknown[] }).dataLayer = [];
+  });
+  await page.goto("/markedsinnsikt#yield", { waitUntil: "domcontentloaded" });
+  // Vent til yield-seksjonen er hydrert (section-head er det første synlige elementet)
+  await page
+    .locator(".mi-section-head")
+    .first()
+    .waitFor({ state: "visible", timeout: 15000 });
+  // Klikk første lenke i SeOgsa-blokken i yield-visningen
+  await page.locator(".seogsa a").first().click();
+  const events = await page.evaluate(
+    () => (window as { dataLayer?: unknown[] }).dataLayer ?? [],
+  );
+  expect(
+    events.some((e) => (e as { event?: string }).event === "seogsa_click"),
+  ).toBe(true);
+});
+
 test("kartpanelets verdivurderingslenke bruker kanonisk URL (ikke 308-redirect)", async ({
   page,
 }) => {

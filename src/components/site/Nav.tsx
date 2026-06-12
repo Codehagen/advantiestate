@@ -2,9 +2,10 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { trackEvent } from "@/lib/analytics";
-import { navGroups, stripHash } from "@/lib/navigation";
+import type { NavEntry } from "@/lib/navigation";
+import { stripHash } from "@/lib/stripHash";
 import type { CityLink } from "@/lib/navigationServer";
 
 // useLayoutEffect on the client so the sentinel check runs BEFORE first paint
@@ -15,6 +16,7 @@ const useIsoLayoutEffect =
 
 export interface NavProps {
   cities: CityLink[];
+  groups: Record<GroupId, NavEntry[]>;
 }
 
 type GroupId = "tjenester" | "innsikt" | "om-oss";
@@ -39,7 +41,7 @@ type GroupId = "tjenester" | "innsikt" | "om-oss";
  *   Nav is transparent until sentinel scrolls out of view, then goes solid.
  *   page WITHOUT a hero → no sentinel → Nav is solid immediately.
  */
-export function Nav({ cities }: NavProps) {
+export function Nav({ cities, groups }: NavProps) {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(true);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -47,6 +49,7 @@ export function Nav({ cities }: NavProps) {
   const [openMobileGroup, setOpenMobileGroup] = useState<GroupId | null>(null);
 
   const navRef = useRef<HTMLElement>(null);
+  const toggleRef = useRef<HTMLButtonElement>(null);
   const panelRefs = useRef<Partial<Record<GroupId, HTMLDivElement>>>({});
   const groupBtnRefs = useRef<Partial<Record<GroupId, HTMLButtonElement>>>({});
 
@@ -100,7 +103,10 @@ export function Nav({ cities }: NavProps) {
     const prev = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setMenuOpen(false);
+      if (e.key === "Escape") {
+        setMenuOpen(false);
+        toggleRef.current?.focus();
+      }
     };
     document.addEventListener("keydown", onKeyDown);
     return () => {
@@ -145,7 +151,7 @@ export function Nav({ cities }: NavProps) {
 
   // A group is active if any of its non-dynamic entries match the current path.
   const isGroupActive = (id: GroupId): boolean =>
-    (navGroups[id] ?? []).some(
+    (groups[id] ?? []).some(
       (e) => !e.path.includes("[") && isLinkActive(e.path),
     );
 
@@ -167,15 +173,36 @@ export function Nav({ cities }: NavProps) {
     .filter(Boolean)
     .join(" ");
 
-  // Convenience: setter for a ref callback in the nav-links row.
-  const setGroupBtn =
-    (id: GroupId) => (el: HTMLButtonElement | null) => {
-      if (el) groupBtnRefs.current[id] = el;
-    };
-  const setPanelRef =
-    (id: GroupId) => (el: HTMLDivElement | null) => {
-      if (el) panelRefs.current[id] = el;
-    };
+  // Stable memoized ref callbacks — identity never changes between renders.
+  const groupBtnCb = useMemo(
+    () => ({
+      tjenester: (el: HTMLButtonElement | null) => {
+        groupBtnRefs.current["tjenester"] = el ?? undefined;
+      },
+      innsikt: (el: HTMLButtonElement | null) => {
+        groupBtnRefs.current["innsikt"] = el ?? undefined;
+      },
+      "om-oss": (el: HTMLButtonElement | null) => {
+        groupBtnRefs.current["om-oss"] = el ?? undefined;
+      },
+    }),
+    [],
+  );
+
+  const panelRefCb = useMemo(
+    () => ({
+      tjenester: (el: HTMLDivElement | null) => {
+        panelRefs.current["tjenester"] = el ?? undefined;
+      },
+      innsikt: (el: HTMLDivElement | null) => {
+        panelRefs.current["innsikt"] = el ?? undefined;
+      },
+      "om-oss": (el: HTMLDivElement | null) => {
+        panelRefs.current["om-oss"] = el ?? undefined;
+      },
+    }),
+    [],
+  );
 
   return (
     <>
@@ -197,7 +224,7 @@ export function Nav({ cities }: NavProps) {
             aria-expanded={openGroup === "tjenester"}
             aria-controls="nav-panel-tjenester"
             data-active={isGroupActive("tjenester") ? true : undefined}
-            ref={setGroupBtn("tjenester")}
+            ref={groupBtnCb["tjenester"]}
             onClick={() => toggleGroup("tjenester")}
           >
             Tjenester
@@ -218,7 +245,7 @@ export function Nav({ cities }: NavProps) {
             aria-expanded={openGroup === "innsikt"}
             aria-controls="nav-panel-innsikt"
             data-active={isGroupActive("innsikt") ? true : undefined}
-            ref={setGroupBtn("innsikt")}
+            ref={groupBtnCb["innsikt"]}
             onClick={() => toggleGroup("innsikt")}
           >
             Innsikt
@@ -231,7 +258,7 @@ export function Nav({ cities }: NavProps) {
             aria-expanded={openGroup === "om-oss"}
             aria-controls="nav-panel-om-oss"
             data-active={isGroupActive("om-oss") ? true : undefined}
-            ref={setGroupBtn("om-oss")}
+            ref={groupBtnCb["om-oss"]}
             onClick={() => toggleGroup("om-oss")}
           >
             Om oss
@@ -257,6 +284,7 @@ export function Nav({ cities }: NavProps) {
 
         <button
           type="button"
+          ref={toggleRef}
           className={menuOpen ? "nav-toggle open" : "nav-toggle"}
           aria-label={menuOpen ? "Lukk meny" : "Åpne meny"}
           aria-expanded={menuOpen}
@@ -278,7 +306,7 @@ export function Nav({ cities }: NavProps) {
       <div
         id="nav-panel-tjenester"
         className={`nav-panel${openGroup === "tjenester" ? " open" : ""}`}
-        ref={setPanelRef("tjenester")}
+        ref={panelRefCb["tjenester"]}
         inert={openGroup !== "tjenester"}
       >
         <div className="wrap">
@@ -293,7 +321,7 @@ export function Nav({ cities }: NavProps) {
                   Tjenester
                 </Link>
               </li>
-              {navGroups.tjenester
+              {groups.tjenester
                 .filter((e) => e.path !== "/tjenester")
                 .map((e) => (
                   <li key={e.path}>
@@ -317,7 +345,7 @@ export function Nav({ cities }: NavProps) {
       <div
         id="nav-panel-innsikt"
         className={`nav-panel${openGroup === "innsikt" ? " open" : ""}`}
-        ref={setPanelRef("innsikt")}
+        ref={panelRefCb["innsikt"]}
         inert={openGroup !== "innsikt"}
       >
         <div className="wrap">
@@ -340,7 +368,7 @@ export function Nav({ cities }: NavProps) {
                     Oversikt over næringseiendomsmarkedet i Nord-Norge.
                   </span>
                 </li>
-                {navGroups.innsikt
+                {groups.innsikt
                   .filter((e) => e.path !== "/markedsinnsikt")
                   .map((e) => (
                     <li key={e.path}>
@@ -395,7 +423,7 @@ export function Nav({ cities }: NavProps) {
       <div
         id="nav-panel-om-oss"
         className={`nav-panel${openGroup === "om-oss" ? " open" : ""}`}
-        ref={setPanelRef("om-oss")}
+        ref={panelRefCb["om-oss"]}
         inert={openGroup !== "om-oss"}
       >
         <div className="wrap">
@@ -409,7 +437,7 @@ export function Nav({ cities }: NavProps) {
                   Om oss
                 </Link>
               </li>
-              {navGroups["om-oss"]
+              {groups["om-oss"]
                 .filter((e) => e.path !== "/om-oss")
                 .map((e) => (
                   <li key={e.path}>
@@ -434,6 +462,7 @@ export function Nav({ cities }: NavProps) {
       <div
         id="nav-mobile"
         className={menuOpen ? "nav-mobile open" : "nav-mobile"}
+        inert={!menuOpen}
       >
         <div className="nav-mobile-links">
           <MobileGroup
@@ -452,7 +481,7 @@ export function Nav({ cities }: NavProps) {
                 label: "Tjenester",
                 active: isLinkActive("/tjenester"),
               },
-              ...navGroups.tjenester
+              ...groups.tjenester
                 .filter((e) => e.path !== "/tjenester")
                 .map((e) => ({
                   href: e.path,
@@ -479,7 +508,7 @@ export function Nav({ cities }: NavProps) {
               setOpenMobileGroup((p) => (p === "innsikt" ? null : "innsikt"))
             }
             isActive={isGroupActive("innsikt")}
-            links={navGroups.innsikt.map((e) => ({
+            links={groups.innsikt.map((e) => ({
               href: e.path,
               label: e.label,
               active: isLinkActive(e.path),
@@ -495,7 +524,7 @@ export function Nav({ cities }: NavProps) {
               setOpenMobileGroup((p) => (p === "om-oss" ? null : "om-oss"))
             }
             isActive={isGroupActive("om-oss")}
-            links={navGroups["om-oss"].map((e) => ({
+            links={groups["om-oss"].map((e) => ({
               href: e.path,
               label: e.label,
               active: isLinkActive(e.path),

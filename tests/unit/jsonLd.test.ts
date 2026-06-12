@@ -51,4 +51,19 @@ describe("jsonLdScriptProps", () => {
     expect(dangerouslySetInnerHTML.__html).not.toContain("</script")
     expect(JSON.parse(dangerouslySetInnerHTML.__html)).toEqual(data)
   })
+
+  it("escapes U+2028 and U+2029 line terminators — OWASP JSON-LD defence", () => {
+    // U+2028 LINE SEPARATOR and U+2029 PARAGRAPH SEPARATOR are valid JSON but
+    // can terminate JS string literals in older parsers (OWASP injection vector).
+    const ls = " "
+    const ps = " "
+    const data = { body: `before${ls}middle${ps}end` }
+    const { dangerouslySetInnerHTML } = jsonLdScriptProps(data)
+    const html = dangerouslySetInnerHTML.__html
+    // The raw Unicode codepoints must not appear literally in the output.
+    expect(html).not.toContain(ls)
+    expect(html).not.toContain(ps)
+    // The value must survive a round-trip through JSON.parse.
+    expect(JSON.parse(html).body).toBe(data.body)
+  })
 })

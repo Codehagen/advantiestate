@@ -95,6 +95,24 @@ describe("footerColumns.advanti", () => {
       expect(entry.label.length).toBeGreaterThan(0)
     }
   })
+
+  it("no advanti paths were silently dropped — all hardcoded paths resolve to registry entries", () => {
+    // The footerColumns.advanti list is built from 9 hardcoded paths via .find()
+    // + .filter(). If any path is missing from REGISTRY it is silently dropped.
+    // This assertion catches dangling paths before they reach production.
+    const EXPECTED_ADVANTI_PATHS = [
+      "/om-oss",
+      "/kunder",
+      "/markedsinnsikt",
+      "/karriere",
+      "/kontakt",
+      "/presserom",
+      "/analyseportal",
+      "/investorportal",
+      "/blog",
+    ]
+    expect(footerColumns.advanti.length).toBe(EXPECTED_ADVANTI_PATHS.length)
+  })
 })
 
 // ── navGroups ────────────────────────────────────────────────────────────────

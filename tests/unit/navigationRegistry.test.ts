@@ -128,6 +128,20 @@ describe("parentChain", () => {
     ]
     expect(parentChain("/unknown", circular)).toBeNull()
   })
+
+  it("dangling parent — returns partial chain containing the entry, not null", () => {
+    // Entry whose parent path does not exist in the registry.
+    // parentChain should return a chain with the entry itself rather than null,
+    // because the entry IS registered — the parent is simply unresolvable.
+    const registry: NavEntry[] = [
+      { path: "/child", label: "Child", parent: "/nonexistent" },
+    ]
+    const result = parentChain("/child", registry)
+    expect(result).not.toBeNull()
+    expect(result!.some((e) => e.path === "/child")).toBe(true)
+    // Should not contain a fabricated entry for the missing parent.
+    expect(result!.some((e) => e.path === "/nonexistent")).toBe(false)
+  })
 })
 
 // ── stripHash tests ─────────────────────────────────────────────────────────

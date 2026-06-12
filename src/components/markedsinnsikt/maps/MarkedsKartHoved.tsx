@@ -14,8 +14,8 @@ import dynamic from "next/dynamic"
 import Link from "next/link"
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 
+import { SeOgsa } from "@/components/site/SeOgsa"
 import { MapErrorBoundary } from "@/components/markedsinnsikt/MapErrorBoundary"
-import { trackEvent } from "@/lib/analytics"
 import { LATEST_RELEASE } from "@/components/markedsinnsikt/marketReleases"
 import { PORTAL_CITY_BY_SLUG } from "@/components/naringsmegler/cityMarketData"
 
@@ -425,35 +425,19 @@ export function MarkedsKartHoved() {
             </Link>
           </div>
 
-          {/* Se også — redaksjonell kryss­lenke­blokk for aktiv by.
-              Inline markup (klient­komponent) med seogsa-klasser. */}
-          {(() => {
-            const bySlug = BROKER_SLUG_BY_NAME[selectedCity.name] ?? selectedCity.id
-            const seLinks = [
-              { href: `/naringsmegler/${bySlug}`, label: `Næringsmegler i ${selectedCity.name}` },
+          {/* Se også — redaksjonell kryss­lenke­blokk for aktiv by. */}
+          <SeOgsa
+            heading={`Gå videre med ${selectedCity.name}`}
+            from="kart"
+            links={[
+              {
+                href: `/naringsmegler/${BROKER_SLUG_BY_NAME[selectedCity.name] ?? selectedCity.id}`,
+                label: `Næringsmegler i ${selectedCity.name}`,
+              },
               { href: "/help/article/prime-yield", label: "Prime yield forklart" },
               { href: "/markedsrapport", label: "Markedsrapport" },
-            ]
-            return (
-              <div className="seogsa">
-                <div className="seogsa-heading">Gå videre med {selectedCity.name}</div>
-                <ul className="seogsa-list">
-                  {seLinks.map(({ href, label }) => (
-                    <li key={href}>
-                      <Link
-                        href={href}
-                        className="seogsa-link"
-                        onClick={() => trackEvent("seogsa_click", { from: "kart", to: href })}
-                      >
-                        {label}
-                        <span className="seogsa-arrow">→</span>
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )
-          })()}
+            ]}
+          />
         </div>
       </div>
 

@@ -3,6 +3,7 @@ import { GoogleTagManager } from "@/components/analytics/GoogleTagManager";
 import { TrackingListener } from "@/components/analytics/TrackingListener";
 import { Footer } from "@/components/site/Footer";
 import { Nav } from "@/components/site/Nav";
+import { navGroups } from "@/lib/navigation";
 import { getCities } from "@/lib/navigationServer";
 import { baseMetadata } from "@/lib/utils";
 import type { Viewport } from "next";
@@ -51,7 +52,7 @@ export default async function RootLayout({
       <body className="min-h-screen antialiased selection:bg-light-blue selection:text-warm-grey">
         <GoogleTagManager />
         <TrackingListener />
-        <Nav cities={cities} />
+        <Nav cities={cities} groups={navGroups} />
         {children}
         <Footer />
         {/* Only on real Vercel deploys — locally/CI the insights script 404s

@@ -141,6 +141,7 @@ test("lenkeintegritet: kurerte SeOgsa-hrefs returnerer ikke 404", async ({
     "/markedsrapport",
     "/help/article/prime-yield",
     "/verktoy",
+    "/sjekkliste-verdivurdering",
   ];
 
   for (const href of hrefs) {
