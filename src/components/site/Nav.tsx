@@ -315,6 +315,7 @@ export function Nav({ cities, groups }: NavProps) {
               {/* /tjenester is the emphasized parent link, shown first */}
               <li className="nav-panel-parent">
                 <Link
+                  prefetch={false}
                   href="/tjenester"
                   aria-current={cleanPath === "/tjenester" ? "page" : undefined}
                 >
@@ -326,6 +327,7 @@ export function Nav({ cities, groups }: NavProps) {
                 .map((e) => (
                   <li key={e.path}>
                     <Link
+                      prefetch={false}
                       href={e.path}
                       aria-current={isLinkActive(e.path) ? "page" : undefined}
                     >
@@ -357,6 +359,7 @@ export function Nav({ cities, groups }: NavProps) {
                 {/* /markedsinnsikt is the emphasized parent link */}
                 <li className="nav-panel-parent">
                   <Link
+                    prefetch={false}
                     href="/markedsinnsikt"
                     aria-current={
                       isLinkActive("/markedsinnsikt") ? "page" : undefined
@@ -373,6 +376,7 @@ export function Nav({ cities, groups }: NavProps) {
                   .map((e) => (
                     <li key={e.path}>
                       <Link
+                        prefetch={false}
                         href={e.path}
                         aria-current={isLinkActive(e.path) ? "page" : undefined}
                       >
@@ -392,6 +396,7 @@ export function Nav({ cities, groups }: NavProps) {
               <div className="nav-panel-cities" onClick={closePanel}>
                 {cities.map((city) => (
                   <Link
+                    prefetch={false}
                     key={city.slug}
                     href={`/naringsmegler/${city.slug}`}
                     aria-current={
@@ -405,6 +410,7 @@ export function Nav({ cities, groups }: NavProps) {
                 ))}
               </div>
               <Link
+                prefetch={false}
                 href="/naringsmegler"
                 className="nav-panel-all-cities"
                 aria-current={
@@ -431,6 +437,7 @@ export function Nav({ cities, groups }: NavProps) {
             <ul className="nav-panel-list" onClick={closePanel}>
               <li className="nav-panel-parent">
                 <Link
+                  prefetch={false}
                   href="/om-oss"
                   aria-current={isLinkActive("/om-oss") ? "page" : undefined}
                 >
@@ -442,6 +449,7 @@ export function Nav({ cities, groups }: NavProps) {
                 .map((e) => (
                   <li key={e.path}>
                     <Link
+                      prefetch={false}
                       href={e.path}
                       aria-current={isLinkActive(e.path) ? "page" : undefined}
                     >
@@ -493,6 +501,7 @@ export function Nav({ cities, groups }: NavProps) {
           />
 
           <Link
+            prefetch={false}
             href="/eiendommer"
             aria-current={isLinkActive("/eiendommer") ? "page" : undefined}
             onClick={() => setMenuOpen(false)}
@@ -533,6 +542,7 @@ export function Nav({ cities, groups }: NavProps) {
           />
 
           <Link
+            prefetch={false}
             href="/kontakt"
             aria-current={isLinkActive("/kontakt") ? "page" : undefined}
             onClick={() => setMenuOpen(false)}
@@ -542,6 +552,7 @@ export function Nav({ cities, groups }: NavProps) {
         </div>
 
         <Link
+          prefetch={false}
           href="/verktoy/pris-verdivurdering"
           className="nav-cta nav-mobile-cta"
           onClick={() => {
@@ -599,6 +610,7 @@ function MobileGroup({
         <div>
           {links.map((link) => (
             <Link
+              prefetch={false}
               key={link.href}
               href={link.href}
               aria-current={link.active ? "page" : undefined}

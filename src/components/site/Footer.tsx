@@ -14,7 +14,7 @@ export async function Footer() {
       <div className="wrap">
         <div className="footer-top">
           <div className="footer-brand">
-            <Link href="/" className="nav-logo">
+            <Link prefetch={false} href="/" className="nav-logo">
               <span className="mark" />
               <span>
                 Advanti
@@ -34,7 +34,7 @@ export async function Footer() {
             <ul>
               {tjenester.map((l) => (
                 <li key={l.path}>
-                  <Link href={l.path}>{l.label}</Link>
+                  <Link prefetch={false} href={l.path}>{l.label}</Link>
                 </li>
               ))}
             </ul>
@@ -45,7 +45,7 @@ export async function Footer() {
             <ul>
               {advanti.map((l) => (
                 <li key={l.path}>
-                  <Link href={l.path}>{l.label}</Link>
+                  <Link prefetch={false} href={l.path}>{l.label}</Link>
                 </li>
               ))}
             </ul>
@@ -78,8 +78,8 @@ export async function Footer() {
             {`© ${new Date().getFullYear()} Eiendomsmegler Nord AS · Org. nr. 927 102 234 MVA`}
           </span>
           <span>
-            <Link href="/privacy">Personvern</Link> ·{" "}
-            <Link href="/terms">Vilkår</Link>
+            <Link prefetch={false} href="/privacy">Personvern</Link> ·{" "}
+            <Link prefetch={false} href="/terms">Vilkår</Link>
           </span>
         </div>
 

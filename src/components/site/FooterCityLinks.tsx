@@ -11,6 +11,7 @@ export function FooterCityLinks({ cities }: { cities: CityLink[] }) {
       {cities.map((city) => (
         <li key={city.slug}>
           <Link
+            prefetch={false}
             href={`/naringsmegler/${city.slug}`}
             onClick={() => trackEvent("footer_by_click", { city: city.name })}
           >
