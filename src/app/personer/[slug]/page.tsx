@@ -1,5 +1,6 @@
-import StructuredData from "@/components/StructuredData";
-import { Breadcrumbs } from "@/components/site/Breadcrumbs";
+import StructuredData, {
+  BreadcrumbStructuredData,
+} from "@/components/StructuredData";
 import { CtaStrip } from "@/components/site/CtaStrip";
 import { constructMetadata } from "@/lib/utils";
 import { allPersonPosts } from "content-collections";
@@ -83,6 +84,13 @@ export default async function PersonPage({ params }: PersonPageProps) {
 
   return (
     <>
+      <BreadcrumbStructuredData
+        items={[
+          { name: "Hjem", url: "/" },
+          { name: "Team", url: "/personer" },
+          { name: person.name, url: `/personer/${person.slug}` },
+        ]}
+      />
       <StructuredData
         type="person"
         data={{
@@ -103,10 +111,13 @@ export default async function PersonPage({ params }: PersonPageProps) {
       {/* HERO */}
       <section className="subhero" style={{ paddingBottom: 0 }}>
         <div className="wrap">
-          <Breadcrumbs
-            path={`/personer/${person.slug}`}
-            leafLabel={person.name}
-          />
+          <nav className="crumb" aria-label="Brødsmuler">
+            <Link href="/">Hjem</Link>
+            <span className="sep">/</span>
+            <Link href="/personer">Vårt team</Link>
+            <span className="sep">/</span>
+            <span className="here">{person.name}</span>
+          </nav>
 
           <div className="pe-hero">
             <div className="portrait">

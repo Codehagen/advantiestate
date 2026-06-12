@@ -14,7 +14,6 @@ import dynamic from "next/dynamic"
 import Link from "next/link"
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 
-import { SeOgsa } from "@/components/site/SeOgsa"
 import { MapErrorBoundary } from "@/components/markedsinnsikt/MapErrorBoundary"
 import { LATEST_RELEASE } from "@/components/markedsinnsikt/marketReleases"
 import { PORTAL_CITY_BY_SLUG } from "@/components/naringsmegler/cityMarketData"
@@ -404,7 +403,7 @@ export function MarkedsKartHoved() {
               )}
               {/* Konverteringslenke — typografisk dempet, ikke en tredje pill (design 3.1) */}
               <Link
-                href="/tjenester/verdivurdering"
+                href="/tjenester/verdsettelse"
                 className="mi-zone-valuation-link"
               >
                 Indikative tall — bestill en konkret verdivurdering
@@ -424,20 +423,6 @@ export function MarkedsKartHoved() {
               Se i Analyseportalen
             </Link>
           </div>
-
-          {/* Se også — redaksjonell kryss­lenke­blokk for aktiv by. */}
-          <SeOgsa
-            heading={`Gå videre med ${selectedCity.name}`}
-            from="kart"
-            links={[
-              {
-                href: `/naringsmegler/${BROKER_SLUG_BY_NAME[selectedCity.name] ?? selectedCity.id}`,
-                label: `Næringsmegler i ${selectedCity.name}`,
-              },
-              { href: "/help/article/prime-yield", label: "Prime yield forklart" },
-              { href: "/markedsrapport", label: "Markedsrapport" },
-            ]}
-          />
         </div>
       </div>
 

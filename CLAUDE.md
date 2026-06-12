@@ -65,7 +65,6 @@ src/
 │   └── robots.ts                 # Robots.txt configuration
 ├── components/
 │   ├── ui/                       # Base UI components (shadcn-style)
-│   ├── site/                     # Shared layout primitives: Nav (grouped disclosure), Footer (city column), Breadcrumbs, SeOgsa (cross-links), SubHero, CtaStrip, Faq
 │   ├── advanti/                 # Domain-specific components
 │   │   ├── exit-strategi/        # Exit strategy components
 │   │   ├── finansiering/         # Financing components
@@ -85,23 +84,17 @@ src/
 │   └── data/                     # Data table components
 ├── content/                      # MDX content files
 │   ├── blog/                     # Blog posts (categories: company, valuation, market-analysis, casestudies)
-│   ├── help/                     # Help articles (categories: overview, getting-started, terms, analysis, valuation, for-investors)
+│   ├── help/                     # Help articles (categories: overview, getting-started, terms, analysis, valuation)
 │   ├── changelog/                # Product changelog
 │   ├── customers/                # Customer case studies
 │   ├── integrations/             # Integration guides
-│   ├── legal/                    # Legal documents
-│   ├── people/                   # Team member profiles (PersonPost → /personer/[slug])
-│   ├── locations/                # City pages (LocationPost → /naringsmegler/[slug])
-│   └── listings/                 # Property listings from CRM (ListingPost → /eiendommer/[slug])
+│   └── legal/                    # Legal documents
 ├── lib/
 │   ├── utils.ts                  # Utility functions
 │   ├── chartUtils.ts             # Chart-related utilities
 │   ├── coordinateUtils.ts        # Map coordinate transformations
 │   ├── formatters.ts             # Data formatters
 │   ├── actions.ts                # Server action helpers
-│   ├── navigation.ts             # Site IA registry (REGISTRY, parentChain, navGroups, footerColumns) — browser-safe
-│   ├── navigationServer.ts       # Server-only nav helpers (getCities from content-collections)
-│   ├── jsonLd.tsx                # Safe JSON-LD serialisation helpers (jsonLdScriptProps, JsonLd)
 │   ├── hooks/                    # Custom React hooks
 │   └── blog/                     # Blog-specific utilities
 └── types/                        # TypeScript type definitions
@@ -109,17 +102,14 @@ src/
 
 ### Content Management System
 
-The project uses **@content-collections** for type-safe MDX content management. Content is defined in `content-collections.ts` with nine main collections:
+The project uses **@content-collections** for type-safe MDX content management. Content is defined in `content-collections.ts` with six main collections:
 
 1. **BlogPost** - Articles with categories (company, valuation, market-analysis, casestudies)
 2. **ChangelogPost** - Product updates
 3. **CustomersPost** - Client case studies with company metadata
-4. **HelpPost** - Documentation with categories (overview, getting-started, terms, analysis, valuation, for-investors)
+4. **HelpPost** - Documentation with categories (overview, getting-started, terms, analysis, valuation)
 5. **LegalPost** - Legal pages
 6. **IntegrationsPost** - Third-party integration guides
-7. **PersonPost** - Team member profiles (drives `/personer/[slug]`)
-8. **LocationPost** - City/location pages (drives `/naringsmegler/[slug]`)
-9. **ListingPost** - Property listings published from CRM (drives `/eiendommer/[slug]`)
 
 **Key Features:**
 - Automatic slug generation from titles
@@ -176,9 +166,6 @@ The platform is primarily in Norwegian (bokmål). Key SEO terms:
 
 Remote image patterns allowed:
 - `imagedelivery.net/**` (CDN)
-- `kukzjreikqbgbolxvqaj.supabase.co/**` (Supabase Storage — property images)
-- `images.pexels.com/**` (stock photos)
-- `images.finncdn.no/**` (Finn.no listing images)
 - `avatar.vercel.sh/**` (avatars)
 - `randomuser.me/**` (placeholder users)
 
@@ -200,7 +187,7 @@ Remote image patterns allowed:
 
 ## Development Workflow
 
-1. **Adding New Service Pages**: Create under `src/app/tjenester/[service-name]/page.tsx` and register the route in `src/lib/navigation.ts` REGISTRY (with path, label, parent, and navGroup if it should appear in the nav or footer)
+1. **Adding New Service Pages**: Create under `src/app/tjenester/[service-name]/page.tsx`
 2. **Creating Blog Content**: Add MDX files to `src/content/blog/` with required frontmatter (title, categories, publishedAt, image, author, summary). Follow the editorial component patterns in [`src/content/blog/AUTHORING.md`](./src/content/blog/AUTHORING.md) — use the `.ae-*` components (`Summary`, `Fact`, `StatStrip`, `Compare`, `Note`, …) instead of bold-label lists.
 3. **Building Charts**: Extend chart components in `src/components/` using existing patterns (DcfChart, and the Recharts charts in `src/components/markedsinnsikt/charts/`)
 4. **Map Features**: Use the Leaflet map components in `src/components/markedsinnsikt/maps/` (CartoDB tiles; `MarkedsKartHoved.tsx` owns state as a client component, `MarkedsKartLeafletCelle.tsx` is the Leaflet child loaded via `next/dynamic` with `ssr: false`)
@@ -216,7 +203,6 @@ Remote image patterns allowed:
 
 ### Component Organization
 - UI primitives in `components/ui/`
-- Shared layout/nav components in `components/site/` (Nav, Footer, Breadcrumbs, SeOgsa, SubHero, …)
 - Domain logic in `components/advanti/` (organized by feature)
 - Shared utilities in `lib/`
 - Server actions in `app/actions/`
@@ -226,15 +212,6 @@ Remote image patterns allowed:
 - Map components in `components/markedsinnsikt/maps/`; `MarkedsKartHoved.tsx` owns all map state as a client component, `MarkedsKartLeafletCelle.tsx` is the Leaflet rendering layer loaded via `next/dynamic` with `ssr: false`
 - Map failures are contained by `MapErrorBoundary.tsx` and a route-level `error.tsx`
 - Coordinate transformations in `lib/coordinateUtils.ts` (proj4)
-
-### Site Navigation & IA
-- `src/lib/navigation.ts` is the single source of truth for the site IA: every page/route is a `NavEntry` in the `REGISTRY` array (path, label, parent, navGroup, inNav, inFooter)
-- `parentChain(path)` resolves the ancestor chain used by Breadcrumbs; `navGroups` and `footerColumns` drive Nav and Footer rendering
-- `src/lib/navigationServer.ts` is a server-only module (`getCities()`) that reads location content and passes city data as props — do NOT import it in client components
-- `src/components/site/Breadcrumbs.tsx` emits both the visible crumb trail and `BreadcrumbList` JSON-LD from one call site, driven entirely by the registry
-- `src/components/site/SeOgsa.tsx` is the shared cross-link block (max 3 links, fires `seogsa_click` analytics event)
-- `src/lib/jsonLd.tsx` provides `jsonLdScriptProps()` and `<JsonLd>` for safe JSON-LD emission (escapes `</`, U+2028, U+2029)
-- When adding a new page/route: register it in `REGISTRY` first (path, label, parent) so Breadcrumbs and parentChain resolve correctly
 
 ### Financial Modeling
 - DCF analysis charts in `DcfChart.tsx`

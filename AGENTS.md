@@ -17,7 +17,7 @@ design system, see [`DESIGN.md`](./DESIGN.md).
 
 ## Tech stack
 
-- Next.js 16.2.9 (App Router) + React 19
+- Next.js 16.1.4 (App Router) + React 19
 - TypeScript (strict; `tsc --noEmit` enforced at build)
 - Tailwind CSS + semantic classes from `src/styles/advanti-design.css`
 - `@content-collections/core` for MDX content
@@ -31,9 +31,7 @@ pnpm dev          # dev server (http://localhost:3000)
 pnpm build        # production build (type-checked, content-collections compiled)
 pnpm start        # serve production build
 pnpm lint         # eslint
-pnpm typecheck    # tsc --noEmit (type-check without building)
-pnpm test:unit    # Vitest unit tests (tests/unit/)
-pnpm test         # playwright E2E (incl. perf-budget spec)
+pnpm test         # playwright (incl. perf-budget spec)
 ```
 
 When using `npx prisma generate`, pass `--no-engine`.
@@ -58,16 +56,16 @@ src/
 │   └── robots.ts                 # robots.txt (AI-bot allowlist + CCBot block)
 ├── components/
 │   ├── ui/                       # shadcn-style primitives
-│   ├── site/                     # Shared layout primitives: Nav (grouped disclosure nav), Footer (city column), Breadcrumbs, SeOgsa (cross-links), SubHero, CtaStrip, Faq, ProseShell
+│   ├── site/                     # Editorial layout primitives (SubHero, CtaStrip, Faq, ProseShell)
 │   ├── advanti/                  # Domain components (DCF, yield, etc.)
 │   ├── markedsinnsikt/           # Recharts charts + Leaflet maps (client-only)
 │   ├── blog/                     # Blog rendering (MDX, headers, legal page)
 │   └── StructuredData.tsx        # All JSON-LD schemas (Organization, Article, FAQ, Breadcrumb, …)
 ├── content/                      # MDX content
 │   ├── blog/                     # categories: company, valuation, market-analysis, casestudies
-│   ├── help/                     # categories: overview, getting-started, terms, analysis, valuation, for-investors
-│   ├── changelog/ customers/ integrations/ legal/ locations/ people/ listings/
-├── lib/                          # Utilities (formatters, chartUtils, coordinateUtils, hooks/, blog/); navigation.ts (site IA registry); navigationServer.ts (server-only city helper); jsonLd.tsx (safe JSON-LD emission)
+│   ├── help/                     # categories: overview, getting-started, terms, analysis, valuation
+│   ├── changelog/ customers/ integrations/ legal/ locations/ people/
+├── lib/                          # Utilities (formatters, chartUtils, coordinateUtils, hooks/, blog/)
 ├── styles/                       # advanti-design.css (semantic classes, ~95KB)
 └── types/                        # TS type defs
 ```
@@ -89,15 +87,14 @@ Path alias: `@/*` → `src/*`. Content collections alias: `content-collections`
 - All MDX requires its collection's frontmatter (validated by Zod in
   `content-collections.ts`).
 - `publishedAt` / `updatedAt` use `YYYY-MM-DD` (regex-validated where present).
-- `BlogPost` requires `author`, `summary`, `image`, `categories`; `updatedAt` is optional.
-- `HelpPost` and `LegalPost` carry required `updatedAt`.
+- `BlogPost` requires `author`, `summary`, `image`, `categories`.
+- `HelpPost` and `LegalPost` already carry `updatedAt`; `BlogPost` does not
+  (yet — see TODO 15).
 
 ### SEO + structured data
 - Every dynamic route exports `generateMetadata`.
-- `StructuredData.tsx` exposes typed schema generators. Most pages now use
-  `<Breadcrumbs>` (from `components/site/Breadcrumbs.tsx`) which co-emits
-  `BreadcrumbList` JSON-LD; `BreadcrumbStructuredData` from `StructuredData.tsx`
-  is retained on pages not yet migrated (blog post, naringsmegler hub, presserom).
+- `StructuredData.tsx` exposes typed schema generators; `BreadcrumbStructuredData`
+  is injected on all blog/help/services/location pages.
 - `FAQPage` schema comes from `src/components/site/Faq.tsx` — one `items` array
   drives both the visible accordion and the JSON-LD so they cannot drift.
 - robots.ts explicitly allows GPTBot, ClaudeBot, PerplexityBot, Google-Extended,
@@ -114,12 +111,8 @@ Path alias: `@/*` → `src/*`. Content collections alias: `content-collections`
 ### Components & domain
 - UI primitives in `components/ui/`. Domain logic in `components/advanti/`
   (organized by feature) and `components/markedsinnsikt/`.
-- Shared layout/nav components in `components/site/` (Nav, Footer, Breadcrumbs, SeOgsa, SubHero, …).
 - Server actions in `app/actions/`.
 - Maps are client-only and behind `MapErrorBoundary.tsx`.
-- `src/lib/navigation.ts` is the single source of truth for the site IA. Register every new
-  route as a `NavEntry` (path, label, parent) so `Breadcrumbs` and `parentChain()` resolve it.
-  `navigationServer.ts` is server-only — do not import it in client components.
 
 ## Where things live (quick lookup)
 
@@ -131,8 +124,6 @@ Path alias: `@/*` → `src/*`. Content collections alias: `content-collections`
 | New location | `src/content/locations/<city>.mdx` (drives `/naringsmegler/<city>`) |
 | New chart | `src/components/markedsinnsikt/charts/` (Recharts) or `src/components/advanti/` |
 | New JSON-LD type | extend `src/components/StructuredData.tsx` switch |
-| New route/page | add a `NavEntry` to `REGISTRY` in `src/lib/navigation.ts` (path, label, parent — enables Breadcrumbs and parentChain resolution) |
-| Cross-link block | use `<SeOgsa links={[…]} from="context-slug" />` from `src/components/site/SeOgsa.tsx` |
 
 ## What NOT to do
 

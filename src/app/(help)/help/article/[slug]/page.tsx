@@ -11,8 +11,9 @@ import { getBlurDataURL } from "@/lib/blog/images"
 import { calculateReadingTime } from "@/lib/blog/utils"
 import { constructMetadata } from "@/lib/utils"
 import { getHelpPost } from "@/lib/content"
-import StructuredData from "@/components/StructuredData"
-import { Breadcrumbs } from "@/components/site/Breadcrumbs"
+import StructuredData, {
+  BreadcrumbStructuredData,
+} from "@/components/StructuredData"
 
 const AUTHOR_NAMES: Record<string, string> = {
   codehagen: "Christer Hagen",
@@ -136,6 +137,14 @@ export default async function HelpArticle({
 
   return (
     <>
+      <BreadcrumbStructuredData
+        items={[
+          { name: "Hjem", url: "/" },
+          { name: "Kunnskapsbase", url: "/help" },
+          { name: category.title, url: `/help/category/${category.slug}` },
+          { name: data.title, url: `/help/article/${data.slug}` },
+        ]}
+      />
       <StructuredData
         type="article"
         data={{
@@ -168,10 +177,17 @@ export default async function HelpArticle({
       {/* HERO — breadcrumb only */}
       <section className="subhero" style={{ paddingBottom: 24 }}>
         <div className="wrap">
-          <Breadcrumbs
-            path={`/help/article/${data.slug}`}
-            leafLabel={data.title}
-          />
+          <nav className="crumb" aria-label="Brødsmuler">
+            <Link href="/">Hjem</Link>
+            <span className="sep">/</span>
+            <Link href="/help">Kunnskapssenter</Link>
+            <span className="sep">/</span>
+            <Link href={`/help/category/${category.slug}`}>
+              {category.title}
+            </Link>
+            <span className="sep">/</span>
+            <span className="here">{data.title}</span>
+          </nav>
         </div>
       </section>
 

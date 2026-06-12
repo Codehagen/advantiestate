@@ -82,15 +82,13 @@ test("selecting a city updates the panel and broker link", async ({
   // Click Tromsø in the ranked list.
   await page.locator(".mi-rank-table tbody tr", { hasText: "Tromsø" }).click();
   await expect(page.locator(".mi-map-info h3")).toHaveText("Tromsø");
-  // SeOgsa-blokken legger til en andre a-lenke med samme href — .first() unngår
-  // strict-mode-feil og bekrefter at primær-CTA-knappen er synlig.
   await expect(
-    page.locator('.mi-map-info a[href="/naringsmegler/tromso"]').first(),
+    page.locator('.mi-map-info a[href="/naringsmegler/tromso"]'),
   ).toBeVisible();
   // "Mo i Rana" maps to the mo-i-rana broker slug (id "mo" in the release).
   await page.locator(".mi-rank-table tbody tr", { hasText: "Mo i Rana" }).click();
   await expect(
-    page.locator('.mi-map-info a[href="/naringsmegler/mo-i-rana"]').first(),
+    page.locator('.mi-map-info a[href="/naringsmegler/mo-i-rana"]'),
   ).toBeVisible();
 });
 
@@ -171,7 +169,7 @@ test("full prissone-reise: CTA → chips → WMS-gating → pin → reset", asyn
 
   // Verdivurderings-lenke er synlig mens sone er pinnet (design 3.1)
   await expect(
-    page.locator('a.mi-zone-valuation-link[href="/tjenester/verdivurdering"]'),
+    page.locator('a[href="/tjenester/verdsettelse"]'),
   ).toBeVisible();
 
   // Reset-knapp er synlig ved innzoomet tilstand

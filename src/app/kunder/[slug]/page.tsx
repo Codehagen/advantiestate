@@ -6,7 +6,6 @@ import { notFound } from "next/navigation";
 
 import { MDX } from "@/components/blog/mdx";
 import { CtaStrip } from "@/components/site/CtaStrip";
-import { Breadcrumbs } from "@/components/site/Breadcrumbs";
 import { getBlurDataURL } from "@/lib/blog/images";
 import { constructMetadata } from "@/lib/utils";
 import { getCustomerPost } from "@/lib/content";
@@ -135,10 +134,13 @@ export default async function CustomerStory({
       {/* HERO */}
       <section className="subhero" style={{ paddingBottom: 0 }}>
         <div className="wrap">
-          <Breadcrumbs
-            path={`/kunder/${data.slug}`}
-            leafLabel={data.company}
-          />
+          <nav className="crumb" aria-label="Brødsmuler">
+            <Link href="/">Hjem</Link>
+            <span className="sep">/</span>
+            <Link href="/kunder">Utvalgte oppdrag</Link>
+            <span className="sep">/</span>
+            <span className="here">{data.company}</span>
+          </nav>
 
           <div className="op-hero">
             <div>

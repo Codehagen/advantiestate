@@ -1,20 +1,34 @@
 import Link from "next/link";
-import { footerColumns } from "@/lib/navigation";
-import { getCities } from "@/lib/navigationServer";
-import { FooterCityLinks } from "./FooterCityLinks";
+
+const TJENESTER = [
+  { href: "/tjenester/verdivurdering", label: "Verdivurdering" },
+  { href: "/tjenester/salg", label: "Salg" },
+  { href: "/tjenester/transaksjoner", label: "Transaksjonsrådgivning" },
+  { href: "/tjenester/utleie", label: "Utleie" },
+  { href: "/tjenester/radgivning", label: "Markedsdata" },
+  { href: "/tjenester/strategisk-radgivning", label: "Strategisk rådgivning" },
+];
+
+const ADVANTI = [
+  { href: "/om-oss", label: "Om oss" },
+  { href: "/kunder", label: "Utvalgte oppdrag" },
+  { href: "/markedsinnsikt", label: "Markedsinnsikt" },
+  { href: "/analyseportal", label: "Analyseportal" },
+  { href: "/investorportal", label: "Investorportal" },
+  { href: "/blog", label: "Artikler" },
+  { href: "/presserom", label: "Presserom" },
+  { href: "/karriere", label: "Karriere" },
+  { href: "/kontakt", label: "Kontakt" },
+];
 
 /** Shared site footer with the large editorial wordmark. */
-export async function Footer() {
-  const cities = getCities();
-  const tjenester = footerColumns.tjenester;
-  const advanti = footerColumns.advanti;
-
+export function Footer() {
   return (
     <footer className="footer">
       <div className="wrap">
         <div className="footer-top">
           <div className="footer-brand">
-            <Link prefetch={false} href="/" className="nav-logo">
+            <Link href="/" className="nav-logo">
               <span className="mark" />
               <span>
                 Advanti
@@ -32,9 +46,9 @@ export async function Footer() {
           <div className="footer-col">
             <h4>Tjenester</h4>
             <ul>
-              {tjenester.map((l) => (
-                <li key={l.path}>
-                  <Link prefetch={false} href={l.path}>{l.label}</Link>
+              {TJENESTER.map((l) => (
+                <li key={l.href}>
+                  <Link href={l.href}>{l.label}</Link>
                 </li>
               ))}
             </ul>
@@ -43,17 +57,12 @@ export async function Footer() {
           <div className="footer-col">
             <h4>Advanti</h4>
             <ul>
-              {advanti.map((l) => (
-                <li key={l.path}>
-                  <Link prefetch={false} href={l.path}>{l.label}</Link>
+              {ADVANTI.map((l) => (
+                <li key={l.href}>
+                  <Link href={l.href}>{l.label}</Link>
                 </li>
               ))}
             </ul>
-          </div>
-
-          <div className="footer-col">
-            <h4>Byer vi dekker</h4>
-            <FooterCityLinks cities={cities} />
           </div>
 
           <div className="footer-col">
@@ -78,8 +87,8 @@ export async function Footer() {
             {`© ${new Date().getFullYear()} Eiendomsmegler Nord AS · Org. nr. 927 102 234 MVA`}
           </span>
           <span>
-            <Link prefetch={false} href="/privacy">Personvern</Link> ·{" "}
-            <Link prefetch={false} href="/terms">Vilkår</Link>
+            <Link href="/privacy">Personvern</Link> ·{" "}
+            <Link href="/terms">Vilkår</Link>
           </span>
         </div>
 

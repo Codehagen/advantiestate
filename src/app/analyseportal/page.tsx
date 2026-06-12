@@ -2,7 +2,6 @@ import Link from "next/link"
 import { allPersonPosts } from "content-collections"
 import { constructMetadata } from "@/lib/utils"
 import { siteConfig } from "@/app/siteConfig"
-import { jsonLdScriptProps } from "@/lib/jsonLd"
 import { CtaStrip } from "@/components/site/CtaStrip"
 import { NewsletterSection } from "@/components/site/NewsletterSection"
 import { AnalyseportalShell } from "@/components/analyseportal/AnalyseportalShell"
@@ -73,7 +72,10 @@ export default function AnalyseportalPage() {
 
   return (
     <>
-      <script {...jsonLdScriptProps(datasetSchema)} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(datasetSchema) }}
+      />
 
       {/* HERO (dark) */}
       <section className="ap-hero">

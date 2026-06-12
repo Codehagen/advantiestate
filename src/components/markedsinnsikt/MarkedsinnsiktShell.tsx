@@ -7,9 +7,7 @@
 import { Fragment, useEffect, useState } from "react"
 import dynamic from "next/dynamic"
 import Link from "next/link"
-import { SeOgsa } from "@/components/site/SeOgsa"
 import { MapErrorBoundary } from "./MapErrorBoundary"
-import { trackEvent } from "@/lib/analytics"
 import {
   QUARTERS,
   RATES,
@@ -72,17 +70,6 @@ const SECTOR_COLORS = [
   "var(--warm-grey)",
   "var(--warm-grey-85)",
   "var(--warm-grey-85)",
-]
-
-// ════════════════════════════════════════════════════════════════════════
-// SE OGSÅ — Gå dypere (data-sektorene yield/leie/tx/ledighet)
-// Delt konstant — alle fire sektorvisninger bruker de samme tre lenkene.
-// ════════════════════════════════════════════════════════════════════════
-
-const GA_DYPERE_LINKS = [
-  { href: "/markedsinnsikt/kart", label: "Markedskartet" },
-  { href: "/markedsrapport", label: "Markedsrapport" },
-  { href: "/help/article/prime-yield", label: "Prime yield forklart" },
 ]
 
 type SectorId =
@@ -318,8 +305,6 @@ function YieldView() {
           </p>
         </div>
       </div>
-
-      <SeOgsa heading="Gå dypere" from="sektor-yield" links={GA_DYPERE_LINKS} />
     </div>
   )
 }
@@ -504,8 +489,6 @@ function LeieView() {
           </p>
         </div>
       </div>
-
-      <SeOgsa heading="Gå dypere" from="sektor-leie" links={GA_DYPERE_LINKS} />
     </div>
   )
 }
@@ -636,8 +619,6 @@ function TxView() {
         </span>
         <span>+47 transaksjoner sporet i 2025</span>
       </div>
-
-      <SeOgsa heading="Gå dypere" from="sektor-tx" links={GA_DYPERE_LINKS} />
     </div>
   )
 }
@@ -776,8 +757,6 @@ function LedighetView() {
           </p>
         </div>
       </div>
-
-      <SeOgsa heading="Gå dypere" from="sektor-ledighet" links={GA_DYPERE_LINKS} />
     </div>
   )
 }
@@ -964,20 +943,12 @@ function RapporterView() {
             byene vi dekker. 48 sider, full datapakke i Excel.
           </p>
           <div className="row" style={{ marginTop: 32 }}>
-            <Link
-              href="/markedsrapport"
-              className="btn btn-primary"
-              onClick={() => trackEvent("rapport_bestill", { source: "hovedkort" })}
-            >
+            <Link href="/kontakt" className="btn btn-primary">
               Bestill rapport <span className="arrow">→</span>
             </Link>
-            <Link
-              href="/markedsrapport"
-              className="btn btn-ghost"
-              onClick={() => trackEvent("rapport_bestill", { source: "sammendrag" })}
-            >
-              Se sammendrag (6 sider)
-            </Link>
+            <a href="#" className="btn btn-ghost">
+              Last ned sammendrag (PDF, 6 sider)
+            </a>
           </div>
         </div>
         <div className="meta">
@@ -1031,13 +1002,7 @@ function RapporterView() {
             </div>
             <div className="rfoot">
               <span>{r.foot}</span>
-              {/* Arkivtilgang går via lead-gaten — aldri en død «Last ned»-span */}
-              <Link
-                href="/markedsrapport"
-                onClick={() => trackEvent("rapport_bestill", { source: "arkiv" })}
-              >
-                Få tilgang →
-              </Link>
+              <span>Last ned →</span>
             </div>
           </article>
         ))}
@@ -1050,12 +1015,11 @@ function RapporterView() {
         </span>
         <span>
           <Link
-            href="/markedsrapport"
+            href="/kontakt"
             style={{
               color: "var(--warm-grey)",
               borderBottom: "1px solid",
             }}
-            onClick={() => trackEvent("rapport_bestill", { source: "abonnement" })}
           >
             Snakk med oss om abonnement →
           </Link>

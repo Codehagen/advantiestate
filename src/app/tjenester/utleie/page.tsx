@@ -3,8 +3,9 @@ import { SubHero } from "@/components/site/SubHero";
 import { CtaStrip } from "@/components/site/CtaStrip";
 import { PhotoBand } from "@/components/site/PhotoBand";
 import { Faq, type FaqItem } from "@/components/site/Faq";
-import StructuredData from "@/components/StructuredData";
-import { Breadcrumbs } from "@/components/site/Breadcrumbs";
+import StructuredData, {
+  BreadcrumbStructuredData,
+} from "@/components/StructuredData";
 
 const LAST_UPDATED = "2026-05-22";
 
@@ -41,6 +42,13 @@ const FAQ_ITEMS: FaqItem[] = [
 export default function UtleiePage() {
   return (
     <>
+      <BreadcrumbStructuredData
+        items={[
+          { name: "Hjem", url: "/" },
+          { name: "Tjenester", url: "/tjenester" },
+          { name: "Utleie", url: "/tjenester/utleie" },
+        ]}
+      />
       <StructuredData
         type="service"
         data={{
@@ -51,7 +59,11 @@ export default function UtleiePage() {
       />
 
       <SubHero
-        breadcrumbs={<Breadcrumbs path="/tjenester/utleie" />}
+        crumb={[
+          { label: "Hjem", href: "/" },
+          { label: "Tjenester", href: "/tjenester" },
+          { label: "Utleie" },
+        ]}
         eyebrow="Tjeneste 04 · Utleie"
         title={
           <>

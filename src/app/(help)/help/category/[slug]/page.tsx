@@ -4,7 +4,6 @@ import Link from "next/link"
 import { notFound } from "next/navigation"
 
 import { CtaStrip } from "@/components/site/CtaStrip"
-import { SeOgsa } from "@/components/site/SeOgsa"
 import { SubHero } from "@/components/site/SubHero"
 import { HELP_CATEGORIES, POPULAR_ARTICLES } from "@/lib/blog/content"
 import { calculateReadingTime } from "@/lib/blog/utils"
@@ -224,21 +223,6 @@ export default async function HelpCategory({
               )
             })}
           </div>
-        </div>
-      </section>
-
-      {/* Se også — lenker til live markedsdata, slik at leseren kan se
-          tallene direkte etter å ha lest fagteksten. */}
-      <section className="section-tight" style={{ paddingTop: 0 }}>
-        <div className="wrap">
-          <SeOgsa
-            heading="Se tallene selv"
-            links={[
-              { href: "/markedsinnsikt", label: "Markedsinnsikt" },
-              { href: "/markedsinnsikt/kart", label: "Markedskart" },
-              { href: "/verktoy", label: "Verktøy" },
-            ]}
-          />
         </div>
       </section>
 
