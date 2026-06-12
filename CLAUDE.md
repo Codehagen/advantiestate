@@ -78,7 +78,7 @@ src/
 │   │   └── FeatureShowcase.tsx   # Feature display components
 │   ├── markedsinnsikt/           # Market insight components
 │   │   ├── charts/               # Recharts bar/line charts + shared theme
-│   │   └── maps/                 # Leaflet maps (CartoDB tiles), client-only loaded
+│   │   └── maps/                 # Leaflet maps (CartoDB tiles); client state parent + ssr:false Leaflet child
 │   ├── blog/                     # Blog components
 │   ├── forms/                    # Form components
 │   └── data/                     # Data table components
@@ -190,7 +190,7 @@ Remote image patterns allowed:
 1. **Adding New Service Pages**: Create under `src/app/tjenester/[service-name]/page.tsx`
 2. **Creating Blog Content**: Add MDX files to `src/content/blog/` with required frontmatter (title, categories, publishedAt, image, author, summary). Follow the editorial component patterns in [`src/content/blog/AUTHORING.md`](./src/content/blog/AUTHORING.md) — use the `.ae-*` components (`Summary`, `Fact`, `StatStrip`, `Compare`, `Note`, …) instead of bold-label lists.
 3. **Building Charts**: Extend chart components in `src/components/` using existing patterns (DcfChart, and the Recharts charts in `src/components/markedsinnsikt/charts/`)
-4. **Map Features**: Use the Leaflet map components in `src/components/markedsinnsikt/maps/` (client-only, CartoDB tiles)
+4. **Map Features**: Use the Leaflet map components in `src/components/markedsinnsikt/maps/` (CartoDB tiles; `MarkedsKartHoved.tsx` owns state as a client component, `MarkedsKartLeafletCelle.tsx` is the Leaflet child loaded via `next/dynamic` with `ssr: false`)
 5. **Market Analysis**: Components in `src/components/markedsinnsikt/`
 
 ## Key Technical Patterns
@@ -209,7 +209,7 @@ Remote image patterns allowed:
 
 ### Map Integration
 - Maps use Leaflet + react-leaflet with CartoDB tiles
-- Map components in `components/markedsinnsikt/maps/` (client-only loaded; see `MarkedsKartClient.tsx`)
+- Map components in `components/markedsinnsikt/maps/`; `MarkedsKartHoved.tsx` owns all map state as a client component, `MarkedsKartLeafletCelle.tsx` is the Leaflet rendering layer loaded via `next/dynamic` with `ssr: false`
 - Map failures are contained by `MapErrorBoundary.tsx` and a route-level `error.tsx`
 - Coordinate transformations in `lib/coordinateUtils.ts` (proj4)
 

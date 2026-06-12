@@ -7,6 +7,25 @@ the AI SEO closure review (/plan-eng-review, 2026-05-24), the AI-SEO research pa
 
 ---
 
+## TODO 22 — Sonedata-verifisering Bodø
+
+- **What:** Verifiser geometri og leieprisintervaller (kontor/handel/logistikk) for
+  de 3 utkast-sonene (City Nord/Stormyra, Plassmyra/flyplassområdet, Burøya/havna)
+  og gjennomgå eksisterende Sentrum/Rønvika-tall mot Advantis transaksjons- og
+  leiedata.
+- **Why:** Sonedata-laget (`zones.ts`) er publisert, men `publishedZones()`-gaten
+  holder utkast-sonene ute inntil `segments` + `reviewedBy` fylles. De to
+  eksisterende sonene (Sentrum, Rønvika) er merket «indikative estimater Q4 2025»
+  uten verifisering mot reelle transaksjonsobservasjoner.
+- **Context:** Aktivering = fyll `segments` + `reviewedBy` i
+  `src/components/markedsinnsikt/maps/zones.ts` — null kodearbeid utover det.
+  `publishedZones()`-gaten inkluderer sonen automatisk. Filer:
+  `src/components/markedsinnsikt/maps/zones.ts`.
+- **Depends on / blocked by:** Fase 1 av markedskart-planen (zones.ts, denne PR-en).
+- **Effort:** Manuell datainnsamling (megler/analyse), ikke kode.
+
+---
+
 ## TODO 19 — Pressevarsel — SHIPPED 2026-06-10 (skjema + lagring; utsendelse = runbook FASE 7)
 
 - **What:** «Få pressevarsel»-skjema på /presserom (lead → Supabase, gjenbruk
@@ -203,7 +222,7 @@ the AI SEO closure review (/plan-eng-review, 2026-05-24), the AI-SEO research pa
 ## TODO 5 — Move markedsinnsikt data to content collections
 
 - **What:** The 20-quarter series, six cities and the two Bodø price zones are
-  hardcoded in `MarkedsinnsiktShell.tsx` / `MarkedsKartLeaflet.tsx`. Move them to
+  hardcoded in `MarkedsinnsiktShell.tsx` / `zones.ts` / `metrics.ts`. Move them to
   a typed Content Collection.
 - **Why:** Editing market data should not require a code change; a collection
   makes the quarterly refresh a content edit.
