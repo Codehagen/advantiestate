@@ -68,6 +68,30 @@ test("ingen href=\"#\" på markedsinnsikt — dødlenke-klassen er utryddet", as
   await expect(page.locator('a[href="#"]')).toHaveCount(0);
 });
 
+test("rapport_bestill-event fyrer ved klikk på gate-lenkene (8A-baseline)", async ({
+  page,
+}) => {
+  await page.addInitScript(() => {
+    (window as { dataLayer?: unknown[] }).dataLayer = [];
+  });
+  await gotoRapporter(page);
+  await page
+    .locator(".mi-report-card")
+    .getByRole("link", { name: /Bestill rapport/ })
+    .click();
+  const events = await page.evaluate(
+    () => (window as { dataLayer?: unknown[] }).dataLayer ?? [],
+  );
+  expect(
+    events.some(
+      (e) =>
+        (e as { event?: string; source?: string }).event ===
+          "rapport_bestill" &&
+        (e as { source?: string }).source === "hovedkort",
+    ),
+  ).toBe(true);
+});
+
 test("kartpanelets verdivurderingslenke bruker kanonisk URL (ikke 308-redirect)", async ({
   page,
 }) => {

@@ -1,9 +1,12 @@
-import Link from "next/link";
 import { CalculatorLayout } from "@/components/verktoy/CalculatorLayout";
 import { ValuationPriceCalculator } from "@/components/verktoy/ValuationPriceCalculator";
 import { constructMetadata } from "@/lib/utils";
 import { AnimatedCTA } from "@/components/ui/AnimatedCTA";
 import { CalculatorCTA } from "@/components/verktoy/CalculatorCTA";
+import {
+  JourneyStepTracker,
+  SjekklisteJourneyLink,
+} from "@/components/verktoy/JourneyStepTracker";
 
 export const metadata = constructMetadata({
   path: "/verktoy/pris-verdivurdering",
@@ -34,13 +37,9 @@ export default function PrisVerdiPage() {
           primær-CTAen nedenfor. Plassert mellom tilbudsskjemaet og den store
           profesjonell-verdivurdering-seksjonen. */}
       <p className="mx-auto mt-6 w-full max-w-6xl px-3 text-center text-sm">
-        <Link
-          href="/sjekkliste-verdivurdering"
-          className="text-warm-grey-85 underline decoration-warm-grey-75 underline-offset-4 hover:text-warm-grey"
-        >
-          Forbered deg: sjekkliste for verdivurdering →
-        </Link>
+        <SjekklisteJourneyLink />
       </p>
+      <JourneyStepTracker />
 
       <section className="mx-auto mt-24 w-full max-w-6xl px-3 pb-24">
         <AnimatedCTA

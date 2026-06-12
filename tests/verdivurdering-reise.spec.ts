@@ -151,3 +151,64 @@ test("lenkeintegritet: kurerte SeOgsa-hrefs returnerer ikke 404", async ({
     ).not.toBe(404);
   }
 });
+
+// ── f. Analytics: journey_step + seogsa_click (8A-baseline, E3A-stub) ────────
+
+test("journey_step fyrer ved ankomst på kalkulatoren og ved sjekkliste-klikk", async ({
+  page,
+}) => {
+  await page.addInitScript(() => {
+    (window as { dataLayer?: unknown[] }).dataLayer = [];
+  });
+  await page.goto("/verktoy/pris-verdivurdering");
+
+  // Ankomst-steget fyrer fra mount-effekten i JourneyStepTracker.
+  await expect
+    .poll(async () =>
+      page.evaluate(() =>
+        ((window as { dataLayer?: unknown[] }).dataLayer ?? []).some(
+          (e) =>
+            (e as { event?: string; step?: string }).event ===
+              "journey_step" &&
+            (e as { step?: string }).step === "kalkulator",
+        ),
+      ),
+    )
+    .toBe(true);
+
+  // Støttelenken fyrer sjekkliste-steget før navigasjonen.
+  await page
+    .getByRole("link", { name: /sjekkliste for verdivurdering/ })
+    .click();
+  const events = await page.evaluate(
+    () => (window as { dataLayer?: unknown[] }).dataLayer ?? [],
+  );
+  expect(
+    events.some(
+      (e) =>
+        (e as { event?: string; step?: string }).event === "journey_step" &&
+        (e as { step?: string }).step === "sjekkliste",
+    ),
+  ).toBe(true);
+});
+
+test("seogsa_click fyrer fra Forstå markedet-blokken på bysida", async ({
+  page,
+}) => {
+  await page.addInitScript(() => {
+    (window as { dataLayer?: unknown[] }).dataLayer = [];
+  });
+  await page.goto("/naringsmegler/bodo");
+  await page
+    .locator(".seogsa a", { hasText: "Markedsinnsikt" })
+    .first()
+    .click();
+  const events = await page.evaluate(
+    () => (window as { dataLayer?: unknown[] }).dataLayer ?? [],
+  );
+  expect(
+    events.some(
+      (e) => (e as { event?: string }).event === "seogsa_click",
+    ),
+  ).toBe(true);
+});

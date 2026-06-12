@@ -1,10 +1,5 @@
 import { describe, it, expect } from "vitest"
-import {
-  navItems,
-  navGroups,
-  footerColumns,
-  REGISTRY,
-} from "@/lib/navigation"
+import { navItems, navGroups, footerColumns } from "@/lib/navigation"
 import type { NavEntry } from "@/lib/navigation"
 
 // ── navItems() ───────────────────────────────────────────────────────────────

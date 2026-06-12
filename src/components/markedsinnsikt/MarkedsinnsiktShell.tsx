@@ -984,10 +984,18 @@ function RapporterView() {
             byene vi dekker. 48 sider, full datapakke i Excel.
           </p>
           <div className="row" style={{ marginTop: 32 }}>
-            <Link href="/markedsrapport" className="btn btn-primary">
+            <Link
+              href="/markedsrapport"
+              className="btn btn-primary"
+              onClick={() => trackEvent("rapport_bestill", { source: "hovedkort" })}
+            >
               Bestill rapport <span className="arrow">→</span>
             </Link>
-            <Link href="/markedsrapport" className="btn btn-ghost">
+            <Link
+              href="/markedsrapport"
+              className="btn btn-ghost"
+              onClick={() => trackEvent("rapport_bestill", { source: "sammendrag" })}
+            >
               Få sammendrag (PDF, 6 sider)
             </Link>
           </div>
@@ -1044,7 +1052,12 @@ function RapporterView() {
             <div className="rfoot">
               <span>{r.foot}</span>
               {/* Arkivtilgang går via lead-gaten — aldri en død «Last ned»-span */}
-              <Link href="/markedsrapport">Få tilgang →</Link>
+              <Link
+                href="/markedsrapport"
+                onClick={() => trackEvent("rapport_bestill", { source: "arkiv" })}
+              >
+                Få tilgang →
+              </Link>
             </div>
           </article>
         ))}
@@ -1062,6 +1075,7 @@ function RapporterView() {
               color: "var(--warm-grey)",
               borderBottom: "1px solid",
             }}
+            onClick={() => trackEvent("rapport_bestill", { source: "abonnement" })}
           >
             Snakk med oss om abonnement →
           </Link>
