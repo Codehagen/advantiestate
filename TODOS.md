@@ -222,7 +222,7 @@ the AI SEO closure review (/plan-eng-review, 2026-05-24), the AI-SEO research pa
 ## TODO 5 — Move markedsinnsikt data to content collections
 
 - **What:** The 20-quarter series, six cities and the two Bodø price zones are
-  hardcoded in `MarkedsinnsiktShell.tsx` / `MarkedsKartLeaflet.tsx`. Move them to
+  hardcoded in `MarkedsinnsiktShell.tsx` / `zones.ts` / `metrics.ts`. Move them to
   a typed Content Collection.
 - **Why:** Editing market data should not require a code change; a collection
   makes the quarterly refresh a content edit.
