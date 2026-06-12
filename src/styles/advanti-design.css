@@ -4960,8 +4960,16 @@ h1, h2, h3 {
   letter-spacing: 0.02em;
   line-height: 1.55;
 }
+/* Fewer than 4 results: match column count to content on desktop only —
+   below 880px the standard 2-col stack wins (an inline style here used to
+   override the media query and force horizontal overflow on mobile). */
+@media (min-width: 881px) {
+  .op-results .kpis[data-count="2"] { grid-template-columns: 1fr 1fr; }
+  .op-results .kpis[data-count="3"] { grid-template-columns: repeat(3, 1fr); }
+}
 @media (max-width: 880px) {
-  .op-results .kpis { grid-template-columns: 1fr 1fr; }
+  .op-results .kpis,
+  .op-results .kpis[data-count] { grid-template-columns: 1fr 1fr; }
   .op-results .kpis .k:nth-child(2) { border-right: 0; padding-right: 0; }
   .op-results .kpis .k:nth-child(3) { padding-left: 0; padding-right: 28px; border-top: 1px solid rgba(243,241,239,0.18); padding-top: 24px; }
   .op-results .kpis .k:nth-child(4) { border-top: 1px solid rgba(243,241,239,0.18); padding-top: 24px; }

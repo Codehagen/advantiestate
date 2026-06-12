@@ -225,16 +225,7 @@ export default async function CustomerStory({
                 Oppnådd <span className="italic">resultat.</span>
               </h2>
             </div>
-            <div
-              className="kpis"
-              style={
-                pres.results.length < 4
-                  ? {
-                      gridTemplateColumns: `repeat(${pres.results.length}, 1fr)`,
-                    }
-                  : undefined
-              }
-            >
+            <div className="kpis" data-count={pres.results.length}>
               {pres.results.map((result) => (
                 <div className="k" key={result.label}>
                   <div className="v">
