@@ -54,6 +54,20 @@ const PRESENTATION: Record<
       { value: "100", unit: "%", label: "Utleiegrad ved gjennomføring" },
     ],
   },
+  "reforhandling-kontor-bodo": {
+    eyebrow: "Illustrasjonscase · Reforhandling",
+    heroImage: "/building/pexels-pixabay-248877.jpg",
+    heroImageAlt: "Kontorbygg (illustrasjonsfoto)",
+    metaPeriod: "Eksempel",
+    metaService: "Reforhandling av leiekontrakter",
+    metaProperty: "Kontorbygg",
+    metaLocation: "Bodø",
+    results: [
+      { value: "1 500 → 3 000", unit: "kr/m²", label: "Årsleie" },
+      { value: "2", unit: "×", label: "Leienivå etter reforhandling" },
+      { value: "Lengre", unit: "", label: "Bindingstid på ny kontrakt" },
+    ],
+  },
 };
 
 export async function generateStaticParams() {

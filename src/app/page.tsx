@@ -128,35 +128,38 @@ const PILLARS = [
 const CASES = [
   {
     tag: "Salg",
-    img: "/building/pexels-pixabay-248877.jpg",
-    alt: "Næringsbygg Tromsø",
-    meta: ["Kontor · Tromsø", "2025"],
-    title: "Salg av kontortårn på 11 400 m² i Tromsø sentrum.",
-    stats: [
-      { v: "285", unit: "mnok", l: "Transaksjonsverdi" },
-      { v: "5,9", unit: "%", l: "Netto yield" },
-    ],
-  },
-  {
-    tag: "Verdivurdering",
-    img: "/building/pexels-expect-best-79873-351262.jpg",
-    alt: "Logistikkbygg Bodø",
-    meta: ["Logistikk · Bodø", "2025"],
-    title: "Verdivurdering av regional logistikkportefølje — fire eiendommer.",
-    stats: [
-      { v: "42 800", unit: "m²", l: "Samlet areal" },
-      { v: "6,8", unit: "%", l: "Vektet yield" },
-    ],
-  },
-  {
-    tag: "Utleie",
+    href: "/kunder/morkvedbadet-bodo",
     img: "/building/pexels-abshky-18567185.jpg",
-    alt: "Næringseiendom Harstad",
-    meta: ["Kontor & Handel · Harstad", "2024"],
-    title: "Reforhandling og utleie av 8 600 m² i nytt næringsbygg.",
+    alt: "Mørkvedbadet, Bodø (illustrasjonsfoto)",
+    meta: ["Kultur og idrett · Bodø", "2025"],
+    title: "Salget av Mørkvedbadet — grundig verdsettelse løsnet en fastlåst prosess.",
     stats: [
-      { v: "12", unit: "år", l: "Snittlengde leie" },
-      { v: "100", unit: "%", l: "Utleiegrad" },
+      { v: ">60", unit: "mnok", l: "Transaksjonsverdi" },
+      { v: "5", unit: "mnd", l: "Fra mandat til salg" },
+    ],
+  },
+  {
+    tag: "Salg",
+    href: "/kunder/naeringspark-helgeland",
+    img: "/building/pexels-expect-best-79873-351262.jpg",
+    alt: "Lager- og logistikkpark (illustrasjonsfoto)",
+    meta: ["Lager og logistikk · Helgeland", "2025"],
+    title: "Næringspark på Helgeland — reforhandlet leie gjorde et spesialbygg salgbart.",
+    stats: [
+      { v: "35–40", unit: "mnok", l: "Transaksjonsverdi" },
+      { v: "~8", unit: "%", l: "Yield" },
+    ],
+  },
+  {
+    tag: "Reforhandling",
+    href: "/kunder/reforhandling-kontor-bodo",
+    img: "/building/pexels-pixabay-248877.jpg",
+    alt: "Kontorbygg (illustrasjonsfoto)",
+    meta: ["Kontor · Bodø", "Eksempel"],
+    title: "Reforhandlingen som doblet leien — fra 1 500 til 3 000 kr/m².",
+    stats: [
+      { v: "2", unit: "×", l: "Leienivå" },
+      { v: "3 000", unit: "kr/m²", l: "Ny årsleie" },
     ],
   },
 ];
@@ -405,16 +408,16 @@ export default function Home() {
                 og verdivurderinger.
               </h2>
               <p style={{ marginTop: 28 }}>
-                Et lite knippe av oppdragene vi har levert — fra strategisk salg
-                av kontortårn til reforhandling av lange leiekontrakter for
-                nasjonale aktører.
+                Et lite knippe av oppdragene vi jobber med — fra salg av
+                profilert spesialeiendom til reforhandling av leiekontrakter
+                som dobler gårdeiers leienivå.
               </p>
             </div>
           </div>
 
           <div className="cases">
             {CASES.map((c) => (
-              <article className="case" key={c.title}>
+              <Link className="case" href={c.href} key={c.title}>
                 <div className="case-img" style={{ position: "relative" }}>
                   <span className="tag">{c.tag}</span>
                   <Image
@@ -441,7 +444,7 @@ export default function Home() {
                     </div>
                   ))}
                 </div>
-              </article>
+              </Link>
             ))}
           </div>
 

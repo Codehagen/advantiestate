@@ -48,9 +48,24 @@ const PRESENTATION: Record<
       { value: "100 %", label: "Utleiegrad" },
     ],
   },
+  "reforhandling-kontor-bodo": {
+    image: "/building/pexels-pixabay-248877.jpg",
+    imageAlt: "Kontorbygg (illustrasjonsfoto)",
+    category: "Reforhandling · Kontor",
+    year: "Eksempel",
+    kpis: [
+      { value: "1 500 → 3 000", label: "kr/m² i årsleie" },
+      { value: "2×", label: "Leienivå" },
+      { value: "Lengre", label: "Bindingstid" },
+    ],
+  },
 };
 
-const ORDER: string[] = ["morkvedbadet-bodo", "naeringspark-helgeland"];
+const ORDER: string[] = [
+  "morkvedbadet-bodo",
+  "naeringspark-helgeland",
+  "reforhandling-kontor-bodo",
+];
 
 export default function Customers() {
   // Render all customer stories, in a stable, intentional order; include any
@@ -194,7 +209,8 @@ export default function Customers() {
             <span className="source">
               Klientnavn er anonymisert der ikke offentlig godkjent for
               publisering. Tallene er bekreftet via tinglysing, kontrakt eller
-              direkte fra part.
+              direkte fra part. Case merket «Eksempel» er illustrasjoner av
+              arbeidsmetodikk, ikke konkrete transaksjoner.
             </span>
             <span>
               <Link
