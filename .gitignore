@@ -81,3 +81,4 @@ tsconfig.tsbuildinfo
 .gstack/
 .agents/
 .vercel
+skills-lock.json
