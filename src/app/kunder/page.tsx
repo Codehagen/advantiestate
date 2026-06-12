@@ -86,7 +86,7 @@ export default function Customers() {
             <span className="italic">vi er stolte av.</span>
           </>
         }
-        lede="Konkrete eksempler på hvordan vi har levert resultater for klienter i Nord-Norge — salg, verdivurdering, utleieformidling og strategisk rådgivning. Tallene er reelle. Resultatene er målt."
+        lede="Konkrete eksempler på hvordan vi har levert resultater for klienter i Nord-Norge — salg, verdivurdering, utleieformidling og strategisk rådgivning. Tallene er reelle der ikke annet er merket."
       />
 
       {/* KPI BAND */}
