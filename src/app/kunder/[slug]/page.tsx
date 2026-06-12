@@ -302,20 +302,24 @@ export default async function CustomerStory({
                 </>
               )}
 
-              <div className="toc-label">Selskapsstørrelse</div>
-              <p
-                style={{
-                  fontFamily: "var(--font-display)",
-                  fontSize: 28,
-                  fontWeight: 400,
-                  letterSpacing: "-0.018em",
-                  paddingBottom: 24,
-                  borderBottom: "var(--hairline)",
-                  marginBottom: 24,
-                }}
-              >
-                {data.companySize}
-              </p>
+              {data.companySize && data.companySize !== "—" && (
+                <>
+                  <div className="toc-label">Selskapsstørrelse</div>
+                  <p
+                    style={{
+                      fontFamily: "var(--font-display)",
+                      fontSize: 28,
+                      fontWeight: 400,
+                      letterSpacing: "-0.018em",
+                      paddingBottom: 24,
+                      borderBottom: "var(--hairline)",
+                      marginBottom: 24,
+                    }}
+                  >
+                    {data.companySize}
+                  </p>
+                </>
+              )}
 
               <div className="toc-label">Tjeneste levert</div>
               <p
