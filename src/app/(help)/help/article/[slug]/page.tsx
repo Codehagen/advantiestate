@@ -150,10 +150,12 @@ export default async function HelpArticle({
         data={{
           title: data.title,
           summary: data.summary,
-          publishedAt: data.updatedAt,
+          publishedAt: data.publishedAt ?? data.updatedAt,
           updatedAt: data.updatedAt,
           author: data.author,
           url: `/help/article/${data.slug}`,
+          timeRequired: readingTime ?? undefined,
+          articleSection: category.title,
         }}
       />
       {data.howto && data.step && data.step.length >= 2 && (
@@ -165,6 +167,9 @@ export default async function HelpArticle({
             step: data.step,
           }}
         />
+      )}
+      {data.faq && data.faq.length >= 2 && (
+        <StructuredData type="faq" data={{ faqs: data.faq }} />
       )}
 
       <div className="page-pad" />
@@ -227,6 +232,18 @@ export default async function HelpArticle({
               )}
 
               <MDX code={data.mdx} images={images} />
+
+              {data.faq && data.faq.length >= 2 && (
+                <div className="ks-faq">
+                  <h2 id="ofte-stilte-sporsmal">Ofte stilte spørsmål</h2>
+                  {data.faq.map((item) => (
+                    <div className="ks-faq-item" key={item.question}>
+                      <h3>{item.question}</h3>
+                      <p>{item.answer}</p>
+                    </div>
+                  ))}
+                </div>
+              )}
 
               {/* Feedback */}
               <div className="ks-feedback">
