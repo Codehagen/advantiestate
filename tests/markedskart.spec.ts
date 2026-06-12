@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { test, expect, type Page } from "@playwright/test";
 
 /**
  * /markedsinnsikt/kart — the dedicated by-for-by market map (2026-06 design).
@@ -14,8 +14,21 @@ test.beforeEach(async ({ page }) => {
   );
 });
 
+// Hovedkartet er en SSR-rendret forelder + en klient-lastet Leaflet-celle.
+// Tabellen/pillene er synlige i server-HTML FØR React har hydrert — et klikk
+// der lander på inert markup og går tapt. Leaflet-containeren finnes først
+// etter hydrering + dynamic-mount, så den er et pålitelig "klar"-signal.
+async function gotoKart(page: Page, hash = "") {
+  await page.goto(`/markedsinnsikt/kart${hash}`, {
+    waitUntil: "domcontentloaded",
+  });
+  await page
+    .locator(".mi-map-leaflet .leaflet-container")
+    .waitFor({ state: "attached" });
+}
+
 test("metric pills switch metric and write the URL hash", async ({ page }) => {
-  await page.goto("/markedsinnsikt/kart", { waitUntil: "domcontentloaded" });
+  await gotoKart(page);
   const leiePill = page.getByRole("button", { name: "Markedsleie" });
   await leiePill.click();
   await expect(leiePill).toHaveAttribute("aria-pressed", "true");
@@ -25,15 +38,13 @@ test("metric pills switch metric and write the URL hash", async ({ page }) => {
     "Markedsleie",
   );
   // Ranked list re-sorts to the new metric (Tromsø has the highest leie).
-  await expect(page.locator(".mi-rank .rank-row").first()).toContainText(
+  await expect(page.locator(".mi-rank-table tbody tr").first()).toContainText(
     "Tromsø",
   );
 });
 
 test("deep link #ledighet preselects the metric", async ({ page }) => {
-  await page.goto("/markedsinnsikt/kart#ledighet", {
-    waitUntil: "domcontentloaded",
-  });
+  await gotoKart(page, "#ledighet");
   await expect(page.getByRole("button", { name: "Ledighet" })).toHaveAttribute(
     "aria-pressed",
     "true",
@@ -41,7 +52,7 @@ test("deep link #ledighet preselects the metric", async ({ page }) => {
 });
 
 test("map pin selects city via click and keyboard", async ({ page }) => {
-  await page.goto("/markedsinnsikt/kart", { waitUntil: "domcontentloaded" });
+  await gotoKart(page);
   // Click path — the map's primary affordance.
   await page.getByRole("button", { name: /^Harstad:/ }).click();
   await expect(page.locator(".mi-map-info h3")).toHaveText("Harstad");
@@ -56,17 +67,17 @@ test("map pin selects city via click and keyboard", async ({ page }) => {
 test("selecting a city updates the panel and broker link", async ({
   page,
 }) => {
-  await page.goto("/markedsinnsikt/kart", { waitUntil: "domcontentloaded" });
+  await gotoKart(page);
   // Default selection is Bodø.
   await expect(page.locator(".mi-map-info h3")).toHaveText("Bodø");
   // Click Tromsø in the ranked list.
-  await page.locator(".mi-rank .rank-row", { hasText: "Tromsø" }).click();
+  await page.locator(".mi-rank-table tbody tr", { hasText: "Tromsø" }).click();
   await expect(page.locator(".mi-map-info h3")).toHaveText("Tromsø");
   await expect(
     page.locator('.mi-map-info a[href="/naringsmegler/tromso"]'),
   ).toBeVisible();
   // "Mo i Rana" maps to the mo-i-rana broker slug (id "mo" in the release).
-  await page.locator(".mi-rank .rank-row", { hasText: "Mo i Rana" }).click();
+  await page.locator(".mi-rank-table tbody tr", { hasText: "Mo i Rana" }).click();
   await expect(
     page.locator('.mi-map-info a[href="/naringsmegler/mo-i-rana"]'),
   ).toBeVisible();

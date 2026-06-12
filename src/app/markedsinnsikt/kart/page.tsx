@@ -1,5 +1,5 @@
 import { MarkedsKartClient } from "@/components/markedsinnsikt/maps/MarkedsKartClient"
-import { MarkedsKartNordNorge } from "@/components/markedsinnsikt/maps/MarkedsKartNordNorge"
+import { MarkedsKartHoved } from "@/components/markedsinnsikt/maps/MarkedsKartHoved"
 import { LATEST_RELEASE } from "@/components/markedsinnsikt/marketReleases"
 import { CtaStrip } from "@/components/site/CtaStrip"
 import { SubHero } from "@/components/site/SubHero"
@@ -85,12 +85,12 @@ export default function MarkedskartPage() {
             </div>
           </div>
 
-          <MarkedsKartNordNorge />
+          <MarkedsKartHoved />
 
           <div className="mi-footnote">
             <span className="source">
-              Kartet er stilisert. Boblene viser valgt nøkkeltall by for by —
-              størrelse og farge følger nivået.
+              Kartgrunnlag: OpenStreetMap/CARTO. Boblene viser valgt nøkkeltall
+              by for by — størrelse og farge følger nivået.
             </span>
             <span>
               {LATEST_RELEASE.cities.length} byer · {LATEST_RELEASE.quarter} ·

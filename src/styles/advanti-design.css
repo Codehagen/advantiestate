@@ -2737,6 +2737,273 @@ h1, h2, h3 {
   .mi-zone-list { max-width: calc(100% - 230px); }
 }
 
+/* ── Fase 2: Leaflet-hovedkart (MarkedsKartHoved + MarkedsKartLeafletCelle) ── */
+
+/* Kartcelle — venstre kolonne i mi-map-card; Leaflet-containeren fyller 100% */
+.mi-map-leaflet {
+  position: relative;
+  height: 620px;
+  overflow: hidden;
+}
+@media (max-width: 880px) {
+  .mi-map-leaflet { height: 420px; }
+}
+
+/* Oppdater loading-state med sentrert tekst (bakoverkompatibel — eksisterende
+   bruk uten children viser bare bakgrunnsfargen). */
+.mi-map-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  color: var(--warm-grey-85);
+}
+
+/* km-map-kontekst: panel kan vokse forbi karthøyden, og overflow skal ikke klippes */
+.km-map .mi-map-card { overflow: visible; }
+.km-map .mi-map-info { overflow-y: auto; }
+
+/* Statisk disclaimer under kartflaten (fase 2, ikke absolutt-posisjonert) */
+.mi-kart-disclaimer--static {
+  position: static;
+  max-width: none;
+  margin-top: 10px;
+  padding: 8px 12px;
+  background: rgba(243, 241, 239, 0.92);
+  border: var(--hairline);
+  font-size: 11px;
+  line-height: 1.45;
+  color: var(--warm-grey-85);
+}
+
+/* Pills-overlay — absolutt topp-venstre i kartcellen, over Leaflet-lagene */
+.mi-map-pills-overlay {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  z-index: 800;
+  background: var(--paper);
+  border: var(--hairline);
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  max-width: calc(100% - 32px);
+  pointer-events: auto;
+}
+@media (max-width: 880px) {
+  .mi-map-pills-overlay { gap: 8px; padding: 8px 10px; }
+}
+
+/* Bunnrail — absolutt bunn i kartcellen; pointer-events: none slik at
+   kartet forblir klikkbart mellom knappene */
+.mi-map-rail {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  right: 12px;
+  z-index: 800;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 8px;
+  pointer-events: none;
+}
+.mi-rail-left,
+.mi-rail-right {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  pointer-events: auto;
+}
+
+/* Rail-knapp — speiler .mi-map-toggle uten absolutt-posisjonering */
+.mi-rail-btn {
+  background: var(--paper);
+  border: var(--hairline);
+  padding: 7px 12px;
+  font-size: 12px;
+  font-family: var(--font-body);
+  color: var(--warm-grey);
+  cursor: pointer;
+  letter-spacing: 0.01em;
+  min-height: 36px;
+  white-space: nowrap;
+}
+.mi-rail-btn:hover { background: var(--accent-faint); }
+.mi-rail-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.mi-rail-btn[aria-pressed="true"] { background: var(--warm-grey); color: var(--warm-white); border-color: var(--warm-grey); }
+@media (pointer: coarse) { .mi-rail-btn { min-height: 44px; } }
+
+/* Mobil sone-overlay — kompakt paper-flate over rail, ≤880px ved pin */
+.mi-zone-mini {
+  display: none; /* skjult på desktop */
+}
+@media (max-width: 880px) {
+  .mi-zone-mini {
+    position: absolute;
+    bottom: 60px;  /* over rail (12px + 36px knapp + 12px luft) */
+    left: 12px;
+    right: 12px;
+    z-index: 800;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    background: var(--paper);
+    border: var(--hairline);
+    padding: 10px 14px;
+    font-size: 13px;
+    pointer-events: auto;
+  }
+}
+.mi-zone-mini-name { font-weight: 600; color: var(--warm-grey); }
+.mi-zone-mini-kontor { color: var(--warm-grey-85); font-variant-numeric: tabular-nums; }
+.mi-zone-mini-link { color: var(--warm-grey); text-decoration: underline; white-space: nowrap; }
+.mi-zone-mini-link:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* Leaflet permanente markør-labels (hovedkartet, light_nolabels-basemap).
+   Skiller seg fra .mi-map-label (tab-05) ved å droppe tooltip-pilen og
+   bruke is-active for fet skrift på valgt by. */
+.leaflet-tooltip.mi-map-marker-label {
+  background: var(--paper);
+  border: var(--hairline);
+  border-radius: 0;
+  box-shadow: none;
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--warm-grey);
+  padding: 3px 8px;
+  white-space: nowrap;
+}
+/* Skjul standard Leaflet-pil for disse labelene */
+.leaflet-tooltip.mi-map-marker-label::before { display: none; }
+.leaflet-tooltip.mi-map-marker-label.is-active { font-weight: 700; }
+
+/* Sone-blokk i bypanelet (zone block under stat-radene) */
+.mi-zone-block {
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: var(--hairline);
+}
+.mi-zone-source-note {
+  font-size: 11px;
+  color: var(--warm-grey-85);
+  margin: 10px 0 6px;
+  line-height: 1.45;
+}
+.mi-zone-valuation-link {
+  display: block;
+  font-size: 12px;
+  color: var(--warm-grey-85);
+  text-decoration: underline;
+  margin-top: 8px;
+  line-height: 1.45;
+}
+.mi-zone-valuation-link:hover { color: var(--warm-grey); }
+.mi-zone-valuation-link:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* Prissone-CTA i panel */
+.mi-map-info-zone-cta { margin-top: 20px; justify-content: center; }
+
+/* Bodø-only-note i panel (byer uten soner) */
+.mi-map-info-zone-note {
+  margin-top: 18px;
+  font-size: 13px;
+  color: var(--warm-grey-85);
+  line-height: 1.5;
+}
+
+/* ── Rangert tabell (erstatter .mi-rank .rank-row-listen) ────────────────── */
+.mi-rank-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.mi-rank-table th {
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--warm-grey-85);
+  font-weight: 600;
+  padding: 14px 22px;
+  text-align: left;
+  border-bottom: var(--hairline);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+.mi-rank-table th.mi-rank-secondary {
+  color: var(--warm-grey-75);
+  font-weight: 400;
+}
+.mi-rank-table tbody tr {
+  border-bottom: var(--hairline);
+  cursor: pointer;
+  transition: background 0.16s;
+}
+.mi-rank-table tbody tr:last-child { border-bottom: 0; }
+.mi-rank-table tbody tr:hover { background: var(--accent-faint); }
+.mi-rank-table tbody tr:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+.mi-rank-table tbody tr.active { background: var(--accent-soft); }
+.mi-rank-table td {
+  padding: 14px 22px;
+  font-variant-numeric: tabular-nums;
+  vertical-align: middle;
+}
+.mi-rank-table td.rk {
+  font-family: var(--font-display);
+  font-size: 15px;
+  color: var(--warm-grey-85);
+  width: 34px;
+}
+.mi-rank-table tbody tr.active td.rk { color: var(--warm-grey); }
+.mi-rank-table td.rc {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--warm-grey);
+  min-width: 100px;
+}
+/* Bar + verdi side om side */
+.mi-rank-table td.rb-cell { white-space: nowrap; }
+.mi-rank-table td.rb-cell .rb {
+  display: inline-block;
+  height: 9px;
+  width: 80px;
+  background: rgba(44, 40, 37, 0.06);
+  border-radius: 999px;
+  overflow: hidden;
+  vertical-align: middle;
+  margin-right: 10px;
+}
+.mi-rank-table td.rb-cell .rb-fill {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  transition: width 0.4s ease;
+}
+@media (prefers-reduced-motion: reduce) { .mi-rank-table td.rb-cell .rb-fill { transition: none; } }
+.mi-rank-table td.rb-cell .rv {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--warm-grey);
+  vertical-align: middle;
+}
+.mi-rank-table td.mi-rank-secondary {
+  font-size: 14px;
+  color: var(--warm-grey-85);
+  font-weight: 400;
+  text-align: right;
+}
+@media (max-width: 620px) {
+  .mi-rank-table th,
+  .mi-rank-table td { padding: 12px 14px; }
+  .mi-rank-table td.rk { width: 26px; }
+  .mi-rank-table td.rc { min-width: 80px; font-size: 14px; }
+  .mi-rank-table .mi-rank-secondary { display: none; }
+}
+
 /* Download report card */
 .mi-report-card {
   border: var(--hairline);
