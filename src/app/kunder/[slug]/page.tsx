@@ -32,7 +32,7 @@ const PRESENTATION: Record<
     heroImageAlt: "Mørkvedbadet, Bodø (illustrasjonsfoto)",
     metaPeriod: "2025 · ca. 5 måneder",
     metaService: "Salgsoppdrag",
-    metaProperty: "Bade- og treningsanlegg · 3 005 m² BRA",
+    metaProperty: "Bade- og treningsanlegg · 3\u00A0005\u00A0m² BRA",
     metaLocation: "Mørkved, Bodø",
     results: [
       { value: ">60", unit: "MNOK", label: "Transaksjonsverdi" },
