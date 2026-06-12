@@ -56,7 +56,7 @@ src/
 │   └── robots.ts                 # robots.txt (AI-bot allowlist + CCBot block)
 ├── components/
 │   ├── ui/                       # shadcn-style primitives
-│   ├── site/                     # Editorial layout primitives (SubHero, CtaStrip, Faq, ProseShell)
+│   ├── site/                     # Shared layout primitives: Nav (grouped disclosure nav), Footer (city column), Breadcrumbs, SeOgsa (cross-links), SubHero, CtaStrip, Faq, ProseShell
 │   ├── advanti/                  # Domain components (DCF, yield, etc.)
 │   ├── markedsinnsikt/           # Recharts charts + Leaflet maps (client-only)
 │   ├── blog/                     # Blog rendering (MDX, headers, legal page)
@@ -65,7 +65,7 @@ src/
 │   ├── blog/                     # categories: company, valuation, market-analysis, casestudies
 │   ├── help/                     # categories: overview, getting-started, terms, analysis, valuation
 │   ├── changelog/ customers/ integrations/ legal/ locations/ people/
-├── lib/                          # Utilities (formatters, chartUtils, coordinateUtils, hooks/, blog/)
+├── lib/                          # Utilities (formatters, chartUtils, coordinateUtils, hooks/, blog/); navigation.ts (site IA registry); navigationServer.ts (server-only city helper); jsonLd.tsx (safe JSON-LD emission)
 ├── styles/                       # advanti-design.css (semantic classes, ~95KB)
 └── types/                        # TS type defs
 ```
@@ -111,8 +111,12 @@ Path alias: `@/*` → `src/*`. Content collections alias: `content-collections`
 ### Components & domain
 - UI primitives in `components/ui/`. Domain logic in `components/advanti/`
   (organized by feature) and `components/markedsinnsikt/`.
+- Shared layout/nav components in `components/site/` (Nav, Footer, Breadcrumbs, SeOgsa, SubHero, …).
 - Server actions in `app/actions/`.
 - Maps are client-only and behind `MapErrorBoundary.tsx`.
+- `src/lib/navigation.ts` is the single source of truth for the site IA. Register every new
+  route as a `NavEntry` (path, label, parent) so `Breadcrumbs` and `parentChain()` resolve it.
+  `navigationServer.ts` is server-only — do not import it in client components.
 
 ## Where things live (quick lookup)
 
@@ -124,6 +128,8 @@ Path alias: `@/*` → `src/*`. Content collections alias: `content-collections`
 | New location | `src/content/locations/<city>.mdx` (drives `/naringsmegler/<city>`) |
 | New chart | `src/components/markedsinnsikt/charts/` (Recharts) or `src/components/advanti/` |
 | New JSON-LD type | extend `src/components/StructuredData.tsx` switch |
+| New route/page | add a `NavEntry` to `REGISTRY` in `src/lib/navigation.ts` (path, label, parent — enables Breadcrumbs and parentChain resolution) |
+| Cross-link block | use `<SeOgsa links={[…]} from="context-slug" />` from `src/components/site/SeOgsa.tsx` |
 
 ## What NOT to do
 
