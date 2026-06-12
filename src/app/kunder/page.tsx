@@ -34,7 +34,7 @@ const PRESENTATION: Record<
     kpis: [
       { value: ">60 MNOK", label: "Transaksjonsverdi" },
       { value: "3 005 m²", label: "BRA" },
-      { value: "5 mnd", label: "Fra mandat til salg" },
+      { value: "5 mnd", label: "Tid til salg" },
     ],
   },
   "naeringspark-helgeland": {
