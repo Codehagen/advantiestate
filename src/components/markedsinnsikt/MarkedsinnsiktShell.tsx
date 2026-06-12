@@ -943,12 +943,12 @@ function RapporterView() {
             byene vi dekker. 48 sider, full datapakke i Excel.
           </p>
           <div className="row" style={{ marginTop: 32 }}>
-            <Link href="/kontakt" className="btn btn-primary">
+            <Link href="/markedsrapport" className="btn btn-primary">
               Bestill rapport <span className="arrow">→</span>
             </Link>
-            <a href="#" className="btn btn-ghost">
-              Last ned sammendrag (PDF, 6 sider)
-            </a>
+            <Link href="/markedsrapport" className="btn btn-ghost">
+              Få sammendrag (PDF, 6 sider)
+            </Link>
           </div>
         </div>
         <div className="meta">
@@ -1002,7 +1002,8 @@ function RapporterView() {
             </div>
             <div className="rfoot">
               <span>{r.foot}</span>
-              <span>Last ned →</span>
+              {/* Arkivtilgang går via lead-gaten — aldri en død «Last ned»-span */}
+              <Link href="/markedsrapport">Få tilgang →</Link>
             </div>
           </article>
         ))}
@@ -1015,7 +1016,7 @@ function RapporterView() {
         </span>
         <span>
           <Link
-            href="/kontakt"
+            href="/markedsrapport"
             style={{
               color: "var(--warm-grey)",
               borderBottom: "1px solid",

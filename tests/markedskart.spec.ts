@@ -169,7 +169,7 @@ test("full prissone-reise: CTA → chips → WMS-gating → pin → reset", asyn
 
   // Verdivurderings-lenke er synlig mens sone er pinnet (design 3.1)
   await expect(
-    page.locator('a[href="/tjenester/verdsettelse"]'),
+    page.locator('a.mi-zone-valuation-link[href="/tjenester/verdivurdering"]'),
   ).toBeVisible();
 
   // Reset-knapp er synlig ved innzoomet tilstand

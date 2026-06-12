@@ -403,7 +403,7 @@ export function MarkedsKartHoved() {
               )}
               {/* Konverteringslenke — typografisk dempet, ikke en tredje pill (design 3.1) */}
               <Link
-                href="/tjenester/verdsettelse"
+                href="/tjenester/verdivurdering"
                 className="mi-zone-valuation-link"
               >
                 Indikative tall — bestill en konkret verdivurdering
