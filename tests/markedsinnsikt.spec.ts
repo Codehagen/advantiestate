@@ -65,18 +65,21 @@ test.describe("Markedsinnsikt", () => {
   }) => {
     // The Mapbox version threw an unhandled client-side exception here and
     // white-screened the whole route. This must not regress.
+    // Fase 3: dypdykk-seksjonen er fjernet; det nye Leaflet-hovedkartet er
+    // i .mi-map-leaflet (ikke .mi-kart-shell som tilhørte det slettede
+    // MarkedsKartClient-komponenten).
     const pageErrors: string[] = [];
     page.on("pageerror", (e) => pageErrors.push(e.message));
 
     const res = await page.goto("/markedsinnsikt/kart");
     expect(res?.status()).toBeLessThan(400);
 
-    // The real Leaflet map must mount — not the error.tsx fallback.
+    // Leaflet-hovedkartet må montere — ikke error.tsx-fallbacken.
     await expect(
-      page.locator(".mi-kart-shell .leaflet-container"),
+      page.locator(".mi-map-leaflet .leaflet-container"),
     ).toBeVisible();
-    // The indikativ-data disclaimer proves the detail component rendered.
-    await expect(page.locator(".mi-kart-disclaimer")).toBeVisible();
+    // Bypanelet med Bodø-default beviser at SSR-foreldrekomponenten kjørte.
+    await expect(page.locator(".mi-map-info h3")).toHaveText("Bodø");
     // No Next "Application error" white screen.
     await expect(page.locator("body")).not.toContainText("Application error");
     expect(
@@ -86,12 +89,22 @@ test.describe("Markedsinnsikt", () => {
   });
 
   test("/kart cadastre toggle flips the GeoNorge overlay", async ({ page }) => {
+    // Fase 3: .mi-map-toggle tilhørte det slettede MarkedsKartLeaflet-
+    // komponenten. Den nye WMS-togglen er en .mi-rail-btn som kun vises
+    // etter at sonevisningen er aktivert (zoom ≥ minZoneZoom).
     await page.goto("/markedsinnsikt/kart");
-    const toggle = page.locator(".mi-map-toggle");
-    await expect(toggle).toBeVisible();
-    await expect(toggle).toHaveAttribute("aria-pressed", "false");
-    await toggle.click();
-    await expect(toggle).toHaveAttribute("aria-pressed", "true");
+    await page
+      .locator(".mi-map-leaflet .leaflet-container")
+      .waitFor({ state: "attached" });
+    await page.getByRole("button", { name: /^Se prissoner i Bodø/ }).click();
+    const visToggle = page.getByRole("button", { name: "Vis eiendomsgrenser" });
+    await expect(visToggle).toBeVisible();
+    await expect(visToggle).toHaveAttribute("aria-pressed", "false");
+    await visToggle.click();
+    // Teksten skifter til "Skjul eiendomsgrenser" og aria-pressed="true"
+    await expect(
+      page.getByRole("button", { name: "Skjul eiendomsgrenser" }),
+    ).toHaveAttribute("aria-pressed", "true");
   });
 
   test("Yield sub-tabs switch the segment", async ({ page }) => {

@@ -83,11 +83,90 @@ test("selecting a city updates the panel and broker link", async ({
   ).toBeVisible();
 });
 
-test("Bodø price-zone deep-dive section is still on the page", async ({
+test("Se prissoner CTA zooms to zones, chip pins sone, Escape releases", async ({
   page,
 }) => {
-  await page.goto("/markedsinnsikt/kart", { waitUntil: "domcontentloaded" });
+  await gotoKart(page);
+
+  // CTA-knappen i bypanelet aktiverer sonevisningen
+  await page.getByRole("button", { name: /^Se prissoner i Bodø/ }).click();
+
+  // Kartet zoomer til Bodø — vent til sone-chips vises (zonesActive = true).
+  // exact: true skiller chip-knappen ("Sentrum") fra GeoJSON-polygon-laget
+  // (aria-label "Prissone Sentrum. Trykk for …") som også rendres nå.
+  const sentrumChip = page.getByRole("button", { name: "Sentrum", exact: true });
+  await sentrumChip.waitFor({ state: "visible" });
+
+  // Klikk Sentrum-chip → pinner sonen
+  await sentrumChip.click();
+
+  // Sone-blokk i bypanelet skal vise Prissone · Sentrum med kontor-intervall
+  const block = page.locator(".mi-zone-block");
+  await expect(block).toBeVisible();
+  await expect(block).toContainText(/Prissone\s*·\s*Sentrum/);
+  await expect(block).toContainText("Kontor");
+  // "3 500" med NBSP-tusenskilletegn fra no-NO-locale — regexp matcher
+  // uansett skilletegn mellom 3 og 500 (regular space, NBSP, U+202F etc.)
+  await expect(block).toContainText(/3.500/);
+
+  // Escape løsner pin — sone-blokken forsvinner
+  await page.keyboard.press("Escape");
+  await expect(block).not.toBeVisible();
+});
+
+test("full prissone-reise: CTA → chips → WMS-gating → pin → reset", async ({
+  page,
+}) => {
+  await gotoKart(page);
+
+  // Sone-chips og WMS-toggle er IKKE synlige på oversiktsnivå (zoom 5).
+  // exact: true skiller chip-knappen fra GeoJSON-polygon-laget (se test 5).
   await expect(
-    page.getByRole("heading", { name: /leieprissoner/ }),
+    page.getByRole("button", { name: "Sentrum", exact: true }),
+  ).toHaveCount(0);
+  await expect(
+    page.getByRole("button", { name: "Vis eiendomsgrenser" }),
+  ).toHaveCount(0);
+
+  // CTA i bypanelet aktiverer sonevisningen
+  await page.getByRole("button", { name: /^Se prissoner i Bodø/ }).click();
+
+  // Vent til sone-chips vises (zonesActive = true etter zoom til ≥ minZoneZoom)
+  await expect(
+    page.getByRole("button", { name: "Sentrum", exact: true }),
   ).toBeVisible();
+
+  // WMS-toggle er nå synlig og av (kun aktivert innzoomet, default av)
+  const wmsToggle = page.getByRole("button", { name: "Vis eiendomsgrenser" });
+  await expect(wmsToggle).toBeVisible();
+  await expect(wmsToggle).toHaveAttribute("aria-pressed", "false");
+
+  // Klikk Rønvika-chip → aria-pressed="true", sone-blokk vises
+  const ronvikaChip = page.getByRole("button", { name: "Rønvika", exact: true });
+  await ronvikaChip.click();
+  await expect(ronvikaChip).toHaveAttribute("aria-pressed", "true");
+
+  const block = page.locator(".mi-zone-block");
+  await expect(block).toContainText(/Prissone\s*·\s*Rønvika/);
+  await expect(block).toContainText("Kontor");
+
+  // Verdivurderings-lenke er synlig mens sone er pinnet (design 3.1)
+  await expect(
+    page.locator('a[href="/tjenester/verdsettelse"]'),
+  ).toBeVisible();
+
+  // Reset-knapp er synlig ved innzoomet tilstand
+  const resetBtn = page.getByRole("button", { name: "Hele Nord-Norge" });
+  await expect(resetBtn).toBeVisible();
+
+  // Klikk reset → pin nulles (sone-blokk forsvinner), kartet zoomer ut
+  await resetBtn.click();
+
+  // Sone-blokk forsvinner umiddelbart (pin settes til null)
+  await expect(block).not.toBeVisible();
+
+  // Chips forsvinner etter at zoomen synker under minZoneZoom (zonesActive = false)
+  await expect(
+    page.getByRole("button", { name: "Sentrum", exact: true }),
+  ).toHaveCount(0);
 });

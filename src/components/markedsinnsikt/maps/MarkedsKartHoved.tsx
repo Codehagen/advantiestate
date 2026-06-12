@@ -45,8 +45,7 @@ type KartCity = {
   values: Record<MetricKey, number>
 }
 
-// Samme derivasjon som MarkedsKartNordNorge.tsx:41-43 — PORTAL_CITY_BY_SLUG
-// er den eneste kilden til sannhet for slug-navne-mapping.
+// PORTAL_CITY_BY_SLUG er den eneste kilden til sannhet for slug-navne-mapping.
 const BROKER_SLUG_BY_NAME: Record<string, string> = Object.fromEntries(
   Object.entries(PORTAL_CITY_BY_SLUG).map(([slug, name]) => [name, slug]),
 )

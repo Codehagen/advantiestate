@@ -1,4 +1,3 @@
-import { MarkedsKartClient } from "@/components/markedsinnsikt/maps/MarkedsKartClient"
 import { MarkedsKartHoved } from "@/components/markedsinnsikt/maps/MarkedsKartHoved"
 import { LATEST_RELEASE } from "@/components/markedsinnsikt/marketReleases"
 import { CtaStrip } from "@/components/site/CtaStrip"
@@ -89,8 +88,12 @@ export default function MarkedskartPage() {
 
           <div className="mi-footnote">
             <span className="source">
-              Kartgrunnlag: OpenStreetMap/CARTO. Boblene viser valgt nøkkeltall
-              by for by — størrelse og farge følger nivået.
+              Kartgrunnlag: OpenStreetMap/CARTO — boblene viser valgt
+              nøkkeltall by for by. Prissoner i Bodø er basert på Advantis
+              egne transaksjons- og leiedata, segmentert på kontor, handel og
+              logistikk; toggle «Vis eiendomsgrenser» aktiverer Kartverkets
+              matrikkellag. Tallene er indikative estimater og erstatter ikke
+              en konkret verdivurdering.
             </span>
             <span>
               {LATEST_RELEASE.cities.length} byer · {LATEST_RELEASE.quarter} ·
@@ -145,32 +148,6 @@ export default function MarkedskartPage() {
               </p>
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* DYPDYKK: PRISSONER I BODØ — the original /markedsinnsikt/kart map */}
-      <section className="section section-divider">
-        <div className="wrap">
-          <div className="head-compact">
-            <span className="eyebrow">Dypdykk · Bodø</span>
-            <div>
-              <h2>
-                Indikative leieprissoner{" "}
-                <span className="italic">i Bodø.</span>
-              </h2>
-              <p>
-                Kartet deler Bodø inn i indikative prissoner for
-                næringslokaler, basert på Advantis egne transaksjons- og
-                leiedata — segmentert på kontor, handel og logistikk. Slå på
-                laget med offisielle eiendomsgrenser fra Kartverket for å se
-                sonene mot faktiske matrikkelenheter. Tallene er indikative
-                estimater og erstatter ikke en konkret verdivurdering.
-              </p>
-            </div>
-          </div>
-        </div>
-        <div className="pr-4">
-          <MarkedsKartClient />
         </div>
       </section>
 
