@@ -20,11 +20,15 @@ Collection leser kun `src/content/customers/*.mdx`.
 
 ## Status
 
-| Case | Fil | Mangler |
-|------|-----|---------|
-| Mørkvedbadet (Bodø, 2025) | `morkvedbadet-bodo.mdx` | Tekst FERDIG SKREVET — gjenstår: ekte hero-foto, Christers godkjenning, ev. sitat |
-| Næringspark Helgeland (2025, anonymisert) | `bjerka-naeringspark.mdx` | Tekst FERDIG SKREVET — gjenstår: bekreft yield/utleie-attribusjon, areal (avrundet) hvis ønsket, nøytralt foto, godkjenning |
+| Case | Fil | Status |
+|------|-----|--------|
+| Mørkvedbadet (Bodø, 2025) | PUBLISERT → `src/content/customers/morkvedbadet-bodo.mdx` | Live på /kunder. Gjenstår: bytte stockfoto til ekte foto av bygget |
+| Næringspark Helgeland (2025, anonymisert) | PUBLISERT → `src/content/customers/naeringspark-helgeland.mdx` | Live på /kunder |
 | Kontor & Handel, Bodø (case 3) | ikke opprettet | Hvilket oppdrag? Avventer valg |
+
+Når case 3 er valgt og skrevet: oppdater forsidens `CASES`-array i
+`src/app/page.tsx` til de tre reelle casene og gjør kortene klikkbare
+mot `/kunder/[slug]` (de tre nåværende forsidekortene er fiktive).
 
 ## Kjente skjema-skavanker (følges opp separat)
 

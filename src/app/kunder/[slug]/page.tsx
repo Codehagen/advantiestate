@@ -25,7 +25,36 @@ const PRESENTATION: Record<
     results?: { value: string; unit?: string; label: string }[];
     advisors?: { name: string; role: string; avatar: string; slug?: string }[];
   }
-> = {};
+> = {
+  "morkvedbadet-bodo": {
+    eyebrow: "Case study · Salg",
+    heroImage: "/building/pexels-abshky-18567185.jpg",
+    heroImageAlt: "Mørkvedbadet, Bodø (illustrasjonsfoto)",
+    metaPeriod: "2025 · ca. 5 måneder",
+    metaService: "Salgsoppdrag",
+    metaProperty: "Bade- og treningsanlegg · 3 005 m² BRA",
+    metaLocation: "Mørkved, Bodø",
+    results: [
+      { value: ">60", unit: "MNOK", label: "Transaksjonsverdi" },
+      { value: "3 005", unit: "m²", label: "BRA, to bygg" },
+      { value: "5", unit: "mnd", label: "Fra mandat til salg" },
+    ],
+  },
+  "naeringspark-helgeland": {
+    eyebrow: "Case study · Salg",
+    heroImage: "/building/pexels-expect-best-79873-351262.jpg",
+    heroImageAlt: "Lager- og logistikkpark (illustrasjonsfoto)",
+    metaPeriod: "2025",
+    metaService: "Salgsoppdrag",
+    metaProperty: "Lager- og logistikkpark",
+    metaLocation: "Helgeland",
+    results: [
+      { value: "35–40", unit: "MNOK", label: "Transaksjonsverdi" },
+      { value: "~8", unit: "%", label: "Yield" },
+      { value: "100", unit: "%", label: "Utleiegrad ved gjennomføring" },
+    ],
+  },
+};
 
 export async function generateStaticParams() {
   return allCustomersPosts.map((post) => ({
