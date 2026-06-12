@@ -156,10 +156,10 @@ const CASES = [
     img: "/building/pexels-pixabay-248877.jpg",
     alt: "Kontorbygg (illustrasjonsfoto)",
     meta: ["Kontor · Bodø", "Eksempel"],
-    title: "Reforhandlingen som doblet leien — fra 1 500 til 3 000 kr/m².",
+    title: "Reforhandlingen som doblet leien — fra 1\u00A0500 til 3\u00A0000 kr/m².",
     stats: [
       { v: "2", unit: "×", l: "Leienivå" },
-      { v: "3 000", unit: "kr/m²", l: "Ny årsleie" },
+      { v: "3\u00A0000", unit: "kr/m²", l: "Ny årsleie" },
     ],
   },
 ];

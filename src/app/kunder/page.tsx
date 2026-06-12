@@ -32,9 +32,9 @@ const PRESENTATION: Record<
     category: "Salg · Kultur og idrett",
     year: "2025",
     kpis: [
-      { value: ">60 MNOK", label: "Transaksjonsverdi" },
-      { value: "3 005 m²", label: "BRA" },
-      { value: "5 mnd", label: "Tid til salg" },
+      { value: ">60\u00A0MNOK", label: "Transaksjonsverdi" },
+      { value: "3\u00A0005\u00A0m²", label: "BRA" },
+      { value: "5\u00A0mnd", label: "Tid til salg" },
     ],
   },
   "naeringspark-helgeland": {
@@ -43,9 +43,9 @@ const PRESENTATION: Record<
     category: "Salg · Lager og logistikk",
     year: "2025",
     kpis: [
-      { value: "35–40 MNOK", label: "Transaksjonsverdi" },
-      { value: "~8 %", label: "Yield" },
-      { value: "100 %", label: "Utleiegrad" },
+      { value: "35–40\u00A0MNOK", label: "Transaksjonsverdi" },
+      { value: "~8\u00A0%", label: "Yield" },
+      { value: "100\u00A0%", label: "Utleiegrad" },
     ],
   },
   "reforhandling-kontor-bodo": {
@@ -54,7 +54,7 @@ const PRESENTATION: Record<
     category: "Reforhandling · Kontor",
     year: "Eksempel",
     kpis: [
-      { value: "1 500 → 3 000", label: "kr/m² i årsleie" },
+      { value: "1\u00A0500\u00A0→\u00A03\u00A0000", label: "kr/m² i årsleie" },
       { value: "2×", label: "Leienivå" },
       { value: "Lengre", label: "Bindingstid" },
     ],

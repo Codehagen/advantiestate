@@ -36,7 +36,7 @@ const PRESENTATION: Record<
     metaLocation: "Mørkved, Bodø",
     results: [
       { value: ">60", unit: "MNOK", label: "Transaksjonsverdi" },
-      { value: "3 005", unit: "m²", label: "BRA, to bygg" },
+      { value: "3\u00A0005", unit: "m²", label: "BRA, to bygg" },
       { value: "5", unit: "mnd", label: "Fra mandat til salg" },
     ],
   },
@@ -63,7 +63,7 @@ const PRESENTATION: Record<
     metaProperty: "Kontorbygg",
     metaLocation: "Bodø",
     results: [
-      { value: "3 000", unit: "kr/m²", label: "Ny årsleie per m² — fra 1 500" },
+      { value: "3\u00A0000", unit: "kr/m²", label: "Ny årsleie per m² — fra 1\u00A0500" },
       { value: "2×", label: "Leienivå etter reforhandling, med lengre bindingstid" },
     ],
   },
