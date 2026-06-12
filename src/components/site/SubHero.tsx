@@ -19,7 +19,19 @@ export interface SubHeroAction {
 }
 
 export interface SubHeroProps {
-  crumb: Crumb[];
+  /**
+   * Legacy crumb array — renders a built-in <nav className="crumb">.
+   * Prefer the `breadcrumbs` prop (pass a <Breadcrumbs> component) for new
+   * pages: it provides both the visible trail and the BreadcrumbList JSON-LD
+   * from a single place.
+   */
+  crumb?: Crumb[];
+  /**
+   * Shared breadcrumb node — rendered in place of the legacy crumb nav.
+   * Pass <Breadcrumbs path="..." leafLabel="..." /> here so the visible
+   * trail and JSON-LD are co-located inside the .subhero section.
+   */
+  breadcrumbs?: ReactNode;
   eyebrow?: string;
   title: ReactNode;
   lede?: string;
@@ -38,6 +50,7 @@ export interface SubHeroProps {
  */
 export function SubHero({
   crumb,
+  breadcrumbs,
   eyebrow,
   title,
   lede,
@@ -51,18 +64,25 @@ export function SubHero({
       <div className="page-pad" />
       <section className="subhero">
         <div className="wrap">
-          <nav className="crumb" aria-label="Brødsmuler">
-            {crumb.map((c, i) => (
-              <Fragment key={`${c.label}-${i}`}>
-                {c.href ? (
-                  <Link href={c.href}>{c.label}</Link>
-                ) : (
-                  <span className="here">{c.label}</span>
-                )}
-                {i < crumb.length - 1 && <span className="sep">/</span>}
-              </Fragment>
-            ))}
-          </nav>
+          {/* Prefer the shared <Breadcrumbs> node; fall back to legacy crumb array. */}
+          {breadcrumbs != null
+            ? breadcrumbs
+            : crumb && crumb.length > 0
+              ? (
+                  <nav className="crumb" aria-label="Brødsmuler">
+                    {crumb.map((c, i) => (
+                      <Fragment key={`${c.label}-${i}`}>
+                        {c.href ? (
+                          <Link href={c.href}>{c.label}</Link>
+                        ) : (
+                          <span className="here">{c.label}</span>
+                        )}
+                        {i < crumb.length - 1 && <span className="sep">/</span>}
+                      </Fragment>
+                    ))}
+                  </nav>
+                )
+              : null}
 
           <div
             className={

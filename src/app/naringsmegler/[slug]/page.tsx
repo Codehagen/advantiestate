@@ -4,10 +4,10 @@ import Link from "next/link";
 import Image from "next/image";
 import { allLocationPosts } from "content-collections";
 
-import StructuredData, {
-  BreadcrumbStructuredData,
-} from "@/components/StructuredData";
+import StructuredData from "@/components/StructuredData";
+import { Breadcrumbs } from "@/components/site/Breadcrumbs";
 import { CtaStrip } from "@/components/site/CtaStrip";
+import { SeOgsa } from "@/components/site/SeOgsa";
 import { ProseShell } from "@/components/site/ProseShell";
 import { LocationMdx } from "@/components/locations/LocationMdx";
 import { ActiveListingsStrip } from "@/components/eiendommer/ActiveListingsStrip";
@@ -192,13 +192,6 @@ export default async function LocationPage({
 
   return (
     <>
-      <BreadcrumbStructuredData
-        items={[
-          { name: "Hjem", url: "/" },
-          { name: "Næringsmegler", url: "/naringsmegler" },
-          { name: location.name, url: `/naringsmegler/${location.slug}` },
-        ]}
-      />
       <StructuredData
         type="realEstateAgent"
         data={{
@@ -235,13 +228,10 @@ export default async function LocationPage({
       {/* SUBHERO */}
       <section className="subhero">
         <div className="wrap">
-          <nav className="crumb" aria-label="Brødsmuler">
-            <Link href="/">Hjem</Link>
-            <span className="sep">/</span>
-            <Link href="/naringsmegler">Næringsmegler</Link>
-            <span className="sep">/</span>
-            <span className="here">{location.name}</span>
-          </nav>
+          <Breadcrumbs
+            path={`/naringsmegler/${location.slug}`}
+            leafLabel={location.name}
+          />
 
           <div className="subhero-grid">
             <div>
@@ -856,6 +846,23 @@ export default async function LocationPage({
         city={location.slug}
         limit={3}
       />
+
+      {/* Se også — redaksjonell kryss­lenke­blokk, før siste CTA-seksjon */}
+      <section className="section-tight" style={{ paddingTop: 0 }}>
+        <div className="wrap">
+          <SeOgsa
+            heading="Forstå markedet"
+            links={[
+              { href: "/markedsinnsikt/kart", label: "Markedskartet" },
+              { href: "/markedsinnsikt", label: "Markedsinnsikt" },
+              {
+                href: "/help/article/prime-yield",
+                label: "Prime yield — markedets referansepunkt",
+              },
+            ]}
+          />
+        </div>
+      </section>
 
       <CtaStrip
         eyebrow={`Næringsmegler i ${location.name}`}

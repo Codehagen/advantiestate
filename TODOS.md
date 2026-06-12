@@ -643,3 +643,34 @@ the AI SEO closure review (/plan-eng-review, 2026-05-24), the AI-SEO research pa
   (gjelder hele pipelinen, ikke bare bysidene — bevisst utsatt fra PR-en,
   beslutning D2=B). Filer: src/lib/email/subscribe.ts, src/emails/WelcomeEmail.
 - **Effort:** M (human ~2t / CC ~15 min + juridisk avklaring) · **Priority:** P1
+
+## TODO 32 — Markedsrapport-gatens konverteringskvalitet før Q3-utgaven
+
+- **What:** Kvalitetsgjennomgang av /markedsrapport-gaten (copy, skjemafelt,
+  hva leseren faktisk får, leveranse etter submit) nå som Rapporter-fanen på
+  /markedsinnsikt ruter all rapport-trafikk dit (IA-redesign PR 1) i stedet
+  for til /kontakt og døde `#`-lenker.
+- **Why:** Codex-funn i CEO-review 2026-06-12: «routing more traffic to a weak
+  gate just amplifies the weakness» — mer trafikk til en svak gate forsterker
+  bare svakheten. rapport_bestill-eventet (8A) gir baseline gratis.
+- **Context:** Gaten finnes og fungerer teknisk (MarkedsrapportGate.tsx);
+  spørsmålet er om den selger. Naturlig frist: neste rapportutgave 15. juli 2026
+  (henger sammen med TODO 24 kvartalsrunbook). CEO-plan:
+  (intern CEO-plan, 2026-06-12)
+- **Effort:** S (human ~3t / CC ~20 min + innholdsvurdering) · **Priority:** P2
+- **Depends on:** IA-redesign PR 1 (trafikk-ruting) + rapport_bestill-event (PR 2)
+
+## TODO 33 — /landing/verdivurdering: designsystem-opprydding (betalt-trafikk-siden)
+
+- **What:** Fjern Remix-ikonene (RiShieldCheckLine, RiUserStarLine, RiBuildingLine
+  — nettstedet er ikon-fritt), porter Tailwind-utility-styling (`rounded-xl
+  bg-warm-grey/5 ring-1 …`) til semantiske advanti-design.css-klasser, og
+  spesifiser/forenkle ValuationCTAButton-atferden (modal i dag).
+- **Why:** Siden er fortsatt mål for betalt annonsetrafikk — annonseklikkere
+  møter en side som bryter merkevarens designspråk. Funnet i /plan-design-review
+  2026-06-12 (subagent F4).
+- **Context:** CTA-målet i nav/IA-redesignet gikk til kalkulatoren (vedtak 3A),
+  så siden er IKKE del av organisk flyt — noIndex står. Ren kvalitetsopprydding,
+  uavhengig av alle IA-PR-ene. Fil: src/app/landing/verdivurdering/page.tsx.
+- **Effort:** S (human ~3t / CC ~15 min) · **Priority:** P3
+- **Depends on:** ingenting
