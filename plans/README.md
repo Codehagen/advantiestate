@@ -16,7 +16,7 @@ done.
 | 005  | Make README, CLAUDE.md and .env.example tell the truth | P2 | S | — | DONE (merged `e9104e1`, 2026-06-10) |
 | 006  | Parallelize the five sequential Supabase fetches on /eiendommer/[slug] | P3 | S | — | DONE (merged `53a894e`, 2026-06-10) |
 | 007  | Spike: quarterly market data out of TypeScript — design doc only | P3 | M | — | DONE (doc at docs/market-data-collection-design.md; recommendation: Option C, keep TS + guardrails; merged `1b61b06`, 2026-06-10) |
-| 008  | Scrub ekte transaksjonsfakta fra offentlig repo (case study-kommentarer) | P1 | S | — | TODO (HASTER — repo er public; planned at `6b16cb9`, 2026-06-12) |
+| 008  | Scrub ekte transaksjonsfakta fra offentlig repo (case study-kommentarer) | P1 | S | — | DONE (merged 076582e, 2026-06-12; leak-grep 0 på tracked HEAD — historikk-beslutning gjenstår hos eier) |
 
 Status values: TODO | IN PROGRESS | DONE | BLOCKED (with one-line reason) | REJECTED (with one-line rationale)
 
