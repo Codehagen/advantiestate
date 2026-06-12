@@ -170,3 +170,35 @@ test("full prissone-reise: CTA → chips → WMS-gating → pin → reset", asyn
     page.getByRole("button", { name: "Sentrum", exact: true }),
   ).toHaveCount(0);
 });
+
+test("tabell-tastatur, Bodø-only-note og pin-reset ved bybytte", async ({
+  page,
+}) => {
+  await gotoKart(page);
+
+  // Tastaturvei i rangert tabell: fokuser Harstad-raden og trykk Enter
+  // (a11y-kravet fra design 6.2 — radene har tabIndex + Enter/Space-handler).
+  const harstadRad = page.locator(".mi-rank-table tbody tr", {
+    hasText: "Harstad",
+  });
+  await harstadRad.focus();
+  await page.keyboard.press("Enter");
+  await expect(page.locator(".mi-map-info h3")).toHaveText("Harstad");
+
+  // By uten soneregister: CTA erstattes av Bodø-only-noten (design 2.1)
+  await expect(
+    page.getByRole("button", { name: /^Se prissoner/ }),
+  ).toHaveCount(0);
+  await expect(page.locator(".mi-map-info-zone-note")).toContainText(
+    /kun for Bodø/,
+  );
+
+  // Pin en Bodø-sone, bytt by — pinnen skal nulles (effekt i MarkedsKartHoved)
+  await page.locator(".mi-rank-table tbody tr", { hasText: "Bodø" }).click();
+  await page.getByRole("button", { name: /^Se prissoner i Bodø/ }).click();
+  const sentrumChip = page.getByRole("button", { name: "Sentrum", exact: true });
+  await sentrumChip.click();
+  await expect(page.locator(".mi-zone-block")).toBeVisible();
+  await page.locator(".mi-rank-table tbody tr", { hasText: "Tromsø" }).click();
+  await expect(page.locator(".mi-zone-block")).not.toBeVisible();
+});
