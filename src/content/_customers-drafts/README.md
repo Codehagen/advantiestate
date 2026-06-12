@@ -22,8 +22,8 @@ Collection leser kun `src/content/customers/*.mdx`.
 
 | Case | Fil | Mangler |
 |------|-----|---------|
-| Mørkvedbadet (kontor, Bodø) | `morkvedbadet-bodo.mdx` | Det meste — se sjekkliste i filen (rolle, år, omfang, tall, bilder) |
-| Bjerka Næringspark (Hemnes) | `bjerka-naeringspark.mdx` | År, areal, prosessdetaljer, samtykke, bilder — parter og sum (37,5 MNOK) finnes fra CRM |
+| Mørkvedbadet (Bodø, 2025) | `morkvedbadet-bodo.mdx` | Tekst FERDIG SKREVET — gjenstår: ekte hero-foto, Christers godkjenning, ev. sitat |
+| Næringspark Helgeland (2025, anonymisert) | `bjerka-naeringspark.mdx` | Tekst FERDIG SKREVET — gjenstår: bekreft yield/utleie-attribusjon, areal (avrundet) hvis ønsket, nøytralt foto, godkjenning |
 | Kontor & Handel, Bodø (case 3) | ikke opprettet | Hvilket oppdrag? Avventer valg |
 
 ## Kjente skjema-skavanker (følges opp separat)
