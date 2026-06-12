@@ -2662,7 +2662,29 @@ h1, h2, h3 {
   pointer-events: auto;
 }
 @media (max-width: 880px) {
-  .mi-map-pills-overlay { gap: 8px; padding: 8px 10px; }
+  .mi-map-pills-overlay {
+    gap: 8px;
+    padding: 8px 10px;
+    /* Full bredde i kartcellen — pillegruppen er ellers bredere enn
+       overlayen og «Ledighet» klippes i høyrekant på 375px. */
+    left: 12px;
+    right: 12px;
+    max-width: none;
+  }
+  .mi-map-pills-overlay .mi-metric-pills { display: flex; width: 100%; }
+  .mi-map-pills-overlay .mi-metric-pills button {
+    flex: 1 1 0;
+    padding: 8px 6px;
+    font-size: 12px;
+  }
+}
+
+/* Leaflet-zoomkontrollen ligger default på 10,10 — rett bak pills-overlayen.
+   Skyv den under overlayen på desktop; på mobil (full bredde-overlay + pinch-
+   zoom tilgjengelig) skjules den helt. */
+.mi-map-leaflet .leaflet-top.leaflet-left { top: 80px; }
+@media (max-width: 880px) {
+  .mi-map-leaflet .leaflet-control-zoom { display: none; }
 }
 
 /* Bunnrail — absolutt bunn i kartcellen; pointer-events: none slik at
