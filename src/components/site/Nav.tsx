@@ -302,6 +302,9 @@ export function Nav({ cities }: NavProps) {
                       aria-current={isLinkActive(e.path) ? "page" : undefined}
                     >
                       {e.label}
+                      {e.description && (
+                        <span className="nav-panel-desc">{e.description}</span>
+                      )}
                     </Link>
                   </li>
                 ))}

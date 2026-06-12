@@ -41,6 +41,7 @@ export const REGISTRY: NavEntry[] = [
   {
     path: "/tjenester/verdivurdering",
     label: "Verdivurdering",
+    description: "Dokumentert markedsverdi med DCF- og yield-analyse.",
     parent: "/tjenester",
     inNav: true,
     inFooter: true,
@@ -49,6 +50,7 @@ export const REGISTRY: NavEntry[] = [
   {
     path: "/tjenester/salg",
     label: "Salg",
+    description: "Strukturert salgsprosess fra verdivurdering til oppgjør.",
     parent: "/tjenester",
     inNav: true,
     inFooter: true,
@@ -57,6 +59,7 @@ export const REGISTRY: NavEntry[] = [
   {
     path: "/tjenester/transaksjoner",
     label: "Transaksjonsrådgivning",
+    description: "Rådgivning gjennom due diligence og forhandling.",
     parent: "/tjenester",
     inNav: true,
     inFooter: true,
@@ -65,6 +68,7 @@ export const REGISTRY: NavEntry[] = [
   {
     path: "/tjenester/utleie",
     label: "Utleie",
+    description: "Utleie av kontor-, handels- og logistikkareal.",
     parent: "/tjenester",
     inNav: true,
     inFooter: true,
@@ -74,6 +78,7 @@ export const REGISTRY: NavEntry[] = [
   {
     path: "/tjenester/radgivning",
     label: "Markedsdata og rådgivning",
+    description: "Markedsdata og analyse som beslutningsgrunnlag.",
     parent: "/tjenester",
     inNav: true,
     inFooter: true,
@@ -82,6 +87,7 @@ export const REGISTRY: NavEntry[] = [
   {
     path: "/tjenester/strategisk-radgivning",
     label: "Strategisk rådgivning",
+    description: "Porteføljestrategi og langsiktig eierrådgivning.",
     parent: "/tjenester",
     inNav: true,
     inFooter: true,
@@ -96,6 +102,7 @@ export const REGISTRY: NavEntry[] = [
   {
     path: "/naringsmegler",
     label: "Næringsmegler i din by",
+    description: "Lokal megler i ti byer i Nord-Norge.",
     parent: null,
     inNav: true,
     inFooter: true,
