@@ -976,7 +976,7 @@ function RapporterView() {
               className="btn btn-ghost"
               onClick={() => trackEvent("rapport_bestill", { source: "sammendrag" })}
             >
-              Få sammendrag (PDF, 6 sider)
+              Se sammendrag (6 sider)
             </Link>
           </div>
         </div>

@@ -40,7 +40,7 @@ test("hovedrapport-kortet ruter begge handlinger til /markedsrapport", async ({
     card.getByRole("link", { name: /Bestill rapport/ }),
   ).toHaveAttribute("href", "/markedsrapport");
   await expect(
-    card.getByRole("link", { name: /Få sammendrag/ }),
+    card.getByRole("link", { name: /Se sammendrag/ }),
   ).toHaveAttribute("href", "/markedsrapport");
 });
 

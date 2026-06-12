@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { trackEvent } from "@/lib/analytics";
-import type { CityLink } from "@/lib/navigationServer";
+import type { CityLink } from "@/lib/navigation";
 
 /** Client leaf so footer city link clicks fire the footer_by_click analytics event. */
 export function FooterCityLinks({ cities }: { cities: CityLink[] }) {

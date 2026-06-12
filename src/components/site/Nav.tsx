@@ -6,7 +6,7 @@ import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { trackEvent } from "@/lib/analytics";
 import type { NavEntry } from "@/lib/navigation";
 import { stripHash } from "@/lib/stripHash";
-import type { CityLink } from "@/lib/navigationServer";
+import type { CityLink } from "@/lib/navigation";
 
 // useLayoutEffect on the client so the sentinel check runs BEFORE first paint
 // (no solid-nav flash on dark-hero pages); useEffect during SSR to keep React

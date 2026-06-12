@@ -33,7 +33,9 @@ function findPages(dir: string): string[] {
  * and removes the trailing /page.tsx.
  */
 function fileToRoute(filePath: string): string {
-  const rel = filePath.replace(APP_ROOT, "").replace(/\/page\.tsx$/, "")
+  // Normaliser til POSIX-separatorer så testen også er korrekt på Windows.
+  const posix = filePath.split(path.sep).join("/")
+  const rel = posix.replace(APP_ROOT.split(path.sep).join("/"), "").replace(/\/page\.tsx$/, "")
   const clean = rel.replace(/\/\([^)]+\)/g, "")
   return clean || "/"
 }

@@ -7,7 +7,8 @@
 
 import { allLocationPosts } from "content-collections";
 
-export type CityLink = { name: string; slug: string };
+import type { CityLink } from "@/lib/navigation";
+export type { CityLink } from "@/lib/navigation";
 
 /**
  * Returns all location pages sorted by the content-layer `order` field,

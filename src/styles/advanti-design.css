@@ -529,7 +529,10 @@ h1, h2, h3 {
 }
 
 /* Inner div needed by grid 0fr trick (children must have min-height: 0) */
-.nav-mobile-group-children > div { overflow: hidden; }
+.nav-mobile-group-children > div {
+  min-height: 0;
+  overflow: hidden;
+}
 
 /* Child links: smaller sans-serif, indented, separated by hairline */
 .nav-mobile-group-children a {

@@ -206,7 +206,16 @@ test("SSR: initial HTML contains hrefs for all inNav entries (incl. group childr
   request: APIRequestContext;
 }) => {
   const response = await request.get("/");
-  const html = await response.text();
+  const fullHtml = await response.text();
+  // Scope til nav-regionen (nav-element + paneler + mobilmeny rendres før
+  // sideinnholdet) — global includes ville gitt falsk grønt når samme href
+  // finnes i footer/innhold (CodeRabbit-funn).
+  const navStart = fullHtml.indexOf("<nav");
+  const navEnd = fullHtml.indexOf("<main");
+  const html = fullHtml.slice(
+    navStart,
+    navEnd > navStart ? navEnd : undefined,
+  );
 
   // Collect all static (non-pattern) inNav entries
   const inNavEntries = REGISTRY.filter(

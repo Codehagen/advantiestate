@@ -11,6 +11,10 @@
 
 export type GroupId = "tjenester" | "innsikt" | "om-oss";
 
+/** Bylenke for footer-kolonnen og Innsikt-panelet — ren datatype, delt
+ *  mellom server-resolveren (navigationServer) og klientkomponentene. */
+export type CityLink = { name: string; slug: string };
+
 export interface NavEntry {
   /** Absolute path or pattern (e.g. "/blog/[slug]"). */
   path: string;

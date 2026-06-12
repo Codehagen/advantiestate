@@ -149,7 +149,7 @@ test("lenkeintegritet: kurerte SeOgsa-hrefs returnerer ikke 404", async ({
     expect(
       response.status(),
       `${href} returnerte HTTP ${response.status()}`,
-    ).not.toBe(404);
+    ).toBeLessThan(400);
   }
 });
 
