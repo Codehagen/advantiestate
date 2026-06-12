@@ -11,6 +11,11 @@
 // (no throw); the side panels still carry the data.
 export const TILE_URL =
   "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
+
+// CartoDB "light_nolabels" — brukes av fase-2 hovedkartet så våre egne
+// by-tooltips er kartets eneste typografi.
+export const TILE_URL_NOLABELS =
+  "https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png"
 export const TILE_ATTRIBUTION =
   '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
 export const TILE_MAX_ZOOM = 19

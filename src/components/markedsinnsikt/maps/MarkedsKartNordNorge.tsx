@@ -11,13 +11,20 @@
 // per-city trend sparkline have no published source and are deliberately
 // omitted (same honest-data rule as the city pages, autoplan E2).
 
-import { useCallback, useEffect, useMemo, useState } from "react"
+import { useCallback, useMemo, useState } from "react"
 import Link from "next/link"
 
 import { LATEST_RELEASE } from "@/components/markedsinnsikt/marketReleases"
 import { PORTAL_CITY_BY_SLUG } from "@/components/naringsmegler/cityMarketData"
-
-type MetricKey = "yield" | "leie" | "ledighet"
+import {
+  METRIC_KEYS,
+  METRICS,
+  RAMP_HIGH,
+  RAMP_LOW,
+  lerpColor,
+  useMetricHash,
+} from "./metrics"
+import type { MetricKey } from "./metrics"
 
 type KartCity = {
   id: string
@@ -27,28 +34,6 @@ type KartCity = {
   note: string
   values: Record<MetricKey, number>
 }
-
-const METRICS: Record<
-  MetricKey,
-  { label: string; hint: string; fmt: (v: number) => string }
-> = {
-  yield: {
-    label: "Prime yield",
-    hint: "Avkastningskrav, kontor sentrum",
-    fmt: (v) => `${v.toFixed(2).replace(".", ",")} %`,
-  },
-  leie: {
-    label: "Markedsleie",
-    hint: "Prime kontorleie, kr/m²/år",
-    fmt: (v) => `${Math.round(v).toLocaleString("no-NO")} kr`,
-  },
-  ledighet: {
-    label: "Ledighet",
-    hint: "Andel ledig kontorareal",
-    fmt: (v) => `${v.toFixed(1).replace(".", ",")} %`,
-  },
-}
-const METRIC_KEYS = Object.keys(METRICS) as MetricKey[]
 
 // City display name → /naringsmegler location slug, DERIVED from the
 // unit-tested PORTAL_CITY_BY_SLUG map (single source of truth — no second
@@ -106,47 +91,10 @@ const BORDER: Array<[number, number]> = [
 const COAST_PTS = COAST.map(([lon, lat]) => project(lat, lon).join(",")).join(" ")
 const BORDER_PTS = BORDER.map(([lon, lat]) => project(lat, lon).join(",")).join(" ")
 
-// Colour ramp for the bubbles — low→high. Imperative SVG fills need literal
-// hex (same rationale as mapTheme.ts); both ends echo the editorial palette.
-const RAMP_LOW = "#dfeef0"
-const RAMP_HIGH = "#b4623f"
-
-function hexToRgb(h: string): [number, number, number] {
-  const n = parseInt(h.slice(1), 16)
-  return [(n >> 16) & 255, (n >> 8) & 255, n & 255]
-}
-function lerpColor(a: string, b: string, t: number): string {
-  const A = hexToRgb(a)
-  const B = hexToRgb(b)
-  return `rgb(${Math.round(A[0] + (B[0] - A[0]) * t)},${Math.round(A[1] + (B[1] - A[1]) * t)},${Math.round(A[2] + (B[2] - A[2]) * t)})`
-}
-
 export function MarkedsKartNordNorge() {
-  const [metric, setMetric] = useState<MetricKey>("yield")
+  const [metric, pickMetric] = useMetricHash()
   const [selected, setSelected] = useState<string>("bodo")
   const [hovered, setHovered] = useState<string | null>(null)
-
-  // #yield / #leie / #ledighet deep links (shareable metric state) — applied
-  // on load AND on same-page hash changes (pasted/clicked deep links while
-  // already on the page).
-  useEffect(() => {
-    const apply = () => {
-      const hash = window.location.hash.slice(1)
-      if (METRIC_KEYS.includes(hash as MetricKey)) setMetric(hash as MetricKey)
-    }
-    apply()
-    window.addEventListener("hashchange", apply)
-    return () => window.removeEventListener("hashchange", apply)
-  }, [])
-
-  const pickMetric = useCallback((m: MetricKey) => {
-    setMetric(m)
-    try {
-      history.replaceState(null, "", `#${m}`)
-    } catch {
-      // ignore — history may be unavailable in odd embeds
-    }
-  }, [])
 
   const m = METRICS[metric]
   const { min, max } = useMemo(() => {

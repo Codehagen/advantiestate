@@ -10,7 +10,6 @@
 
 import { useCallback, useEffect, useRef, useState } from "react"
 import type { Layer, Path } from "leaflet"
-import type { Feature, FeatureCollection, Polygon } from "geojson"
 import { GeoJSON, MapContainer, TileLayer, WMSTileLayer } from "react-leaflet"
 
 import {
@@ -20,90 +19,14 @@ import {
   TILE_URL,
   ZONE,
 } from "./mapTheme"
+import { BODO_ZONES, formatRange, publishedZones } from "./zones"
+import type { ZoneFeature, ZoneProps } from "./zones"
 
-interface ZoneProps {
-  name: string
-  kontorPriceRange: string
-  kontorAveragePrice: number
-  handelPriceRange: string
-  handelAveragePrice: number
-  logistikkPriceRange: string
-  logistikkAveragePrice: number
-}
-
-// Indikative prissoner — coordinates are GeoJSON [lon,lat] and consumed by
-// <GeoJSON> as-is (do not hand-feed these to <Polygon>, which wants [lat,lng]).
-const priceZones: FeatureCollection<Polygon, ZoneProps> = {
-  type: "FeatureCollection",
-  features: [
-    {
-      type: "Feature",
-      properties: {
-        name: "Sentrum",
-        kontorPriceRange: "2 000–3 500 kr/m²",
-        kontorAveragePrice: 2750,
-        handelPriceRange: "1 500–2 000 kr/m²",
-        handelAveragePrice: 1750,
-        logistikkPriceRange: "1 500–2 000 kr/m²",
-        logistikkAveragePrice: 1750,
-      },
-      geometry: {
-        type: "Polygon",
-        coordinates: [
-          [
-            [14.370563966178764, 67.27879976112578],
-            [14.368664862445641, 67.27928290394863],
-            [14.367028537137116, 67.27996903714362],
-            [14.37448051543059, 67.2844751344199],
-            [14.387516535248835, 67.28654585542375],
-            [14.40129045058805, 67.28592939148456],
-            [14.400217384935331, 67.28239565973027],
-            [14.387462095820695, 67.28078001617851],
-            [14.370563966178764, 67.27879976112578],
-          ],
-        ],
-      },
-    },
-    {
-      type: "Feature",
-      properties: {
-        name: "Rønvika",
-        kontorPriceRange: "1 500–2 000 kr/m²",
-        kontorAveragePrice: 1750,
-        handelPriceRange: "1 500–2 000 kr/m²",
-        handelAveragePrice: 1750,
-        logistikkPriceRange: "1 500–2 000 kr/m²",
-        logistikkAveragePrice: 1750,
-      },
-      geometry: {
-        type: "Polygon",
-        coordinates: [
-          [
-            [14.40133818208966, 67.28595838252039],
-            [14.387681604284523, 67.28672771550177],
-            [14.389541431144778, 67.2884428562522],
-            [14.394339152821402, 67.28824672294678],
-            [14.402176452041203, 67.29449011861325],
-            [14.396294798219458, 67.29656755587308],
-            [14.393797869710198, 67.29691020863993],
-            [14.390857042799269, 67.29641764374736],
-            [14.387971703187475, 67.29721002579319],
-            [14.390999470205799, 67.2991081570988],
-            [14.39449517011792, 67.30024305533345],
-            [14.418132760009087, 67.29077678748808],
-            [14.409239716176216, 67.28870355676895],
-            [14.401970879847653, 67.28585413162625],
-            [14.401654530968656, 67.28590625707332],
-            [14.40133818208966, 67.28595838252039],
-          ],
-        ],
-      },
-    },
-  ],
-}
-
-const BODO_CENTER: [number, number] = [67.288, 14.395]
-const BODO_ZOOM = 13
+// Alle publiserte soner — publishedZones-gaten holder utkast (segments: null) ute.
+// Avledet fra BODO_ZONES for å unngå drift mellom kartlag og knapperekke.
+const ZONES: ZoneProps[] = publishedZones(BODO_ZONES).features.map(
+  (f) => f.properties,
+)
 
 const zoneStyle = {
   fillColor: ZONE.fill,
@@ -111,10 +34,6 @@ const zoneStyle = {
   color: ZONE.stroke,
   weight: ZONE.strokeWidth,
 }
-
-// All zone-feature properties for the parallel accessible button list.
-// Source of truth is `priceZones.features` — keep this derived to avoid drift.
-const ZONES: ZoneProps[] = priceZones.features.map((f) => f.properties)
 
 export function MarkedsKartLeaflet() {
   // Two-state selection so touch users can pin a zone without the next stray
@@ -124,15 +43,15 @@ export function MarkedsKartLeaflet() {
   const [hovered, setHovered] = useState<ZoneProps | null>(null)
   const [pinned, setPinned] = useState<ZoneProps | null>(null)
   const [showCadastre, setShowCadastre] = useState(false)
-  // Maps zone name → its Leaflet Path so we can sync visual state (fill
+  // Maps zone id → its Leaflet Path so we can sync visual state (fill
   // opacity) when the user picks a zone from the chip list above the map.
-  const layerByName = useRef<Map<string, Path>>(new Map())
+  const layerById = useRef<Map<string, Path>>(new Map())
 
   const active = pinned ?? hovered
 
   const applyFillOpacity = useCallback(
-    (name: string, opacity: number) => {
-      layerByName.current.get(name)?.setStyle({ fillOpacity: opacity })
+    (id: string, opacity: number) => {
+      layerById.current.get(id)?.setStyle({ fillOpacity: opacity })
     },
     [],
   )
@@ -142,9 +61,9 @@ export function MarkedsKartLeaflet() {
   // came from outside the map (chip click, keyboard).
   useEffect(() => {
     ZONES.forEach((z) => {
-      const isActive = active?.name === z.name
+      const isActive = active?.id === z.id
       applyFillOpacity(
-        z.name,
+        z.id,
         isActive ? ZONE.activeFillOpacity : ZONE.fillOpacity,
       )
     })
@@ -162,13 +81,13 @@ export function MarkedsKartLeaflet() {
   }, [pinned])
 
   const togglePin = useCallback((zone: ZoneProps) => {
-    setPinned((current) => (current?.name === zone.name ? null : zone))
+    setPinned((current) => (current?.id === zone.id ? null : zone))
   }, [])
 
-  const onEachZone = (feature: Feature<Polygon, ZoneProps>, layer: Layer) => {
+  const onEachZone = (feature: ZoneFeature, layer: Layer) => {
     const path = layer as Path
     const props = feature.properties
-    layerByName.current.set(props.name, path)
+    layerById.current.set(props.id, path)
 
     // Surface the zone to assistive tech directly on the SVG path. Leaflet
     // creates the SVG element after `add` fires; getElement is safe by then.
@@ -189,7 +108,7 @@ export function MarkedsKartLeaflet() {
     })
     layer.on("mouseout", () => {
       // Keep active styling on a pinned zone — only revert the rest.
-      if (pinned?.name !== props.name) {
+      if (pinned?.id !== props.id) {
         path.setStyle({ fillOpacity: ZONE.fillOpacity })
       }
       setHovered(null)
@@ -216,11 +135,11 @@ export function MarkedsKartLeaflet() {
         aria-label="Velg prissone"
       >
         {ZONES.map((z) => {
-          const isPinned = pinned?.name === z.name
-          const isHovered = hovered?.name === z.name && !isPinned
+          const isPinned = pinned?.id === z.id
+          const isHovered = hovered?.id === z.id && !isPinned
           return (
             <button
-              key={z.name}
+              key={z.id}
               type="button"
               className="mi-zone-chip"
               aria-pressed={isPinned}
@@ -236,9 +155,9 @@ export function MarkedsKartLeaflet() {
       </div>
 
       <MapContainer
-        center={BODO_CENTER}
-        zoom={BODO_ZOOM}
-        minZoom={11}
+        center={BODO_ZONES.center}
+        zoom={BODO_ZONES.zoom}
+        minZoom={BODO_ZONES.minZoneZoom}
         maxZoom={TILE_MAX_ZOOM}
         scrollWheelZoom
         style={{ height: "100%", width: "100%" }}
@@ -261,7 +180,7 @@ export function MarkedsKartLeaflet() {
           />
         )}
         <GeoJSON
-          data={priceZones}
+          data={publishedZones(BODO_ZONES)}
           style={zoneStyle}
           onEachFeature={onEachZone}
         />
@@ -295,24 +214,27 @@ export function MarkedsKartLeaflet() {
           )}
           <div className="mi-zone-eyebrow">Indikativ prissone</div>
           <h3>{active.name}</h3>
-          <div className="mi-zone-row">
-            <span className="l">Kontor</span>
-            <span className="v">{active.kontorPriceRange}</span>
-          </div>
-          <div className="mi-zone-row">
-            <span className="l">Handel</span>
-            <span className="v">{active.handelPriceRange}</span>
-          </div>
-          <div className="mi-zone-row">
-            <span className="l">Logistikk</span>
-            <span className="v">{active.logistikkPriceRange}</span>
-          </div>
+          {active.segments && (
+            <>
+              <div className="mi-zone-row">
+                <span className="l">Kontor</span>
+                <span className="v">{formatRange(active.segments.kontor)}</span>
+              </div>
+              <div className="mi-zone-row">
+                <span className="l">Handel</span>
+                <span className="v">{formatRange(active.segments.handel)}</span>
+              </div>
+              <div className="mi-zone-row">
+                <span className="l">Logistikk</span>
+                <span className="v">{formatRange(active.segments.logistikk)}</span>
+              </div>
+            </>
+          )}
         </div>
       )}
 
       <div className="mi-kart-disclaimer">
-        Soneinndeling og priser er Advantis indikative estimater per Q4 2025,
-        ikke oppmålte tall.
+        {BODO_ZONES.disclaimer}
       </div>
     </div>
   )
