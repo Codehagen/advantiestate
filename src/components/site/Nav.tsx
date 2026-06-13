@@ -6,7 +6,6 @@ import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { trackEvent } from "@/lib/analytics";
 import type { NavEntry } from "@/lib/navigation";
 import { stripHash } from "@/lib/stripHash";
-import type { CityLink } from "@/lib/navigation";
 
 // useLayoutEffect on the client so the sentinel check runs BEFORE first paint
 // (no solid-nav flash on dark-hero pages); useEffect during SSR to keep React
@@ -15,65 +14,73 @@ const useIsoLayoutEffect =
   typeof window !== "undefined" ? useLayoutEffect : useEffect;
 
 export interface NavProps {
-  cities: CityLink[];
   groups: Record<GroupId, NavEntry[]>;
 }
 
 type GroupId = "tjenester" | "innsikt" | "om-oss";
 
-// Featured promo block shown in each panel's support column (icon-free).
-const PROMO: Record<GroupId, {
-  href: string;
-  eyebrow: string;
-  title: string;
-  desc: string;
-  cta: string;
-}> = {
-  tjenester: {
-    href: "/naringsmegler",
-    eyebrow: "Lokal tilstedeværelse",
-    title: "Næringsmegler i din by",
-    desc: "Lokal megler i ti byer i Nord-Norge.",
-    cta: "Se alle byer",
-  },
-  innsikt: {
-    href: "/markedsrapport",
-    eyebrow: "Fersk innsikt",
-    title: "Markedsrapport",
-    desc: "Kvartalsvise tall: yield, leie og ledighet.",
-    cta: "Les rapporten",
-  },
-  "om-oss": {
-    href: "/karriere",
-    eyebrow: "Jobb hos oss",
-    title: "Karriere i Advanti",
-    desc: "Vi bygger Nord-Norges sterkeste fagmiljø.",
-    cta: "Se ledige roller",
-  },
+// Panel columns (editorial direction C): each group's links split into two
+// eyebrow-labelled columns by theme. Paths resolve against the registry group
+// arrays; an optional "see all" link sits quietly at the column foot.
+const PANEL_COLUMNS: Record<
+  GroupId,
+  { eyebrow: string; paths: string[]; seeAll?: { href: string; label: string } }[]
+> = {
+  tjenester: [
+    {
+      eyebrow: "Rådgivning",
+      paths: [
+        "/tjenester/verdivurdering",
+        "/tjenester/transaksjoner",
+        "/tjenester/radgivning",
+        "/tjenester/strategisk-radgivning",
+      ],
+      seeAll: { href: "/tjenester", label: "Se alle tjenester" },
+    },
+    {
+      eyebrow: "Megling",
+      paths: ["/tjenester/salg", "/tjenester/utleie", "/naringsmegler"],
+    },
+  ],
+  innsikt: [
+    {
+      eyebrow: "Marked",
+      paths: ["/markedsinnsikt", "/markedsinnsikt/kart", "/markedsrapport"],
+    },
+    {
+      eyebrow: "Verktøy og innhold",
+      paths: ["/verktoy", "/help", "/blog"],
+    },
+  ],
+  "om-oss": [
+    {
+      eyebrow: "Selskapet",
+      paths: ["/om-oss", "/personer", "/karriere"],
+    },
+    {
+      eyebrow: "Arbeidet",
+      paths: ["/kunder", "/presserom"],
+    },
+  ],
 };
 
 /**
  * Site navigation — fixed; transparent over a dark hero, solid otherwise.
  *
- * Disclosure model (E1A + hover enhancement):
- *   Three centered group labels (Tjenester, Innsikt, Om oss) are <button>
- *   triggers with aria-expanded / aria-controls. Their panels live in a single
- *   contained card "shell" that morphs height between groups. Panels are ALWAYS
- *   in the server HTML (crawlable) and hidden via CSS + `inert` when closed.
+ * Disclosure model (E1A + hover): three left-anchored group labels (Tjenester,
+ * Innsikt, Om oss) are <button> triggers with aria-expanded / aria-controls.
+ * Their panels live in a single FLAT contained card "shell" (hairline, no
+ * shadow) that morphs height to the open group. Panels stay in the DOM
+ * (SSR/crawlable), cross-fade between groups.
  *
- *   POINTER: hovering a trigger opens it and morphs between groups; leaving the
- *   trigger-or-card closes after an intent delay. Gated to `(hover: hover)`.
- *   KEYBOARD/CLICK: trigger toggles; Escape closes + returns focus. Click
- *   outside and link-click close.
+ *   POINTER: hover opens + morphs between groups; leaving closes after an
+ *   intent delay (gated to (hover: hover)). KEYBOARD/CLICK: trigger toggles;
+ *   Escape closes + returns focus. Click-outside and link-click close.
  *
- * --nav-h ownership (E7): Nav measures its own height via ResizeObserver and
- *   writes --nav-h on documentElement; AnalyseportalShell only reads it.
- *
- * Transparent/solid sentinel (unchanged): a dark-hero page renders
- *   <div id="hero-sentinel" /> at the hero base; Nav stays transparent until it
- *   scrolls behind the nav. No sentinel → solid immediately.
+ * --nav-h ownership (E7): Nav measures its own height and writes --nav-h.
+ * Transparent/solid sentinel unchanged (#hero-sentinel).
  */
-export function Nav({ cities, groups }: NavProps) {
+export function Nav({ groups }: NavProps) {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(true);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -89,9 +96,8 @@ export function Nav({ cities, groups }: NavProps) {
   // Hover-intent: timer + a (hover: hover) gate so touch never opens on hover.
   const closeTimer = useRef<number | null>(null);
   const canHover = useRef(false);
-  // Which group was just opened by hover and not yet click-confirmed. Lets the
-  // click that rides along with a hover-open CONFIRM the panel open instead of
-  // toggling it shut (Playwright .click() hovers first; real mice do too).
+  // Which group was just opened by hover and not yet click-confirmed (so the
+  // click riding along with a hover-open confirms it open, not shut).
   const hoverOpened = useRef<GroupId | null>(null);
   useEffect(() => {
     canHover.current =
@@ -134,7 +140,6 @@ export function Nav({ cities, groups }: NavProps) {
     const apply = () =>
       document.documentElement.style.setProperty(
         "--nav-h",
-        // Math.ceil: a fraction too low lets content peek behind the nav.
         `${Math.ceil(nav.getBoundingClientRect().height)}px`,
       );
     apply();
@@ -306,39 +311,47 @@ export function Nav({ cities, groups }: NavProps) {
     onMouseLeave: scheduleClose,
   };
 
-  // Tjenester services shown in the grid (parent + næringsmegler rendered apart;
-  // næringsmegler is the panel's featured promo, so it is excluded here).
-  const tjenesterServices = groups.tjenester.filter(
-    (e) => e.path !== "/tjenester" && e.path !== "/naringsmegler",
-  );
-  // Innsikt links minus the parent and minus markedsrapport (the promo).
-  const innsiktLinks = groups.innsikt.filter(
-    (e) => e.path !== "/markedsinnsikt" && e.path !== "/markedsrapport",
-  );
-  // Om oss links minus the parent and minus karriere (the promo).
-  const omOssLinks = groups["om-oss"].filter(
-    (e) => e.path !== "/om-oss" && e.path !== "/karriere",
-  );
+  const byPath = (id: GroupId, path: string) =>
+    groups[id].find((e) => e.path === path);
 
-  const renderPromo = (id: GroupId) => {
-    const p = PROMO[id];
-    return (
-      <Link
-        prefetch={false}
-        href={p.href}
-        className="nav-promo"
-        aria-current={isLinkActive(p.href) ? "page" : undefined}
-        onClick={closePanel}
-      >
-        <span className="nav-promo-eyebrow">{p.eyebrow}</span>
-        <span className="nav-promo-title">{p.title}</span>
-        <span className="nav-promo-desc">{p.desc}</span>
-        <span className="nav-promo-cta">
-          {p.cta} <span aria-hidden>→</span>
-        </span>
-      </Link>
-    );
-  };
+  // Renders one flat eyebrow-labelled column for a desktop panel.
+  const renderPanel = (id: GroupId) => (
+    <div className="nav-panel-inner nav-panel-grid">
+      {PANEL_COLUMNS[id].map((col) => (
+        <div className="nav-panel-col" key={col.eyebrow}>
+          <span className="nav-panel-eyebrow">{col.eyebrow}</span>
+          <ul className="nav-panel-list" onClick={closePanel}>
+            {col.paths.map((p) => {
+              const e = byPath(id, p);
+              if (!e) return null;
+              return (
+                <li key={p}>
+                  <Link
+                    prefetch={false}
+                    href={e.path}
+                    aria-current={isLinkActive(e.path) ? "page" : undefined}
+                  >
+                    {e.label}
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+          {col.seeAll && (
+            <Link
+              prefetch={false}
+              href={col.seeAll.href}
+              className="nav-panel-seeall"
+              aria-current={cleanPath === col.seeAll.href ? "page" : undefined}
+              onClick={closePanel}
+            >
+              {col.seeAll.label} →
+            </Link>
+          )}
+        </div>
+      ))}
+    </div>
+  );
 
   return (
     <>
@@ -436,169 +449,39 @@ export function Nav({ cities, groups }: NavProps) {
       </nav>
 
       {/* ──────────────────────────────────────────────────────────────────
-          DESKTOP PANEL SHELL — one contained card that morphs height between
-          groups. Panels are always in the DOM (SSR/crawlability), hidden via
-          opacity + inert when their group is closed.
+          DESKTOP PANEL SHELL — one flat contained card that morphs height.
+          Panels always in the DOM (SSR/crawlable), hidden via opacity + inert.
           ────────────────────────────────────────────────────────────── */}
       <div
         className={`nav-panel-shell${openGroup ? " open" : ""}`}
         ref={shellRef}
         {...panelHoverProps}
       >
-        {/* Tjenester */}
         <div
           id="nav-panel-tjenester"
           className={`nav-panel${openGroup === "tjenester" ? " open" : ""}`}
           ref={panelRefCb["tjenester"]}
           inert={openGroup !== "tjenester"}
         >
-          <div className="nav-panel-inner nav-panel-grid">
-            <div className="nav-panel-col-wide">
-              <span className="nav-panel-eyebrow">Tjenester</span>
-              <ul
-                className="nav-panel-list nav-panel-list-grid"
-                onClick={closePanel}
-              >
-                <li className="nav-panel-parent">
-                  <Link
-                    prefetch={false}
-                    href="/tjenester"
-                    aria-current={
-                      cleanPath === "/tjenester" ? "page" : undefined
-                    }
-                  >
-                    Alle tjenester
-                  </Link>
-                </li>
-                {tjenesterServices.map((e) => (
-                  <li key={e.path}>
-                    <Link
-                      prefetch={false}
-                      href={e.path}
-                      aria-current={isLinkActive(e.path) ? "page" : undefined}
-                    >
-                      {e.label}
-                    </Link>
-                    {e.description && (
-                      <span className="nav-panel-desc">{e.description}</span>
-                    )}
-                  </li>
-                ))}
-              </ul>
-            </div>
-            {renderPromo("tjenester")}
-          </div>
+          {renderPanel("tjenester")}
         </div>
 
-        {/* Innsikt */}
         <div
           id="nav-panel-innsikt"
           className={`nav-panel${openGroup === "innsikt" ? " open" : ""}`}
           ref={panelRefCb["innsikt"]}
           inert={openGroup !== "innsikt"}
         >
-          <div className="nav-panel-inner nav-panel-grid">
-            <div className="nav-panel-col-wide">
-              <span className="nav-panel-eyebrow">Innsikt</span>
-              <ul
-                className="nav-panel-list nav-panel-list-grid"
-                onClick={closePanel}
-              >
-                <li className="nav-panel-parent">
-                  <Link
-                    prefetch={false}
-                    href="/markedsinnsikt"
-                    aria-current={
-                      isLinkActive("/markedsinnsikt") ? "page" : undefined
-                    }
-                  >
-                    Markedsinnsikt
-                  </Link>
-                  <span className="nav-panel-desc">
-                    Oversikt over næringseiendomsmarkedet i Nord-Norge.
-                  </span>
-                </li>
-                {innsiktLinks.map((e) => (
-                  <li key={e.path}>
-                    <Link
-                      prefetch={false}
-                      href={e.path}
-                      aria-current={isLinkActive(e.path) ? "page" : undefined}
-                    >
-                      {e.label}
-                    </Link>
-                    {e.description && (
-                      <span className="nav-panel-desc">{e.description}</span>
-                    )}
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Right column — featured Markedsrapport promo + city quick-links */}
-            <div className="nav-panel-aside">
-              {renderPromo("innsikt")}
-              <div className="nav-panel-cities-block">
-                <span className="nav-panel-eyebrow">Byer</span>
-                <div className="nav-panel-cities" onClick={closePanel}>
-                  {cities.slice(0, 8).map((city) => (
-                    <Link
-                      prefetch={false}
-                      key={city.slug}
-                      href={`/naringsmegler/${city.slug}`}
-                      aria-current={
-                        isLinkActive(`/naringsmegler/${city.slug}`)
-                          ? "page"
-                          : undefined
-                      }
-                    >
-                      {city.name}
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
+          {renderPanel("innsikt")}
         </div>
 
-        {/* Om oss */}
         <div
           id="nav-panel-om-oss"
           className={`nav-panel${openGroup === "om-oss" ? " open" : ""}`}
           ref={panelRefCb["om-oss"]}
           inert={openGroup !== "om-oss"}
         >
-          <div className="nav-panel-inner nav-panel-grid">
-            <div className="nav-panel-col-wide">
-              <span className="nav-panel-eyebrow">Advanti</span>
-              <ul
-                className="nav-panel-list nav-panel-list-grid"
-                onClick={closePanel}
-              >
-                <li className="nav-panel-parent">
-                  <Link
-                    prefetch={false}
-                    href="/om-oss"
-                    aria-current={isLinkActive("/om-oss") ? "page" : undefined}
-                  >
-                    Om oss
-                  </Link>
-                </li>
-                {omOssLinks.map((e) => (
-                  <li key={e.path}>
-                    <Link
-                      prefetch={false}
-                      href={e.path}
-                      aria-current={isLinkActive(e.path) ? "page" : undefined}
-                    >
-                      {e.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            {renderPromo("om-oss")}
-          </div>
+          {renderPanel("om-oss")}
         </div>
       </div>
 
