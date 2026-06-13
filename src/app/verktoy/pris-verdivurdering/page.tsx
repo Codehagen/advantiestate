@@ -3,6 +3,10 @@ import { ValuationPriceCalculator } from "@/components/verktoy/ValuationPriceCal
 import { constructMetadata } from "@/lib/utils";
 import { AnimatedCTA } from "@/components/ui/AnimatedCTA";
 import { CalculatorCTA } from "@/components/verktoy/CalculatorCTA";
+import {
+  JourneyStepTracker,
+  SjekklisteJourneyLink,
+} from "@/components/verktoy/JourneyStepTracker";
 
 export const metadata = constructMetadata({
   path: "/verktoy/pris-verdivurdering",
@@ -28,6 +32,14 @@ export default function PrisVerdiPage() {
           description="Denne kalkulatoren gir et estimat basert på generelle priser. For et nøyaktig tilbud tilpasset din spesifikke situasjon, kontakt oss for en uforpliktende samtale. Vi leverer verdsettelser på 48 timer med lokal markedsinnsikt i Nord-Norge."
         />
       </section>
+
+      {/* Typografisk dempet støtte­lenke — ikke en knapp, ikke konkurrent til
+          primær-CTAen nedenfor. Plassert mellom tilbudsskjemaet og den store
+          profesjonell-verdivurdering-seksjonen. */}
+      <p className="mx-auto mt-6 w-full max-w-6xl px-3 text-center text-sm">
+        <SjekklisteJourneyLink />
+      </p>
+      <JourneyStepTracker />
 
       <section className="mx-auto mt-24 w-full max-w-6xl px-3 pb-24">
         <AnimatedCTA

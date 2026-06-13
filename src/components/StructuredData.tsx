@@ -1,5 +1,6 @@
 import { siteConfig } from "@/app/siteConfig";
 import { AUTHORS } from "@/lib/authors";
+import { jsonLdScriptProps } from "@/lib/jsonLd";
 
 interface StructuredDataProps {
   type?:
@@ -478,15 +479,12 @@ export default function StructuredData({
 
   if (!schemaData) return null;
 
-  return (
-    <script
-      type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaData) }}
-    />
-  );
+  return <script {...jsonLdScriptProps(schemaData)} />;
 }
 
-// Breadcrumb component for navigation paths
+// Breadcrumb component for navigation paths.
+// Used on pages outside the Breadcrumbs.tsx migration scope (presserom, blog,
+// naringsmegler hub, etc.). Now uses the shared safe serialiser.
 export function BreadcrumbStructuredData({
   items,
 }: {
@@ -505,10 +503,5 @@ export function BreadcrumbStructuredData({
     })),
   };
 
-  return (
-    <script
-      type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaData) }}
-    />
-  );
+  return <script {...jsonLdScriptProps(schemaData)} />;
 }

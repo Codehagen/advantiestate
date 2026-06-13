@@ -139,30 +139,8 @@ export function AnalyseportalShell({ analyst }: { analyst: AnalystCard | null })
     window.history.replaceState(null, "", hash)
   }, [sector, segment, cities, range])
 
-  // --nav-h drives where the sticky tabs/controls/rail stack beneath the
-  // fixed nav. Static per-breakpoint values proved engine-dependent (±4px
-  // between browser builds), so measure the real nav and keep the CSS
-  // values only as the no-JS fallback. The observer also tracks the nav's
-  // scrolled/unscrolled height transition.
-  useEffect(() => {
-    const nav = document.querySelector<HTMLElement>(".nav")
-    if (!nav || typeof ResizeObserver === "undefined") return
-    const apply = () =>
-      document.documentElement.style.setProperty(
-        "--nav-h",
-        // ceil: a fraction too low lets the tabs peek behind the nav.
-        `${Math.ceil(nav.getBoundingClientRect().height)}px`,
-      )
-    apply()
-    const ro = new ResizeObserver(apply)
-    // border-box: the nav's scrolled state transitions PADDING, which never
-    // fires a content-box observation.
-    ro.observe(nav, { box: "border-box" })
-    return () => {
-      ro.disconnect()
-      document.documentElement.style.removeProperty("--nav-h")
-    }
-  }, [])
+  // --nav-h is written by the Nav component (single writer, E7).
+  // AnalyseportalShell only consumes var(--nav-h, 72px) via CSS.
 
   const setSector = useCallback((key: SectorKey) => {
     animateRef.current = true

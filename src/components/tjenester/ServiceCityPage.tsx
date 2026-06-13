@@ -5,9 +5,8 @@ import { CtaStrip } from "@/components/site/CtaStrip";
 import { PhotoBand } from "@/components/site/PhotoBand";
 import { Faq, type FaqItem } from "@/components/site/Faq";
 import { ActiveListingsStrip } from "@/components/eiendommer/ActiveListingsStrip";
-import StructuredData, {
-  BreadcrumbStructuredData,
-} from "@/components/StructuredData";
+import StructuredData from "@/components/StructuredData";
+import { Breadcrumbs } from "@/components/site/Breadcrumbs";
 import {
   SERVICE_SLUGS,
   getServiceCityLocation,
@@ -82,14 +81,6 @@ export function ServiceCityPage({
 
   return (
     <>
-      <BreadcrumbStructuredData
-        items={[
-          { name: "Hjem", url: "/" },
-          { name: "Tjenester", url: "/tjenester" },
-          { name: service.label, url: `/tjenester/${service.slug}` },
-          { name: city, url: canonicalPath },
-        ]}
-      />
       <StructuredData
         type="service"
         data={{
@@ -101,12 +92,9 @@ export function ServiceCityPage({
           StructuredData here, or the page would carry two FAQPage blocks. */}
 
       <SubHero
-        crumb={[
-          { label: "Hjem", href: "/" },
-          { label: "Tjenester", href: "/tjenester" },
-          { label: service.label, href: `/tjenester/${service.slug}` },
-          { label: city },
-        ]}
+        breadcrumbs={
+          <Breadcrumbs path={canonicalPath} leafLabel={city} />
+        }
         eyebrow={`${service.heroEyebrow} · ${city}`}
         title={
           <>

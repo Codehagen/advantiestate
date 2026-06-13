@@ -2,9 +2,8 @@ import { constructMetadata, formatDate } from "@/lib/utils";
 import { SubHero } from "@/components/site/SubHero";
 import { PhotoBand } from "@/components/site/PhotoBand";
 import { Faq, type FaqItem } from "@/components/site/Faq";
-import StructuredData, {
-  BreadcrumbStructuredData,
-} from "@/components/StructuredData";
+import StructuredData from "@/components/StructuredData";
+import { Breadcrumbs } from "@/components/site/Breadcrumbs";
 import { VerdivurderingIntake } from "./VerdivurderingIntake";
 
 const LAST_UPDATED = "2026-05-22";
@@ -42,13 +41,6 @@ const FAQ_ITEMS: FaqItem[] = [
 export default function VerdivurderingPage() {
   return (
     <>
-      <BreadcrumbStructuredData
-        items={[
-          { name: "Hjem", url: "/" },
-          { name: "Tjenester", url: "/tjenester" },
-          { name: "Verdivurdering", url: "/tjenester/verdivurdering" },
-        ]}
-      />
       <StructuredData
         type="service"
         data={{
@@ -59,11 +51,7 @@ export default function VerdivurderingPage() {
       />
 
       <SubHero
-        crumb={[
-          { label: "Hjem", href: "/" },
-          { label: "Tjenester", href: "/tjenester" },
-          { label: "Verdivurdering" },
-        ]}
+        breadcrumbs={<Breadcrumbs path="/tjenester/verdivurdering" />}
         eyebrow="Tjeneste 01 · Verdivurdering"
         title={
           <>
