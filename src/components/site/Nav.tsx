@@ -30,17 +30,21 @@ import {
   Megaphone,
 } from "lucide-react";
 import { trackEvent } from "@/lib/analytics";
-import type { NavEntry } from "@/lib/navigation";
+import { EIENDOM_CITIES, type NavEntry } from "@/lib/navigation";
 import { stripHash } from "@/lib/stripHash";
 
 const useIsoLayoutEffect =
   typeof window !== "undefined" ? useLayoutEffect : useEffect;
 
 export interface NavProps {
-  groups: Record<GroupId, NavEntry[]>;
+  groups: Record<RegistryGroupId, NavEntry[]>;
 }
 
-type GroupId = "tjenester" | "innsikt" | "om-oss";
+// Groups whose panel content comes from the registry (resolved via `groups`).
+type RegistryGroupId = "tjenester" | "innsikt" | "om-oss";
+// All dropdown groups. "eiendommer" is registry-independent — its panel lists
+// the listing cities (EIENDOM_CITIES), each linking to /eiendommer?by={slug}.
+type GroupId = RegistryGroupId | "eiendommer";
 type IconType = ComponentType<{ className?: string; "aria-hidden"?: boolean }>;
 
 // Icon per route (lucide). Reference look (icon tile + title + description).
@@ -78,7 +82,7 @@ const FALLBACK_DESC: Record<string, string> = {
 // "see all" link and the featured promo (a single anchor, distinct target so
 // it never duplicates a grid link).
 const PANELS: Record<
-  GroupId,
+  RegistryGroupId,
   {
     items: string[];
     seeAll?: { href: string; label: string };
@@ -317,10 +321,12 @@ export function Nav({ groups }: NavProps) {
   const isLinkActive = (href: string) =>
     cleanPath === href || cleanPath.startsWith(`${href}/`);
 
-  const isGroupActive = (id: GroupId): boolean =>
-    (groups[id] ?? []).some(
+  const isGroupActive = (id: GroupId): boolean => {
+    if (id === "eiendommer") return isLinkActive("/eiendommer");
+    return (groups[id] ?? []).some(
       (e) => !e.path.includes("[") && isLinkActive(e.path),
     );
+  };
 
   const toggleGroup = (id: GroupId) => {
     cancelClose();
@@ -357,6 +363,9 @@ export function Nav({ groups }: NavProps) {
       tjenester: (el: HTMLButtonElement | null) => {
         groupBtnRefs.current["tjenester"] = el ?? undefined;
       },
+      eiendommer: (el: HTMLButtonElement | null) => {
+        groupBtnRefs.current["eiendommer"] = el ?? undefined;
+      },
       innsikt: (el: HTMLButtonElement | null) => {
         groupBtnRefs.current["innsikt"] = el ?? undefined;
       },
@@ -371,6 +380,9 @@ export function Nav({ groups }: NavProps) {
     () => ({
       tjenester: (el: HTMLDivElement | null) => {
         panelRefs.current["tjenester"] = el ?? undefined;
+      },
+      eiendommer: (el: HTMLDivElement | null) => {
+        panelRefs.current["eiendommer"] = el ?? undefined;
       },
       innsikt: (el: HTMLDivElement | null) => {
         panelRefs.current["innsikt"] = el ?? undefined;
@@ -391,11 +403,11 @@ export function Nav({ groups }: NavProps) {
     onMouseLeave: scheduleClose,
   };
 
-  const byPath = (id: GroupId, path: string) =>
+  const byPath = (id: RegistryGroupId, path: string) =>
     groups[id].find((e) => e.path === path);
 
   // Renders a desktop panel: icon-tile grid + "see all" + featured promo.
-  const renderPanel = (id: GroupId) => {
+  const renderPanel = (id: RegistryGroupId) => {
     const panel = PANELS[id];
     return (
       <div className="nav-panel-inner nav-panel-grid">
@@ -464,6 +476,70 @@ export function Nav({ groups }: NavProps) {
     );
   };
 
+  // Eiendommer panel: the listing cities (→ /eiendommer?by={slug}) + a "selge?"
+  // promo. Registry-independent — cities are the static EIENDOM_CITIES list.
+  const renderEiendommerPanel = () => (
+    <div className="nav-panel-inner nav-panel-grid">
+      <div className="nav-panel-main">
+        <ul className="nav-item-grid" onClick={closePanel}>
+          {EIENDOM_CITIES.map((c) => (
+            <li key={c.slug}>
+              <Link
+                prefetch={false}
+                href={`/eiendommer?by=${c.slug}`}
+                className="nav-item"
+              >
+                <span className="nav-item-icon" aria-hidden>
+                  <MapPin aria-hidden />
+                </span>
+                <span className="nav-item-text">
+                  <span className="nav-item-title">{c.label}</span>
+                  <span className="nav-item-desc">Til salgs i {c.label}.</span>
+                </span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+        <Link
+          prefetch={false}
+          href="/eiendommer"
+          className="nav-panel-seeall"
+          aria-current={cleanPath === "/eiendommer" ? "page" : undefined}
+          onClick={closePanel}
+        >
+          Se alle eiendommer →
+        </Link>
+      </div>
+
+      <Link
+        prefetch={false}
+        href="/verktoy/pris-verdivurdering"
+        className="nav-promo"
+        aria-current={
+          isLinkActive("/verktoy/pris-verdivurdering") ? "page" : undefined
+        }
+        onClick={closePanel}
+      >
+        <span className="nav-promo-eyebrow">Selge eiendom?</span>
+        <span className="nav-promo-title">Vurderer du å selge?</span>
+        <span className="nav-promo-desc">
+          Få en uforpliktende verdivurdering av næringseiendommen din.
+        </span>
+        <span className="nav-promo-cta">
+          Få verdivurdering <span aria-hidden>→</span>
+        </span>
+        <span
+          className="nav-promo-img"
+          style={{
+            backgroundImage:
+              "url(/building/pexels-berlin-architectural-37375943.jpg)",
+          }}
+          aria-hidden
+        />
+      </Link>
+    </div>
+  );
+
   return (
     <>
       <nav className={navClass} id="nav" ref={navRef}>
@@ -490,13 +566,18 @@ export function Nav({ groups }: NavProps) {
             Tjenester
           </button>
 
-          <Link
-            href="/eiendommer"
-            aria-current={isLinkActive("/eiendommer") ? "page" : undefined}
-            onMouseEnter={scheduleClose}
+          <button
+            type="button"
+            className="nav-group-btn"
+            aria-expanded={openGroup === "eiendommer"}
+            aria-controls="nav-panel-eiendommer"
+            data-active={isGroupActive("eiendommer") ? true : undefined}
+            ref={groupBtnCb["eiendommer"]}
+            onClick={() => toggleGroup("eiendommer")}
+            {...hoverProps("eiendommer")}
           >
             Eiendommer
-          </Link>
+          </button>
 
           <button
             type="button"
@@ -575,6 +656,15 @@ export function Nav({ groups }: NavProps) {
         </div>
 
         <div
+          id="nav-panel-eiendommer"
+          className={`nav-panel${openGroup === "eiendommer" ? " open" : ""}`}
+          ref={panelRefCb["eiendommer"]}
+          inert={openGroup !== "eiendommer"}
+        >
+          {renderEiendommerPanel()}
+        </div>
+
+        <div
           id="nav-panel-innsikt"
           className={`nav-panel${openGroup === "innsikt" ? " open" : ""}`}
           ref={panelRefCb["innsikt"]}
@@ -627,14 +717,30 @@ export function Nav({ groups }: NavProps) {
             onLinkClick={() => setMenuOpen(false)}
           />
 
-          <Link
-            prefetch={false}
-            href="/eiendommer"
-            aria-current={isLinkActive("/eiendommer") ? "page" : undefined}
-            onClick={() => setMenuOpen(false)}
-          >
-            Eiendommer
-          </Link>
+          <MobileGroup
+            id="eiendommer"
+            label="Eiendommer"
+            isOpen={openMobileGroup === "eiendommer"}
+            onToggle={() =>
+              setOpenMobileGroup((p) =>
+                p === "eiendommer" ? null : "eiendommer",
+              )
+            }
+            isActive={isGroupActive("eiendommer")}
+            links={[
+              {
+                href: "/eiendommer",
+                label: "Alle eiendommer",
+                active: isLinkActive("/eiendommer"),
+              },
+              ...EIENDOM_CITIES.map((c) => ({
+                href: `/eiendommer?by=${c.slug}`,
+                label: c.label,
+                active: false,
+              })),
+            ]}
+            onLinkClick={() => setMenuOpen(false)}
+          />
 
           <MobileGroup
             id="innsikt"

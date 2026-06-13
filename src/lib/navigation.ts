@@ -15,6 +15,20 @@ export type GroupId = "tjenester" | "innsikt" | "om-oss";
  *  mellom server-resolveren (navigationServer) og klientkomponentene. */
 export type CityLink = { name: string; slug: string };
 
+/** Byene som kan ha eiendomslistinger — speiler ListingPost.city-enumet i
+ *  content-collections.ts + CITY_LABELS i /eiendommer. Brukes i Eiendommer-
+ *  dropdownen; hver by lenker til /eiendommer?by={slug} (forhåndsfiltrert).
+ *  Statisk (ikke content-avledet), så Nav (klient) slipper en server-prop. */
+export const EIENDOM_CITIES: { slug: string; label: string }[] = [
+  { slug: "bodo", label: "Bodø" },
+  { slug: "tromso", label: "Tromsø" },
+  { slug: "harstad", label: "Harstad" },
+  { slug: "alta", label: "Alta" },
+  { slug: "narvik", label: "Narvik" },
+  { slug: "lofoten", label: "Lofoten" },
+  { slug: "mo-i-rana", label: "Mo i Rana" },
+];
+
 export interface NavEntry {
   /** Absolute path or pattern (e.g. "/blog/[slug]"). */
   path: string;
