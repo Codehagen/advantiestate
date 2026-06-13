@@ -9,9 +9,9 @@ import {
   ListingsBrowser,
   type ListingCardData,
 } from "@/components/eiendommer/ListingsBrowser";
-import StructuredData, {
-  BreadcrumbStructuredData,
-} from "@/components/StructuredData";
+import StructuredData from "@/components/StructuredData";
+import { Breadcrumbs } from "@/components/site/Breadcrumbs";
+import { jsonLdScriptProps } from "@/lib/jsonLd";
 
 const CITY_LABELS: Record<string, string> = {
   bodo: "Bodø",
@@ -226,12 +226,6 @@ export default async function EiendommerPage() {
 
   return (
     <>
-      <BreadcrumbStructuredData
-        items={[
-          { name: "Hjem", url: "/" },
-          { name: "Eiendommer for salg", url: "/eiendommer" },
-        ]}
-      />
       <StructuredData
         type="service"
         data={{
@@ -240,16 +234,10 @@ export default async function EiendommerPage() {
             "Advanti Estate formidler salg av kontorbygg, logistikkanlegg, handelseiendom og kombinasjonsbygg i Nordland og Troms. Aktive mandater + off-market-portefølje for kvalifiserte investorer.",
         }}
       />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListJsonLd) }}
-      />
+      <script {...jsonLdScriptProps(itemListJsonLd)} />
 
       <SubHero
-        crumb={[
-          { label: "Hjem", href: "/" },
-          { label: "Eiendommer for salg" },
-        ]}
+        breadcrumbs={<Breadcrumbs path="/eiendommer" />}
         eyebrow={`Aktive salgsoppdrag · oppdatert ${formatEditorialDate(newestUpdated)}`}
         title={
           <>

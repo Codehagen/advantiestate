@@ -4,9 +4,8 @@ import { CtaStrip } from "@/components/site/CtaStrip";
 import { PhotoBand } from "@/components/site/PhotoBand";
 import { Faq, type FaqItem } from "@/components/site/Faq";
 import { ActiveListingsStrip } from "@/components/eiendommer/ActiveListingsStrip";
-import StructuredData, {
-  BreadcrumbStructuredData,
-} from "@/components/StructuredData";
+import StructuredData from "@/components/StructuredData";
+import { Breadcrumbs } from "@/components/site/Breadcrumbs";
 
 const LAST_UPDATED = "2026-05-22";
 
@@ -47,13 +46,6 @@ const FAQ_ITEMS: FaqItem[] = [
 export default function SalgPage() {
   return (
     <>
-      <BreadcrumbStructuredData
-        items={[
-          { name: "Hjem", url: "/" },
-          { name: "Tjenester", url: "/tjenester" },
-          { name: "Salg", url: "/tjenester/salg" },
-        ]}
-      />
       <StructuredData
         type="service"
         data={{
@@ -64,11 +56,7 @@ export default function SalgPage() {
       />
 
       <SubHero
-        crumb={[
-          { label: "Hjem", href: "/" },
-          { label: "Tjenester", href: "/tjenester" },
-          { label: "Salg" },
-        ]}
+        breadcrumbs={<Breadcrumbs path="/tjenester/salg" />}
         eyebrow="Tjeneste 02 · Salg"
         title={
           <>

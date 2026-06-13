@@ -14,11 +14,17 @@ import { test, expect } from "@playwright/test";
 // KB ceilings = measured first-load JS + ~15% headroom.
 const JS_BUDGET_KB: Record<string, number> = {
   // Homepage — no charts, the lean baseline.
-  "/": 250,
+  // Re-baselinet 2026-06-12 (nav/IA-redesign): disclosure-nav på hver side +
+  // CTA prefetcher kalkulatorruten (bevisst — primærhandlingen skal være
+  // øyeblikkelig). Panel-/footer-lenker har prefetch={false}; uten det målte
+  // hjemmesiden 343 KB. Målt 266 KB + ~15 % headroom.
+  "/": 305,
   // markedsinnsikt — loads recharts (charts are the page's content).
-  "/markedsinnsikt": 380,
+  // Re-baselinet 2026-06-12: målt 394 KB + headroom (SeOgsa + nav-delta).
+  "/markedsinnsikt": 450,
   // analyseportal — recharts via dynamic import; same class as markedsinnsikt.
-  "/analyseportal": 380,
+  // Re-baselinet 2026-06-12: målt 411 KB + headroom.
+  "/analyseportal": 470,
   // Plain article — no chart, no math. The Phase 2.0 guard: this MUST stay
   // near the homepage baseline, never balloon toward the chart-article number.
   "/blog/advanti-lansering-nord-norge": 490,

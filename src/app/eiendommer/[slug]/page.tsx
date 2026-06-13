@@ -6,7 +6,8 @@ import { notFound } from "next/navigation";
 import { MDX } from "@/components/blog/mdx";
 import { GalleryLightbox } from "@/components/eiendommer/GalleryLightbox";
 import { PropertyMap } from "@/components/eiendommer/PropertyMap";
-import { BreadcrumbStructuredData } from "@/components/StructuredData";
+import { Breadcrumbs } from "@/components/site/Breadcrumbs";
+import { jsonLdScriptProps } from "@/lib/jsonLd";
 import { siteConfig } from "@/app/siteConfig";
 import { getListing, getListings } from "@/lib/listing/listings";
 import { ListingProse } from "@/components/eiendommer/ListingProse";
@@ -197,32 +198,17 @@ export default async function EiendomDetailPage({
 
   return (
     <>
-      <BreadcrumbStructuredData
-        items={[
-          { name: "Hjem", url: "/" },
-          { name: "Eiendommer", url: "/eiendommer" },
-          { name: listing.title, url: `/eiendommer/${listing.slug}` },
-        ]}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(realEstateJsonLd) }}
-      />
+      <script {...jsonLdScriptProps(realEstateJsonLd)} />
 
       <div className="page-pad" />
 
       {/* SUBHERO — crumb + gallery */}
       <section style={{ padding: "32px 0 0" }}>
         <div className="wrap">
-          <nav className="crumb" aria-label="Brødsmuler">
-            <Link href="/">Hjem</Link>
-            <span className="sep">/</span>
-            <Link href="/eiendommer">Eiendommer</Link>
-            <span className="sep">/</span>
-            <span className="here">
-              {listing.titleHead} {listing.titleTail}
-            </span>
-          </nav>
+          <Breadcrumbs
+            path={`/eiendommer/${listing.slug}`}
+            leafLabel={listing.title}
+          />
 
           {/* GALLERY — server-rendered grid; GalleryLightbox (client) adds the
               click-to-enlarge lightbox over the full gallery via data-gallery-index. */}
