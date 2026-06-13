@@ -6,6 +6,7 @@ import {
   RiBarChartBoxLine,
   RiBuilding2Line,
   RiCalculatorLine,
+  RiCheckboxMultipleLine,
   RiLineChartLine,
   RiPieChartLine,
 } from "@remixicon/react";
@@ -27,6 +28,14 @@ const calculators = [
     icon: RiBuilding2Line,
     href: "/verktoy/naringskalkulator",
     color: "text-light-blue",
+  },
+  {
+    title: "Sjekkliste for verdivurdering",
+    description:
+      "Kryss av for dokumentene du har, se hva som gjenstår. Interaktiv liste med må-ha- og bra-å-ha-punkter, lagret i nettleseren.",
+    icon: RiCheckboxMultipleLine,
+    href: "/sjekkliste-verdivurdering",
+    color: "text-warm-grey-3",
   },
   {
     title: "Pris på Verdivurdering",

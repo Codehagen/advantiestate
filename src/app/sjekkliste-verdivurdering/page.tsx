@@ -1,333 +1,100 @@
-"use client";
+import { CtaStrip } from "@/components/site/CtaStrip";
+import { SubHero } from "@/components/site/SubHero";
+import { SjekklisteVerdivurderingClient } from "@/components/verktoy/SjekklisteVerdivurderingClient";
+import { constructMetadata } from "@/lib/utils";
 
-import { useState } from "react";
-import { Button } from "@/components/Button";
-import { Input } from "@/components/Input";
-import { Badge } from "@/components/Badge";
-import { subscribeNewsletter } from "@/app/actions/newsletter";
-import { AnimatedGridPattern } from "@/components/ui/Animated-Grid-Background";
-import { FadeContainer, FadeDiv, FadeSpan } from "@/components/ui/Fade";
-import {
-  RiCheckLine,
-  RiCalculatorLine,
-  RiDownloadLine,
-  RiMailLine,
-  RiArrowRightLine,
-  RiFileTextLine,
-  RiMoneyDollarCircleLine,
-  RiBuildingLine,
-  RiLightbulbLine,
-} from "@remixicon/react";
-import Link from "next/link";
+export const metadata = constructMetadata({
+  path: "/sjekkliste-verdivurdering",
+  title: "Sjekkliste for verdivurdering | Advanti Estate",
+  description:
+    "Hva trenger du for å verdivurdere næringseiendom? Kryss av for det du har, se hva som gjenstår. Interaktiv sjekkliste med må-ha- og bra-å-ha-dokumenter.",
+});
 
-const checklistItems = [
-  {
-    category: "Dokumentasjon",
-    icon: RiFileTextLine,
-    items: [
-      "Eiendomstegninger og arealberegninger",
-      "Leieavtaler (alle leietakere)",
-      "Regnskap for de siste 3 årene",
-      "Vedlikeholdsplaner og -rapporter",
-      "Tekniske rapporter (byggteknisk, brann, etc.)",
-      "Forsikringsdokumenter",
-      "Skattemeldinger og eiendomsskatt",
-    ],
-  },
-  {
-    category: "Finansiell informasjon",
-    icon: RiMoneyDollarCircleLine,
-    items: [
-      "Årlige leieinntekter (brutto)",
-      "Årlige driftskostnader (vedlikehold, forsikring, etc.)",
-      "Netto leieinntekt (beregnet)",
-      "Gjeld og lån knyttet til eiendommen",
-      "Fremtidige investeringsbehov",
-    ],
-  },
-  {
-    category: "Eiendomsinformasjon",
-    icon: RiBuildingLine,
-    items: [
-      "Eiendomstype og bruksareal",
-      "Antall leietakere og utleiegrad",
-      "Standard og tilstand (nylige forbedringer?)",
-      "Lokasjon og tilgjengelighet",
-      "Spesielle karakteristikker eller utfordringer",
-    ],
-  },
-  {
-    category: "Forberedelse",
-    icon: RiLightbulbLine,
-    items: [
-      "Tenk gjennom dine mål (hvorfor trenger du verdsettelsen?)",
-      "Forbered spørsmål du har",
-      "Vurder eventuelle forbedringer før verdsettelsen",
-      "Sjekk at leieprisene er markedsjusterte",
-      "Dokumenter nylige vedlikehold og forbedringer",
-    ],
-  },
-];
-
-export default function SjekklisteVerdiPage() {
-  const [email, setEmail] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isUnlocked, setIsUnlocked] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setError(null);
-
-    if (!email || !/\S+@\S+\.\S+/.test(email)) {
-      setError("Vennligst oppgi en gyldig e-postadresse.");
-      return;
-    }
-
-    setIsSubmitting(true);
-
-    try {
-      // Route through the newsletter subscribe action so this signup lands in
-      // Resend + fires the welcome email + pings Discord — instead of just
-      // hitting the Discord webhook in isolation as the legacy handler did.
-      const formData = new FormData();
-      formData.set("email", email);
-      formData.set("source", "sjekkliste-verdivurdering");
-      formData.set("pageUrl", window.location.href);
-      const result = await subscribeNewsletter(
-        { status: "idle" },
-        formData,
-      );
-
-      if (result.status === "error") {
-        setError(result.message);
-        return;
-      }
-
-      setIsUnlocked(true);
-      // Scroll to checklist
-      setTimeout(() => {
-        document.getElementById("checklist")?.scrollIntoView({ behavior: "smooth" });
-      }, 100);
-    } catch (error) {
-      console.error("Error submitting form:", error);
-      setError("Noe gikk galt. Vennligst prøv igjen.");
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
+export default function SjekklisteVerdivurderingPage() {
   return (
-    <div className="flex flex-col overflow-hidden">
-      {/* Hero Section */}
-      <section className="relative mx-auto mt-20 max-w-4xl px-4 py-12 text-center sm:py-20">
-        <FadeContainer className="relative flex flex-col items-center justify-center">
-          <FadeDiv>
-            <Badge>
-              <RiCalculatorLine className="mr-1 h-4 w-4" />
-              Gratis Ressurs
-            </Badge>
-          </FadeDiv>
+    <>
+      <SubHero
+        crumb={[
+          { label: "Hjem", href: "/" },
+          { label: "Sjekkliste for verdivurdering" },
+        ]}
+        eyebrow="Verktøy · Forberedelse"
+        title={
+          <>
+            Dette trenger vi for å <br />
+            <span className="italic">verdivurdere eiendommen din.</span>
+          </>
+        }
+        lede="Jo bedre grunnlag, jo mer presist tall. Kryss av for det du har, så ser du hva som gjenstår. Du trenger ikke alt for å komme i gang — vi hjelper deg med å hente inn resten."
+      />
 
-          <h1 className="mt-8 text-4xl font-semibold tracking-tighter sm:text-5xl md:text-6xl">
-            <FadeSpan className="bg-gradient-to-t from-warm-grey to-warm-grey-3 bg-clip-text text-transparent">
-              Sjekkliste: Forbered deg
-            </FadeSpan>{" "}
-            <FadeSpan className="bg-gradient-to-t from-warm-grey to-warm-grey-3 bg-clip-text text-transparent">
-              for Verdivurdering
-            </FadeSpan>
-          </h1>
-
-          <p className="mt-6 max-w-2xl text-balance text-center text-base text-warm-grey-2 sm:text-lg">
-            <FadeSpan>Last ned vår gratis sjekkliste for å sikre at du er godt forberedt</FadeSpan>{" "}
-            <FadeSpan>når du skal få en profesjonell verdivurdering av din næringseiendom.</FadeSpan>{" "}
-            <FadeSpan>Få innsikt i hva du trenger og hvordan du maksimerer verdien.</FadeSpan>
-          </p>
-        </FadeContainer>
-
-        {/* Background Pattern */}
-        <div className="absolute inset-0 -z-10 flex items-center justify-center overflow-hidden">
-          <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-warm-white via-warm-white/80 to-transparent" />
-          <AnimatedGridPattern
-            width={50}
-            height={50}
-            className="-mt-24 scale-125 text-light-blue/20"
-            maxOpacity={0.3}
-            numSquares={30}
-            duration={3}
-          />
-          <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-warm-white via-warm-white/80 to-transparent" />
+      {/* CHECKLIST */}
+      <section className="section section-divider" style={{ paddingTop: 64 }}>
+        <div className="wrap">
+          <SjekklisteVerdivurderingClient />
         </div>
       </section>
 
-      {/* Email Gate */}
-      {!isUnlocked && (
-        <section className="mx-auto mb-20 max-w-2xl px-4">
-          <FadeContainer>
-            <FadeDiv>
-              <div className="relative overflow-hidden rounded-2xl border border-warm-grey/10 bg-warm-white/80 p-8 shadow-lg backdrop-blur-sm">
-                {/* Decorative blobs */}
-                <div className="pointer-events-none absolute -right-20 -top-20 h-40 w-40 rounded-full bg-light-blue/30 blur-3xl" />
-                <div className="pointer-events-none absolute -bottom-20 -left-20 h-40 w-40 rounded-full bg-light-blue/20 blur-3xl" />
-
-                <div className="relative">
-                  {/* Centered download icon */}
-                  <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-light-blue/20">
-                    <RiDownloadLine className="h-8 w-8 text-warm-grey" />
-                  </div>
-
-                  <h2 className="mb-4 text-center text-2xl font-semibold text-warm-grey">
-                    Last ned sjekklisten
-                  </h2>
-                  <p className="mb-6 text-center text-warm-grey-2">
-                    Fyll ut e-postadressen din for å få tilgang til sjekklisten. Vi sender deg også
-                    nyttige tips om verdivurdering direkte i innboksen.
-                  </p>
-
-                  <form onSubmit={handleSubmit} className="space-y-4">
-                    <div className="relative">
-                      <label htmlFor="email" className="sr-only">
-                        E-postadresse
-                      </label>
-                      <RiMailLine className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-warm-grey-2" />
-                      <Input
-                        id="email"
-                        name="email"
-                        type="email"
-                        placeholder="din@epost.no"
-                        required
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        disabled={isSubmitting}
-                        className="w-full pl-10"
-                      />
-                    </div>
-                    {error && (
-                      <p className="text-sm text-red-600">{error}</p>
-                    )}
-                    <Button
-                      type="submit"
-                      disabled={isSubmitting}
-                      isLoading={isSubmitting}
-                      loadingText="Sender..."
-                      className="w-full"
-                    >
-                      <RiDownloadLine className="mr-2 h-5 w-5" />
-                      Last ned sjekklisten
-                    </Button>
-                    <p className="text-center text-xs text-warm-grey-2">
-                      Ved å laste ned godtar du at vi kontakter deg med relevante tips og informasjon om
-                      verdivurdering. Du kan når som helst avmelde deg.
-                    </p>
-                  </form>
-                </div>
-              </div>
-            </FadeDiv>
-          </FadeContainer>
-        </section>
-      )}
-
-      {/* Checklist Content */}
-      {isUnlocked && (
-        <section id="checklist" className="mx-auto mb-20 max-w-5xl px-4">
-          <FadeContainer>
-            <FadeDiv className="mb-10 text-center">
-              <Badge className="mb-4">
-                <RiCheckLine className="mr-1 h-4 w-4" />
-                Sjekkliste Låst Opp
-              </Badge>
-              <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">
-                <span className="bg-gradient-to-t from-warm-grey to-warm-grey-3 bg-clip-text text-transparent">
-                  Din sjekkliste for verdivurdering
-                </span>
+      {/* HVORFOR */}
+      <section className="section">
+        <div className="wrap">
+          <div className="head-compact">
+            <span className="eyebrow">Hvorfor det er verdt innsatsen</span>
+            <div>
+              <h2>
+                Bedre grunnlag, <span className="italic">presist tall.</span>
               </h2>
-              <p className="mx-auto mt-4 max-w-2xl text-warm-grey-2">
-                Bruk denne sjekklisten for å sikre at du er godt forberedt. Jo bedre forberedt du er,
-                jo raskere og mer nøyaktig blir verdsettelsen.
+              <p>
+                En verdivurdering er aldri bedre enn grunnlaget den bygger på.
+                Med god dokumentasjon kan vi gå rett på analysen — og gi deg et
+                tall som tåler gjennomgang fra bank, revisor og kjøper.
               </p>
-            </FadeDiv>
-
-            <div className="grid gap-6 md:grid-cols-2">
-              {checklistItems.map((category, categoryIndex) => {
-                const IconComponent = category.icon;
-                return (
-                  <FadeDiv key={categoryIndex}>
-                    <div className="group relative h-full overflow-hidden rounded-2xl border border-warm-grey/10 bg-warm-white p-6 transition-all duration-300 hover:border-light-blue/30 hover:shadow-lg hover:shadow-light-blue/10">
-                      {/* Hover blob */}
-                      <div className="pointer-events-none absolute -right-20 -top-20 h-40 w-40 rounded-full bg-light-blue/20 opacity-0 blur-3xl transition-opacity duration-300 group-hover:opacity-100" />
-
-                      <div className="relative">
-                        {/* Category header */}
-                        <div className="mb-4 flex items-center justify-between">
-                          <div className="flex items-center gap-3">
-                            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-light-blue/20 transition-transform duration-300 group-hover:scale-110">
-                              <IconComponent className="h-5 w-5 text-warm-grey" />
-                            </div>
-                            <h3 className="text-xl font-semibold text-warm-grey">
-                              {category.category}
-                            </h3>
-                          </div>
-                          <RiArrowRightLine className="h-5 w-5 text-warm-grey-2 opacity-0 transition-all duration-300 group-hover:translate-x-1 group-hover:opacity-100" />
-                        </div>
-
-                        {/* Items list */}
-                        <ul className="space-y-3">
-                          {category.items.map((item, itemIndex) => (
-                            <li key={itemIndex} className="flex items-start gap-3">
-                              <div className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-light-blue/20">
-                                <RiCheckLine className="h-4 w-4 text-warm-grey" />
-                              </div>
-                              <span className="text-warm-grey-2">{item}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    </div>
-                  </FadeDiv>
-                );
-              })}
             </div>
+          </div>
 
-            {/* CTA Section */}
-            <FadeDiv className="mt-12">
-              <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-light-blue/20 via-warm-white to-light-blue/10 p-8 text-center ring-1 ring-warm-grey/10 sm:p-12">
-                {/* Decorative blobs */}
-                <div className="pointer-events-none absolute -left-20 top-0 h-60 w-60 rounded-full bg-light-blue/30 blur-3xl" />
-                <div className="pointer-events-none absolute -right-20 bottom-0 h-60 w-60 rounded-full bg-light-blue/20 blur-3xl" />
+          <div className="feat-3">
+            <div className="feat">
+              <div className="num">I</div>
+              <h3>Raskere leveranse</h3>
+              <p>
+                Når dokumentasjonen er på plass, slipper vi runder med
+                etterspørsel — og du får vurderingen raskere.
+              </p>
+            </div>
+            <div className="feat">
+              <div className="num">II</div>
+              <h3>Mindre usikkerhet</h3>
+              <p>
+                Faktiske kontrakter og regnskap reduserer behovet for
+                antakelser, og gir et smalere, mer presist verdiintervall.
+              </p>
+            </div>
+            <div className="feat">
+              <div className="num">III</div>
+              <h3>Trygt beslutningsgrunnlag</h3>
+              <p>
+                En godt dokumentert vurdering står seg i forhandlinger, mot
+                långiver og i regnskapet.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
 
-                <div className="relative">
-                  <Badge className="mb-4">Neste Steg</Badge>
-
-                  <h3 className="text-2xl font-semibold tracking-tight sm:text-3xl">
-                    <span className="bg-gradient-to-t from-warm-grey to-warm-grey-3 bg-clip-text text-transparent">
-                      Klar for en profesjonell verdivurdering?
-                    </span>
-                  </h3>
-                  <p className="mx-auto mt-4 max-w-2xl text-warm-grey-2">
-                    Vi hjelper deg med en uforpliktende verdivurdering basert på lokal markedsinnsikt i
-                    Nord-Norge. Vi svarer innen 24 timer.
-                  </p>
-
-                  <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:justify-center">
-                    <Link href="/kontakt">
-                      <Button className="group gap-2">
-                        Få uforpliktende verdivurdering
-                        <RiCalculatorLine className="h-5 w-5 transition-transform duration-300 group-hover:scale-110" />
-                      </Button>
-                    </Link>
-                    <Link href="/tjenester/verdivurdering">
-                      <Button variant="secondary" className="group gap-2">
-                        Les mer om våre tjenester
-                        <RiArrowRightLine className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
-                      </Button>
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            </FadeDiv>
-          </FadeContainer>
-        </section>
-      )}
-    </div>
+      <CtaStrip
+        eyebrow="Klar til å sette i gang?"
+        title={
+          <>
+            La oss <span className="italic">verdivurdere eiendommen.</span>
+          </>
+        }
+        sub="Har du det meste klart — eller bare lurer på hvor du skal begynne? Ta kontakt, så tar en av partnerne våre deg gjennom resten. Innen 24 timer."
+        primary={{ label: "Få verdivurdering", href: "/kontakt" }}
+        secondary={{
+          label: "Prøv næringskalkulatoren",
+          href: "/verktoy/naringskalkulator",
+        }}
+      />
+    </>
   );
 }
