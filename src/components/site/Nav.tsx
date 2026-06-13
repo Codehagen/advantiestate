@@ -341,9 +341,13 @@ export function Nav({ groups }: NavProps) {
     setOpenGroup(null);
   };
 
+  // `scrolled` (size change) is driven ONLY by real scroll. `solid` (opaque
+  // background) also applies while a dropdown / mobile menu is open — so opening
+  // a panel never resizes the bar (no layout shift on hover).
   const navClass = [
     "nav",
-    scrolled || menuOpen || !!openGroup ? "scrolled" : "",
+    scrolled ? "scrolled" : "",
+    scrolled || menuOpen || !!openGroup ? "solid" : "",
   ]
     .filter(Boolean)
     .join(" ");
