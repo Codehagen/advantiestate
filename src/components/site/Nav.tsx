@@ -24,12 +24,18 @@ type GroupId = "tjenester" | "innsikt" | "om-oss";
 /**
  * Site navigation — fixed; transparent over a dark hero, solid otherwise.
  *
- * Disclosure model (E1A):
+ * Disclosure model (E1A + hover enhancement):
  *   Three grouped labels (Tjenester, Innsikt, Om oss) are <button> triggers
  *   with aria-expanded / aria-controls pointing at full-width .nav-panel
  *   divs. Panels are ALWAYS in the server HTML (crawlable) and hidden via
  *   CSS + the `inert` attribute when closed. Opening one group closes others.
- *   Escape closes the open panel and returns focus to the trigger button.
+ *
+ *   POINTER: hovering a trigger opens its panel; moving between triggers
+ *   morphs the open panel; leaving the trigger-or-panel closes after a short
+ *   intent delay. Hover is gated to `(hover: hover)` devices so touch never
+ *   gets a sticky hover state.
+ *   KEYBOARD/CLICK: the trigger toggles on click/Enter; Escape closes and
+ *   returns focus to the trigger. Tab order never auto-opens panels.
  *   Click-outside and link-click also close the panel.
  *
  * --nav-h ownership (E7):
@@ -52,6 +58,47 @@ export function Nav({ cities, groups }: NavProps) {
   const toggleRef = useRef<HTMLButtonElement>(null);
   const panelRefs = useRef<Partial<Record<GroupId, HTMLDivElement>>>({});
   const groupBtnRefs = useRef<Partial<Record<GroupId, HTMLButtonElement>>>({});
+
+  // Hover-intent: timer + a (hover: hover) gate so touch never opens on hover.
+  const closeTimer = useRef<number | null>(null);
+  const canHover = useRef(false);
+  // Which group was just opened by hover and not yet click-confirmed. Lets the
+  // click that rides along with a hover-open CONFIRM the panel open instead of
+  // toggling it shut (Playwright .click() hovers first; real mice do too).
+  const hoverOpened = useRef<GroupId | null>(null);
+  useEffect(() => {
+    canHover.current =
+      typeof window !== "undefined" &&
+      typeof window.matchMedia === "function" &&
+      window.matchMedia("(hover: hover)").matches;
+    return () => {
+      if (closeTimer.current !== null) window.clearTimeout(closeTimer.current);
+    };
+  }, []);
+
+  const cancelClose = () => {
+    if (closeTimer.current !== null) {
+      window.clearTimeout(closeTimer.current);
+      closeTimer.current = null;
+    }
+  };
+  const scheduleClose = () => {
+    if (!canHover.current) return;
+    cancelClose();
+    closeTimer.current = window.setTimeout(() => {
+      hoverOpened.current = null;
+      setOpenGroup(null);
+    }, 140);
+  };
+  const openByHover = (id: GroupId) => {
+    if (!canHover.current) return;
+    cancelClose();
+    hoverOpened.current = id;
+    setOpenGroup((prev) => {
+      if (prev !== id) trackEvent("nav_group_open", { group: id });
+      return id;
+    });
+  };
 
   // ── --nav-h: single writer (E7) ────────────────────────────────────────
   useEffect(() => {
@@ -93,6 +140,7 @@ export function Nav({ cities, groups }: NavProps) {
   // ── close menus on route change ────────────────────────────────────────
   useEffect(() => {
     setMenuOpen(false);
+    hoverOpened.current = null;
     setOpenGroup(null);
     setOpenMobileGroup(null);
   }, [pathname]);
@@ -121,6 +169,8 @@ export function Nav({ cities, groups }: NavProps) {
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         const group = openGroup;
+        cancelClose();
+        hoverOpened.current = null;
         setOpenGroup(null);
         groupBtnRefs.current[group]?.focus();
       }
@@ -156,6 +206,12 @@ export function Nav({ cities, groups }: NavProps) {
     );
 
   const toggleGroup = (id: GroupId) => {
+    cancelClose();
+    // A click riding along with this group's hover-open confirms it (stay open).
+    if (hoverOpened.current === id) {
+      hoverOpened.current = null;
+      return;
+    }
     setOpenGroup((prev) => {
       const next = prev === id ? null : id;
       if (next) trackEvent("nav_group_open", { group: next });
@@ -163,7 +219,11 @@ export function Nav({ cities, groups }: NavProps) {
     });
   };
 
-  const closePanel = () => setOpenGroup(null);
+  const closePanel = () => {
+    cancelClose();
+    hoverOpened.current = null;
+    setOpenGroup(null);
+  };
 
   // Force solid nav while any panel or mobile menu is open.
   const navClass = [
@@ -204,6 +264,24 @@ export function Nav({ cities, groups }: NavProps) {
     [],
   );
 
+  // Hover handlers bound per group (stable closures not required — cheap).
+  const hoverProps = (id: GroupId) => ({
+    onMouseEnter: () => openByHover(id),
+    onMouseLeave: scheduleClose,
+  });
+  const panelHoverProps = {
+    onMouseEnter: cancelClose,
+    onMouseLeave: scheduleClose,
+  };
+
+  // Tjenester services shown in the grid (parent + næringsmegler rendered apart).
+  const tjenesterServices = groups.tjenester.filter(
+    (e) => e.path !== "/tjenester" && e.path !== "/naringsmegler",
+  );
+  const naringsmegler = groups.tjenester.find(
+    (e) => e.path === "/naringsmegler",
+  );
+
   return (
     <>
       <nav className={navClass} id="nav" ref={navRef}>
@@ -226,6 +304,7 @@ export function Nav({ cities, groups }: NavProps) {
             data-active={isGroupActive("tjenester") ? true : undefined}
             ref={groupBtnCb["tjenester"]}
             onClick={() => toggleGroup("tjenester")}
+            {...hoverProps("tjenester")}
           >
             Tjenester
           </button>
@@ -234,6 +313,7 @@ export function Nav({ cities, groups }: NavProps) {
           <Link
             href="/eiendommer"
             aria-current={isLinkActive("/eiendommer") ? "page" : undefined}
+            onMouseEnter={scheduleClose}
           >
             Eiendommer
           </Link>
@@ -247,6 +327,7 @@ export function Nav({ cities, groups }: NavProps) {
             data-active={isGroupActive("innsikt") ? true : undefined}
             ref={groupBtnCb["innsikt"]}
             onClick={() => toggleGroup("innsikt")}
+            {...hoverProps("innsikt")}
           >
             Innsikt
           </button>
@@ -260,6 +341,7 @@ export function Nav({ cities, groups }: NavProps) {
             data-active={isGroupActive("om-oss") ? true : undefined}
             ref={groupBtnCb["om-oss"]}
             onClick={() => toggleGroup("om-oss")}
+            {...hoverProps("om-oss")}
           >
             Om oss
           </button>
@@ -268,6 +350,7 @@ export function Nav({ cities, groups }: NavProps) {
           <Link
             href="/kontakt"
             aria-current={isLinkActive("/kontakt") ? "page" : undefined}
+            onMouseEnter={scheduleClose}
           >
             Kontakt
           </Link>
@@ -302,29 +385,35 @@ export function Nav({ cities, groups }: NavProps) {
           stay in the initial server HTML for search engines.
           ────────────────────────────────────────────────────────────── */}
 
-      {/* Tjenester panel — single column */}
+      {/* Tjenester panel — services grid + Næringsmegler column */}
       <div
         id="nav-panel-tjenester"
         className={`nav-panel${openGroup === "tjenester" ? " open" : ""}`}
         ref={panelRefCb["tjenester"]}
         inert={openGroup !== "tjenester"}
+        {...panelHoverProps}
       >
         <div className="wrap">
-          <div className="nav-panel-inner">
-            <ul className="nav-panel-list" onClick={closePanel}>
-              {/* /tjenester is the emphasized parent link, shown first */}
-              <li className="nav-panel-parent">
-                <Link
-                  prefetch={false}
-                  href="/tjenester"
-                  aria-current={cleanPath === "/tjenester" ? "page" : undefined}
-                >
-                  Tjenester
-                </Link>
-              </li>
-              {groups.tjenester
-                .filter((e) => e.path !== "/tjenester")
-                .map((e) => (
+          <div className="nav-panel-inner nav-panel-grid">
+            {/* Left — services in a two-column grid, parent first */}
+            <div className="nav-panel-col nav-panel-col-wide">
+              <span className="nav-panel-eyebrow">Tjenester</span>
+              <ul
+                className="nav-panel-list nav-panel-list-grid"
+                onClick={closePanel}
+              >
+                <li className="nav-panel-parent">
+                  <Link
+                    prefetch={false}
+                    href="/tjenester"
+                    aria-current={
+                      cleanPath === "/tjenester" ? "page" : undefined
+                    }
+                  >
+                    Alle tjenester
+                  </Link>
+                </li>
+                {tjenesterServices.map((e) => (
                   <li key={e.path}>
                     <Link
                       prefetch={false}
@@ -332,13 +421,39 @@ export function Nav({ cities, groups }: NavProps) {
                       aria-current={isLinkActive(e.path) ? "page" : undefined}
                     >
                       {e.label}
-                      {e.description && (
-                        <span className="nav-panel-desc">{e.description}</span>
-                      )}
                     </Link>
+                    {e.description && (
+                      <span className="nav-panel-desc">{e.description}</span>
+                    )}
                   </li>
                 ))}
-            </ul>
+              </ul>
+            </div>
+
+            {/* Right — Næringsmegler highlight + all-cities link */}
+            {naringsmegler && (
+              <div className="nav-panel-col">
+                <span className="nav-panel-eyebrow">Lokal tilstedeværelse</span>
+                <ul className="nav-panel-list" onClick={closePanel}>
+                  <li className="nav-panel-parent">
+                    <Link
+                      prefetch={false}
+                      href={naringsmegler.path}
+                      aria-current={
+                        isLinkActive(naringsmegler.path) ? "page" : undefined
+                      }
+                    >
+                      {naringsmegler.label}
+                    </Link>
+                    {naringsmegler.description && (
+                      <span className="nav-panel-desc">
+                        {naringsmegler.description}
+                      </span>
+                    )}
+                  </li>
+                </ul>
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -349,44 +464,38 @@ export function Nav({ cities, groups }: NavProps) {
         className={`nav-panel${openGroup === "innsikt" ? " open" : ""}`}
         ref={panelRefCb["innsikt"]}
         inert={openGroup !== "innsikt"}
+        {...panelHoverProps}
       >
         <div className="wrap">
-          <div className="nav-panel-inner nav-panel-two-col">
-            {/* Left column — innsikt links */}
-            <div className="nav-panel-col">
+          <div className="nav-panel-inner nav-panel-grid">
+            {/* Left column — innsikt links in a two-column grid */}
+            <div className="nav-panel-col nav-panel-col-wide">
               <span className="nav-panel-eyebrow">Innsikt</span>
-              <ul className="nav-panel-list" onClick={closePanel}>
-                {/* /markedsinnsikt is the emphasized parent link */}
-                <li className="nav-panel-parent">
-                  <Link
-                    prefetch={false}
-                    href="/markedsinnsikt"
-                    aria-current={
-                      isLinkActive("/markedsinnsikt") ? "page" : undefined
+              <ul
+                className="nav-panel-list nav-panel-list-grid"
+                onClick={closePanel}
+              >
+                {groups.innsikt.map((e) => (
+                  <li
+                    key={e.path}
+                    className={
+                      e.path === "/markedsinnsikt"
+                        ? "nav-panel-parent"
+                        : undefined
                     }
                   >
-                    Markedsinnsikt
-                  </Link>
-                  <span className="nav-panel-desc">
-                    Oversikt over næringseiendomsmarkedet i Nord-Norge.
-                  </span>
-                </li>
-                {groups.innsikt
-                  .filter((e) => e.path !== "/markedsinnsikt")
-                  .map((e) => (
-                    <li key={e.path}>
-                      <Link
-                        prefetch={false}
-                        href={e.path}
-                        aria-current={isLinkActive(e.path) ? "page" : undefined}
-                      >
-                        {e.label}
-                      </Link>
-                      {e.description && (
-                        <span className="nav-panel-desc">{e.description}</span>
-                      )}
-                    </li>
-                  ))}
+                    <Link
+                      prefetch={false}
+                      href={e.path}
+                      aria-current={isLinkActive(e.path) ? "page" : undefined}
+                    >
+                      {e.label}
+                    </Link>
+                    {e.description && (
+                      <span className="nav-panel-desc">{e.description}</span>
+                    )}
+                  </li>
+                ))}
               </ul>
             </div>
 
@@ -425,39 +534,46 @@ export function Nav({ cities, groups }: NavProps) {
         </div>
       </div>
 
-      {/* Om oss panel — single column */}
+      {/* Om oss panel — two-column link list (no descriptions in registry) */}
       <div
         id="nav-panel-om-oss"
         className={`nav-panel${openGroup === "om-oss" ? " open" : ""}`}
         ref={panelRefCb["om-oss"]}
         inert={openGroup !== "om-oss"}
+        {...panelHoverProps}
       >
         <div className="wrap">
           <div className="nav-panel-inner">
-            <ul className="nav-panel-list" onClick={closePanel}>
-              <li className="nav-panel-parent">
-                <Link
-                  prefetch={false}
-                  href="/om-oss"
-                  aria-current={isLinkActive("/om-oss") ? "page" : undefined}
-                >
-                  Om oss
-                </Link>
-              </li>
-              {groups["om-oss"]
-                .filter((e) => e.path !== "/om-oss")
-                .map((e) => (
-                  <li key={e.path}>
-                    <Link
-                      prefetch={false}
-                      href={e.path}
-                      aria-current={isLinkActive(e.path) ? "page" : undefined}
-                    >
-                      {e.label}
-                    </Link>
-                  </li>
-                ))}
-            </ul>
+            <div className="nav-panel-col nav-panel-col-wide">
+              <span className="nav-panel-eyebrow">Advanti</span>
+              <ul
+                className="nav-panel-list nav-panel-list-grid"
+                onClick={closePanel}
+              >
+                <li className="nav-panel-parent">
+                  <Link
+                    prefetch={false}
+                    href="/om-oss"
+                    aria-current={isLinkActive("/om-oss") ? "page" : undefined}
+                  >
+                    Om oss
+                  </Link>
+                </li>
+                {groups["om-oss"]
+                  .filter((e) => e.path !== "/om-oss")
+                  .map((e) => (
+                    <li key={e.path}>
+                      <Link
+                        prefetch={false}
+                        href={e.path}
+                        aria-current={isLinkActive(e.path) ? "page" : undefined}
+                      >
+                        {e.label}
+                      </Link>
+                    </li>
+                  ))}
+              </ul>
+            </div>
           </div>
         </div>
       </div>
@@ -486,7 +602,7 @@ export function Nav({ cities, groups }: NavProps) {
             links={[
               {
                 href: "/tjenester",
-                label: "Tjenester",
+                label: "Alle tjenester",
                 active: isLinkActive("/tjenester"),
               },
               ...groups.tjenester

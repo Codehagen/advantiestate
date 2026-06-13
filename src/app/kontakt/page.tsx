@@ -1,6 +1,7 @@
 import { allPersonPosts } from "content-collections";
 
 import ContactUsForm from "@/components/ContactUsForm";
+import { OfficeMap } from "@/components/site/OfficeMap";
 import { SubHero } from "@/components/site/SubHero";
 import { constructMetadata } from "@/lib/utils";
 
@@ -19,6 +20,17 @@ const CONTACT_PEOPLE = [
   { slug: "mathias-nilssen", office: "Bodø" },
   { slug: "havard-nome", office: "Alta" },
 ];
+
+// Kontorenes koordinater (geokodet mot gateadressen via OpenStreetMap) er
+// kilden både for Leaflet-pinnen og «Veibeskrivelse»-lenken, så de to ikke kan
+// drifte fra hverandre.
+const OFFICES = {
+  bodo: { label: "Bodø", lat: 67.282876, lng: 14.379181 },
+  alta: { label: "Alta", lat: 69.966798, lng: 23.275432 },
+} as const;
+
+const mapsDirectionsUrl = (lat: number, lng: number) =>
+  `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`;
 
 export default function KontaktPage() {
   const team = CONTACT_PEOPLE.map(({ slug, office }) => {
@@ -102,7 +114,7 @@ export default function KontaktPage() {
                     </div>
                   </div>
                   <a
-                    href="https://maps.google.com"
+                    href={mapsDirectionsUrl(OFFICES.bodo.lat, OFFICES.bodo.lng)}
                     target="_blank"
                     rel="noopener"
                     className="contact-maps"
@@ -111,6 +123,11 @@ export default function KontaktPage() {
                     <span>Google Maps →</span>
                   </a>
                 </div>
+                <OfficeMap
+                  lat={OFFICES.bodo.lat}
+                  lng={OFFICES.bodo.lng}
+                  label={OFFICES.bodo.label}
+                />
               </div>
 
               <div className="office">
@@ -132,7 +149,7 @@ export default function KontaktPage() {
                     </div>
                   </div>
                   <a
-                    href="https://maps.google.com"
+                    href={mapsDirectionsUrl(OFFICES.alta.lat, OFFICES.alta.lng)}
                     target="_blank"
                     rel="noopener"
                     className="contact-maps"
@@ -141,6 +158,11 @@ export default function KontaktPage() {
                     <span>Google Maps →</span>
                   </a>
                 </div>
+                <OfficeMap
+                  lat={OFFICES.alta.lat}
+                  lng={OFFICES.alta.lng}
+                  label={OFFICES.alta.label}
+                />
               </div>
 
               <div className="next-steps">

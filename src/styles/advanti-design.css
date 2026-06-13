@@ -377,7 +377,32 @@ h1, h2, h3 {
 .nav-panel-inner {
   padding: 28px 0 32px;
 }
-/* Two-column layout (used by the Innsikt panel per C2 design) */
+/* Panel inner grid: a wide content area + a narrower support column.
+   Used by the Tjenester and Innsikt panels. */
+.nav-panel-grid {
+  display: grid;
+  grid-template-columns: minmax(0, auto) minmax(0, max-content);
+  gap: 56px;
+  max-width: 960px;
+}
+.nav-panel-col-wide {
+  min-width: 0;
+}
+
+/* Link list laid out as two tidy columns; the emphasized parent spans both. */
+.nav-panel-list-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 240px));
+  column-gap: 44px;
+  row-gap: 4px;
+  align-content: start;
+}
+.nav-panel-list-grid .nav-panel-parent {
+  grid-column: 1 / -1;
+  margin-bottom: 8px;
+}
+
+/* Legacy two-column layout (kept for any consumer still using it). */
 .nav-panel-two-col {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -9046,3 +9071,16 @@ h1, h2, h3 {
   .culture-split { grid-template-columns: 1fr; }
   .places { grid-template-columns: 1fr; }
 }
+
+/* Kontor-kart på /kontakt — gjenbruker single-pin Leaflet-kartet, rammet på
+   gatenivå. Fast høyde reserverer plass så ssr:false-lasting ikke gir layout-skift. */
+.office-map,
+.office-map-loading {
+  height: 200px;
+  margin-top: 20px;
+  border: var(--hairline);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.office-map-loading { background: var(--warm-grey-75); }
+.office-map .leaflet-container { background: var(--warm-grey-75); }
