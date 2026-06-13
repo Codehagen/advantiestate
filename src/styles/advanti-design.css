@@ -150,15 +150,24 @@ h1, h2, h3 {
   align-items: center;
   justify-content: space-between;
   color: var(--warm-white);
-  transition: background 0.35s ease, color 0.35s ease, padding 0.3s ease;
+  /* Reserve the hairline always (transparent) so going solid adds no height. */
+  border-bottom: 1px solid transparent;
+  transition: background 0.35s ease, color 0.35s ease, padding 0.3s ease,
+    border-color 0.35s ease;
   mix-blend-mode: normal;
 }
-.nav.scrolled {
+/* Solid surface (background + readable text). Applied when scrolled OR a
+   dropdown / mobile menu is open — NO size change, so opening never shifts the
+   bar (Emil: no layout shift). */
+.nav.solid {
   background: rgba(243, 241, 239, 0.95);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   color: var(--warm-grey);
   border-bottom: var(--hairline);
+}
+/* Size change is scroll-only — never triggered by hover/open. */
+.nav.scrolled {
   padding: 16px var(--gutter);
 }
 .nav-logo {
@@ -226,7 +235,7 @@ h1, h2, h3 {
    on the light fill; the scrolled rule below handles the solid nav. */
 .nav-cta:hover span { color: var(--warm-grey); }
 .dark .nav-cta:hover span { color: var(--warm-grey); }
-.nav.scrolled .nav-cta:hover span { color: var(--warm-white); }
+.nav.solid .nav-cta:hover span { color: var(--warm-white); }
 
 /* Mobile menu — hamburger toggle + full-screen panel. Hidden on desktop. */
 .nav-toggle {
