@@ -24,7 +24,12 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
-      - run: pnpm typecheck
+      # No standalone `pnpm typecheck` step: `tsc --noEmit` needs the
+      # content-collections generated types, which only exist after the Next
+      # plugin runs during `next build`. The Playwright step below runs
+      # `pnpm build` (ignoreBuildErrors: false), so the full app is type-checked
+      # there with the generated types present. A separate pre-build typecheck
+      # fails on a clean checkout with "Cannot find module 'content-collections'".
 
       - run: pnpm lint
 
