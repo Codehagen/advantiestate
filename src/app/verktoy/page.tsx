@@ -4,6 +4,7 @@ import FeatureDivider from "@/components/ui/FeatureDivider";
 import { constructMetadata } from "@/lib/utils";
 import {
   RiBarChartBoxLine,
+  RiBuilding2Line,
   RiCalculatorLine,
   RiLineChartLine,
   RiPieChartLine,
@@ -19,6 +20,14 @@ export const metadata = constructMetadata({
 });
 
 const calculators = [
+  {
+    title: "Næringskalkulator",
+    description:
+      "Få et yield-basert verdiestimat på næringseiendommen din på minuttet — med NOI, anvendt yield og verdiintervall.",
+    icon: RiBuilding2Line,
+    href: "/verktoy/naringskalkulator",
+    color: "text-light-blue",
+  },
   {
     title: "Pris på Verdivurdering",
     description:

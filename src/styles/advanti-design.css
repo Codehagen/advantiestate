@@ -9084,3 +9084,160 @@ h1, h2, h3 {
 }
 .office-map-loading { background: var(--warm-grey-75); }
 .office-map .leaflet-container { background: var(--warm-grey-75); }
+
+/* ============================================================
+   NÆRINGSKALKULATOR — verdiestimat-verktøy (bygd på eksisterende tokens)
+   ============================================================ */
+.calc-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  gap: 64px;
+  align-items: start;
+}
+@media (max-width: 980px) {
+  .calc-grid { grid-template-columns: 1fr; gap: 48px; }
+}
+
+.calc-inputs .step-mark {
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 22px;
+  padding-bottom: 14px;
+  border-bottom: var(--hairline);
+}
+.calc-inputs .step-mark:not(:first-of-type) { margin-top: 40px; }
+
+.calc-lbl {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--warm-grey);
+  font-weight: 500;
+  display: block;
+  margin-bottom: 12px;
+}
+
+/* Segmented controls */
+.vv-seg { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 24px; }
+.vv-seg label { flex: 1 1 auto; min-width: 110px; }
+.vv-seg input { position: absolute; opacity: 0; pointer-events: none; }
+.vv-seg span {
+  display: flex; align-items: center; justify-content: center; text-align: center;
+  padding: 12px 14px; border: var(--hairline);
+  font-size: 13.5px; color: var(--warm-grey-85);
+  cursor: pointer; transition: border-color 0.18s, background 0.18s, color 0.18s;
+  line-height: 1.2;
+}
+.vv-seg label:hover span { border-color: var(--warm-grey-85); }
+.vv-seg input:checked + span {
+  border-color: var(--warm-grey); background: var(--warm-grey); color: var(--warm-white);
+}
+.vv-seg input:focus-visible + span { outline: 2px solid var(--warm-grey); outline-offset: 2px; }
+
+/* Numeric field with suffix */
+.num-field { margin-bottom: 24px; }
+.num-wrap {
+  display: flex; align-items: baseline; gap: 8px;
+  border-bottom: 1px solid var(--warm-grey-75);
+  transition: border-color 0.2s;
+}
+.num-wrap:focus-within { border-color: var(--warm-grey); }
+.num-wrap input {
+  font: inherit; font-family: var(--font-body);
+  flex: 1; min-width: 0;
+  background: transparent; border: 0; padding: 10px 0;
+  font-size: 21px; letter-spacing: -0.01em; color: var(--warm-grey);
+  font-variant-numeric: tabular-nums;
+}
+.num-wrap input:focus { outline: none; }
+.num-wrap .suffix { font-size: 14px; color: var(--warm-grey-85); white-space: nowrap; }
+.num-hint { margin-top: 8px; font-size: 12.5px; color: var(--warm-grey-85); line-height: 1.5; }
+.num-hint button {
+  color: var(--accent); cursor: pointer; font-weight: 500;
+  background: none; border: 0; padding: 0; font: inherit;
+}
+.num-hint button:hover { text-decoration: underline; }
+
+.calc-two { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+@media (max-width: 580px) { .calc-two { grid-template-columns: 1fr; gap: 0; } }
+
+/* RESULT CARD */
+.calc-result {
+  position: sticky; top: 96px;
+  background: var(--warm-grey);
+  color: var(--warm-white);
+  padding: 44px;
+}
+.calc-result .r-lbl {
+  font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+  color: rgba(243,241,239,0.6); margin-bottom: 18px;
+}
+.calc-result .r-value {
+  font-family: var(--font-display);
+  font-size: clamp(44px, 5.2vw, 60px);
+  font-weight: 400; letter-spacing: -0.03em; line-height: 0.98;
+  color: var(--warm-white);
+  font-variant-numeric: tabular-nums;
+}
+.calc-result .r-range {
+  margin-top: 16px; font-size: 14.5px; color: rgba(243,241,239,0.72);
+  font-variant-numeric: tabular-nums;
+}
+.calc-result .r-range strong { color: var(--accent); font-weight: 500; }
+
+.range-bar {
+  margin: 28px 0 6px; height: 4px; border-radius: 2px;
+  background: rgba(243,241,239,0.18); position: relative;
+}
+.range-bar .fill {
+  position: absolute; top: 0; bottom: 0; left: 18%; right: 18%;
+  background: var(--accent); border-radius: 2px;
+}
+.range-bar .dot {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+  width: 12px; height: 12px; border-radius: 50%;
+  background: var(--warm-white); border: 2px solid var(--accent);
+}
+.range-ends {
+  display: flex; justify-content: space-between;
+  font-size: 11.5px; color: rgba(243,241,239,0.5);
+  font-variant-numeric: tabular-nums; letter-spacing: 0.02em;
+}
+
+.r-stats {
+  margin-top: 34px; padding-top: 30px;
+  border-top: 1px solid rgba(243,241,239,0.16);
+  display: grid; grid-template-columns: 1fr 1fr; gap: 26px 20px;
+}
+.r-stat .k {
+  font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase;
+  color: rgba(243,241,239,0.55); margin-bottom: 7px;
+}
+.r-stat .v {
+  font-family: var(--font-display); font-size: 24px; font-weight: 400;
+  letter-spacing: -0.015em; color: var(--warm-white);
+  font-variant-numeric: tabular-nums;
+  display: flex; align-items: baseline;
+}
+.r-stat .v .u { font-size: 0.5em; font-style: italic; color: rgba(243,241,239,0.6); margin-left: 3px; }
+
+.calc-result .r-cta {
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  width: 100%; margin-top: 34px;
+  background: var(--accent); color: var(--warm-grey);
+  border: 0; cursor: pointer;
+  font-family: var(--font-body); font-size: 14.5px; font-weight: 500;
+  letter-spacing: 0.01em; padding: 17px 24px;
+  text-decoration: none; transition: opacity 0.2s;
+}
+.calc-result .r-cta:hover { opacity: 0.88; }
+.calc-result .r-foot {
+  margin-top: 18px; font-size: 11.5px; line-height: 1.55;
+  color: rgba(243,241,239,0.5); text-align: center;
+}
+
+@media (max-width: 980px) {
+  .calc-result { position: static; }
+}

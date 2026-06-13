@@ -188,6 +188,7 @@ export const REGISTRY: NavEntry[] = [
   { path: "/blog/[slug]", label: "Blogginnlegg", parent: "/blog" },
   { path: "/blog/category/[slug]", label: "Bloggkategori", parent: "/blog" },
   // Verktøy sub-pages
+  { path: "/verktoy/naringskalkulator", label: "Næringskalkulator", parent: "/verktoy" },
   { path: "/verktoy/yield-kalkulator", label: "Yield-kalkulator", parent: "/verktoy" },
   { path: "/verktoy/roi-kalkulator", label: "ROI-kalkulator", parent: "/verktoy" },
   { path: "/verktoy/pris-verdivurdering", label: "Prisvurderingskalkulator", parent: "/verktoy" },
