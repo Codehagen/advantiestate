@@ -185,15 +185,15 @@ h1, h2, h3 {
   text-transform: uppercase;
   opacity: 0.85;
 }
-/* Centered nav: logo sits left, the CTA group right (.nav-right), and the
-   links sit just right of the logo (left-anchored editorial layout); the
-   CTA group (.nav-right) is pushed to the far right by margin-right:auto. */
+/* Centered nav (reference layout): logo left, links absolutely centred in the
+   bar, CTA group (.nav-right) right. */
 .nav-links {
-  margin-left: 44px;
-  margin-right: auto;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
   align-items: center;
-  gap: 32px;
+  gap: 30px;
   font-size: 14px;
   font-weight: 500;
   letter-spacing: -0.005em;
@@ -343,6 +343,15 @@ h1, h2, h3 {
   padding-bottom: 2px;
 }
 
+/* Open trigger gets a soft pill (reference look). Negative margin cancels the
+   padding so neighbouring items never shift when the pill appears. */
+.nav-group-btn[aria-expanded="true"] {
+  background: var(--accent-faint);
+  border-radius: 999px;
+  padding: 6px 16px;
+  margin: -6px -16px;
+}
+
 /* ── NAV PANEL CARD ───────────────────────────────────────────────────────────
    Contained dropdown CARD (reference look): centred under the nav, rounded,
    hairline border + soft shadow, on the white --paper surface. ONE shell holds
@@ -352,17 +361,19 @@ h1, h2, h3 {
    ────────────────────────────────────────────────────────────────────────── */
 .nav-panel-shell {
   position: fixed;
-  top: calc(var(--nav-h, 72px) + 4px);
-  /* Left-anchored under the logo/links (editorial), not centred. */
-  left: var(--gutter);
-  transform: translateY(-6px);
+  top: calc(var(--nav-h, 72px) + 6px);
+  /* Centred under the bar (reference look). */
+  left: 50%;
+  transform: translateX(-50%) translateY(-6px);
   z-index: 48;
-  width: min(680px, calc(100vw - 2 * var(--gutter)));
+  width: min(940px, calc(100vw - 2 * var(--gutter)));
   height: var(--nav-panel-h, 0px);
   background: var(--paper);
   border: 1px solid var(--warm-grey-75);
-  border-radius: 10px;
-  /* Flat editorial panel — hairline only, NO drop shadow. */
+  border-radius: 20px;
+  box-shadow:
+    0 24px 60px -20px rgba(44, 40, 37, 0.28),
+    0 6px 16px -8px rgba(44, 40, 37, 0.12);
   overflow: hidden;
   opacity: 0;
   visibility: hidden;
@@ -374,7 +385,7 @@ h1, h2, h3 {
     visibility 0s linear 240ms;
 }
 .nav-panel-shell.open {
-  transform: translateY(0);
+  transform: translateX(-50%) translateY(0);
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
@@ -421,31 +432,170 @@ h1, h2, h3 {
   padding: 26px 30px 30px;
 }
 
-/* Two equal eyebrow columns (editorial — flat, typographic, sparse). */
+/* Reference layout: wide icon-grid area + a featured promo column, divided. */
 .nav-panel-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 44px;
-  align-items: start;
+  grid-template-columns: minmax(0, 1fr) 312px;
+  gap: 36px;
+  align-items: stretch;
 }
-.nav-panel-col {
+.nav-panel-main {
   min-width: 0;
   display: flex;
   flex-direction: column;
+  padding-right: 36px;
+  border-right: 1px solid var(--warm-grey-75);
 }
 
-/* Quiet "Se alle …" link at the foot of a column (no box, no fill). */
-.nav-panel-seeall {
-  display: inline-block;
-  margin-top: 16px;
-  font-size: 13px;
-  font-weight: 500;
-  letter-spacing: -0.005em;
-  color: var(--warm-grey-85);
-  transition: color 0.15s ease;
+/* Two-column icon-tile grid (reference look). */
+.nav-item-grid {
+  list-style: none;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px 16px;
+  align-content: start;
+}
+.nav-item {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 14px;
+  align-items: start;
+  padding: 11px;
+  border-radius: 12px;
+  transition: background 0.15s ease;
 }
 @media (hover: hover) {
-  .nav-panel-seeall:hover { color: var(--warm-grey); }
+  .nav-item:hover { background: var(--accent-faint); }
+}
+.nav-item-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: var(--accent-faint);
+  color: var(--warm-grey);
+  flex-shrink: 0;
+}
+.nav-item-icon svg {
+  width: 19px;
+  height: 19px;
+  stroke-width: 1.6;
+}
+.nav-item-text {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.nav-item-title {
+  font-size: 14.5px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--warm-grey);
+}
+.nav-item-desc {
+  font-size: 12.5px;
+  line-height: 1.4;
+  color: var(--warm-grey-85);
+}
+.nav-item[aria-current="page"] .nav-item-title {
+  align-self: flex-start;
+  border-bottom: 1.5px solid var(--accent);
+}
+
+/* Centred "Se alle …" link beneath the grid (reference look). */
+.nav-panel-seeall {
+  align-self: center;
+  margin-top: 20px;
+  font-size: 13.5px;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  color: var(--warm-grey);
+  transition: opacity 0.15s ease;
+}
+@media (hover: hover) {
+  .nav-panel-seeall:hover { opacity: 0.65; }
+}
+
+/* ── FEATURED PROMO (reference look) ──────────────────────────────────────────
+   Accent gradient card, single anchor, with a masked building image at the
+   foot and a pill CTA. */
+.nav-promo {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 24px 24px 0;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid var(--warm-grey-75);
+  background: linear-gradient(
+    160deg,
+    var(--accent-soft) 0%,
+    var(--accent-faint) 55%,
+    var(--paper) 100%
+  );
+}
+.nav-promo-eyebrow {
+  align-self: flex-start;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--warm-grey-85);
+  background: rgba(255, 255, 255, 0.6);
+  padding: 4px 10px;
+  border-radius: 999px;
+}
+.nav-promo-title {
+  font-family: var(--font-display);
+  font-size: 23px;
+  line-height: 1.1;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  color: var(--warm-grey);
+  margin-top: 4px;
+}
+.nav-promo-desc {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--warm-grey-85);
+  max-width: 26ch;
+}
+.nav-promo-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  align-self: flex-start;
+  margin-top: 4px;
+  margin-bottom: 20px;
+  padding: 9px 16px;
+  background: var(--paper);
+  border: 1px solid var(--warm-grey-75);
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--warm-grey);
+  position: relative;
+  z-index: 1;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+@media (hover: hover) {
+  .nav-promo:hover .nav-promo-cta {
+    background: var(--warm-grey);
+    color: var(--warm-white);
+    border-color: var(--warm-grey);
+  }
+}
+.nav-promo-img {
+  margin-top: auto;
+  min-height: 116px;
+  background-size: cover;
+  background-position: center top;
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 32%);
+  mask-image: linear-gradient(to bottom, transparent, #000 32%);
 }
 
 /* Column eyebrow label */
