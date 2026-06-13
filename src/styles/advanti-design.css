@@ -185,9 +185,15 @@ h1, h2, h3 {
   text-transform: uppercase;
   opacity: 0.85;
 }
+/* Centered nav: logo sits left, the CTA group right (.nav-right), and the
+   links are absolutely centred in the bar (reference layout). */
 .nav-links {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
-  gap: 36px;
+  align-items: center;
+  gap: 32px;
   font-size: 14px;
   font-weight: 500;
   letter-spacing: -0.005em;
@@ -195,6 +201,11 @@ h1, h2, h3 {
 }
 .nav-links a { position: relative; padding: 4px 0; }
 .nav-links a:hover { opacity: 0.7; }
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
 .nav-cta {
   display: inline-flex;
   align-items: center;
@@ -278,7 +289,7 @@ h1, h2, h3 {
 @media (max-width: 780px) {
   .nav-links { display: none; }
   /* Hide only the nav-bar CTA — the one inside .nav-mobile keeps showing. */
-  .nav > .nav-cta { display: none; }
+  .nav-right .nav-cta { display: none; }
   .nav-toggle { display: flex; }
   .nav-mobile { display: flex; }
 }
@@ -319,6 +330,7 @@ h1, h2, h3 {
 .nav-panel-list a:focus-visible,
 .nav-panel-cities a:focus-visible,
 .nav-panel-all-cities:focus-visible,
+.nav-promo:focus-visible,
 .nav-mobile-group-btn:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
@@ -331,83 +343,164 @@ h1, h2, h3 {
   padding-bottom: 2px;
 }
 
-/* ── NAV PANEL ───────────────────────────────────────────────────────────────
-   Full-width disclosure panel anchored to the measured nav height.
-   Desktop only (≥781px). No box-shadow, no border-radius per spec.
-   Motion: open 180ms ease-out, close 120ms ease-out — opacity + translateY
-   only (never `transition: all`, never height).
+/* ── NAV PANEL CARD ───────────────────────────────────────────────────────────
+   Contained dropdown CARD (reference look): centred under the nav, rounded,
+   hairline border + soft shadow, on the white --paper surface. ONE shell holds
+   all three group panels stacked; its height MORPHS to the open group (the JS
+   writes --nav-panel-h = the open panel's scrollHeight). Desktop only.
+   Motion: height + opacity + translateY, eased; reduced-motion → fade only.
    ────────────────────────────────────────────────────────────────────────── */
-.nav-panel {
+.nav-panel-shell {
   position: fixed;
-  top: var(--nav-h, 72px);
-  left: 0;
-  right: 0;
+  top: calc(var(--nav-h, 72px) + 8px);
+  left: 50%;
+  transform: translateX(-50%) translateY(-6px);
   z-index: 48;
-  border-top: 1px solid var(--warm-grey-75);
-  border-bottom: 1px solid var(--warm-grey-75);
-  background: var(--warm-white);
-
-  /* Closed state — opacity + translateY; visibility gates AT */
+  width: min(940px, calc(100vw - 2 * var(--gutter)));
+  height: var(--nav-panel-h, 0px);
+  background: var(--paper);
+  border: 1px solid var(--warm-grey-75);
+  border-radius: 18px;
+  box-shadow:
+    0 18px 50px -16px rgba(44, 40, 37, 0.24),
+    0 4px 12px -6px rgba(44, 40, 37, 0.10);
+  overflow: hidden;
   opacity: 0;
-  transform: translateY(-4px);
   visibility: hidden;
   pointer-events: none;
-  transition: opacity 120ms ease-out, transform 120ms ease-out,
-    visibility 0s linear 120ms;
+  transition:
+    height 240ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 160ms ease-out,
+    transform 220ms cubic-bezier(0.22, 1, 0.36, 1),
+    visibility 0s linear 240ms;
 }
-.nav-panel.open {
+.nav-panel-shell.open {
+  transform: translateX(-50%) translateY(0);
   opacity: 1;
-  transform: translateY(0);
   visibility: visible;
   pointer-events: auto;
-  /* Open transition is slower (enters more gently) */
-  transition: opacity 180ms ease-out, transform 180ms ease-out,
+  transition:
+    height 260ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 200ms ease-out,
+    transform 240ms cubic-bezier(0.22, 1, 0.36, 1),
     visibility 0s linear 0s;
 }
 @media (prefers-reduced-motion: reduce) {
-  .nav-panel { transition: none; }
-  .nav-panel.open { transition: none; }
+  .nav-panel-shell,
+  .nav-panel-shell.open {
+    transition: opacity 1ms linear, visibility 0s;
+  }
 }
-/* Panels are desktop-only; on mobile they are hidden entirely. */
 @media (max-width: 780px) {
-  .nav-panel { display: none; }
+  .nav-panel-shell { display: none; }
 }
 
-/* Panel content wrapper */
-.nav-panel-inner {
-  padding: 28px 0 32px;
+/* Each group's content is stacked inside the shell; only the open one shows. */
+.nav-panel {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 140ms ease-out;
 }
-/* Panel inner grid: a wide content area + a narrower support column.
-   Used by the Tjenester and Innsikt panels. */
+.nav-panel.open {
+  opacity: 1;
+  pointer-events: auto;
+  transition: opacity 200ms ease-out 40ms;
+}
+@media (prefers-reduced-motion: reduce) {
+  .nav-panel,
+  .nav-panel.open {
+    transition: none;
+  }
+}
+
+/* Card content padding */
+.nav-panel-inner {
+  padding: 26px 30px 30px;
+}
+
+/* Wide link area + a fixed-width support/promo column. */
 .nav-panel-grid {
   display: grid;
-  grid-template-columns: minmax(0, auto) minmax(0, max-content);
-  gap: 56px;
-  max-width: 960px;
+  grid-template-columns: minmax(0, 1fr) 272px;
+  gap: 40px;
+  /* Top-align so the promo column sizes to its content, never stretching. */
+  align-items: start;
 }
 .nav-panel-col-wide {
   min-width: 0;
 }
 
-/* Link list laid out as two tidy columns; the emphasized parent spans both. */
-.nav-panel-list-grid {
+/* Link list laid out as two tidy columns; the emphasized parent spans both.
+   Selector doubled so grid beats .nav-panel-list's flex display (same
+   specificity → source order would otherwise win). */
+.nav-panel-list.nav-panel-list-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 240px));
-  column-gap: 44px;
-  row-gap: 4px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 36px;
+  row-gap: 6px;
   align-content: start;
 }
-.nav-panel-list-grid .nav-panel-parent {
+.nav-panel-list.nav-panel-list-grid .nav-panel-parent {
   grid-column: 1 / -1;
   margin-bottom: 8px;
 }
 
-/* Legacy two-column layout (kept for any consumer still using it). */
-.nav-panel-two-col {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 40px;
-  max-width: 720px;
+/* Innsikt right column: featured promo on top, city quick-links beneath. */
+.nav-panel-aside {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  min-width: 0;
+}
+
+/* ── FEATURED PROMO (icon-free) ───────────────────────────────────────────────
+   A single-anchor card in the panel's support column — accent wash, hairline,
+   rounded; eyebrow + display title + muted line + arrow CTA. */
+.nav-promo {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 18px 20px;
+  background: var(--accent-faint);
+  border: 1px solid var(--warm-grey-75);
+  border-radius: 12px;
+  transition: background 0.18s ease, border-color 0.18s ease;
+}
+@media (hover: hover) {
+  .nav-promo:hover {
+    background: var(--accent-soft);
+    border-color: var(--accent);
+  }
+}
+.nav-promo-eyebrow {
+  font-size: 10.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--warm-grey-85);
+}
+.nav-promo-title {
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--warm-grey);
+  margin-top: 2px;
+}
+.nav-promo-desc {
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: var(--warm-grey-85);
+}
+.nav-promo-cta {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--warm-grey);
+  margin-top: 6px;
 }
 
 /* Column eyebrow label */
