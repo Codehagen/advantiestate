@@ -459,7 +459,7 @@ type PayloadItem = {
 interface ChartTooltipProps {
   active: boolean | undefined
   payload: PayloadItem[]
-  label: string
+  label?: string | number
   barValueFormatter?: (value: number) => string
   lineValueFormatter?: (value: number) => string
 }
@@ -676,7 +676,7 @@ const ComboChart = React.forwardRef<HTMLDivElement, ComboChartProps>(
     )
 
     const prevActiveRef = React.useRef<boolean | undefined>(undefined)
-    const prevLabelRef = React.useRef<string | undefined>(undefined)
+    const prevLabelRef = React.useRef<string | number | undefined>(undefined)
 
     const barCategoryColors = constructCategoryColors(
       mergedBarSeries.categories,
@@ -935,9 +935,9 @@ const ComboChart = React.forwardRef<HTMLDivElement, ComboChartProps>(
               content={({ active, payload, label }) => {
                 const cleanPayload: TooltipProps["payload"] = payload
                   ? payload.map((item: any) => ({
-                      category: item.dataKey,
-                      value: item.value,
-                      index: item.payload[index],
+                      category: String(item.dataKey ?? ""),
+                      value: Number(item.value ?? 0),
+                      index: String(item.payload?.[index] ?? ""),
                       barColor: barCategoryColors.get(
                         item.dataKey,
                       ) as AvailableChartColorsKeys,
@@ -947,7 +947,7 @@ const ComboChart = React.forwardRef<HTMLDivElement, ComboChartProps>(
                       chartType: barCategoryColors.get(item.dataKey)
                         ? "bar"
                         : ("line" as PayloadItem["chartType"]),
-                      type: item.type,
+                      type: String(item.type ?? ""),
                       payload: item.payload,
                     }))
                   : []
@@ -957,7 +957,11 @@ const ComboChart = React.forwardRef<HTMLDivElement, ComboChartProps>(
                   (active !== prevActiveRef.current ||
                     label !== prevLabelRef.current)
                 ) {
-                  tooltipCallback({ active, payload: cleanPayload, label })
+                  tooltipCallback({
+                    active,
+                    payload: cleanPayload,
+                    label: String(label ?? ""),
+                  })
                   prevActiveRef.current = active
                   prevLabelRef.current = label
                 }
