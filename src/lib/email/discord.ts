@@ -42,10 +42,10 @@ type Args = {
   alreadySubscribed?: boolean
 }
 
-export async function notifyLead(args: Args): Promise<void> {
+export async function notifyLead(args: Args): Promise<boolean> {
   if (!WEBHOOK) {
     console.error("DISCORD_WEBHOOK_URL not set; skipping team notification.")
-    return
+    return false
   }
 
   const timestamp = new Date().toLocaleString("no-NO", {
@@ -112,5 +112,7 @@ export async function notifyLead(args: Args): Promise<void> {
   })
   if (!r.ok) {
     console.error("Discord webhook failed:", await r.text())
+    return false
   }
+  return true
 }

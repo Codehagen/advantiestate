@@ -23,7 +23,13 @@ export async function subscribeNewsletter(
   const pageUrl = String(formData.get("pageUrl") ?? "")
   const firstName = String(formData.get("firstName") ?? "") || undefined
 
-  const result = await subscribe({ email, source, pageUrl, firstName })
+  const result = await subscribe({
+    email,
+    source,
+    pageUrl,
+    firstName,
+    marketingConsent: true,
+  })
 
   if (!result.ok) return { status: "error", message: result.error }
   return { status: "success", alreadySubscribed: result.alreadySubscribed }

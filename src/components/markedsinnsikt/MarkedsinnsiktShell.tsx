@@ -24,6 +24,7 @@ import {
   fmtNum,
   type Segment,
 } from "./marketData"
+import { LATEST_RELEASE_STAMP, NEXT_RELEASE_DATE } from "./marketReleases"
 
 // Leaflet needs `window`, so the overview map loads browser-only. This
 // dynamic({ ssr: false }) call is legal here because MarkedsinnsiktShell is a
@@ -148,7 +149,7 @@ function YieldView() {
           </h2>
         </div>
         <div className="updated">
-          <span className="live">OPPDATERT 14. JAN 2026</span>
+          <span className="live">{LATEST_RELEASE_STAMP}</span>
           <span>Kilde: Advanti markedsdata</span>
         </div>
       </div>
@@ -354,7 +355,7 @@ function LeieView() {
           </h2>
         </div>
         <div className="updated">
-          <span className="live">OPPDATERT 14. JAN 2026</span>
+          <span className="live">{LATEST_RELEASE_STAMP}</span>
           <span>Kilde: Advanti leiekontrakt­base</span>
         </div>
       </div>
@@ -531,7 +532,7 @@ function TxView() {
           </h2>
         </div>
         <div className="updated">
-          <span className="live">OPPDATERT 14. JAN 2026</span>
+          <span className="live">{LATEST_RELEASE_STAMP}</span>
           <span>Kilde: Advanti transaksjons­database</span>
         </div>
       </div>
@@ -662,7 +663,7 @@ function LedighetView() {
           </h2>
         </div>
         <div className="updated">
-          <span className="live">OPPDATERT 14. JAN 2026</span>
+          <span className="live">{LATEST_RELEASE_STAMP}</span>
           <span>Kilde: Advanti markeds­telling</span>
         </div>
       </div>
@@ -805,7 +806,7 @@ function KartView() {
           </h2>
         </div>
         <div className="updated">
-          <span className="live">OPPDATERT 14. JAN 2026</span>
+          <span className="live">{LATEST_RELEASE_STAMP}</span>
           <span>Yield, leie og ledighet — Q4 2025</span>
         </div>
       </div>
@@ -995,7 +996,7 @@ function RapporterView() {
           </div>
           <div>
             <div className="key">Neste utgave</div>
-            <div className="val">15. juli 2026</div>
+            <div className="val">{NEXT_RELEASE_DATE}</div>
           </div>
         </div>
       </div>

@@ -91,7 +91,9 @@ describe("cityMarketData honest-data rule (autoplan E2)", () => {
 // ---------------------------------------------------------------------------
 
 const subscribeMock = vi.fn(
-  async (): Promise<{ ok: true; alreadySubscribed: boolean } | { ok: false; error: string }> => ({
+  async (
+    _input: Record<string, unknown>,
+  ): Promise<{ ok: true; alreadySubscribed: boolean } | { ok: false; error: string }> => ({
     ok: true,
     alreadySubscribed: false,
   }),
@@ -99,7 +101,7 @@ const subscribeMock = vi.fn(
 const rateLimitMock = vi.fn(async (_scope: string) => true)
 
 vi.mock("@/lib/email/subscribe", () => ({
-  subscribe: (...args: unknown[]) => subscribeMock(...(args as [])),
+  subscribe: (input: Record<string, unknown>) => subscribeMock(input),
 }))
 vi.mock("@/lib/rate-limit", () => ({
   // Forward the scope arg so tests can assert the bucket key — a typo'd key

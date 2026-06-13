@@ -5,12 +5,19 @@
 // via <Tooltip content={<ChartTooltip valueFormatter={...} />} />; recharts
 // clones it and injects `active` / `payload` / `label`.
 
-import type { TooltipProps } from "recharts"
-
 type ValueType = number | string | Array<number | string>
-type NameType = number | string
 
-interface ChartTooltipProps extends TooltipProps<ValueType, NameType> {
+type TooltipEntry = {
+  color?: string
+  dataKey?: string | number
+  name?: string | number
+  value?: ValueType
+}
+
+interface ChartTooltipProps {
+  active?: boolean
+  payload?: TooltipEntry[]
+  label?: string | number
   valueFormatter?: (value: number) => string
 }
 

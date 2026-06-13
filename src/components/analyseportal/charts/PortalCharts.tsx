@@ -23,7 +23,6 @@ import {
   ReferenceArea,
   ReferenceLine,
   Cell,
-  type TooltipProps,
 } from "recharts"
 import { PORTAL_PALETTE } from "@/components/markedsinnsikt/portalSeries"
 import type { ChartRow, SeriesDef } from "../seriesUtils"
@@ -53,15 +52,26 @@ function useReducedMotion(): boolean {
 
 // ── branded tooltip ─────────────────────────────────────────────────────────
 interface PortalTooltipExtras {
-  formatter?: (v: number) => string
+  valueFormatter?: (v: number) => string
   names?: Record<string, string>
   colors?: Record<string, string>
 }
 
-function PortalTooltip(
-  props: TooltipProps<number, string> & PortalTooltipExtras,
-) {
-  const { active, payload, label, formatter, names, colors } = props
+type PortalTooltipPayload = {
+  value?: number | string
+  dataKey?: string | number
+  name?: string | number
+  color?: string
+}
+
+type PortalTooltipProps = PortalTooltipExtras & {
+  active?: boolean
+  payload?: PortalTooltipPayload[]
+  label?: string | number
+}
+
+function PortalTooltip(props: PortalTooltipProps) {
+  const { active, payload, label, valueFormatter, names, colors } = props
   if (!active || !payload || payload.length === 0) return null
   // Dedupe solid/forecast pairs by base key.
   const seen = new Set<string>()
@@ -75,7 +85,7 @@ function PortalTooltip(
       base,
       name: names?.[base] ?? String(p.name ?? base),
       color: colors?.[base] ?? String(p.color ?? PORTAL_PALETTE.ink),
-      value: p.value as number,
+      value: Number(p.value),
     })
   }
   if (rows.length === 0) return null
@@ -87,7 +97,7 @@ function PortalTooltip(
           <span className="ap-tip-dot" style={{ background: r.color }} />
           <span className="ap-tip-name">{r.name}</span>
           <span className="ap-tip-val">
-            {formatter ? formatter(r.value) : r.value}
+            {valueFormatter ? valueFormatter(r.value) : r.value}
           </span>
         </div>
       ))}
@@ -161,7 +171,7 @@ export function TrendChart({
           tickFormatter={yFmt}
         />
         <Tooltip
-          content={<PortalTooltip formatter={tipFmt} names={names} colors={colors} />}
+          content={<PortalTooltip valueFormatter={tipFmt} names={names} colors={colors} />}
           cursor={{ stroke: "#b9b0a7", strokeWidth: 1, strokeDasharray: "3 3" }}
         />
         {series.flatMap((s) =>
@@ -234,7 +244,7 @@ export function StackedBar({
         <XAxis dataKey="label" tick={TICK} tickLine={false} axisLine={{ stroke: PORTAL_PALETTE.grid }} />
         <YAxis tick={TICK} tickLine={false} axisLine={false} width={46} tickFormatter={yFmt} />
         <Tooltip
-          content={<PortalTooltip formatter={tipFmt} names={names} colors={colors} />}
+          content={<PortalTooltip valueFormatter={tipFmt} names={names} colors={colors} />}
           cursor={{ fill: "rgba(44,40,37,0.05)" }}
         />
         {series.flatMap((s) =>
@@ -300,7 +310,7 @@ export function SnapshotBar({
         <Tooltip
           content={
             <PortalTooltip
-              formatter={tipFmt}
+              valueFormatter={tipFmt}
               names={{ [dataKey]: name }}
               colors={{ [dataKey]: PORTAL_PALETTE.ink }}
             />

@@ -1,4 +1,5 @@
 import { allPersonPosts } from "content-collections";
+import Link from "next/link";
 
 import ContactUsForm from "@/components/ContactUsForm";
 import { OfficeMap } from "@/components/site/OfficeMap";
@@ -67,13 +68,13 @@ export default function KontaktPage() {
           >
             Send henvendelse →
           </a>
-          <a
+          <Link
             href="/personer"
             className="btn btn-outline"
             style={{ fontSize: 15, fontWeight: 500, textDecoration: "none" }}
           >
             Ta kontakt med teamet
-          </a>
+          </Link>
         </div>
       </SubHero>
 

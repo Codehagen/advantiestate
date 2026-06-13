@@ -36,7 +36,7 @@ import {
   VOLUME,
   type Segment,
 } from "./marketData"
-import { LATEST_RELEASE } from "./marketReleases"
+import { LATEST_RELEASE, NEXT_RELEASE_DATE as RELEASE_NEXT_DATE } from "./marketReleases"
 
 /** Portal supports hotell on yield/volume/nybygg. Leie & ledighet stay 3-segment. */
 export type PortalSegment = Segment | "hotell"
@@ -69,7 +69,7 @@ export const YEARS_F = ["2026", "2027"]
 
 /** Latest published quarter (registry-derived) and the public next-release promise. */
 export const PORTAL_LATEST = LATEST_RELEASE
-export const NEXT_RELEASE_DATE = "15. juli 2026"
+export const NEXT_RELEASE_DATE = RELEASE_NEXT_DATE
 
 // ── deterministic Norwegian formatters ──────────────────────────────────────
 // Manual grouping with a literal NBSP (U+00A0): toLocaleString varies between
