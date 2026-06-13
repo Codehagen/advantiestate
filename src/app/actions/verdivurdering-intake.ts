@@ -20,36 +20,62 @@ export async function subscribeVerdivurderingIntake(
     return { ok: false, error: "For mange forsøk. Prøv igjen om noen minutter." }
   }
 
-  const email = String(formData.get("email") ?? "")
-  const firstName = String(formData.get("firstName") ?? "") || undefined
-  const propertyType = String(formData.get("propertyType") ?? "")
-  const location = String(formData.get("location") ?? "")
-  const size = String(formData.get("size") ?? "")
-  const purpose = String(formData.get("purpose") ?? "")
-  const horizon = String(formData.get("horizon") ?? "")
-  const phone = String(formData.get("phone") ?? "") || undefined
-  const notes = String(formData.get("notes") ?? "") || undefined
+  const get = (k: string) => {
+    const v = String(formData.get(k) ?? "").trim()
+    return v.length > 0 ? v : undefined
+  }
 
-  // Minimum: email + the 5 intake fields. firstName is also required at the
-  // form level so we can address them in the welcome.
-  if (!email || !propertyType || !location || !size || !purpose || !horizon) {
+  const email = get("email") ?? ""
+  const firstName = get("firstName")
+  const propertyType = get("propertyType") ?? ""
+  const location = get("location") ?? ""
+  const purpose = get("purpose") ?? ""
+
+  // Optional / surface-specific fields. The dedicated /verdivurdering page
+  // sends address + company + free-text areal/leie (carried from the
+  // næringskalkulator); the legacy #bestill form may send size/horizon.
+  const address = get("address")
+  const company = get("company")
+  const areal = get("areal")
+  const leie = get("leie")
+  const size = get("size")
+  const horizon = get("horizon")
+  const phone = get("phone")
+  const notes = get("notes")
+
+  // `page` distinguishes which surface produced the lead so the funnel can be
+  // measured (verdivurdering-page vs tjeneste-bestill). Defaults to the legacy
+  // service page for backward compatibility.
+  const page = get("page") ?? "/tjenester/verdivurdering"
+
+  // Hard-intent minimum: email + property type + location + purpose. firstName
+  // is required at the form level so we can address them in the welcome.
+  if (!email || !propertyType || !location || !purpose) {
     return { ok: false, error: "Fyll ut alle påkrevde felt." }
+  }
+
+  // Build the structured context dynamically so empty optional fields don't
+  // clutter the Discord notification.
+  const intake: Record<string, string | undefined> = {
+    Eiendomstype: propertyType,
+    Adresse: address,
+    Sted: location,
+    Areal: areal ? `${areal} m²` : undefined,
+    "Årlig leie": leie,
+    Størrelse: size,
+    Formål: purpose,
+    Tidshorisont: horizon,
+    Selskap: company,
+    Telefon: phone,
+    Beskjed: notes,
   }
 
   const result = await subscribe({
     email,
     firstName,
     source: "verdivurdering-intake",
-    pageUrl: "/tjenester/verdivurdering",
-    intake: {
-      Eiendomstype: propertyType,
-      Sted: location,
-      Størrelse: size,
-      Bakgrunn: purpose,
-      Tidshorisont: horizon,
-      Telefon: phone,
-      Beskjed: notes,
-    },
+    pageUrl: page,
+    intake,
   })
 
   if (!result.ok) return { ok: false, error: result.error }

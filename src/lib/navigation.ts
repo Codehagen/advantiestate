@@ -259,6 +259,7 @@ export const REGISTRY: NavEntry[] = [
 
   // ── deliberately outside nav/footer (gated or landing pages) ─────────────
   { path: "/presentasjon", label: "Presentasjon", parent: null, inNav: false, inFooter: false },
+  { path: "/verdivurdering", label: "Få verdivurdering", parent: null, inNav: false, inFooter: false },
   { path: "/landing/verdivurdering", label: "Verdivurdering landingsside", parent: null, inNav: false, inFooter: false },
   { path: "/sjekkliste-verdivurdering", label: "Sjekkliste verdivurdering", parent: null, inNav: false, inFooter: false },
 

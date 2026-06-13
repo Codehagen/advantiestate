@@ -535,7 +535,7 @@ export function Nav({ groups }: NavProps) {
 
         <div className="nav-right">
           <Link
-            href="/verktoy/pris-verdivurdering"
+            href="/verdivurdering"
             className="nav-cta"
             onClick={() => trackEvent("cta_verdivurdering", { source: "nav" })}
             onMouseEnter={scheduleClose}
@@ -680,7 +680,7 @@ export function Nav({ groups }: NavProps) {
 
         <Link
           prefetch={false}
-          href="/verktoy/pris-verdivurdering"
+          href="/verdivurdering"
           className="nav-cta nav-mobile-cta"
           onClick={() => {
             setMenuOpen(false);

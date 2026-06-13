@@ -4,9 +4,9 @@ import { test, expect, type APIRequestContext } from "@playwright/test";
  * Verdivurdering-reise — fase 4 nav/IA-redesign.
  *
  * Dekker:
- *  a. Forsidenavets CTA har href /verktoy/pris-verdivurdering (desktop + mobil)
- *  b. Journey-gang: / → CTA-klikk → kalkulator-h1; sjekkliste-støttelenke +
- *     /kontakt primær­aksjon er synlige på destinasjonssiden
+ *  a. Forsidenavets CTA har href /verdivurdering (desktop + mobil)
+ *  b. Journey-gang: / → CTA-klikk → /verdivurdering; intake-skjema +
+ *     sjekkliste- og kalkulator-støttelenker er synlige på destinasjonssiden
  *  c. Analytics: stub dataLayer, klikk CTA, assert cta_verdivurdering med
  *     source-prop
  *  d. Se også på /naringsmegler/bodo: «Forstå markedet»-blokk viser ≤ 3 lenker,
@@ -23,53 +23,50 @@ test.beforeEach(async ({ page }) => {
 
 // ── a. CTA href ───────────────────────────────────────────────────────────────
 
-test.describe("CTA href — /verktoy/pris-verdivurdering", () => {
-  test("desktop nav CTA peker til /verktoy/pris-verdivurdering", async ({
-    page,
-  }) => {
+test.describe("CTA href — /verdivurdering", () => {
+  test("desktop nav CTA peker til /verdivurdering", async ({ page }) => {
     await page.setViewportSize({ width: 1280, height: 800 });
     await page.goto("/");
     // .nav-cta er den synlige CTA-knappen i desktop-headeren
     const cta = page.locator(".nav-cta").first();
-    await expect(cta).toHaveAttribute("href", "/verktoy/pris-verdivurdering");
+    await expect(cta).toHaveAttribute("href", "/verdivurdering");
   });
 
-  test("mobil nav CTA (320×568) peker til /verktoy/pris-verdivurdering", async ({
-    page,
-  }) => {
+  test("mobil nav CTA (320×568) peker til /verdivurdering", async ({ page }) => {
     await page.setViewportSize({ width: 320, height: 568 });
     await page.goto("/");
     await page.getByRole("button", { name: "Åpne meny" }).click();
     const cta = page.locator(".nav-mobile-cta");
-    await expect(cta).toHaveAttribute("href", "/verktoy/pris-verdivurdering");
+    await expect(cta).toHaveAttribute("href", "/verdivurdering");
   });
 });
 
 // ── b. Journey-gang ───────────────────────────────────────────────────────────
 
-test("journey: / → CTA-klikk → kalkulator med sjekkliste­lenke og /kontakt", async ({
+test("journey: / → CTA-klikk → /verdivurdering med skjema + støttelenker", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 1280, height: 800 });
   await page.goto("/");
 
-  // Klikk CTA og vent på at navigasjonen til kalkulatorsiden er ferdig
+  // Klikk CTA og vent på at navigasjonen til verdivurderingssiden er ferdig
   await Promise.all([
-    page.waitForURL("**/verktoy/pris-verdivurdering"),
+    page.waitForURL("**/verdivurdering"),
     page.locator(".nav-cta").first().click(),
   ]);
 
-  // h1 skal inneholde «Verdivurdering»
-  await expect(page.locator("h1").first()).toContainText("Verdivurdering");
+  // Intake-skjemaet skal være synlig (delt VerdivurderingIntakeForm)
+  await expect(
+    page.getByRole("heading", { name: "Be om verdivurdering." }),
+  ).toBeVisible();
 
-  // Sjekkliste-støttelenke skal være synlig (ikke en knapp)
-  const sjekklisteLink = page.locator('a[href="/sjekkliste-verdivurdering"]');
-  await expect(sjekklisteLink).toBeVisible();
-
-  // Primær /kontakt-aksjon — CalculatorCTA-seksjonen inneholder minst én
-  expect(await page.locator('a[href="/kontakt"]').count()).toBeGreaterThanOrEqual(
-    1,
-  );
+  // Sjekkliste- og kalkulator-støttelenker i hero
+  await expect(
+    page.locator('a[href="/sjekkliste-verdivurdering"]').first(),
+  ).toBeVisible();
+  await expect(
+    page.locator('a[href="/verktoy/naringskalkulator"]').first(),
+  ).toBeVisible();
 });
 
 // ── c. Analytics ──────────────────────────────────────────────────────────────

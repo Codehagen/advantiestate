@@ -67,7 +67,7 @@ export function NaringskalkulatorClient() {
       areal: String(Math.round(parseNorwegianNumber(areaStr) ?? 0)),
       leie: String(Math.round(parseNorwegianNumber(rentStr) ?? 0)),
     });
-    return `/kontakt?${params.toString()}`;
+    return `/verdivurdering?${params.toString()}`;
   }, [type, city, areaStr, rentStr]);
 
   return (
