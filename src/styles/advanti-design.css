@@ -2252,6 +2252,203 @@ h1, h2, h3 {
   .contact-form { padding: 32px 24px; }
 }
 
+/* ============================================================
+   VERDIVURDERING-FUNNEL — skreddersydd intake-skjema + aside.
+   Bygget på eksisterende tokens; lys-only. Brukt av den delte
+   VerdivurderingIntakeForm-komponenten (/verdivurdering + #bestill).
+   Portet fra design-handoff advanti/verdivurdering.html.
+   ============================================================ */
+
+/* To-felts rad */
+.field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+@media (max-width: 580px) {
+  .field-row { grid-template-columns: 1fr; gap: 0; }
+}
+
+/* Steg-merking i skjemaet */
+.vv-form .step-mark {
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 22px;
+  padding-bottom: 14px;
+  border-bottom: var(--hairline);
+}
+.vv-form .step-mark:not(:first-of-type) { margin-top: 38px; }
+
+/* Segmentert radio — formål / eiendomstype */
+.vv-seg {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.vv-seg label { flex: 1 1 auto; min-width: 120px; }
+.vv-seg input { position: absolute; opacity: 0; pointer-events: none; }
+.vv-seg span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 13px 16px;
+  border: var(--hairline);
+  font-size: 14px;
+  color: var(--warm-grey-85);
+  cursor: pointer;
+  transition: border-color 0.18s, background 0.18s, color 0.18s;
+  line-height: 1.25;
+}
+.vv-seg label:hover span { border-color: var(--warm-grey-85); }
+.vv-seg input:checked + span {
+  border-color: var(--warm-grey);
+  background: var(--warm-grey);
+  color: var(--warm-white);
+}
+.vv-seg input:focus-visible + span { outline: 2px solid var(--accent); outline-offset: 2px; }
+.vv-seg-label {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--warm-grey-85);
+  font-weight: 500;
+  display: block;
+  margin-bottom: 12px;
+}
+
+/* Samtykke-rad */
+.consent {
+  display: grid;
+  grid-template-columns: 20px 1fr;
+  gap: 12px;
+  align-items: start;
+  margin: 8px 0 4px;
+  font-size: 13px;
+  color: var(--warm-grey-85);
+  line-height: 1.55;
+  cursor: pointer;
+}
+.consent input { margin-top: 3px; }
+
+/* Kalkulator-kontekst-notat */
+.vv-prefill-note {
+  font-size: 13px;
+  color: var(--warm-grey-85);
+  background: var(--accent-faint);
+  border: var(--hairline);
+  padding: 12px 16px;
+  margin-bottom: 24px;
+  line-height: 1.5;
+}
+
+/* Suksess-state */
+.form-success {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 32px 0;
+}
+.form-success .check {
+  font-family: var(--font-display);
+  font-size: 56px;
+  color: var(--accent);
+  margin-bottom: 16px;
+  line-height: 1;
+}
+
+/* Aside — «Hva du får»-kort */
+.vv-aside-card {
+  background: var(--accent-faint);
+  border: var(--hairline);
+  padding: 36px;
+  margin-bottom: 32px;
+}
+.vv-aside-card > .pre {
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--warm-grey-85);
+  margin-bottom: 22px;
+}
+.vv-gets { list-style: none; display: flex; flex-direction: column; }
+.vv-gets li {
+  display: grid;
+  grid-template-columns: 28px 1fr;
+  gap: 16px;
+  padding: 20px 0;
+  border-bottom: var(--hairline);
+  align-items: start;
+}
+.vv-gets li:first-child { padding-top: 0; }
+.vv-gets li:last-child { border-bottom: 0; padding-bottom: 0; }
+.vv-gets .ico {
+  font-family: var(--font-display);
+  font-size: 16px;
+  color: var(--accent);
+  line-height: 1.5;
+}
+.vv-gets h4 { font-size: 15px; font-weight: 500; margin-bottom: 4px; }
+.vv-gets p { font-size: 13.5px; color: var(--warm-grey-85); line-height: 1.55; }
+
+/* Partner mini-kort */
+.vv-partner {
+  display: flex;
+  gap: 18px;
+  align-items: center;
+  border: var(--hairline);
+  padding: 24px;
+}
+.vv-partner .portrait {
+  position: relative;
+  width: 88px; height: 110px;
+  flex-shrink: 0;
+  overflow: hidden;
+  background-color: var(--warm-grey-75);
+}
+.vv-partner .k { font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--warm-grey-85); }
+.vv-partner h4 { font-family: var(--font-display); font-size: 21px; font-weight: 400; letter-spacing: -0.016em; margin: 6px 0 2px; }
+.vv-partner .role { font-size: 13px; color: var(--warm-grey-85); margin-bottom: 12px; }
+.vv-partner a { font-size: 14px; font-weight: 500; display: block; }
+.vv-partner a.mail { font-weight: 400; color: var(--warm-grey-85); font-size: 13.5px; }
+
+/* Trygg-rad (24t / 1 400+ / NDA) */
+.vv-trust {
+  background: var(--accent-faint);
+  border-top: var(--hairline);
+  border-bottom: var(--hairline);
+  padding: 56px 0;
+}
+.vv-trust-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+  text-align: center;
+}
+.vv-trust-grid > div { padding: 0 16px; }
+.vv-trust-grid > div + div { border-left: var(--hairline); }
+.vv-trust .big {
+  font-family: var(--font-display);
+  font-size: 48px;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+.vv-trust .cap {
+  margin-top: 12px;
+  font-size: 13.5px;
+  color: var(--warm-grey-85);
+  letter-spacing: 0.04em;
+}
+@media (max-width: 640px) {
+  .vv-trust-grid { grid-template-columns: 1fr; gap: 28px; }
+  .vv-trust-grid > div + div { border-left: 0; border-top: var(--hairline); padding-top: 28px; }
+}
+
 .contact-person {
   padding: 10px 0;
   border-bottom: 1px dashed var(--warm-grey-75);
