@@ -2,14 +2,37 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import {
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+  type ComponentType,
+} from "react";
+import {
+  Search,
+  Handshake,
+  ArrowLeftRight,
+  Building2,
+  TrendingUp,
+  Compass,
+  MapPin,
+  LineChart,
+  Map as MapIcon,
+  FileText,
+  Calculator,
+  BookOpen,
+  Newspaper,
+  Building,
+  Users,
+  Briefcase,
+  Megaphone,
+} from "lucide-react";
 import { trackEvent } from "@/lib/analytics";
 import type { NavEntry } from "@/lib/navigation";
 import { stripHash } from "@/lib/stripHash";
 
-// useLayoutEffect on the client so the sentinel check runs BEFORE first paint
-// (no solid-nav flash on dark-hero pages); useEffect during SSR to keep React
-// quiet — the server render never paints anyway.
 const useIsoLayoutEffect =
   typeof window !== "undefined" ? useLayoutEffect : useEffect;
 
@@ -18,67 +41,123 @@ export interface NavProps {
 }
 
 type GroupId = "tjenester" | "innsikt" | "om-oss";
+type IconType = ComponentType<{ className?: string; "aria-hidden"?: boolean }>;
 
-// Panel columns (editorial direction C): each group's links split into two
-// eyebrow-labelled columns by theme. Paths resolve against the registry group
-// arrays; an optional "see all" link sits quietly at the column foot.
-const PANEL_COLUMNS: Record<
+// Icon per route (lucide). Reference look (icon tile + title + description).
+const ICONS: Record<string, IconType> = {
+  "/tjenester/verdivurdering": Search,
+  "/tjenester/salg": Handshake,
+  "/tjenester/transaksjoner": ArrowLeftRight,
+  "/tjenester/utleie": Building2,
+  "/tjenester/radgivning": TrendingUp,
+  "/tjenester/strategisk-radgivning": Compass,
+  "/naringsmegler": MapPin,
+  "/markedsinnsikt": LineChart,
+  "/markedsinnsikt/kart": MapIcon,
+  "/markedsrapport": FileText,
+  "/verktoy": Calculator,
+  "/help": BookOpen,
+  "/blog": Newspaper,
+  "/om-oss": Building,
+  "/personer": Users,
+  "/kunder": Briefcase,
+  "/karriere": Compass,
+  "/presserom": Megaphone,
+};
+
+// Short fallback descriptions for entries the registry doesn't describe (om-oss).
+const FALLBACK_DESC: Record<string, string> = {
+  "/om-oss": "Hvem vi er og hvordan vi jobber.",
+  "/personer": "Rådgiverne i Advanti.",
+  "/kunder": "Utvalgte gjennomførte oppdrag.",
+  "/karriere": "Ledige roller hos oss.",
+  "/presserom": "Nyheter og presseressurser.",
+};
+
+// Which registry paths appear in each panel's icon grid, in order, plus the
+// "see all" link and the featured promo (a single anchor, distinct target so
+// it never duplicates a grid link).
+const PANELS: Record<
   GroupId,
-  { eyebrow: string; paths: string[]; seeAll?: { href: string; label: string } }[]
+  {
+    items: string[];
+    seeAll?: { href: string; label: string };
+    promo: {
+      href: string;
+      eyebrow: string;
+      title: string;
+      desc: string;
+      cta: string;
+      img: string;
+    };
+  }
 > = {
-  tjenester: [
-    {
-      eyebrow: "Rådgivning",
-      paths: [
-        "/tjenester/verdivurdering",
-        "/tjenester/transaksjoner",
-        "/tjenester/radgivning",
-        "/tjenester/strategisk-radgivning",
-      ],
-      seeAll: { href: "/tjenester", label: "Se alle tjenester" },
+  tjenester: {
+    items: [
+      "/tjenester/utleie",
+      "/tjenester/verdivurdering",
+      "/tjenester/transaksjoner",
+      "/tjenester/radgivning",
+      "/tjenester/strategisk-radgivning",
+      "/tjenester/salg",
+      "/naringsmegler",
+    ],
+    seeAll: { href: "/tjenester", label: "Se alle tjenester" },
+    promo: {
+      href: "/markedsinnsikt",
+      eyebrow: "Fremtidens eiendomsverdi",
+      title: "Innsikt som beveger eiendom.",
+      desc: "Vi kombinerer markedsdata, erfaring og teknologi for å gi deg bedre beslutningsgrunnlag.",
+      cta: "Les mer",
+      img: "/building/auckland-glass-facade.jpg",
     },
-    {
-      eyebrow: "Megling",
-      paths: ["/tjenester/salg", "/tjenester/utleie", "/naringsmegler"],
+  },
+  innsikt: {
+    items: [
+      "/markedsinnsikt",
+      "/markedsinnsikt/kart",
+      "/markedsrapport",
+      "/verktoy",
+      "/help",
+      "/blog",
+    ],
+    seeAll: { href: "/markedsinnsikt", label: "Gå til markedsinnsikt" },
+    promo: {
+      href: "/verktoy/pris-verdivurdering",
+      eyebrow: "Verktøy",
+      title: "Regn ut verdien.",
+      desc: "Bruk kalkulatoren for et raskt, yield-basert verdiestimat på eiendommen.",
+      cta: "Prøv kalkulatoren",
+      img: "/building/la-skyscraper.jpg",
     },
-  ],
-  innsikt: [
-    {
-      eyebrow: "Marked",
-      paths: ["/markedsinnsikt", "/markedsinnsikt/kart", "/markedsrapport"],
+  },
+  "om-oss": {
+    items: ["/om-oss", "/personer", "/kunder", "/karriere", "/presserom"],
+    promo: {
+      href: "/kontakt",
+      eyebrow: "Snakk med oss",
+      title: "Lokal rådgiver, nasjonalt nettverk.",
+      desc: "Ta en uforpliktende prat med teamet om eiendommen din.",
+      cta: "Ta kontakt",
+      img: "/building/munster-lvm-building.jpg",
     },
-    {
-      eyebrow: "Verktøy og innhold",
-      paths: ["/verktoy", "/help", "/blog"],
-    },
-  ],
-  "om-oss": [
-    {
-      eyebrow: "Selskapet",
-      paths: ["/om-oss", "/personer", "/karriere"],
-    },
-    {
-      eyebrow: "Arbeidet",
-      paths: ["/kunder", "/presserom"],
-    },
-  ],
+  },
 };
 
 /**
  * Site navigation — fixed; transparent over a dark hero, solid otherwise.
  *
- * Disclosure model (E1A + hover): three left-anchored group labels (Tjenester,
- * Innsikt, Om oss) are <button> triggers with aria-expanded / aria-controls.
- * Their panels live in a single FLAT contained card "shell" (hairline, no
- * shadow) that morphs height to the open group. Panels stay in the DOM
- * (SSR/crawlable), cross-fade between groups.
+ * Disclosure (E1A + hover): three centered group labels are <button> triggers
+ * with aria-expanded / aria-controls. Panels live in a single contained card
+ * shell (rounded, soft shadow) that morphs height to the open group. Reference
+ * look: each item is an icon tile + title + description, in a two-column grid
+ * beside a featured promo card. Panels stay in the DOM (SSR/crawlable).
  *
- *   POINTER: hover opens + morphs between groups; leaving closes after an
- *   intent delay (gated to (hover: hover)). KEYBOARD/CLICK: trigger toggles;
- *   Escape closes + returns focus. Click-outside and link-click close.
+ *   POINTER: hover opens + morphs; leaving closes after intent delay (gated to
+ *   (hover: hover)). KEYBOARD/CLICK: trigger toggles; Escape closes + returns
+ *   focus. Click-outside and link-click close.
  *
- * --nav-h ownership (E7): Nav measures its own height and writes --nav-h.
- * Transparent/solid sentinel unchanged (#hero-sentinel).
+ * --nav-h ownership (E7) + transparent/solid sentinel (#hero-sentinel) unchanged.
  */
 export function Nav({ groups }: NavProps) {
   const pathname = usePathname();
@@ -93,11 +172,8 @@ export function Nav({ groups }: NavProps) {
   const panelRefs = useRef<Partial<Record<GroupId, HTMLDivElement>>>({});
   const groupBtnRefs = useRef<Partial<Record<GroupId, HTMLButtonElement>>>({});
 
-  // Hover-intent: timer + a (hover: hover) gate so touch never opens on hover.
   const closeTimer = useRef<number | null>(null);
   const canHover = useRef(false);
-  // Which group was just opened by hover and not yet click-confirmed (so the
-  // click riding along with a hover-open confirms it open, not shut).
   const hoverOpened = useRef<GroupId | null>(null);
   useEffect(() => {
     canHover.current =
@@ -314,44 +390,75 @@ export function Nav({ groups }: NavProps) {
   const byPath = (id: GroupId, path: string) =>
     groups[id].find((e) => e.path === path);
 
-  // Renders one flat eyebrow-labelled column for a desktop panel.
-  const renderPanel = (id: GroupId) => (
-    <div className="nav-panel-inner nav-panel-grid">
-      {PANEL_COLUMNS[id].map((col) => (
-        <div className="nav-panel-col" key={col.eyebrow}>
-          <span className="nav-panel-eyebrow">{col.eyebrow}</span>
-          <ul className="nav-panel-list" onClick={closePanel}>
-            {col.paths.map((p) => {
+  // Renders a desktop panel: icon-tile grid + "see all" + featured promo.
+  const renderPanel = (id: GroupId) => {
+    const panel = PANELS[id];
+    return (
+      <div className="nav-panel-inner nav-panel-grid">
+        <div className="nav-panel-main">
+          <ul className="nav-item-grid" onClick={closePanel}>
+            {panel.items.map((p) => {
               const e = byPath(id, p);
               if (!e) return null;
+              const Icon = ICONS[p];
+              const desc = e.description ?? FALLBACK_DESC[p];
               return (
                 <li key={p}>
                   <Link
                     prefetch={false}
                     href={e.path}
+                    className="nav-item"
                     aria-current={isLinkActive(e.path) ? "page" : undefined}
                   >
-                    {e.label}
+                    <span className="nav-item-icon" aria-hidden>
+                      {Icon ? <Icon aria-hidden /> : null}
+                    </span>
+                    <span className="nav-item-text">
+                      <span className="nav-item-title">{e.label}</span>
+                      {desc && <span className="nav-item-desc">{desc}</span>}
+                    </span>
                   </Link>
                 </li>
               );
             })}
           </ul>
-          {col.seeAll && (
+          {panel.seeAll && (
             <Link
               prefetch={false}
-              href={col.seeAll.href}
+              href={panel.seeAll.href}
               className="nav-panel-seeall"
-              aria-current={cleanPath === col.seeAll.href ? "page" : undefined}
+              aria-current={
+                cleanPath === panel.seeAll.href ? "page" : undefined
+              }
               onClick={closePanel}
             >
-              {col.seeAll.label} →
+              {panel.seeAll.label} →
             </Link>
           )}
         </div>
-      ))}
-    </div>
-  );
+
+        <Link
+          prefetch={false}
+          href={panel.promo.href}
+          className="nav-promo"
+          aria-current={isLinkActive(panel.promo.href) ? "page" : undefined}
+          onClick={closePanel}
+        >
+          <span className="nav-promo-eyebrow">{panel.promo.eyebrow}</span>
+          <span className="nav-promo-title">{panel.promo.title}</span>
+          <span className="nav-promo-desc">{panel.promo.desc}</span>
+          <span className="nav-promo-cta">
+            {panel.promo.cta} <span aria-hidden>→</span>
+          </span>
+          <span
+            className="nav-promo-img"
+            style={{ backgroundImage: `url(${panel.promo.img})` }}
+            aria-hidden
+          />
+        </Link>
+      </div>
+    );
+  };
 
   return (
     <>
@@ -448,10 +555,7 @@ export function Nav({ groups }: NavProps) {
         </div>
       </nav>
 
-      {/* ──────────────────────────────────────────────────────────────────
-          DESKTOP PANEL SHELL — one flat contained card that morphs height.
-          Panels always in the DOM (SSR/crawlable), hidden via opacity + inert.
-          ────────────────────────────────────────────────────────────── */}
+      {/* DESKTOP PANEL SHELL — contained card, morphs height between groups. */}
       <div
         className={`nav-panel-shell${openGroup ? " open" : ""}`}
         ref={shellRef}
@@ -485,9 +589,7 @@ export function Nav({ groups }: NavProps) {
         </div>
       </div>
 
-      {/* ──────────────────────────────────────────────────────────────────
-          MOBILE MENU (full-screen overlay, ≤780px) — inline accordion (4A).
-          ────────────────────────────────────────────────────────────── */}
+      {/* MOBILE MENU (≤780px) — inline accordion (4A). */}
       <div
         id="nav-mobile"
         className={menuOpen ? "nav-mobile open" : "nav-mobile"}
@@ -627,7 +729,6 @@ function MobileGroup({
         className={`nav-mobile-group-children${isOpen ? " open" : ""}`}
         inert={!isOpen}
       >
-        {/* The inner div is required for grid-template-rows: 0fr → 1fr */}
         <div>
           {links.map((link) => (
             <Link

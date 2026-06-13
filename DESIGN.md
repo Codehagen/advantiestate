@@ -29,7 +29,9 @@ this file to match.
 - **Aesthetic:** editorial, typographic, restrained. Big type, hairline
   dividers, generous whitespace, numbered sections. The marketing sections
   (services, market data) are deliberately **icon-free** — typography carries
-  the hierarchy.
+  the hierarchy. **Exception:** the global nav dropdown (`Nav.tsx`) uses small
+  lucide icon tiles + a featured promo card (reference look approved 2026-06-13);
+  icons live there only, not in page content.
 
 ---
 
