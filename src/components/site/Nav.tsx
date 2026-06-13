@@ -21,31 +21,57 @@ export interface NavProps {
 
 type GroupId = "tjenester" | "innsikt" | "om-oss";
 
+// Featured promo block shown in each panel's support column (icon-free).
+const PROMO: Record<GroupId, {
+  href: string;
+  eyebrow: string;
+  title: string;
+  desc: string;
+  cta: string;
+}> = {
+  tjenester: {
+    href: "/naringsmegler",
+    eyebrow: "Lokal tilstedeværelse",
+    title: "Næringsmegler i din by",
+    desc: "Lokal megler i ti byer i Nord-Norge.",
+    cta: "Se alle byer",
+  },
+  innsikt: {
+    href: "/markedsrapport",
+    eyebrow: "Fersk innsikt",
+    title: "Markedsrapport",
+    desc: "Kvartalsvise tall: yield, leie og ledighet.",
+    cta: "Les rapporten",
+  },
+  "om-oss": {
+    href: "/karriere",
+    eyebrow: "Jobb hos oss",
+    title: "Karriere i Advanti",
+    desc: "Vi bygger Nord-Norges sterkeste fagmiljø.",
+    cta: "Se ledige roller",
+  },
+};
+
 /**
  * Site navigation — fixed; transparent over a dark hero, solid otherwise.
  *
  * Disclosure model (E1A + hover enhancement):
- *   Three grouped labels (Tjenester, Innsikt, Om oss) are <button> triggers
- *   with aria-expanded / aria-controls pointing at full-width .nav-panel
- *   divs. Panels are ALWAYS in the server HTML (crawlable) and hidden via
- *   CSS + the `inert` attribute when closed. Opening one group closes others.
+ *   Three centered group labels (Tjenester, Innsikt, Om oss) are <button>
+ *   triggers with aria-expanded / aria-controls. Their panels live in a single
+ *   contained card "shell" that morphs height between groups. Panels are ALWAYS
+ *   in the server HTML (crawlable) and hidden via CSS + `inert` when closed.
  *
- *   POINTER: hovering a trigger opens its panel; moving between triggers
- *   morphs the open panel; leaving the trigger-or-panel closes after a short
- *   intent delay. Hover is gated to `(hover: hover)` devices so touch never
- *   gets a sticky hover state.
- *   KEYBOARD/CLICK: the trigger toggles on click/Enter; Escape closes and
- *   returns focus to the trigger. Tab order never auto-opens panels.
- *   Click-outside and link-click also close the panel.
+ *   POINTER: hovering a trigger opens it and morphs between groups; leaving the
+ *   trigger-or-card closes after an intent delay. Gated to `(hover: hover)`.
+ *   KEYBOARD/CLICK: trigger toggles; Escape closes + returns focus. Click
+ *   outside and link-click close.
  *
- * --nav-h ownership (E7):
- *   Nav measures its own rendered height via ResizeObserver and writes
- *   --nav-h on document.documentElement. AnalyseportalShell only reads it.
+ * --nav-h ownership (E7): Nav measures its own height via ResizeObserver and
+ *   writes --nav-h on documentElement; AnalyseportalShell only reads it.
  *
- * Transparent/solid sentinel (unchanged):
- *   page WITH a dark hero → renders <div id="hero-sentinel" /> at hero base.
- *   Nav is transparent until sentinel scrolls out of view, then goes solid.
- *   page WITHOUT a hero → no sentinel → Nav is solid immediately.
+ * Transparent/solid sentinel (unchanged): a dark-hero page renders
+ *   <div id="hero-sentinel" /> at the hero base; Nav stays transparent until it
+ *   scrolls behind the nav. No sentinel → solid immediately.
  */
 export function Nav({ cities, groups }: NavProps) {
   const pathname = usePathname();
@@ -56,6 +82,7 @@ export function Nav({ cities, groups }: NavProps) {
 
   const navRef = useRef<HTMLElement>(null);
   const toggleRef = useRef<HTMLButtonElement>(null);
+  const shellRef = useRef<HTMLDivElement>(null);
   const panelRefs = useRef<Partial<Record<GroupId, HTMLDivElement>>>({});
   const groupBtnRefs = useRef<Partial<Record<GroupId, HTMLButtonElement>>>({});
 
@@ -112,14 +139,26 @@ export function Nav({ cities, groups }: NavProps) {
       );
     apply();
     const ro = new ResizeObserver(apply);
-    // border-box: padding transitions (scrolled/unscrolled) fire content-box
-    // observations, which we'd miss with the default content-box mode.
     ro.observe(nav, { box: "border-box" });
     return () => {
       ro.disconnect();
       document.documentElement.style.removeProperty("--nav-h");
     };
   }, []);
+
+  // ── panel card: morph the shell height to the open panel's content ──────
+  useIsoLayoutEffect(() => {
+    const shell = shellRef.current;
+    if (!shell) return;
+    if (!openGroup) {
+      shell.style.removeProperty("--nav-panel-h");
+      return;
+    }
+    const panel = panelRefs.current[openGroup];
+    if (panel) {
+      shell.style.setProperty("--nav-panel-h", `${panel.scrollHeight}px`);
+    }
+  }, [openGroup]);
 
   // ── transparent/solid sentinel ─────────────────────────────────────────
   useIsoLayoutEffect(() => {
@@ -185,10 +224,8 @@ export function Nav({ cities, groups }: NavProps) {
     const onMouseDown = (e: MouseEvent) => {
       const target = e.target as Node;
       const inNav = navRef.current?.contains(target) ?? false;
-      const inPanel = Object.values(panelRefs.current).some(
-        (p) => p?.contains(target),
-      );
-      if (!inNav && !inPanel) setOpenGroup(null);
+      const inShell = shellRef.current?.contains(target) ?? false;
+      if (!inNav && !inShell) setOpenGroup(null);
     };
     document.addEventListener("mousedown", onMouseDown);
     return () => document.removeEventListener("mousedown", onMouseDown);
@@ -199,7 +236,6 @@ export function Nav({ cities, groups }: NavProps) {
   const isLinkActive = (href: string) =>
     cleanPath === href || cleanPath.startsWith(`${href}/`);
 
-  // A group is active if any of its non-dynamic entries match the current path.
   const isGroupActive = (id: GroupId): boolean =>
     (groups[id] ?? []).some(
       (e) => !e.path.includes("[") && isLinkActive(e.path),
@@ -207,7 +243,6 @@ export function Nav({ cities, groups }: NavProps) {
 
   const toggleGroup = (id: GroupId) => {
     cancelClose();
-    // A click riding along with this group's hover-open confirms it (stay open).
     if (hoverOpened.current === id) {
       hoverOpened.current = null;
       return;
@@ -225,7 +260,6 @@ export function Nav({ cities, groups }: NavProps) {
     setOpenGroup(null);
   };
 
-  // Force solid nav while any panel or mobile menu is open.
   const navClass = [
     "nav",
     scrolled || menuOpen || !!openGroup ? "scrolled" : "",
@@ -233,7 +267,6 @@ export function Nav({ cities, groups }: NavProps) {
     .filter(Boolean)
     .join(" ");
 
-  // Stable memoized ref callbacks — identity never changes between renders.
   const groupBtnCb = useMemo(
     () => ({
       tjenester: (el: HTMLButtonElement | null) => {
@@ -264,7 +297,6 @@ export function Nav({ cities, groups }: NavProps) {
     [],
   );
 
-  // Hover handlers bound per group (stable closures not required — cheap).
   const hoverProps = (id: GroupId) => ({
     onMouseEnter: () => openByHover(id),
     onMouseLeave: scheduleClose,
@@ -274,13 +306,39 @@ export function Nav({ cities, groups }: NavProps) {
     onMouseLeave: scheduleClose,
   };
 
-  // Tjenester services shown in the grid (parent + næringsmegler rendered apart).
+  // Tjenester services shown in the grid (parent + næringsmegler rendered apart;
+  // næringsmegler is the panel's featured promo, so it is excluded here).
   const tjenesterServices = groups.tjenester.filter(
     (e) => e.path !== "/tjenester" && e.path !== "/naringsmegler",
   );
-  const naringsmegler = groups.tjenester.find(
-    (e) => e.path === "/naringsmegler",
+  // Innsikt links minus the parent and minus markedsrapport (the promo).
+  const innsiktLinks = groups.innsikt.filter(
+    (e) => e.path !== "/markedsinnsikt" && e.path !== "/markedsrapport",
   );
+  // Om oss links minus the parent and minus karriere (the promo).
+  const omOssLinks = groups["om-oss"].filter(
+    (e) => e.path !== "/om-oss" && e.path !== "/karriere",
+  );
+
+  const renderPromo = (id: GroupId) => {
+    const p = PROMO[id];
+    return (
+      <Link
+        prefetch={false}
+        href={p.href}
+        className="nav-promo"
+        aria-current={isLinkActive(p.href) ? "page" : undefined}
+        onClick={closePanel}
+      >
+        <span className="nav-promo-eyebrow">{p.eyebrow}</span>
+        <span className="nav-promo-title">{p.title}</span>
+        <span className="nav-promo-desc">{p.desc}</span>
+        <span className="nav-promo-cta">
+          {p.cta} <span aria-hidden>→</span>
+        </span>
+      </Link>
+    );
+  };
 
   return (
     <>
@@ -295,7 +353,6 @@ export function Nav({ cities, groups }: NavProps) {
         </Link>
 
         <div className="nav-links">
-          {/* ── Tjenester group ─────────────────────────────────────────── */}
           <button
             type="button"
             className="nav-group-btn"
@@ -309,7 +366,6 @@ export function Nav({ cities, groups }: NavProps) {
             Tjenester
           </button>
 
-          {/* ── Eiendommer plain link ───────────────────────────────────── */}
           <Link
             href="/eiendommer"
             aria-current={isLinkActive("/eiendommer") ? "page" : undefined}
@@ -318,7 +374,6 @@ export function Nav({ cities, groups }: NavProps) {
             Eiendommer
           </Link>
 
-          {/* ── Innsikt group ───────────────────────────────────────────── */}
           <button
             type="button"
             className="nav-group-btn"
@@ -332,7 +387,6 @@ export function Nav({ cities, groups }: NavProps) {
             Innsikt
           </button>
 
-          {/* ── Om oss group ────────────────────────────────────────────── */}
           <button
             type="button"
             className="nav-group-btn"
@@ -346,7 +400,6 @@ export function Nav({ cities, groups }: NavProps) {
             Om oss
           </button>
 
-          {/* ── Kontakt plain link ──────────────────────────────────────── */}
           <Link
             href="/kontakt"
             aria-current={isLinkActive("/kontakt") ? "page" : undefined}
@@ -356,47 +409,51 @@ export function Nav({ cities, groups }: NavProps) {
           </Link>
         </div>
 
-        <Link
-          href="/verktoy/pris-verdivurdering"
-          className="nav-cta"
-          onClick={() => trackEvent("cta_verdivurdering", { source: "nav" })}
-        >
-          <span>Få verdivurdering</span>
-          <span className="arrow">→</span>
-        </Link>
+        <div className="nav-right">
+          <Link
+            href="/verktoy/pris-verdivurdering"
+            className="nav-cta"
+            onClick={() => trackEvent("cta_verdivurdering", { source: "nav" })}
+            onMouseEnter={scheduleClose}
+          >
+            <span>Få verdivurdering</span>
+            <span className="arrow">→</span>
+          </Link>
 
-        <button
-          type="button"
-          ref={toggleRef}
-          className={menuOpen ? "nav-toggle open" : "nav-toggle"}
-          aria-label={menuOpen ? "Lukk meny" : "Åpne meny"}
-          aria-expanded={menuOpen}
-          aria-controls="nav-mobile"
-          onClick={() => setMenuOpen((o) => !o)}
-        >
-          <span />
-          <span />
-        </button>
+          <button
+            type="button"
+            ref={toggleRef}
+            className={menuOpen ? "nav-toggle open" : "nav-toggle"}
+            aria-label={menuOpen ? "Lukk meny" : "Åpne meny"}
+            aria-expanded={menuOpen}
+            aria-controls="nav-mobile"
+            onClick={() => setMenuOpen((o) => !o)}
+          >
+            <span />
+            <span />
+          </button>
+        </div>
       </nav>
 
       {/* ──────────────────────────────────────────────────────────────────
-          DESKTOP PANELS (always in DOM for SSR/crawlability).
-          Hidden via CSS + inert when closed; no `hidden` attr so links
-          stay in the initial server HTML for search engines.
+          DESKTOP PANEL SHELL — one contained card that morphs height between
+          groups. Panels are always in the DOM (SSR/crawlability), hidden via
+          opacity + inert when their group is closed.
           ────────────────────────────────────────────────────────────── */}
-
-      {/* Tjenester panel — services grid + Næringsmegler column */}
       <div
-        id="nav-panel-tjenester"
-        className={`nav-panel${openGroup === "tjenester" ? " open" : ""}`}
-        ref={panelRefCb["tjenester"]}
-        inert={openGroup !== "tjenester"}
+        className={`nav-panel-shell${openGroup ? " open" : ""}`}
+        ref={shellRef}
         {...panelHoverProps}
       >
-        <div className="wrap">
+        {/* Tjenester */}
+        <div
+          id="nav-panel-tjenester"
+          className={`nav-panel${openGroup === "tjenester" ? " open" : ""}`}
+          ref={panelRefCb["tjenester"]}
+          inert={openGroup !== "tjenester"}
+        >
           <div className="nav-panel-inner nav-panel-grid">
-            {/* Left — services in a two-column grid, parent first */}
-            <div className="nav-panel-col nav-panel-col-wide">
+            <div className="nav-panel-col-wide">
               <span className="nav-panel-eyebrow">Tjenester</span>
               <ul
                 className="nav-panel-list nav-panel-list-grid"
@@ -429,61 +486,40 @@ export function Nav({ cities, groups }: NavProps) {
                 ))}
               </ul>
             </div>
-
-            {/* Right — Næringsmegler highlight + all-cities link */}
-            {naringsmegler && (
-              <div className="nav-panel-col">
-                <span className="nav-panel-eyebrow">Lokal tilstedeværelse</span>
-                <ul className="nav-panel-list" onClick={closePanel}>
-                  <li className="nav-panel-parent">
-                    <Link
-                      prefetch={false}
-                      href={naringsmegler.path}
-                      aria-current={
-                        isLinkActive(naringsmegler.path) ? "page" : undefined
-                      }
-                    >
-                      {naringsmegler.label}
-                    </Link>
-                    {naringsmegler.description && (
-                      <span className="nav-panel-desc">
-                        {naringsmegler.description}
-                      </span>
-                    )}
-                  </li>
-                </ul>
-              </div>
-            )}
+            {renderPromo("tjenester")}
           </div>
         </div>
-      </div>
 
-      {/* Innsikt panel — two columns: links with descriptions + city list */}
-      <div
-        id="nav-panel-innsikt"
-        className={`nav-panel${openGroup === "innsikt" ? " open" : ""}`}
-        ref={panelRefCb["innsikt"]}
-        inert={openGroup !== "innsikt"}
-        {...panelHoverProps}
-      >
-        <div className="wrap">
+        {/* Innsikt */}
+        <div
+          id="nav-panel-innsikt"
+          className={`nav-panel${openGroup === "innsikt" ? " open" : ""}`}
+          ref={panelRefCb["innsikt"]}
+          inert={openGroup !== "innsikt"}
+        >
           <div className="nav-panel-inner nav-panel-grid">
-            {/* Left column — innsikt links in a two-column grid */}
-            <div className="nav-panel-col nav-panel-col-wide">
+            <div className="nav-panel-col-wide">
               <span className="nav-panel-eyebrow">Innsikt</span>
               <ul
                 className="nav-panel-list nav-panel-list-grid"
                 onClick={closePanel}
               >
-                {groups.innsikt.map((e) => (
-                  <li
-                    key={e.path}
-                    className={
-                      e.path === "/markedsinnsikt"
-                        ? "nav-panel-parent"
-                        : undefined
+                <li className="nav-panel-parent">
+                  <Link
+                    prefetch={false}
+                    href="/markedsinnsikt"
+                    aria-current={
+                      isLinkActive("/markedsinnsikt") ? "page" : undefined
                     }
                   >
+                    Markedsinnsikt
+                  </Link>
+                  <span className="nav-panel-desc">
+                    Oversikt over næringseiendomsmarkedet i Nord-Norge.
+                  </span>
+                </li>
+                {innsiktLinks.map((e) => (
+                  <li key={e.path}>
                     <Link
                       prefetch={false}
                       href={e.path}
@@ -499,52 +535,41 @@ export function Nav({ cities, groups }: NavProps) {
               </ul>
             </div>
 
-            {/* Right column — byer */}
-            <div className="nav-panel-col">
-              <span className="nav-panel-eyebrow">Byer</span>
-              <div className="nav-panel-cities" onClick={closePanel}>
-                {cities.map((city) => (
-                  <Link
-                    prefetch={false}
-                    key={city.slug}
-                    href={`/naringsmegler/${city.slug}`}
-                    aria-current={
-                      isLinkActive(`/naringsmegler/${city.slug}`)
-                        ? "page"
-                        : undefined
-                    }
-                  >
-                    {city.name}
-                  </Link>
-                ))}
+            {/* Right column — featured Markedsrapport promo + city quick-links */}
+            <div className="nav-panel-aside">
+              {renderPromo("innsikt")}
+              <div className="nav-panel-cities-block">
+                <span className="nav-panel-eyebrow">Byer</span>
+                <div className="nav-panel-cities" onClick={closePanel}>
+                  {cities.slice(0, 8).map((city) => (
+                    <Link
+                      prefetch={false}
+                      key={city.slug}
+                      href={`/naringsmegler/${city.slug}`}
+                      aria-current={
+                        isLinkActive(`/naringsmegler/${city.slug}`)
+                          ? "page"
+                          : undefined
+                      }
+                    >
+                      {city.name}
+                    </Link>
+                  ))}
+                </div>
               </div>
-              <Link
-                prefetch={false}
-                href="/naringsmegler"
-                className="nav-panel-all-cities"
-                aria-current={
-                  cleanPath === "/naringsmegler" ? "page" : undefined
-                }
-                onClick={closePanel}
-              >
-                Se alle byer →
-              </Link>
             </div>
           </div>
         </div>
-      </div>
 
-      {/* Om oss panel — two-column link list (no descriptions in registry) */}
-      <div
-        id="nav-panel-om-oss"
-        className={`nav-panel${openGroup === "om-oss" ? " open" : ""}`}
-        ref={panelRefCb["om-oss"]}
-        inert={openGroup !== "om-oss"}
-        {...panelHoverProps}
-      >
-        <div className="wrap">
-          <div className="nav-panel-inner">
-            <div className="nav-panel-col nav-panel-col-wide">
+        {/* Om oss */}
+        <div
+          id="nav-panel-om-oss"
+          className={`nav-panel${openGroup === "om-oss" ? " open" : ""}`}
+          ref={panelRefCb["om-oss"]}
+          inert={openGroup !== "om-oss"}
+        >
+          <div className="nav-panel-inner nav-panel-grid">
+            <div className="nav-panel-col-wide">
               <span className="nav-panel-eyebrow">Advanti</span>
               <ul
                 className="nav-panel-list nav-panel-list-grid"
@@ -559,29 +584,26 @@ export function Nav({ cities, groups }: NavProps) {
                     Om oss
                   </Link>
                 </li>
-                {groups["om-oss"]
-                  .filter((e) => e.path !== "/om-oss")
-                  .map((e) => (
-                    <li key={e.path}>
-                      <Link
-                        prefetch={false}
-                        href={e.path}
-                        aria-current={isLinkActive(e.path) ? "page" : undefined}
-                      >
-                        {e.label}
-                      </Link>
-                    </li>
-                  ))}
+                {omOssLinks.map((e) => (
+                  <li key={e.path}>
+                    <Link
+                      prefetch={false}
+                      href={e.path}
+                      aria-current={isLinkActive(e.path) ? "page" : undefined}
+                    >
+                      {e.label}
+                    </Link>
+                  </li>
+                ))}
               </ul>
             </div>
+            {renderPromo("om-oss")}
           </div>
         </div>
       </div>
 
       {/* ──────────────────────────────────────────────────────────────────
-          MOBILE MENU (full-screen overlay, ≤780px)
-          Groups are 4A inline-accordion disclosures. Cities are footer
-          territory on mobile — not shown here.
+          MOBILE MENU (full-screen overlay, ≤780px) — inline accordion (4A).
           ────────────────────────────────────────────────────────────── */}
       <div
         id="nav-mobile"
