@@ -3,7 +3,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useActionState, useMemo, useState } from "react";
+import { useActionState, useEffect, useMemo, useState } from "react";
+import { EIENDOM_CITIES } from "@/lib/navigation";
 import {
   subscribeEiendomVarsel,
   type EiendomVarselFormState,
@@ -80,12 +81,11 @@ const TYPE_OPTIONS: { value: string; label: string }[] = [
   { value: "kombi", label: "Kombi" },
 ];
 
+// Derived from the shared EIENDOM_CITIES list (same source the Eiendommer nav
+// dropdown links into via /eiendommer?by={slug}) so chips and nav stay in sync.
 const CITY_OPTIONS: { value: string; label: string }[] = [
   { value: "alle", label: "Alle" },
-  { value: "bodo", label: "Bodø" },
-  { value: "harstad", label: "Harstad" },
-  { value: "alta", label: "Alta" },
-  { value: "narvik", label: "Narvik" },
+  ...EIENDOM_CITIES.map((c) => ({ value: c.slug, label: c.label })),
 ];
 
 function formatNumber(value: number): string {
@@ -141,6 +141,14 @@ export function ListingsBrowser({
   const [status, setStatus] = useState("alle");
   const [type, setType] = useState("alle");
   const [city, setCity] = useState("alle");
+
+  // Pre-select the city filter from /eiendommer?by={slug} (set by the nav's
+  // Eiendommer dropdown). Read on mount so the grid still SSRs unfiltered (no
+  // Suspense, page stays static); the filter applies right after hydration.
+  useEffect(() => {
+    const by = new URLSearchParams(window.location.search).get("by");
+    if (by && EIENDOM_CITIES.some((c) => c.slug === by)) setCity(by);
+  }, []);
 
   const matches = (card: ListingCardData) =>
     (status === "alle" || card.status === status) &&
