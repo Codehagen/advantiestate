@@ -120,6 +120,31 @@ export const RELEASES: MarketRelease[] = [Q4_2025]
 /** The most recently published release. */
 export const LATEST_RELEASE: MarketRelease = RELEASES[0]
 
+export function formatReleaseStamp(release: MarketRelease): string {
+  const months = [
+    "JAN",
+    "FEB",
+    "MAR",
+    "APR",
+    "MAI",
+    "JUN",
+    "JUL",
+    "AUG",
+    "SEP",
+    "OKT",
+    "NOV",
+    "DES",
+  ]
+  const d = new Date(release.publishedAt)
+  return `OPPDATERT ${d.getUTCDate()}. ${months[d.getUTCMonth()]} ${d.getUTCFullYear()}`
+}
+
+/** Display stamp for the most recently published market release. */
+export const LATEST_RELEASE_STAMP = formatReleaseStamp(LATEST_RELEASE)
+
+/** Public promise for the next quarterly data release. */
+export const NEXT_RELEASE_DATE = "15. juli 2026"
+
 /**
  * Look up a release by slug (e.g. "q4-2025").
  * Returns `undefined` for unknown slugs — callers should call `notFound()`.

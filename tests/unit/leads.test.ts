@@ -83,13 +83,15 @@ describe("recordSignup routing", () => {
   })
 
   it("routes HIGH_INTENT 'kontakt' → crm_leads then crm_activities", async () => {
-    await recordSignup({ email: "a@b.no", source: "kontakt" })
+    const ok = await recordSignup({ email: "a@b.no", source: "kontakt" })
+    expect(ok).toBe(true)
     expect(inserted[0]?.table).toBe("crm_leads")
     expect(inserted[1]?.table).toBe("crm_activities")
   })
 
   it("routes low-intent 'footer' → web_signups only", async () => {
-    await recordSignup({ email: "a@b.no", source: "footer" })
+    const ok = await recordSignup({ email: "a@b.no", source: "footer" })
+    expect(ok).toBe(true)
     expect(inserted).toHaveLength(1)
     expect(inserted[0]?.table).toBe("web_signups")
   })

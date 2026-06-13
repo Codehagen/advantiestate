@@ -62,22 +62,22 @@ const SOURCE_LABEL: Partial<Record<SubscribeSource, string>> = {
  * for "is this email on the newsletter list?"; Supabase is a downstream
  * sink. Failures log to the server console only.
  */
-export async function recordSignup(args: RecordSignupArgs): Promise<void> {
-  if (!isSupabaseConfigured()) return
+export async function recordSignup(args: RecordSignupArgs): Promise<boolean> {
+  if (!isSupabaseConfigured()) return false
   const supabase = getSupabase()
-  if (!supabase) return
+  if (!supabase) return false
 
   const email = args.email.toLowerCase()
   const isHighIntent = HIGH_INTENT.includes(args.source)
 
   try {
     if (isHighIntent) {
-      await insertCrmLead(supabase, { ...args, email })
-    } else {
-      await insertWebSignup(supabase, { ...args, email })
+      return await insertCrmLead(supabase, { ...args, email })
     }
+    return await insertWebSignup(supabase, { ...args, email })
   } catch (e) {
     console.error("Supabase recordSignup threw:", e)
+    return false
   }
 }
 
@@ -87,7 +87,7 @@ async function insertWebSignup(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   supabase: any,
   args: RecordSignupArgs,
-): Promise<void> {
+): Promise<boolean> {
   const { error } = await supabase.from("web_signups").insert({
     email: args.email,
     first_name: args.firstName ?? null,
@@ -98,14 +98,16 @@ async function insertWebSignup(
   })
   if (error) {
     console.error("Supabase web_signups.insert error:", error)
+    return false
   }
+  return true
 }
 
 async function insertCrmLead(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   supabase: any,
   args: RecordSignupArgs,
-): Promise<void> {
+): Promise<boolean> {
   const intake = args.intake ?? {}
   const sourceLabel = SOURCE_LABEL[args.source] ?? args.source
   const pageRef = args.pageUrl ? ` fra ${args.pageUrl}` : ""
@@ -138,7 +140,7 @@ async function insertCrmLead(
 
   if (error || !data) {
     console.error("Supabase crm_leads.insert error:", error)
-    return
+    return false
   }
 
   // Activity timeline entry so the lead shows up with context in the CRM's
@@ -153,7 +155,9 @@ async function insertCrmLead(
   })
   if (actErr) {
     console.error("Supabase crm_activities.insert error:", actErr)
+    return false
   }
+  return true
 }
 
 export function buildActivitySummary(

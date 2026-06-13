@@ -44,8 +44,8 @@ const HORIZONS = [
  *
  * Reuses the same .contact-form / .field markup as the kontakt page so the
  * editorial typography stays consistent without bespoke CSS. Submitting
- * routes to subscribeVerdivurderingIntake which lands the lead in Resend
- * and pings Discord with the full intake context.
+ * routes to subscribeVerdivurderingIntake which lands the lead in Discord /
+ * Supabase without adding the contact to the newsletter audience.
  */
 export function VerdivurderingIntake() {
   const [state, setState] = useState<FormState>({ status: "idle" })

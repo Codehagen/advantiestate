@@ -126,7 +126,7 @@ async function postToDiscordWebhook(
     });
     if (!response.ok) {
       const body = await response.text();
-      console.error(`Discord webhook ${webhookUrl.slice(0, 50)}... error:`, body);
+      console.error("Discord webhook error:", body);
     }
     return response.ok;
   } catch (err) {
