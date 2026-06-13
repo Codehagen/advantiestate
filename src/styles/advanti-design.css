@@ -8891,3 +8891,158 @@ h1, h2, h3 {
 .seogsa-link:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .seogsa-arrow { font-size: 11px; color: var(--warm-grey-85); }
 .seogsa-note { display: block; font-size: 12px; color: var(--warm-grey-85); margin-top: 2px; }
+
+/* ============================================================
+   KARRIERE — bygd på eksisterende tokens
+   ============================================================ */
+
+/* Roller vi ser etter — utvidbare rader */
+.jobs { border-top: var(--hairline); }
+.job { border-bottom: var(--hairline); }
+.job > summary {
+  list-style: none;
+  cursor: pointer;
+  display: grid;
+  grid-template-columns: 1.4fr 0.7fr 0.7fr 40px;
+  align-items: center;
+  gap: 24px;
+  padding: 34px 0;
+  transition: opacity 0.2s;
+}
+.job > summary::-webkit-details-marker { display: none; }
+.job > summary:hover { opacity: 0.62; }
+.job .j-title {
+  font-family: var(--font-display);
+  font-size: 27px;
+  font-weight: 400;
+  letter-spacing: -0.016em;
+  line-height: 1.08;
+}
+.job .j-title .num {
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  color: var(--warm-grey-85);
+  display: block;
+  margin-bottom: 10px;
+}
+.job .j-cell { display: flex; flex-direction: column; gap: 5px; }
+.job .j-cell .k {
+  font-size: 10.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--warm-grey-85);
+}
+.job .j-cell .v { font-size: 15px; color: var(--warm-grey); }
+.job .j-plus {
+  justify-self: end;
+  width: 38px; height: 38px;
+  border: var(--hairline);
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  color: var(--warm-grey-85);
+  transition: transform 0.28s ease, background 0.2s, color 0.2s, border-color 0.2s;
+}
+.job[open] .j-plus {
+  transform: rotate(45deg);
+  background: var(--warm-grey);
+  color: var(--warm-white);
+  border-color: var(--warm-grey);
+}
+.job .j-body {
+  display: grid;
+  grid-template-columns: 1.4fr 0.85fr;
+  gap: 56px;
+  padding: 4px 0 48px;
+  max-width: 1040px;
+}
+.job .j-body p { font-size: 16px; color: var(--warm-grey-85); line-height: 1.7; margin-bottom: 16px; max-width: 60ch; }
+.job .j-body h4 {
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--warm-grey);
+  margin-bottom: 18px;
+}
+.job .j-body ul { list-style: none; display: flex; flex-direction: column; gap: 13px; }
+.job .j-body li {
+  font-size: 15px;
+  color: var(--warm-grey-85);
+  line-height: 1.5;
+  padding-left: 22px;
+  position: relative;
+}
+.job .j-body li::before {
+  content: "—";
+  position: absolute; left: 0;
+  color: var(--accent);
+}
+.job .j-apply { margin-top: 26px; }
+
+/* Hverdagen — bildecollage */
+.culture-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-top: 8px;
+}
+.culture-photo { position: relative; aspect-ratio: 4/3; overflow: hidden; background: var(--warm-grey-75); }
+.culture-photo img { width: 100%; height: 100%; object-fit: cover; }
+.culture-photo.tall { aspect-ratio: 4/5; }
+
+/* Hvor vi vil vokse */
+.places {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  border-top: var(--hairline);
+  margin-top: 8px;
+}
+.place {
+  padding: 44px 44px 44px 0;
+  border-bottom: var(--hairline);
+}
+.place .pn {
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  color: var(--accent);
+  margin-bottom: 22px;
+}
+.place h3 {
+  font-family: var(--font-display);
+  font-size: 31px;
+  font-weight: 400;
+  letter-spacing: -0.018em;
+  line-height: 1.05;
+  margin-bottom: 10px;
+}
+.place .reg {
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--warm-grey-85);
+  margin-bottom: 16px;
+}
+.place p { font-size: 15px; color: var(--warm-grey-85); line-height: 1.6; max-width: 34ch; }
+.places-note {
+  margin-top: 40px;
+  font-size: 15.5px;
+  color: var(--warm-grey-85);
+  line-height: 1.7;
+  max-width: 72ch;
+}
+.places-note strong { color: var(--warm-grey); font-weight: 500; }
+
+@media (max-width: 860px) {
+  .job > summary { grid-template-columns: 1fr 36px; }
+  .job .j-cell { display: none; }
+  .job .j-body { grid-template-columns: 1fr; gap: 32px; }
+  .culture-split { grid-template-columns: 1fr; }
+  .places { grid-template-columns: 1fr; }
+}
