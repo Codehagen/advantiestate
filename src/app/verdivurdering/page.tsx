@@ -11,10 +11,9 @@ import {
 
 export const metadata = constructMetadata({
   path: "/verdivurdering",
-  // Conversion endpoint, not an SEO surface — the organic page is
-  // /tjenester/verdivurdering. noIndex avoids cannibalising it and keeps this
-  // out of the sitemap.
-  noIndex: true,
+  // Indexed conversion page. Its own canonical (/verdivurdering) and a distinct,
+  // intent-led title ("Få verdivurdering …") keep it from cannibalising the
+  // explainer at /tjenester/verdivurdering, which targets the informational query.
   title: "Få verdivurdering av næringseiendom | Advanti Estate",
   description:
     "Be om en uforpliktende verdivurdering av næringseiendommen din. Svar fra en partner innen 24 timer, basert på vår transaksjonsdatabase med over 1 400 eiendommer i Nord-Norge.",

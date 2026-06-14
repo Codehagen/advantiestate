@@ -34,6 +34,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "/tjenester/utleie",
     "/tjenester/transaksjoner",
     "/tjenester/strategisk-radgivning",
+    "/verdivurdering",
     "/beslutningsgrunnlag",
     "/verktoy",
     "/verktoy/yield-kalkulator",
