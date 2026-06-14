@@ -120,4 +120,72 @@ test.describe("Markedsinnsikt", () => {
     await page.locator('button[data-sector="tx"]').click();
     await expect(page.locator('.mi-shell main [role="img"]')).toBeVisible();
   });
+
+  // markedsinnsikt v2 editorial: the time-range selector windows the chart and
+  // the clickable legend toggles series, keeping at least one always visible.
+  test("Yield range selector actually windows the data", async ({ page }) => {
+    await page.goto("/markedsinnsikt");
+    // data-points reflects the number of quarters fed to the chart, so it proves
+    // the window trimmed the series — not just that the button toggled.
+    const chart = page.locator('.mi-shell main [role="img"]').first();
+    await expect(chart).toHaveAttribute("data-points", "20"); // 5-year default
+    const threeYear = page
+      .locator(".miv-range button", { hasText: "3 år" })
+      .first();
+    await threeYear.click();
+    await expect(threeYear).toHaveAttribute("aria-selected", "true");
+    await expect(chart).toHaveAttribute("data-points", "12"); // 3-year window
+  });
+
+  test("clickable legend removes a line and locks the last visible series", async ({
+    page,
+  }) => {
+    await page.goto("/markedsinnsikt");
+    // Prime yield is the filled area; SWAP + gov are the two lines.
+    const lines = page.locator(".mi-shell main .recharts-line");
+    const legend = page.locator(".mi-chart-legend button.item");
+    const swap = legend.filter({ hasText: "5 år SWAP" });
+    const gov = legend.filter({ hasText: "10 år statsobl." });
+    const prime = legend.filter({ hasText: "Prime yield" });
+
+    await expect(lines).toHaveCount(2);
+    await swap.click();
+    await expect(swap).toHaveAttribute("aria-pressed", "false");
+    await expect(swap).toHaveClass(/off/);
+    await expect(lines).toHaveCount(1); // the SWAP line is gone from the plot
+
+    // Hiding the last line leaves only the area; its legend button locks so the
+    // chart can never be blanked.
+    await gov.click();
+    await expect(prime).toBeDisabled();
+    await expect(page.locator(".mi-shell main .recharts-area")).toBeVisible();
+  });
+
+  test("Leie view has its own range selector and clickable legend", async ({
+    page,
+  }) => {
+    await page.goto("/markedsinnsikt");
+    await page.locator('button[data-sector="leie"]').click();
+    await expect(page.locator(".mi-shell main h2")).toContainText(/Markedsleie/i);
+
+    const threeYear = page
+      .locator(".miv-range button", { hasText: "3 år" })
+      .first();
+    await threeYear.click();
+    await expect(threeYear).toHaveAttribute("aria-selected", "true");
+
+    // City series: hide two so only the first remains, which then locks.
+    const legend = page.locator(".mi-chart-legend button.item");
+    await legend.nth(1).click();
+    await expect(legend.nth(1)).toHaveAttribute("aria-pressed", "false");
+    await legend.nth(2).click();
+    await expect(legend.first()).toBeDisabled();
+  });
+
+  test("respects prefers-reduced-motion", async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    await page.goto("/markedsinnsikt");
+    // The reduce branch must still render the chart (no animation, no crash).
+    await expect(page.locator('.mi-shell main [role="img"]')).toBeVisible();
+  });
 });

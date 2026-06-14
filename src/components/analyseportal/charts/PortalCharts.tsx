@@ -8,7 +8,7 @@
 // free of server-only imports. Recharts children are returned as ARRAYS, not
 // Fragments: Recharts 2.x silently drops children wrapped in a Fragment.
 
-import { useSyncExternalStore } from "react"
+import { useReducedMotion } from "@/lib/hooks/useReducedMotion"
 import {
   ResponsiveContainer,
   LineChart,
@@ -34,21 +34,6 @@ const TICK = {
   fill: "var(--warm-grey-85)",
   fontFamily: "var(--font-body)",
 } as const
-
-// ── prefers-reduced-motion (SSR-safe) ───────────────────────────────────────
-const motionQuery = "(prefers-reduced-motion: reduce)"
-function subscribeMotion(cb: () => void) {
-  const mq = window.matchMedia(motionQuery)
-  mq.addEventListener("change", cb)
-  return () => mq.removeEventListener("change", cb)
-}
-function useReducedMotion(): boolean {
-  return useSyncExternalStore(
-    subscribeMotion,
-    () => window.matchMedia(motionQuery).matches,
-    () => true,
-  )
-}
 
 // ── branded tooltip ─────────────────────────────────────────────────────────
 interface PortalTooltipExtras {
