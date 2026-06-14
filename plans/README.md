@@ -17,6 +17,11 @@ done.
 | 006  | Parallelize the five sequential Supabase fetches on /eiendommer/[slug] | P3 | S | — | DONE (merged `53a894e`, 2026-06-10) |
 | 007  | Spike: quarterly market data out of TypeScript — design doc only | P3 | M | — | DONE (doc at docs/market-data-collection-design.md; recommendation: Option C, keep TS + guardrails; merged `1b61b06`, 2026-06-10) |
 | 008  | Scrub ekte transaksjonsfakta fra offentlig repo (case study-kommentarer) | P1 | S | — | DONE (merged 076582e, 2026-06-12; leak-grep 0 på tracked HEAD — historikk-beslutning gjenstår hos eier) |
+| 009  | Tekniske SEO-fikser for kunnskapssenteret (tomme kategorier, author-fiks, datePublished, FAQ-infrastruktur) | P1 | S–M | — | DONE (APPROVED @ c103ff0; merget til main via PR #45 `63d3a4e`, 2026-06-12) |
+| 010  | Gjør «Hva er næringseiendom» til pilarside + unike meta descriptions | P2 | M | 009 | DONE (APPROVED @ ff935d2 etter 1 revisjonsrunde; 1542 ord; merget til main via PR #45 `63d3a4e`, 2026-06-12) |
+| 011  | Artikkel-veikart: 15 nye kunnskapsartikler i tre klynger (terms / for-investors / analysis) | P1 | L | 009 (anbefalt etter 010) | DONE (15 artikler i 3 batcher, APPROVED @ c4f3cab etter 3 korrektur-/speilingsrevisjoner; help 12→27 artikler; merget til main via PR #45 `63d3a4e`, 2026-06-12) |
+| 012  | Avkannibaliser blog↔help-duplikatene (sensitivitetsanalyse, DCF) | P2 | S–M | — (anbefalt etter 010) | DONE (APPROVED @ 706e6bf etter 1 terminologirevisjon; rolleregel etablert: help = kanonisk begrep («hva er X»), blog = praktisk/aktuelt; merget til main via PR #45 `63d3a4e`, 2026-06-12) |
+| 013  | Port «Kunnskapssenter v2»-designet (hub + artikkel-id-side) til /help | P1 | L | 009–012 | IN PROGRESS (ENG+DESIGN CLEARED @ 45f9e69; eng 13 funn foldet, design 7→9/10; implementeres på `feat/kunnskapssenter-v2-design`) |
 
 Status values: TODO | IN PROGRESS | DONE | BLOCKED (with one-line reason) | REJECTED (with one-line rationale)
 
@@ -25,6 +30,9 @@ Status values: TODO | IN PROGRESS | DONE | BLOCKED (with one-line reason) | REJE
 - **003 after 001**: both edit `src/app/actions/onboarding/onboarding.ts` (001 adds a rate-limit guard at the top of `submitContactInquiry`; 003 rewrites its body and expects the guard to be present). Executing in the other order forces a manual merge.
 - 001 and 003 list optional unit tests that only become possible once 004's Vitest harness exists; they are written to skip those gracefully, so 004's position in the order is a recommendation, not a hard dependency.
 - 002 touches only `package.json`/lockfile and can run in parallel with anything.
+- **010 og 011 etter 009**: begge bruker `faq:`- og `publishedAt:`-feltene som 009 legger til i `HelpPost`-skjemaet; 011 forutsetter også kategori-gatingen fra 009 (kategorier slipper automatisk inn i sitemap når første artikkel lander). 010 har en eksplisitt fallback hvis 009 mangler, men rekkefølgen sparer arbeid.
+- **012 etter 010**: 010 og 012 redigerer summary-/innholdsfelter i overlappende help-filer; rekkefølgen unngår dobbeltredigering. 012 kan ellers kjøre uavhengig.
+- **011 batch B/C-verifikasjon** bruker sitemap-gates som bare gir mening etter 009.
 
 ## Key audit facts (context for executors)
 
@@ -53,3 +61,11 @@ Status values: TODO | IN PROGRESS | DONE | BLOCKED (with one-line reason) | REJE
 - **AI-citation baseline first run (markedsfoering/ai-citation-baseline.md, due 2026-06-01, overdue)**: a 30-minute marketing task, not a code plan — flagged to the maintainer in the audit report.
 - **Publish the 5 exemplar blog articles (TODOS.md TODO 20)**: blocked on an editorial slug-collision decision, not engineering. Not plannable until the maintainer decides merge-vs-rename.
 - **Eiendom-varsel/newsletter single Resend audience (unsubscribe granularity)**: real product gap, M effort, needs a second Resend audience + backfill — maintainer should weigh it; can become a plan on request.
+
+### Fra help/SEO-granskningen 2026-06-12 (planene 009–012)
+
+- **Slette de tomme kategoriene «For Investorer»/«Markedsanalyse»**: avvist — plan 011 fyller dem; 009 gater dem midlertidig ut av indeksen i stedet.
+- **wordCount/keywords i Article-JSON-LD**: lav SEO-verdi, mer rørlegging (rå-ordtelling må beregnes i content-collections-transformen). Bevisst utelatt fra 009.
+- **Redirect/konsolidering av blog-duplikatene**: avvist som førstegrep — begge URL-er har verdi; 012 differensierer i stedet, med eskalering til konsolidering som dokumentert exit hvis Search Console fortsatt viser rotasjon etter ~8 uker.
+- **Legacy-slugs i `generateStaticParams`** (`hva-er-næringseiendom-en-komplett-guide`-aliasene i `article/[slug]/page.tsx:62–74`): fungerer via `HELP_ARTICLE_ALIASES` i `src/lib/content.ts`, ikke et SEO-problem (alias-sidene er ikke i sitemap). Ikke verdt en plan.
+- **Omfang ikke granska denne runden**: dette var en fokusert help/SEO-granskning — correctness/security/perf/test-kategoriene ble ikke re-auditert (sist dekket 2026-06-10 ved `3c71295`).
