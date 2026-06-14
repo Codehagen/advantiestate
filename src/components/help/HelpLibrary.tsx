@@ -125,12 +125,11 @@ export function HelpLibrary({
           />
         </div>
 
-        <div className="hs-chips" role="tablist" aria-label="Filtrer på kategori">
+        <div className="hs-chips" role="group" aria-label="Filtrer på kategori">
           <button
             type="button"
             className="hs-chip"
-            role="tab"
-            aria-selected={cat === "all"}
+            aria-pressed={cat === "all"}
             data-on={cat === "all" ? "1" : undefined}
             onClick={() => setCat("all")}
           >
@@ -141,8 +140,7 @@ export function HelpLibrary({
               key={c.slug}
               type="button"
               className="hs-chip"
-              role="tab"
-              aria-selected={cat === c.slug}
+              aria-pressed={cat === c.slug}
               data-on={cat === c.slug ? "1" : undefined}
               onClick={() => setCat(c.slug)}
             >

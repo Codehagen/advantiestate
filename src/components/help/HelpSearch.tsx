@@ -119,14 +119,25 @@ export function HelpSearch({
     })
   }, [])
 
-  const goTo = useCallback(
+  // Side effects for a selected result (record recent + analytics + close).
+  // Used by the result <Link> onClick — the Link itself handles navigation,
+  // so we must NOT also router.push or the page navigates twice.
+  const recordSelect = useCallback(
     (slug: string, term: string) => {
       pushRecent(term)
       trackEvent("help_search_select", { query: term, slug })
       setOpen(false)
+    },
+    [pushRecent],
+  )
+
+  // Keyboard-Enter path has no <Link> click, so it navigates programmatically.
+  const goTo = useCallback(
+    (slug: string, term: string) => {
+      recordSelect(slug, term)
       router.push(`/help/article/${slug}`)
     },
-    [pushRecent, router],
+    [recordSelect, router],
   )
 
   const clearRecent = () => {
@@ -169,7 +180,7 @@ export function HelpSearch({
         role="combobox"
         aria-expanded={open}
         aria-haspopup="listbox"
-        aria-controls="hs-listbox"
+        aria-controls={open ? "hs-listbox" : undefined}
       >
         <span className="ic" aria-hidden="true">
           ⌕
@@ -180,7 +191,7 @@ export function HelpSearch({
           placeholder="Søk — f.eks. «yield», «leiekontrakt», «Bodø»…"
           aria-label="Søk i kunnskapssenteret"
           aria-autocomplete="list"
-          aria-controls="hs-listbox"
+          aria-controls={open ? "hs-listbox" : undefined}
           aria-activedescendant={
             showResults && active >= 0 ? `hs-opt-${active}` : undefined
           }
@@ -230,7 +241,7 @@ export function HelpSearch({
                   aria-selected={i === active}
                   prefetch={false}
                   onMouseEnter={() => setActive(i)}
-                  onClick={() => goTo(item.slug, q)}
+                  onClick={() => recordSelect(item.slug, q)}
                 >
                   <div>
                     <div className="rt">{highlight(item.title, q)}</div>
