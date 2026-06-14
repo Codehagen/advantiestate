@@ -1,9 +1,10 @@
 "use client"
 
-import { useEffect, useRef, useState, type FormEvent } from "react"
+import { useEffect, useState, type FormEvent } from "react"
 
 import { subscribeVerdivurderingIntake } from "@/app/actions/verdivurdering-intake"
-import { trackEvent, trackLeadStart, trackLeadSubmit } from "@/lib/analytics"
+import { trackEvent, trackLeadSubmit } from "@/lib/analytics"
+import { useLeadStartOnFocus } from "@/lib/hooks/useLeadFunnel"
 
 type FormStatus =
   | { status: "idle" }
@@ -36,6 +37,13 @@ type Props = {
    * provides a heading (e.g. the #bestill section on the service page).
    */
   showHeading?: boolean
+  /**
+   * Heading copy when showHeading is true. Defaults to the verdivurdering
+   * wording; the eiernotat surface overrides it so the reused form doesn't
+   * contradict the page it sits on.
+   */
+  headingTitle?: string
+  headingSubtitle?: string
 }
 
 const PROPERTY_TYPES = [
@@ -81,22 +89,19 @@ export function VerdivurderingIntakeForm({
   intakeSource,
   prefill,
   showHeading = true,
+  headingTitle = "Be om verdivurdering.",
+  headingSubtitle = "Det tar to minutter. Du forplikter deg ikke til noe.",
 }: Props) {
   const [state, setState] = useState<FormStatus>({ status: "idle" })
-  // Dedupe the lead_form_start event so it fires once per mount, on the first
-  // real field interaction (not on mere view).
-  const startedRef = useRef(false)
+  // Human form label for the funnel events — distinguishes eiernotat from the
+  // verdivurdering reuse of the same form.
+  const formLabel = intakeSource === "eiernotat" ? "eiernotat" : "verdivurdering"
+  const handleFirstFocus = useLeadStartOnFocus(source, formLabel)
 
   // Fire once when the form is shown so we can measure form-views per surface.
   useEffect(() => {
     trackEvent("journey_step", { step: "skjema", source })
   }, [source])
-
-  function handleFirstFocus() {
-    if (startedRef.current) return
-    startedRef.current = true
-    trackLeadStart(source, "verdivurdering")
-  }
 
   const hasPrefill = Boolean(
     prefill && (prefill.type || prefill.by || prefill.areal || prefill.leie),
@@ -111,7 +116,7 @@ export function VerdivurderingIntakeForm({
       if (result.ok) {
         setState({ status: "success" })
         trackEvent("rapport_bestill", { source })
-        trackLeadSubmit(source, "verdivurdering")
+        trackLeadSubmit(source, formLabel)
       } else {
         setState({ status: "error", message: result.error })
       }
@@ -149,10 +154,8 @@ export function VerdivurderingIntakeForm({
     >
       {showHeading && (
         <>
-          <h2>Be om verdivurdering.</h2>
-          <p className="sub">
-            Det tar to minutter. Du forplikter deg ikke til noe.
-          </p>
+          <h2>{headingTitle}</h2>
+          <p className="sub">{headingSubtitle}</p>
         </>
       )}
 

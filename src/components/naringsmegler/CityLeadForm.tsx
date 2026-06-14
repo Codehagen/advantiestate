@@ -12,7 +12,8 @@ import { useRef, useState, useTransition } from "react"
 import { track } from "@vercel/analytics"
 
 import { submitCityLead } from "@/app/actions/naringsmegler-lead"
-import { trackLeadStart, trackLeadSubmit } from "@/lib/analytics"
+import { trackLeadSubmit } from "@/lib/analytics"
+import { useLeadStartOnFocus } from "@/lib/hooks/useLeadFunnel"
 import { PROPERTY_TYPES } from "./leadConstants"
 
 type Props = {
@@ -29,14 +30,7 @@ export function CityLeadForm({ cityName, slug, phone }: Props) {
   // Synchronous double-submit guard: `pending` only flips after a re-render,
   // so two clicks in the same frame would both dispatch the action.
   const submitting = useRef(false)
-  // Fire the funnel start event once, on first field interaction.
-  const started = useRef(false)
-
-  function onFirstFocus() {
-    if (started.current) return
-    started.current = true
-    trackLeadStart("naringsmegler", "city-lead")
-  }
+  const onFirstFocus = useLeadStartOnFocus("naringsmegler", "city-lead")
 
   function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()

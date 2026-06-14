@@ -82,6 +82,8 @@ export default function EiernotatPage() {
               source="eiernotat"
               intakeSource="eiernotat"
               prefill={prefill}
+              headingTitle="Be om et eiernotat."
+              headingSubtitle="Noen få felter om eiendommen. Du får notatet innen 48 timer — uforpliktende."
             />
 
             {/* RIGHT: what the memo contains + process */}
