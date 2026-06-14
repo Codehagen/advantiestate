@@ -4,7 +4,7 @@ export const siteConfig = {
   description:
     "Din lokale næringsmegler i Nord-Norge. Vi er eksperter på salg og verdivurdering av næringseiendom. Vi kombinerer lokal markedsinnsikt med avansert analyse for å sikre deg det beste resultatet.",
   contact: {
-    email: "Christer@advanti.no",
+    email: "Christer@advantiestate.no",
     phone: "+47 984 53 571",
     address: {
       streetAddress: "Dronningens gate 18",

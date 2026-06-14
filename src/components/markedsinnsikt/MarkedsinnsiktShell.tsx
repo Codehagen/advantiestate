@@ -116,16 +116,149 @@ const SEG_LABELS: Record<Segment, string> = {
 }
 
 // ════════════════════════════════════════════════════════════════════════
+// MARKEDSINNSIKT v2 — range windowing + interactive legend
+// ════════════════════════════════════════════════════════════════════════
+// Two editorial interactions ported from markedsinnsikt-v2.html: a time-range
+// selector and a clickable legend. Both operate on the existing real series —
+// no forecast/placeholder data (the v2 "Prognose 2026" toggle is deferred to
+// TODOS.md until verified forecast numbers exist).
+
+const RANGES: { id: "3y" | "5y"; label: string; quarters: number }[] = [
+  { id: "3y", label: "3 år", quarters: 12 },
+  { id: "5y", label: "5 år", quarters: 20 },
+]
+type RangeId = (typeof RANGES)[number]["id"]
+
+// Keep the last `n` entries (most recent quarters). The historical series spans
+// exactly five years (20 quarters), so "5 år" shows everything and "3 år"
+// trims to the last 12. The v2 mock's third range ("Alt") only differed once
+// the dropped forecast extended the series, so it is intentionally omitted.
+function windowTail<T>(arr: T[], n: number): T[] {
+  return arr.length <= n ? arr : arr.slice(arr.length - n)
+}
+
+function RangeSelector({
+  value,
+  onChange,
+}: {
+  value: RangeId
+  onChange: (id: RangeId) => void
+}) {
+  return (
+    <div className="miv-range" role="tablist" aria-label="Tidsrom">
+      {RANGES.map((r) => (
+        <button
+          key={r.id}
+          type="button"
+          role="tab"
+          aria-selected={value === r.id}
+          onClick={() => onChange(r.id)}
+        >
+          {r.label}
+        </button>
+      ))}
+    </div>
+  )
+}
+
+interface LegendItem {
+  key: string // must match the chart series `name`
+  label: string
+  color: string
+  dashed?: boolean
+}
+
+// Tracks which series are hidden, enforcing "at least one always visible" so
+// the chart can never be toggled down to a blank plot. The button for the
+// last visible series reports `locked` and is rendered disabled.
+function useSeriesToggle(keys: string[]) {
+  const [hidden, setHidden] = useState<string[]>([])
+  const visibleCount = keys.filter((k) => !hidden.includes(k)).length
+  const isHidden = (k: string) => hidden.includes(k)
+  const isLocked = (k: string) => visibleCount <= 1 && !isHidden(k)
+  const toggle = (k: string) =>
+    setHidden((h) => {
+      if (h.includes(k)) return h.filter((x) => x !== k)
+      if (keys.length - h.length <= 1) return h // keep at least one visible
+      return [...h, k]
+    })
+  return { hidden, isHidden, isLocked, toggle }
+}
+
+function InteractiveLegend({
+  items,
+  isHidden,
+  isLocked,
+  toggle,
+}: {
+  items: LegendItem[]
+  isHidden: (k: string) => boolean
+  isLocked: (k: string) => boolean
+  toggle: (k: string) => void
+}) {
+  return (
+    <div
+      className="mi-chart-legend"
+      role="group"
+      aria-label="Vis eller skjul serier i grafen"
+    >
+      {items.map((it) => (
+        <button
+          key={it.key}
+          type="button"
+          className={`item${isHidden(it.key) ? " off" : ""}`}
+          aria-pressed={!isHidden(it.key)}
+          disabled={isLocked(it.key)}
+          onClick={() => toggle(it.key)}
+        >
+          <span
+            className="swatch"
+            style={
+              it.dashed
+                ? {
+                    borderTop: "2px dashed var(--warm-grey-85)",
+                    height: 0,
+                    background: "transparent",
+                  }
+                : { background: it.color }
+            }
+          />
+          {it.label}
+        </button>
+      ))}
+    </div>
+  )
+}
+
+// ════════════════════════════════════════════════════════════════════════
 // VIEW: YIELD
 // ════════════════════════════════════════════════════════════════════════
 
 function YieldView() {
   const [sub, setSub] = useState<Segment>("kontor")
+  const [range, setRange] = useState<RangeId>("5y")
   const yieldData = YIELD[sub]
   const last = yieldData[yieldData.length - 1]
   const prev = yieldData[yieldData.length - 5]
   const bps = Math.round((last - prev) * 100)
   const isUp = bps > 0
+
+  // Clickable legend keys must match the chart series `name`s below.
+  const legendItems: LegendItem[] = [
+    { key: "Prime yield", label: "Prime yield", color: "var(--warm-grey)" },
+    { key: "5 år SWAP", label: "5 år SWAP", color: "var(--warm-grey-85)" },
+    {
+      key: "10 år statsobl.",
+      label: "10 år statsobl.",
+      color: "var(--warm-grey-85)",
+      dashed: true,
+    },
+  ]
+  const legend = useSeriesToggle(legendItems.map((i) => i.key))
+
+  // Range only windows the plotted series; the headline figure and the table
+  // below always reflect the latest actual quarter.
+  const qn = RANGES.find((r) => r.id === range)?.quarters ?? 20
 
   const segments: { key: Segment; label: string; color: string }[] = [
     { key: "kontor", label: "Kontor", color: "var(--warm-grey)" },
@@ -154,16 +287,20 @@ function YieldView() {
         </div>
       </div>
 
-      <div className="mi-subtabs">
-        {SUB_TABS.map((t) => (
-          <button
-            key={t.id}
-            aria-selected={sub === t.id}
-            onClick={() => setSub(t.id)}
-          >
-            {t.label}
-          </button>
-        ))}
+      <div className="miv-controls">
+        <div className="mi-subtabs">
+          {SUB_TABS.map((t) => (
+            <button
+              key={t.id}
+              aria-selected={sub === t.id}
+              onClick={() => setSub(t.id)}
+            >
+              {t.label}
+            </button>
+          ))}
+        </div>
+        <div className="miv-spacer" />
+        <RangeSelector value={range} onChange={setRange} />
       </div>
 
       <div className="mi-chart-card">
@@ -181,57 +318,42 @@ function YieldView() {
               siste 12 mnd
             </div>
           </div>
-          <div className="mi-chart-legend">
-            <span className="item">
-              <span
-                className="swatch"
-                style={{ background: "var(--warm-grey)" }}
-              />
-              Prime yield
-            </span>
-            <span className="item">
-              <span
-                className="swatch"
-                style={{ background: "var(--warm-grey-85)" }}
-              />
-              5 år SWAP
-            </span>
-            <span className="item">
-              <span
-                className="swatch"
-                style={{
-                  borderTop: "2px dashed",
-                  height: 0,
-                  borderColor: "var(--warm-grey-85)",
-                  background: "transparent",
-                }}
-              />
-              10 år statsobl.
-            </span>
-          </div>
+          <InteractiveLegend
+            items={legendItems}
+            isHidden={legend.isHidden}
+            isLocked={legend.isLocked}
+            toggle={legend.toggle}
+          />
         </div>
-        <MarketLineChart
-          ariaLabel="Prime yield mot 5 år SWAP og 10 år statsobligasjon, kvartalsvis 2021–2025"
-          labels={QUARTERS}
-          yMin={0.5}
-          yMax={7.5}
-          yTicks={7}
-          yFormat={(v) => `${v.toFixed(1)} %`}
-          series={[
-            { name: "Prime yield", color: "var(--warm-grey)", values: yieldData },
-            {
-              name: "5 år SWAP",
-              color: "var(--warm-grey-85)",
-              values: RATES.swap5y,
-            },
-            {
-              name: "10 år statsobl.",
-              color: "var(--warm-grey-85)",
-              dashed: true,
-              values: RATES.gov10y,
-            },
-          ]}
-        />
+        <div className="miv-chart">
+          <MarketLineChart
+            ariaLabel="Prime yield mot 5 år SWAP og 10 år statsobligasjon, kvartalsvis 2021–2025"
+            labels={windowTail(QUARTERS, qn)}
+            hidden={legend.hidden}
+            yMin={0.5}
+            yMax={7.5}
+            yTicks={7}
+            yFormat={(v) => `${v.toFixed(1)} %`}
+            series={[
+              {
+                name: "Prime yield",
+                color: "var(--warm-grey)",
+                values: windowTail(yieldData, qn),
+              },
+              {
+                name: "5 år SWAP",
+                color: "var(--warm-grey-85)",
+                values: windowTail(RATES.swap5y, qn),
+              },
+              {
+                name: "10 år statsobl.",
+                color: "var(--warm-grey-85)",
+                dashed: true,
+                values: windowTail(RATES.gov10y, qn),
+              },
+            ]}
+          />
+        </div>
       </div>
 
       <div className="mi-tablewrap">
@@ -331,6 +453,7 @@ function YieldView() {
 
 function LeieView() {
   const [sub, setSub] = useState<Segment>("kontor")
+  const [range, setRange] = useState<RangeId>("5y")
   const cityData = LEIE[sub]
   const cities = Object.keys(cityData)
   const primeCity = cities[0]
@@ -338,6 +461,15 @@ function LeieView() {
   const cur = arr[arr.length - 1]
   const prev = arr[arr.length - 5]
   const pct = ((cur - prev) / prev) * 100
+
+  const legendItems: LegendItem[] = cities.map((c, i) => ({
+    key: c,
+    label: c,
+    color: SECTOR_COLORS[i],
+    dashed: i === 2,
+  }))
+  const legend = useSeriesToggle(cities)
+  const qn = RANGES.find((r) => r.id === range)?.quarters ?? 20
 
   return (
     <div>
@@ -360,16 +492,20 @@ function LeieView() {
         </div>
       </div>
 
-      <div className="mi-subtabs">
-        {SUB_TABS.map((t) => (
-          <button
-            key={t.id}
-            aria-selected={sub === t.id}
-            onClick={() => setSub(t.id)}
-          >
-            {t.label}
-          </button>
-        ))}
+      <div className="miv-controls">
+        <div className="mi-subtabs">
+          {SUB_TABS.map((t) => (
+            <button
+              key={t.id}
+              aria-selected={sub === t.id}
+              onClick={() => setSub(t.id)}
+            >
+              {t.label}
+            </button>
+          ))}
+        </div>
+        <div className="miv-spacer" />
+        <RangeSelector value={range} onChange={setRange} />
       </div>
 
       <div className="mi-chart-card">
@@ -390,37 +526,27 @@ function LeieView() {
               YoY
             </div>
           </div>
-          <div className="mi-chart-legend">
-            {cities.map((c, i) => (
-              <span className="item" key={c}>
-                <span
-                  className="swatch"
-                  style={
-                    i === 2
-                      ? {
-                          borderTop: "2px dashed var(--warm-grey-85)",
-                          height: 0,
-                          background: "transparent",
-                        }
-                      : { background: SECTOR_COLORS[i] }
-                  }
-                />
-                {c}
-              </span>
-            ))}
-          </div>
+          <InteractiveLegend
+            items={legendItems}
+            isHidden={legend.isHidden}
+            isLocked={legend.isLocked}
+            toggle={legend.toggle}
+          />
         </div>
-        <MarketLineChart
-          ariaLabel={`Prime markedsleie ${SEG_LABELS[sub]} per by, kvartalsvis 2021–2025`}
-          labels={QUARTERS}
-          yFormat={(v) => `${Math.round(v)} kr`}
-          series={cities.map((c, i) => ({
-            name: c,
-            color: SECTOR_COLORS[i],
-            dashed: i === 2,
-            values: cityData[c],
-          }))}
-        />
+        <div className="miv-chart">
+          <MarketLineChart
+            ariaLabel={`Prime markedsleie ${SEG_LABELS[sub]} per by, kvartalsvis 2021–2025`}
+            labels={windowTail(QUARTERS, qn)}
+            hidden={legend.hidden}
+            yFormat={(v) => `${Math.round(v)} kr`}
+            series={cities.map((c, i) => ({
+              name: c,
+              color: SECTOR_COLORS[i],
+              dashed: i === 2,
+              values: windowTail(cityData[c], qn),
+            }))}
+          />
+        </div>
       </div>
 
       <div className="mi-tablewrap">
@@ -594,25 +720,8 @@ function TxView() {
         />
       </div>
 
-      <h3
-        style={{
-          fontFamily: "var(--font-display)",
-          fontSize: 28,
-          fontWeight: 400,
-          letterSpacing: "-0.018em",
-          margin: "56px 0 16px",
-        }}
-      >
-        Utvalgte transaksjoner{" "}
-        <span
-          style={{
-            fontStyle: "italic",
-            fontWeight: 300,
-            color: "var(--warm-grey-85)",
-          }}
-        >
-          2025.
-        </span>
+      <h3 className="miv-subhead">
+        Utvalgte transaksjoner <span className="italic">2025.</span>
       </h3>
       <div className="mi-tx-list">
         {TX.map((t) => (
@@ -1001,25 +1110,8 @@ function RapporterView() {
         </div>
       </div>
 
-      <h3
-        style={{
-          fontFamily: "var(--font-display)",
-          fontSize: 28,
-          fontWeight: 400,
-          letterSpacing: "-0.018em",
-          margin: "56px 0 16px",
-        }}
-      >
-        Arkiv{" "}
-        <span
-          style={{
-            fontStyle: "italic",
-            fontWeight: 300,
-            color: "var(--warm-grey-85)",
-          }}
-        >
-          — alle rapporter.
-        </span>
+      <h3 className="miv-subhead">
+        Arkiv <span className="italic">— alle rapporter.</span>
       </h3>
 
       <div className="mi-reports-grid">

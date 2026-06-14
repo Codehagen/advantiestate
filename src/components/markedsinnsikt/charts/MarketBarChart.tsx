@@ -22,6 +22,7 @@ import {
 
 import { AXIS_TICK, CHART_HEIGHT, CHART_MARGIN, GRID_STROKE } from "./chartTheme"
 import { ChartTooltip } from "./ChartTooltip"
+import { useReducedMotion } from "@/lib/hooks/useReducedMotion"
 
 export interface BarSeries {
   name: string
@@ -58,6 +59,8 @@ export function MarketBarChart({
   })
 
   const isRows = orientation === "rows"
+  // Respect prefers-reduced-motion: skip the bar-grow animation.
+  const animate = !useReducedMotion()
 
   return (
     <div role="img" aria-label={ariaLabel} style={{ width: "100%", height }}>
@@ -123,7 +126,7 @@ export function MarketBarChart({
               fill={s.color}
               stroke="var(--warm-grey-75)"
               strokeWidth={0.75}
-              isAnimationActive
+              isAnimationActive={animate}
               animationDuration={600}
               radius={isRows ? [0, 1, 1, 0] : [1, 1, 0, 0]}
             >

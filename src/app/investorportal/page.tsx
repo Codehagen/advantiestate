@@ -20,7 +20,7 @@ export default function InvestorportalPage() {
         name: megler?.name ?? "Christer Hagen",
         role: megler?.role ?? "Partner - Næringsmegler",
         avatar: megler?.avatar ?? "",
-        email: megler?.email ?? "Christer@advanti.no",
+        email: megler?.email ?? "Christer@advantiestate.no",
         phone: megler?.phone ?? "+47 984 53 571",
       }}
     />

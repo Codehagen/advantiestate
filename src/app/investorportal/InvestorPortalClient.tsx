@@ -278,7 +278,7 @@ function LoginCard({ onLogin }: { onLogin: (email: string) => void }) {
           <input type="checkbox" defaultChecked /> Husk meg
         </label>
         <a
-          href="mailto:Christer@advanti.no?subject=Glemt%20tilgang%20investorportal"
+          href="mailto:Christer@advantiestate.no?subject=Glemt%20tilgang%20investorportal"
           className="ip-forgot"
         >
           Glemt tilgang?

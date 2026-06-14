@@ -18,6 +18,7 @@ import {
 
 import { AXIS_TICK, CHART_HEIGHT, CHART_MARGIN, GRID_STROKE } from "./chartTheme"
 import { ChartTooltip } from "./ChartTooltip"
+import { useReducedMotion } from "@/lib/hooks/useReducedMotion"
 
 export interface LineSeries {
   name: string
@@ -35,6 +36,12 @@ export interface MarketLineChartProps {
   yTicks?: number
   /** Index of the series drawn as a soft-filled area. Default 0; pass -1 for none. */
   areaIndex?: number
+  /**
+   * Names of series to hide (driven by the clickable legend). The Y-axis
+   * domain stays fixed on the full series set, so toggling a line never makes
+   * the remaining lines jump scale.
+   */
+  hidden?: readonly string[]
   height?: number
   /** Accessible summary of what the chart shows. */
   ariaLabel: string
@@ -48,9 +55,14 @@ export function MarketLineChart({
   yMax,
   yTicks = 6,
   areaIndex = 0,
+  hidden,
   height = CHART_HEIGHT,
   ariaLabel,
 }: MarketLineChartProps) {
+  // Respect prefers-reduced-motion: no entrance/re-draw animation when the
+  // user toggles a legend series or switches the time range.
+  const animate = !useReducedMotion()
+  const isHidden = (name: string) => hidden?.includes(name) ?? false
   // recharts wants an array of row objects, not parallel arrays.
   const data = labels.map((label, i) => {
     const row: Record<string, number | string> = { label }
@@ -64,7 +76,12 @@ export function MarketLineChart({
   const gradId = `mi-area-${useId().replace(/:/g, "")}`
 
   return (
-    <div role="img" aria-label={ariaLabel} style={{ width: "100%", height }}>
+    <div
+      role="img"
+      aria-label={ariaLabel}
+      data-points={labels.length}
+      style={{ width: "100%", height }}
+    >
       <ResponsiveContainer width="100%" height="100%">
         <ComposedChart data={data} margin={CHART_MARGIN}>
           <defs>
@@ -110,6 +127,7 @@ export function MarketLineChart({
                 type="linear"
                 dataKey={`s${si}`}
                 name={s.name}
+                hide={isHidden(s.name)}
                 stroke={s.color}
                 strokeWidth={2}
                 fill={`url(#${gradId})`}
@@ -120,7 +138,7 @@ export function MarketLineChart({
                   stroke: "var(--warm-white)",
                   strokeWidth: 2,
                 }}
-                isAnimationActive
+                isAnimationActive={animate}
                 animationDuration={600}
               />
             ) : (
@@ -129,6 +147,7 @@ export function MarketLineChart({
                 type="linear"
                 dataKey={`s${si}`}
                 name={s.name}
+                hide={isHidden(s.name)}
                 stroke={s.color}
                 strokeWidth={1.75}
                 strokeDasharray={s.dashed ? "4 4" : undefined}
@@ -139,7 +158,7 @@ export function MarketLineChart({
                   stroke: "var(--warm-white)",
                   strokeWidth: 2,
                 }}
-                isAnimationActive
+                isAnimationActive={animate}
                 animationDuration={600}
               />
             ),

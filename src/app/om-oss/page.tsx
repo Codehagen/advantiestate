@@ -219,8 +219,8 @@ export default function About() {
                 <a href="tel:+4798453571">
                   <span className="key">Telefon</span> +47 984 53 571
                 </a>
-                <a href="mailto:Christer@advanti.no">
-                  <span className="key">E-post</span> Christer@advanti.no
+                <a href="mailto:Christer@advantiestate.no">
+                  <span className="key">E-post</span> Christer@advantiestate.no
                 </a>
               </div>
             </div>

@@ -674,3 +674,23 @@ the AI SEO closure review (/plan-eng-review, 2026-05-24), the AI-SEO research pa
   uavhengig av alle IA-PR-ene. Fil: src/app/landing/verdivurdering/page.tsx.
 - **Effort:** S (human ~3t / CC ~15 min) · **Priority:** P3
 - **Depends on:** ingenting
+
+## TODO 34 — Markedsinnsikt: «Prognose 2026»-toggle (venter på verifiserte tall)
+
+- **What:** Aktiver prognose-toggelen fra markedsinnsikt-v2-spec: `miv-fc`-knapp
+  («Prognose 2026», stiplet linje + skyggelagt felt etter siste faktiske
+  kvartal) på Yield-, Leie- og Transaksjonsvisningene. Krever forecast-serier
+  (`YIELD_F`, `LEIE_F`, `RATES_F`, `VOLUME_F`, `QUARTERS_F`) + `mergeForecast`-helper
+  i marketData.ts, og forecast-segment-støtte i MarketLineChart/MarketBarChart.
+- **Why:** v2-designet har funksjonen, men den ble droppet i /plan-design-review
+  2026-06-14 fordi prognosetallene er fabrikerte. Designassistenten flagget selv:
+  «Prognose-data er i dag plausible anslag — bytt til reelle tall når dere har
+  dem.» Publisering av oppdiktede 2026-tall bryter synthetic-series-forbudet /
+  proofStats-gaten.
+- **Context:** CSS + interaksjonsmønster er fullt spesifisert i
+  advanti-estate-crm/project/advanti/markedsinnsikt-v2.html (klassene `.miv-fc`,
+  `.miv-controls`). Når verifiserte prognoseserier finnes er dette en ren
+  data-pluss-toggle — ingen ny designrunde. Hold bak proofStats-gaten
+  (`proofStatsVerified`) som resten av tallene.
+- **Effort:** M (human ~1 dag inkl. datavalidering / CC ~30 min for koden) · **Priority:** P3
+- **Depends on:** verifiserte prognoseserier for Nord-Norge (datateamet)

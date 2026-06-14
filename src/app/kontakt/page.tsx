@@ -104,14 +104,14 @@ export default function KontaktPage() {
                     <span className="contact-person-name">Christer Hagen</span>
                     <div className="contact-person-links">
                       <a href="tel:+4798453571">+47 984 53 571</a>
-                      <a href="mailto:Christer@advanti.no">Christer@advanti.no</a>
+                      <a href="mailto:Christer@advantiestate.no">Christer@advantiestate.no</a>
                     </div>
                   </div>
                   <div className="contact-person">
                     <span className="contact-person-name">Mathias Nilsen</span>
                     <div className="contact-person-links">
                       <a href="tel:+4790519901">+47 905 19 901</a>
-                      <a href="mailto:mathias@advanti.no">mathias@advanti.no</a>
+                      <a href="mailto:mathias@advantiestate.no">mathias@advantiestate.no</a>
                     </div>
                   </div>
                   <a
