@@ -54,7 +54,7 @@ export default function EiernotatPage() {
             <Link
               href="/tjenester/verdivurdering"
               className="underline decoration-warm-grey-75 underline-offset-4 hover:text-warm-grey"
-              style={{ fontWeight: 500, color: "var(--accent)" }}
+              style={{ fontWeight: 500, color: "var(--warm-grey)" }}
             >
               Se verdivurdering →
             </Link>
@@ -64,7 +64,7 @@ export default function EiernotatPage() {
             <Link
               href="/verktoy/naringskalkulator"
               className="underline decoration-warm-grey-75 underline-offset-4 hover:text-warm-grey"
-              style={{ fontWeight: 500, color: "var(--accent)" }}
+              style={{ fontWeight: 500, color: "var(--warm-grey)" }}
             >
               Prøv næringskalkulatoren →
             </Link>
