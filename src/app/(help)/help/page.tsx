@@ -11,6 +11,7 @@ import {
   HELP_CATEGORY_META,
   HELP_PATHS,
   HELP_SEARCH_SUGGESTIONS,
+  helpAuthorName,
   helpCategoryTitle,
 } from "@/lib/blog/help-data"
 import { calculateReadingTime } from "@/lib/blog/utils"
@@ -23,11 +24,6 @@ export const metadata = constructMetadata({
     "Et åpent kunnskapssenter om næringseiendom i Nord-Norge: yield, verdivurdering, DCF, leiekontrakter og markedet — forklart av rådgivere som gjør det til daglig.",
 })
 
-const AUTHOR_NAMES: Record<string, string> = {
-  codehagen: "Christer Hagen",
-  vsoraas: "Vegard Søraas",
-}
-
 const MONTHS_SHORT = [
   "jan", "feb", "mar", "apr", "mai", "jun",
   "jul", "aug", "sep", "okt", "nov", "des",
@@ -37,10 +33,6 @@ function shortDate(date: string) {
   const d = new Date(date.includes("T") ? date : `${date}T00:00:00`)
   if (Number.isNaN(d.getTime())) return date
   return `${d.getDate()}. ${MONTHS_SHORT[d.getMonth()]} ${d.getFullYear()}`
-}
-
-function authorName(key: string) {
-  return AUTHOR_NAMES[key] ?? key
 }
 
 export default function HelpCenter() {
@@ -71,7 +63,7 @@ export default function HelpCenter() {
       summary: post.summary,
       category: helpCategoryTitle(post.categories[0]),
       categorySlug: post.categories[0],
-      author: authorName(post.author),
+      author: helpAuthorName(post.author),
       dateLabel: shortDate(post.updatedAt),
       updated: post.updatedAt,
       readingTime: post.mdx ? calculateReadingTime(post.mdx) : null,

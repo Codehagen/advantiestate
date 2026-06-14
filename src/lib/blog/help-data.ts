@@ -54,6 +54,35 @@ export function foldNo(s: string): string {
     .replace(/[̀-ͯ]/g, "")
 }
 
+/**
+ * Help-article authors — single source of truth for display name, role and
+ * avatar, shared by the hub library, article byline and article metadata so
+ * adding an author is a one-place edit (this repo has been bitten by the
+ * "update N parallel lists, forget one" drift before).
+ */
+export const HELP_AUTHORS: Record<
+  string,
+  { name: string; role: string; image: string }
+> = {
+  codehagen: {
+    name: "Christer Hagen",
+    role: "Partner & daglig leder · Advanti Estate",
+    image:
+      "https://kukzjreikqbgbolxvqaj.supabase.co/storage/v1/object/public/press/christer-hagen-web.jpg",
+  },
+  vsoraas: {
+    name: "Vegard Søraas",
+    role: "Partner · Advanti Estate",
+    image:
+      "https://imagedelivery.net/r-6-yk-gGPtjfbIST9-8uA/76037f97-384f-4681-176e-5b8a0ba71300/public",
+  },
+}
+
+/** Author display name, falling back to the raw key for unknown authors. */
+export function helpAuthorName(key: string): string {
+  return HELP_AUTHORS[key]?.name ?? key
+}
+
 /** Search-suggestion pills shown under the hero search field. */
 export const HELP_SEARCH_SUGGESTIONS = [
   "Yield",

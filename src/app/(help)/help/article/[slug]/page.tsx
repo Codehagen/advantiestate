@@ -11,7 +11,9 @@ import { MDX } from "@/components/blog/mdx"
 import { HELP_CATEGORIES } from "@/lib/blog/content"
 import {
   getOrderedHelpPosts,
+  HELP_AUTHORS,
   HELP_CATEGORY_META,
+  helpAuthorName,
   helpNeighbours,
 } from "@/lib/blog/help-data"
 import { getBlurDataURL } from "@/lib/blog/images"
@@ -20,27 +22,6 @@ import { constructMetadata } from "@/lib/utils"
 import { getHelpPost } from "@/lib/content"
 import StructuredData from "@/components/StructuredData"
 import { Breadcrumbs } from "@/components/site/Breadcrumbs"
-
-const AUTHOR_NAMES: Record<string, string> = {
-  codehagen: "Christer Hagen",
-  vsoraas: "Vegard Søraas",
-}
-
-const AUTHOR_META: Record<string, { name: string; role: string; image: string }> =
-  {
-    codehagen: {
-      name: "Christer Hagen",
-      role: "Partner & daglig leder · Advanti Estate",
-      image:
-        "https://kukzjreikqbgbolxvqaj.supabase.co/storage/v1/object/public/press/christer-hagen-web.jpg",
-    },
-    vsoraas: {
-      name: "Vegard Søraas",
-      role: "Partner · Advanti Estate",
-      image:
-        "https://imagedelivery.net/r-6-yk-gGPtjfbIST9-8uA/76037f97-384f-4681-176e-5b8a0ba71300/public",
-    },
-  }
 
 const MONTHS_SHORT = [
   "JAN", "FEB", "MAR", "APR", "MAI", "JUN",
@@ -93,7 +74,7 @@ export async function generateMetadata({
     path: `/help/article/${post.slug}`,
     ogType: "article",
     modifiedTime: post.updatedAt,
-    authors: [AUTHOR_NAMES[post.author] || post.author],
+    authors: [helpAuthorName(post.author)],
   })
 }
 
@@ -127,8 +108,8 @@ export default async function HelpArticle({
         .filter(Boolean)) as HelpPost[]) || []
 
   const readingTime = data.mdx ? calculateReadingTime(data.mdx) : null
-  const authorMeta = AUTHOR_META[data.author]
-  const authorName = AUTHOR_NAMES[data.author] || data.author
+  const authorMeta = HELP_AUTHORS[data.author]
+  const authorName = helpAuthorName(data.author)
   const toc = data.tableOfContents ?? []
   const takeaways = data.takeaways ?? []
 

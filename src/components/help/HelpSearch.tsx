@@ -189,6 +189,7 @@ export function HelpSearch({
         <input
           ref={inputRef}
           type="text"
+          enterKeyHint="search"
           placeholder="Søk — f.eks. «yield», «leiekontrakt», «Bodø»…"
           aria-label="Søk i kunnskapssenteret"
           aria-autocomplete="list"
