@@ -1,6 +1,14 @@
 # 013 — «Få verdivurdering»-funnel (dedikert konverteringsside)
 
-**Status:** IMPLEMENTERT på `feat/faa-verdivurdering-funnel` (build grønn). Gate-valg: bygg nå (de-risket) + noIndex konverteringsside.
+> **OPPDATERT 2026-06-14 (PR #71, commit `9fc4f2d`):** SEO-rollen i denne planen
+> (C1 / Decision 1 / Decision 9 — `/verdivurdering` = `noIndex` + ut av sitemap)
+> er **reversert**. Siden er nå **indeksert og i `sitemap.ts`**. Anti-kannibalisering
+> håndteres i stedet av egen self-canonical (`/verdivurdering`), distinkt intent-styrt
+> tittel («Få verdivurdering …») mot forklaringssiden `/tjenester/verdivurdering`, og
+> GSC-overvåking de neste 2–4 ukene. Alle `noIndex`-referanser nedenfor beskriver den
+> opprinnelige (nå utdaterte) beslutningen og beholdes kun som historikk.
+
+**Status:** IMPLEMENTERT på `feat/faa-verdivurdering-funnel` (build grønn). Gate-valg: bygg nå (de-risket) + noIndex konverteringsside. **SEO-rolle senere reversert til indeksert — se banner over.**
 **Branch (implementasjon):** `feat/faa-verdivurdering-funnel` (lages fra `main` før kode)
 **Design-kilde:** Claude Design-handoff `advanti/verdivurdering.html` (+ chat16). README sier: gjenskap visuelt, ikke kopier prototypens struktur.
 

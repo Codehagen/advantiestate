@@ -22,8 +22,37 @@ done.
 | 011  | Artikkel-veikart: 15 nye kunnskapsartikler i tre klynger (terms / for-investors / analysis) | P1 | L | 009 (anbefalt etter 010) | DONE (15 artikler i 3 batcher, APPROVED @ c4f3cab etter 3 korrektur-/speilingsrevisjoner; help 12→27 artikler; merget til main via PR #45 `63d3a4e`, 2026-06-12) |
 | 012  | Avkannibaliser blog↔help-duplikatene (sensitivitetsanalyse, DCF) | P2 | S–M | — (anbefalt etter 010) | DONE (APPROVED @ 706e6bf etter 1 terminologirevisjon; rolleregel etablert: help = kanonisk begrep («hva er X»), blog = praktisk/aktuelt; merget til main via PR #45 `63d3a4e`, 2026-06-12) |
 | 013  | Port «Kunnskapssenter v2»-designet (hub + artikkel-id-side) til /help | P1 | L | 009–012 | DONE (impl @ 3022e5b på `feat/kunnskapssenter-v2-design`; ENG+DESIGN CLEARED; build+typecheck grønt; /qa grønt — 0 konsollfeil, 0 bugs på hub+artikkel, alle nye interaksjoner + mobil verifisert. Ikke pushet/PR-et) |
+| 014  | Patch transitive dependency vulnerabilities (serialize-javascript / path-to-regexp via content-collections + fumadocs) | P2 | M | — | TODO |
+| 015  | Proper tab semantics (role="tab"/tablist) for MarkedsinnsiktShell subtab/sector buttons — clears the last 3 lint warnings | P3 | S | — | TODO |
+| 016  | Zod input validation on lead/contact server actions (complements the landed Discord sanitization) | P2 | M | — | TODO |
 
 Status values: TODO | IN PROGRESS | DONE | BLOCKED (with one-line reason) | REJECTED (with one-line rationale)
+
+## Full-repo audit 2026-06-14 (commit `eb166f1` → branch `improve/audit-fixes`)
+
+First full re-audit (correctness/security/perf/tests/deps/DX) since 2026-06-10
+(`3c71295`); the 009–013 rounds were help/SEO-scoped. 4-agent fan-out + code-level
+vetting + live Supabase schema check.
+
+**Implemented directly on `improve/audit-fixes` (safe, high-leverage):**
+- Lead routing: the three `HIGH_INTENT` lists had drifted — `leads.ts` omitted
+  `investorportal`, so investor-portal leads silently routed to `web_signups`
+  instead of `crm_leads`. Unified to one exported constant (decision: investor
+  leads → CRM). Confirmed via Supabase MCP: 0 stranded rows, schema-safe. + crm_
+  activities failure no longer discards a saved lead. + 2 regression tests.
+- Security: `sanitizeDiscordValue()` choke point in `discord.ts` (Discord-markdown
+  injection across all sources, not just naringsmegler).
+- DRY: removed duplicate `stripHash`.
+- Lint: 20 → 3 warnings (eslint `_`-prefix convention, dead disables, useEffect
+  const hoist, OG `<img>` alt). Remaining 3 → plan 015.
+
+**Considered and rejected (don't re-audit):**
+- `@react-email/components` deprecated — monitor, don't migrate (as 2026-06-10).
+- TS 6 / Tailwind 4 / Shiki 4 majors — no current cost; defer.
+- `/eiendommer/[slug]` related-covers waterfall — speculative, MED-conf, minor.
+- Supabase RLS / global rate-limit — ops-side; in-memory limiter is by design.
+- Modal duplication (6 CtaLead modals) + `MarkedsinnsiktShell` 1218-line split —
+  real maintainability debt, L effort, low urgency; revisit on next touch.
 
 ## Dependency notes
 
