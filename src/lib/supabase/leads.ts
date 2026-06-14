@@ -16,6 +16,7 @@ type RecordSignupArgs = {
 // Everything else lands in the lightweight web_signups table.
 const HIGH_INTENT: SubscribeSource[] = [
   "verdivurdering-intake",
+  "eiernotat",
   "service-modal",
   "kontakt",
   "eiendommer",
@@ -45,6 +46,7 @@ function intakeString(
 
 const SOURCE_LABEL: Partial<Record<SubscribeSource, string>> = {
   "verdivurdering-intake": "Verdivurdering-intake (skjema)",
+  eiernotat: "Eiernotat — 48t beslutningsnotat (skjema)",
   "service-modal": "Tjeneste-modal (CTA på tjenesteside)",
   kontakt: "Kontaktskjema",
   eiendommer: "Eiendommer (varslingsskjema for nye oppdrag)",
@@ -170,6 +172,10 @@ export function buildActivitySummary(
   if (args.source === "verdivurdering-intake") {
     lines.push(
       "Lead bestilte verdivurdering via skjema på /tjenester/verdivurdering.",
+    )
+  } else if (args.source === "eiernotat") {
+    lines.push(
+      "Lead ba om eiernotat (48t partner-vurdert beslutningsnotat: selge / refinansiere / holde / leie ut / reposisjonere).",
     )
   } else if (args.source === "kontakt") {
     lines.push("Henvendelse via kontaktskjema.")

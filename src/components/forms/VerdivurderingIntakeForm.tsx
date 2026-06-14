@@ -23,6 +23,12 @@ type Props = {
   page: string
   /** Analytics source dimension (distinguishes funnel surfaces). */
   source: string
+  /**
+   * CRM source the lead lands under. Defaults server-side to
+   * "verdivurdering-intake"; the eiernotat surface passes "eiernotat" so the
+   * same form/action serves both offers without duplication.
+   */
+  intakeSource?: "verdivurdering-intake" | "eiernotat"
   /** Optional prefill carried from the næringskalkulator via URL params. */
   prefill?: VerdivurderingPrefill
   /**
@@ -72,6 +78,7 @@ function matchesType(prefill: string | undefined, value: string): boolean {
 export function VerdivurderingIntakeForm({
   page,
   source,
+  intakeSource,
   prefill,
   showHeading = true,
 }: Props) {
@@ -150,6 +157,9 @@ export function VerdivurderingIntakeForm({
       )}
 
       <input type="hidden" name="page" value={page} />
+      {intakeSource && (
+        <input type="hidden" name="intakeSource" value={intakeSource} />
+      )}
 
       {hasPrefill && (
         <p className="vv-prefill-note">
