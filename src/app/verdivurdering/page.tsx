@@ -196,8 +196,8 @@ export default async function FaaVerdivurderingPage({
                   <h4>Christer Hagen</h4>
                   <div className="role">Partner &amp; daglig leder</div>
                   <a href="tel:+4798453571">+47 984 53 571</a>
-                  <a className="mail" href="mailto:christer@advanti.no">
-                    christer@advanti.no
+                  <a className="mail" href="mailto:christer@advantiestate.no">
+                    christer@advantiestate.no
                   </a>
                 </div>
               </div>

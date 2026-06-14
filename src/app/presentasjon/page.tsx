@@ -57,7 +57,7 @@ const slides = [
     content: [
       "Christer Hagen — christer@advantiestate.no",
       "Mathias Nilssen — mathias@advantiestate.no",
-      "Håvard Nome — havard@advantiestate.no",
+      "Håvard Nome — havard@advanti.no",
       "Daniel Adamsen — daniel@advantiestate.no",
       "",
       "www.advantiestate.no",
