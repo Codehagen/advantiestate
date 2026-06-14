@@ -3,10 +3,19 @@ import { Metadata } from "next"
 import Link from "next/link"
 import { notFound } from "next/navigation"
 
+import { ArticleFeedback } from "@/components/help/ArticleFeedback"
+import { ArticleToc } from "@/components/help/ArticleToc"
 import { CtaStrip } from "@/components/site/CtaStrip"
 import { NewsletterSection } from "@/components/site/NewsletterSection"
 import { MDX } from "@/components/blog/mdx"
 import { HELP_CATEGORIES } from "@/lib/blog/content"
+import {
+  getOrderedHelpPosts,
+  HELP_AUTHORS,
+  HELP_CATEGORY_META,
+  helpAuthorName,
+  helpNeighbours,
+} from "@/lib/blog/help-data"
 import { getBlurDataURL } from "@/lib/blog/images"
 import { calculateReadingTime } from "@/lib/blog/utils"
 import { constructMetadata } from "@/lib/utils"
@@ -14,48 +23,19 @@ import { getHelpPost } from "@/lib/content"
 import StructuredData from "@/components/StructuredData"
 import { Breadcrumbs } from "@/components/site/Breadcrumbs"
 
-const AUTHOR_NAMES: Record<string, string> = {
-  codehagen: "Christer Hagen",
-  vsoraas: "Vegard Søraas",
-}
-
-const AUTHOR_META: Record<string, { name: string; role: string; image: string }> =
-  {
-    codehagen: {
-      name: "Christer Hagen",
-      role: "Partner & daglig leder · Advanti Estate",
-      image:
-        "https://kukzjreikqbgbolxvqaj.supabase.co/storage/v1/object/public/press/christer-hagen-web.jpg",
-    },
-    vsoraas: {
-      name: "Vegard Søraas",
-      role: "Partner · Advanti Estate",
-      image:
-        "https://imagedelivery.net/r-6-yk-gGPtjfbIST9-8uA/76037f97-384f-4681-176e-5b8a0ba71300/public",
-    },
-  }
-
 const MONTHS_SHORT = [
-  "JAN",
-  "FEB",
-  "MAR",
-  "APR",
-  "MAI",
-  "JUN",
-  "JUL",
-  "AUG",
-  "SEP",
-  "OKT",
-  "NOV",
-  "DES",
+  "JAN", "FEB", "MAR", "APR", "MAI", "JUN",
+  "JUL", "AUG", "SEP", "OKT", "NOV", "DES",
 ]
 
-/** Formats a date string as e.g. "14. JAN 2026". */
+const ROMAN = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"]
+
+/** Formats a date string as e.g. "14. jan 2026". */
 function editorialDate(date: string) {
   const d = new Date(date.includes("T") ? date : `${date}T00:00:00`)
   if (Number.isNaN(d.getTime())) return date
-  const day = String(d.getDate()).padStart(2, "0")
-  return `${day}. ${MONTHS_SHORT[d.getMonth()]} ${d.getFullYear()}`
+  const day = String(d.getDate())
+  return `${day}. ${MONTHS_SHORT[d.getMonth()].toLowerCase()} ${d.getFullYear()}`
 }
 
 export async function generateStaticParams() {
@@ -94,7 +74,7 @@ export async function generateMetadata({
     path: `/help/article/${post.slug}`,
     ogType: "article",
     modifiedTime: post.updatedAt,
-    authors: [AUTHOR_NAMES[post.author] || post.author],
+    authors: [helpAuthorName(post.author)],
   })
 }
 
@@ -127,12 +107,35 @@ export default async function HelpArticle({
         .map((slug) => allHelpPosts.find((post) => post.slug === slug))
         .filter(Boolean)) as HelpPost[]) || []
 
-  const readingTime = data.mdx
-    ? calculateReadingTime(data.mdx)
-    : null
-  const authorMeta = AUTHOR_META[data.author]
-  const authorName = AUTHOR_NAMES[data.author] || data.author
+  const readingTime = data.mdx ? calculateReadingTime(data.mdx) : null
+  const authorMeta = HELP_AUTHORS[data.author]
+  const authorName = helpAuthorName(data.author)
   const toc = data.tableOfContents ?? []
+  const takeaways = data.takeaways ?? []
+
+  // Left-rail category nav: all categories with counts; active category's
+  // articles (ordered) expanded.
+  // Count by PRIMARY category (categories[0]) so the number matches both the
+  // expanded article list below and the hub library — multi-category articles
+  // (e.g. exit-yield = terms+valuation) belong to their primary category only.
+  const navCategories = HELP_CATEGORY_META.map((c) => ({
+    slug: c.slug,
+    title: c.title,
+    count: allHelpPosts.filter((p) => p.categories[0] === c.slug).length,
+  }))
+  const categoryArticles = getOrderedHelpPosts(
+    allHelpPosts.filter((p) => p.categories[0] === category.slug),
+  ).map((p) => ({ slug: p.slug ?? "", title: p.title }))
+
+  // Prev/next across the full deterministic ordering.
+  const { prev, next } = helpNeighbours(
+    allHelpPosts.map((p) => ({
+      slug: p.slug,
+      title: p.title,
+      categories: p.categories,
+    })),
+    data.slug ?? slug,
+  )
 
   return (
     <>
@@ -163,10 +166,14 @@ export default async function HelpArticle({
         <StructuredData type="faq" data={{ faqs: data.faq }} />
       )}
 
+      <a href="#art-main" className="skip-link">
+        Hopp til innhold
+      </a>
+
       <div className="page-pad" />
 
-      {/* HERO — breadcrumb only */}
-      <section className="subhero" style={{ paddingBottom: 24 }}>
+      {/* HERO — breadcrumb only (emits BreadcrumbList JSON-LD) */}
+      <section className="subhero" style={{ paddingBottom: 16 }}>
         <div className="wrap">
           <Breadcrumbs
             path={`/help/article/${data.slug}`}
@@ -178,8 +185,16 @@ export default async function HelpArticle({
       {/* ARTICLE */}
       <section className="section-tight" style={{ paddingTop: 0 }}>
         <div className="wrap">
-          <div className="ks-article">
-            <article className="ks-art-body">
+          <div className="art-shell">
+            <ArticleToc
+              toc={toc}
+              categories={navCategories}
+              activeCategory={category.slug}
+              categoryArticles={categoryArticles}
+              currentSlug={data.slug ?? slug}
+            />
+
+            <article className="ks-art-body" id="art-main">
               <div className="ks-art-meta">
                 <Link
                   href={`/help/category/${category.slug}`}
@@ -188,14 +203,17 @@ export default async function HelpArticle({
                 >
                   {category.title}
                 </Link>
-                <span className="sep">·</span>
-                <span>{editorialDate(data.updatedAt)}</span>
                 {readingTime && (
                   <>
                     <span className="sep">·</span>
                     <span>{readingTime} min lesing</span>
                   </>
                 )}
+                <span className="sep">·</span>
+                <span className="art-updated">
+                  <span className="pip" aria-hidden="true" />
+                  Sist oppdatert {editorialDate(data.updatedAt)}
+                </span>
               </div>
 
               <h1 className="ks-art-title">{data.title}</h1>
@@ -215,6 +233,22 @@ export default async function HelpArticle({
                 </div>
               )}
 
+              {takeaways.length > 0 && (
+                <div className="art-kort">
+                  <div className="lbl">Kort fortalt</div>
+                  <ul>
+                    {takeaways.map((point, i) => (
+                      <li key={i}>
+                        <span className="n" aria-hidden="true">
+                          {ROMAN[i] ?? String(i + 1)}
+                        </span>
+                        <span>{point}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
               <MDX code={data.mdx} images={images} />
 
               {data.faq && data.faq.length >= 2 && (
@@ -229,30 +263,37 @@ export default async function HelpArticle({
                 </div>
               )}
 
-              {/* Feedback */}
-              <div className="ks-feedback">
-                <p>
-                  Var denne artikkelen{" "}
-                  <span
-                    style={{
-                      fontStyle: "italic",
-                      fontWeight: 300,
-                      color: "var(--warm-grey-85)",
-                    }}
-                  >
-                    til hjelp?
-                  </span>
-                </p>
-                <div className="btn-row">
-                  <button type="button">Ja</button>
-                  <button type="button">Nei</button>
-                </div>
-              </div>
+              <ArticleFeedback slug={data.slug ?? slug} />
 
-              {/* Related */}
+              {(prev || next) && (
+                <nav className="art-prevnext" aria-label="Forrige og neste artikkel">
+                  {prev ? (
+                    <Link href={`/help/article/${prev.slug}`} className="prev">
+                      <span className="dir">← Forrige</span>
+                      <span className="ti">{prev.title}</span>
+                    </Link>
+                  ) : (
+                    <span />
+                  )}
+                  {next ? (
+                    <Link href={`/help/article/${next.slug}`} className="next">
+                      <span className="dir">Neste →</span>
+                      <span className="ti">{next.title}</span>
+                    </Link>
+                  ) : (
+                    <span />
+                  )}
+                </nav>
+              )}
+
               {relatedArticles.length > 0 && (
                 <div className="ks-related">
-                  <h3>Les videre.</h3>
+                  <h3>
+                    Les videre{" "}
+                    <span className="italic">
+                      i {category.title.toLowerCase()}.
+                    </span>
+                  </h3>
                   <div className="ks-related-list">
                     {relatedArticles.map((article) => {
                       const relCat = HELP_CATEGORIES.find(
@@ -266,6 +307,7 @@ export default async function HelpArticle({
                           key={article.slug}
                           className="item"
                           href={`/help/article/${article.slug}`}
+                          prefetch={false}
                         >
                           <span className="pre">
                             {relCat?.title ?? "Kunnskap"}
@@ -278,44 +320,12 @@ export default async function HelpArticle({
                   </div>
                 </div>
               )}
+
+              <p className="art-overview-note" style={{ marginTop: 40 }}>
+                Skrevet av {authorName}. Fant du en feil?{" "}
+                <Link href="/kontakt">Si fra →</Link>
+              </p>
             </article>
-
-            {/* TOC sidebar */}
-            <aside className="ks-toc">
-              <div className="toc-label">På denne siden</div>
-              {toc.map((item: { slug: string; title: string }) => (
-                <Link key={item.slug} href={`#${item.slug}`}>
-                  {item.title}
-                </Link>
-              ))}
-
-              <div className="toc-related">
-                <div className="toc-label">Relaterte tjenester</div>
-                <Link href="/tjenester/verdivurdering">
-                  Verdivurdering av næringseiendom
-                </Link>
-                <Link href="/tjenester/salg">Salg av næringseiendom</Link>
-                <Link href="/tjenester/utleie">Utleie av næringseiendom</Link>
-                <Link href="/naringsmegler/bodo">Næringsmegler i Bodø</Link>
-                <Link href="/naringsmegler">Alle markeder i Nord-Norge</Link>
-              </div>
-
-              <div className="toc-meta">
-                Skrevet av {authorName}.
-                <br />
-                <br />
-                Fant du en feil?{" "}
-                <Link
-                  href="/kontakt"
-                  style={{
-                    color: "var(--warm-grey)",
-                    borderBottom: "1px solid",
-                  }}
-                >
-                  Si fra →
-                </Link>
-              </div>
-            </aside>
           </div>
         </div>
       </section>
