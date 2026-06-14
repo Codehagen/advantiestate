@@ -10017,32 +10017,7 @@ h1, h2, h3 {
 .hs-qa .a a:hover { border-color: var(--warm-grey); }
 .hs-qa .a .related { margin-top: 16px; display: inline-flex; align-items: center; gap: 8px; font-size: 13px; color: var(--warm-grey); border-bottom: 1px solid var(--warm-grey); padding-bottom: 2px; }
 
-/* ---- Article: docs-style left rail + body ---- */
-.art-shell { display: grid; grid-template-columns: 256px 1fr; gap: 72px; padding-top: 8px; }
-.art-rail { position: sticky; top: 100px; align-self: start; max-height: calc(100vh - 120px); overflow-y: auto; padding-bottom: 24px; }
-.art-rail::-webkit-scrollbar { width: 6px; }
-.art-rail::-webkit-scrollbar-thumb { background: var(--warm-grey-75); border-radius: 3px; }
-.art-toc { margin-bottom: 36px; }
-.art-toc .lbl, .art-nav .lbl { font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--warm-grey-85); font-weight: 500; margin-bottom: 14px; padding-bottom: 12px; border-bottom: var(--hairline); }
-.art-toc a { display: block; padding: 7px 0 7px 14px; margin-left: -1px; font-size: 13.5px; color: var(--warm-grey-85); line-height: 1.4; border-left: 1px solid var(--warm-grey-75); transition: color 0.2s, border-color 0.2s; }
-.art-toc a.l3 { padding-left: 28px; font-size: 12.5px; }
-.art-toc a:hover { color: var(--warm-grey); }
-.art-toc a.active { color: var(--warm-grey); border-left-color: var(--accent); font-weight: 500; }
-.art-nav .lbl { margin-top: 4px; }
-.art-nav .cat { margin-bottom: 2px; }
-.art-nav .cat > .ct { display: flex; align-items: center; justify-content: space-between; gap: 10px; width: 100%; appearance: none; background: transparent; border: none; cursor: pointer; font-family: var(--font-body); text-align: left; padding: 9px 0; font-size: 14px; color: var(--warm-grey); border-bottom: 1px solid rgba(215,208,200,0.5); text-decoration: none; }
-.art-nav .cat > .ct .cc { font-size: 11px; color: var(--warm-grey-85); font-variant-numeric: tabular-nums; }
-.art-nav .cat > .ct:hover { color: var(--warm-grey-85); }
-.art-nav .cat.active > .ct { font-weight: 600; }
-.art-nav .cat .arts { overflow: hidden; padding: 4px 0 12px; }
-.art-nav .cat .arts a { display: block; padding: 7px 0 7px 12px; font-size: 13px; line-height: 1.35; color: var(--warm-grey-85); border-left: 1px solid var(--warm-grey-75); transition: color 0.15s, border-color 0.15s; }
-.art-nav .cat .arts a:hover { color: var(--warm-grey); }
-.art-nav .cat .arts a.current { color: var(--warm-grey); font-weight: 500; border-left-color: var(--accent); }
-.art-rail-services { margin-top: 36px; }
-.art-rail-services .lbl { font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--warm-grey-85); font-weight: 500; margin-bottom: 12px; padding-bottom: 10px; border-bottom: var(--hairline); }
-.art-rail-services a { display: block; padding: 6px 0; font-size: 13px; color: var(--warm-grey-85); transition: color 0.15s; }
-.art-rail-services a:hover { color: var(--warm-grey); }
-
+/* ---- Article body extras (right-side TOC reuses .ks-toc, like the blog) ---- */
 .art-updated { display: inline-flex; align-items: center; gap: 6px; color: var(--warm-grey-85); }
 .art-updated .pip { width: 6px; height: 6px; border-radius: 50%; background: oklch(0.7 0.13 150); display: inline-block; }
 
@@ -10072,9 +10047,6 @@ h1, h2, h3 {
   .hs-paths { grid-template-columns: 1fr; border-left: 0; }
   .hs-path { border-right: 0; }
   .hs-faq-grid { grid-template-columns: 1fr; gap: 36px; }
-  .art-shell { grid-template-columns: 1fr; gap: 32px; }
-  .art-rail { position: static; max-height: none; order: 2; border-top: var(--hairline); padding-top: 24px; }
-  .art-toc { display: none; }
   .art-prevnext { grid-template-columns: 1fr; }
   .art-prevnext a.next { text-align: left; align-items: flex-start; border-left: 0; border-top: var(--hairline); }
 }
@@ -10091,7 +10063,7 @@ h1, h2, h3 {
 @media (prefers-reduced-motion: reduce) {
   .hs-path, .hs-path .steps a .sa, .hs-row, .hs-row .rarrow, .hs-res,
   .hs-res .rarrow, .hs-pill, .hs-chip, .hs-sortbtn, .hs-search, .hs-minisearch,
-  .hs-faq-aside .askmore, .hs-qa summary::after, .art-toc a, .art-nav .cat .arts a,
+  .hs-faq-aside .askmore, .hs-qa summary::after,
   .art-prevnext a, .ks-art-author .av {
     transition: none !important;
   }

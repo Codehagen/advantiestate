@@ -21,9 +21,16 @@ const NAV_OFFSET = 88
 export function ArticleToc({
   toc,
   authorName,
+  relatedServices,
 }: {
   toc: TocItem[]
   authorName: string
+  /**
+   * Optional "Relaterte tjenester" links rendered under the TOC (passes
+   * authority from high-traffic articles to commercial pages). Blog posts omit
+   * it; help articles pass their service cross-links. Undefined → not rendered.
+   */
+  relatedServices?: { href: string; label: string }[]
 }) {
   const [activeSlug, setActiveSlug] = useState<string>("")
   // True while smooth-scrolling to a clicked heading: the observer is paused
@@ -118,6 +125,17 @@ export function ArticleToc({
           )
         })}
       </nav>
+
+      {relatedServices && relatedServices.length > 0 && (
+        <div className="toc-related">
+          <div className="toc-label">Relaterte tjenester</div>
+          {relatedServices.map((s) => (
+            <Link key={s.href} href={s.href}>
+              {s.label}
+            </Link>
+          ))}
+        </div>
+      )}
 
       <div className="toc-meta">
         Skrevet av {authorName}.

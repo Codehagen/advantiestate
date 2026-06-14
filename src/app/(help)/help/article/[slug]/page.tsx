@@ -4,15 +4,13 @@ import Link from "next/link"
 import { notFound } from "next/navigation"
 
 import { ArticleFeedback } from "@/components/help/ArticleFeedback"
-import { ArticleToc } from "@/components/help/ArticleToc"
+import { ArticleToc } from "@/components/blog/ArticleToc"
 import { CtaStrip } from "@/components/site/CtaStrip"
 import { NewsletterSection } from "@/components/site/NewsletterSection"
 import { MDX } from "@/components/blog/mdx"
 import { HELP_CATEGORIES } from "@/lib/blog/content"
 import {
-  getOrderedHelpPosts,
   HELP_AUTHORS,
-  HELP_CATEGORY_META,
   helpAuthorName,
   helpNeighbours,
 } from "@/lib/blog/help-data"
@@ -113,20 +111,6 @@ export default async function HelpArticle({
   const toc = data.tableOfContents ?? []
   const takeaways = data.takeaways ?? []
 
-  // Left-rail category nav: all categories with counts; active category's
-  // articles (ordered) expanded.
-  // Count by PRIMARY category (categories[0]) so the number matches both the
-  // expanded article list below and the hub library — multi-category articles
-  // (e.g. exit-yield = terms+valuation) belong to their primary category only.
-  const navCategories = HELP_CATEGORY_META.map((c) => ({
-    slug: c.slug,
-    title: c.title,
-    count: allHelpPosts.filter((p) => p.categories[0] === c.slug).length,
-  }))
-  const categoryArticles = getOrderedHelpPosts(
-    allHelpPosts.filter((p) => p.categories[0] === category.slug),
-  ).map((p) => ({ slug: p.slug ?? "", title: p.title }))
-
   // Prev/next across the full deterministic ordering.
   const { prev, next } = helpNeighbours(
     allHelpPosts.map((p) => ({
@@ -185,15 +169,7 @@ export default async function HelpArticle({
       {/* ARTICLE */}
       <section className="section-tight" style={{ paddingTop: 0 }}>
         <div className="wrap">
-          <div className="art-shell">
-            <ArticleToc
-              toc={toc}
-              categories={navCategories}
-              activeCategory={category.slug}
-              categoryArticles={categoryArticles}
-              currentSlug={data.slug ?? slug}
-            />
-
+          <div className="ks-article">
             <article className="ks-art-body" id="art-main">
               <div className="ks-art-meta">
                 <Link
@@ -320,12 +296,22 @@ export default async function HelpArticle({
                   </div>
                 </div>
               )}
-
-              <p className="art-overview-note" style={{ marginTop: 40 }}>
-                Skrevet av {authorName}. Fant du en feil?{" "}
-                <Link href="/kontakt">Si fra →</Link>
-              </p>
             </article>
+
+            <ArticleToc
+              toc={toc}
+              authorName={authorName}
+              relatedServices={[
+                {
+                  href: "/tjenester/verdivurdering",
+                  label: "Verdivurdering av næringseiendom",
+                },
+                { href: "/tjenester/salg", label: "Salg av næringseiendom" },
+                { href: "/tjenester/utleie", label: "Utleie av næringseiendom" },
+                { href: "/naringsmegler/bodo", label: "Næringsmegler i Bodø" },
+                { href: "/naringsmegler", label: "Alle markeder i Nord-Norge" },
+              ]}
+            />
           </div>
         </div>
       </section>
