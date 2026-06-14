@@ -104,10 +104,10 @@ describe("recordSignup routing", () => {
     expect(inserted[0]?.table).toBe("web_signups")
   })
 
-  it("routes HIGH_INTENT 'eiernotat' → crm_leads then crm_activities", async () => {
+  it("routes HIGH_INTENT 'beslutningsgrunnlag' → crm_leads then crm_activities", async () => {
     const ok = await recordSignup({
       email: "owner@example.no",
-      source: "eiernotat",
+      source: "beslutningsgrunnlag",
       firstName: "Ola Nordmann",
       intake: { Eiendomstype: "Kontor", Sted: "Bodø" },
     })

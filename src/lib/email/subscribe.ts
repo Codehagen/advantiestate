@@ -19,7 +19,7 @@ export type SubscribeSource =
   | "sjekkliste-verdivurdering"
   | "markedsrapport"
   | "verdivurdering-intake"
-  | "eiernotat"
+  | "beslutningsgrunnlag"
   | "kontakt"
   | "eiendommer"
   | "presserom"
@@ -54,7 +54,7 @@ const RESEND_CONFIGURED = () =>
 
 const HIGH_INTENT: SubscribeSource[] = [
   "verdivurdering-intake",
-  "eiernotat",
+  "beslutningsgrunnlag",
   "service-modal",
   "kontakt",
   "eiendommer",

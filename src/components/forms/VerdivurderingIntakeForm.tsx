@@ -26,10 +26,10 @@ type Props = {
   source: string
   /**
    * CRM source the lead lands under. Defaults server-side to
-   * "verdivurdering-intake"; the eiernotat surface passes "eiernotat" so the
+   * "verdivurdering-intake"; the beslutningsgrunnlag surface passes "beslutningsgrunnlag" so the
    * same form/action serves both offers without duplication.
    */
-  intakeSource?: "verdivurdering-intake" | "eiernotat"
+  intakeSource?: "verdivurdering-intake" | "beslutningsgrunnlag"
   /** Optional prefill carried from the næringskalkulator via URL params. */
   prefill?: VerdivurderingPrefill
   /**
@@ -39,7 +39,7 @@ type Props = {
   showHeading?: boolean
   /**
    * Heading copy when showHeading is true. Defaults to the verdivurdering
-   * wording; the eiernotat surface overrides it so the reused form doesn't
+   * wording; the beslutningsgrunnlag surface overrides it so the reused form doesn't
    * contradict the page it sits on.
    */
   headingTitle?: string
@@ -93,9 +93,9 @@ export function VerdivurderingIntakeForm({
   headingSubtitle = "Det tar to minutter. Du forplikter deg ikke til noe.",
 }: Props) {
   const [state, setState] = useState<FormStatus>({ status: "idle" })
-  // Human form label for the funnel events — distinguishes eiernotat from the
+  // Human form label for the funnel events — distinguishes beslutningsgrunnlag from the
   // verdivurdering reuse of the same form.
-  const formLabel = intakeSource === "eiernotat" ? "eiernotat" : "verdivurdering"
+  const formLabel = intakeSource === "beslutningsgrunnlag" ? "beslutningsgrunnlag" : "verdivurdering"
   const handleFirstFocus = useLeadStartOnFocus(source, formLabel)
 
   // Fire once when the form is shown so we can measure form-views per surface.

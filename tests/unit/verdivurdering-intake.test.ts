@@ -37,14 +37,14 @@ describe("subscribeVerdivurderingIntake — intakeSource whitelist", () => {
     subscribeMock.mockResolvedValue({ ok: true, alreadySubscribed: false })
   })
 
-  it("uses the eiernotat source when the form requests it", async () => {
+  it("uses the beslutningsgrunnlag source when the form requests it", async () => {
     const result = await subscribeVerdivurderingIntake(
-      intakeFormData({ intakeSource: "eiernotat" }),
+      intakeFormData({ intakeSource: "beslutningsgrunnlag" }),
     )
     expect(result).toEqual({ ok: true })
     expect(subscribeMock).toHaveBeenCalledTimes(1)
     expect(subscribeMock.mock.calls[0][0]).toMatchObject({
-      source: "eiernotat",
+      source: "beslutningsgrunnlag",
     })
   })
 

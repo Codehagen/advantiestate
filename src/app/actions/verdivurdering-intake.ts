@@ -11,7 +11,7 @@ export type IntakeResult = { ok: true } | { ok: false; error: string }
 // — whitelisted here so a tampered form can't inject an arbitrary source.
 const ALLOWED_SOURCES: SubscribeSource[] = [
   "verdivurdering-intake",
-  "eiernotat",
+  "beslutningsgrunnlag",
 ]
 
 /**
@@ -57,7 +57,7 @@ export async function subscribeVerdivurderingIntake(
   // service page for backward compatibility.
   const page = get("page") ?? "/tjenester/verdivurdering"
 
-  // `intakeSource` selects the CRM source (verdivurdering vs eiernotat).
+  // `intakeSource` selects the CRM source (verdivurdering vs beslutningsgrunnlag).
   // Falls back to verdivurdering-intake for every existing form that doesn't
   // send it, and ignores any value not on the whitelist.
   const requested = get("intakeSource") as SubscribeSource | undefined
