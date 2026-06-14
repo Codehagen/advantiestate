@@ -16,6 +16,7 @@ type RecordSignupArgs = {
 // Everything else lands in the lightweight web_signups table.
 const HIGH_INTENT: SubscribeSource[] = [
   "verdivurdering-intake",
+  "service-modal",
   "kontakt",
   "eiendommer",
   "naringsmegler",
@@ -44,6 +45,7 @@ function intakeString(
 
 const SOURCE_LABEL: Partial<Record<SubscribeSource, string>> = {
   "verdivurdering-intake": "Verdivurdering-intake (skjema)",
+  "service-modal": "Tjeneste-modal (CTA på tjenesteside)",
   kontakt: "Kontaktskjema",
   eiendommer: "Eiendommer (varslingsskjema for nye oppdrag)",
 }
@@ -174,6 +176,13 @@ export function buildActivitySummary(
   } else if (args.source === "eiendommer") {
     lines.push(
       "Saved-search-signup på /eiendommer — vil bli varslet om nye oppdrag som matcher.",
+    )
+  } else if (args.source === "service-modal") {
+    const ctaType = intakeString(intake, "Type")
+    lines.push(
+      ctaType
+        ? `Forespørsel via CTA-modal på tjenesteside (${ctaType}).`
+        : "Forespørsel via CTA-modal på tjenesteside.",
     )
   } else {
     lines.push(`Web-skjemainnsending (${args.source}).`)

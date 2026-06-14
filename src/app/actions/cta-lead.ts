@@ -1,6 +1,6 @@
 "use server"
 
-import { notifyLead } from "@/lib/email/discord"
+import { subscribe } from "@/lib/email/subscribe"
 import { checkRateLimit } from "@/lib/rate-limit"
 
 export type CtaLeadInput = {
@@ -39,13 +39,19 @@ export async function submitCtaLead(input: CtaLeadInput): Promise<CtaLeadResult>
     if (value) intake[String(k).slice(0, 50)] = value
   }
 
-  await notifyLead({
+  // Route through the shared pipeline so these high-intent service-page leads
+  // land in Supabase crm_leads (+ crm_activities) and the Discord digest — not
+  // Discord alone, which lost them the moment a ping was missed. No
+  // marketingConsent: submitting a CTA is a contact request, not a newsletter
+  // opt-in, so the address does not enter the Resend audience.
+  const result = await subscribe({
     email,
-    source: "service",
+    source: "service-modal",
     pageUrl: input.pageUrl?.slice(0, 200),
     firstName: name,
     intake,
   })
 
+  if (!result.ok) return { ok: false, error: result.error }
   return { ok: true }
 }

@@ -81,6 +81,21 @@ describe("subscribe", () => {
     expect(recordSignupMock).toHaveBeenCalledTimes(1)
   })
 
+  it("treats 'service-modal' as a contact request, not a newsletter opt-in", async () => {
+    const result = await subscribe({
+      email: "modal-lead@example.no",
+      source: "service-modal",
+      firstName: "Ola Nordmann",
+      intake: { Type: "Verdsettelse", Telefon: "999 88 777" },
+    })
+
+    expect(result).toEqual({ ok: true, alreadySubscribed: false })
+    expect(contactsCreateMock).not.toHaveBeenCalled()
+    expect(emailsSendMock).not.toHaveBeenCalled()
+    expect(notifyLeadMock).toHaveBeenCalledTimes(1)
+    expect(recordSignupMock).toHaveBeenCalledTimes(1)
+  })
+
   it("returns an error when every configured destination fails", async () => {
     contactsCreateMock.mockResolvedValue({
       error: { message: "provider unavailable" },

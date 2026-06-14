@@ -71,6 +71,14 @@ describe("buildActivitySummary", () => {
     )
     expect(summary).toContain("Henvendelse via kontaktskjema.")
   })
+
+  it("includes the CTA type for source='service-modal'", () => {
+    const summary = buildActivitySummary(
+      { email: "a@b.no", source: "service-modal" },
+      { Type: "Verdsettelse" },
+    )
+    expect(summary).toContain("CTA-modal på tjenesteside (Verdsettelse)")
+  })
 })
 
 // ---------------------------------------------------------------------------
@@ -94,5 +102,17 @@ describe("recordSignup routing", () => {
     expect(ok).toBe(true)
     expect(inserted).toHaveLength(1)
     expect(inserted[0]?.table).toBe("web_signups")
+  })
+
+  it("routes HIGH_INTENT 'service-modal' → crm_leads (not web_signups)", async () => {
+    const ok = await recordSignup({
+      email: "a@b.no",
+      source: "service-modal",
+      firstName: "Ola Nordmann",
+      intake: { Type: "Verdsettelse", Telefon: "999 88 777" },
+    })
+    expect(ok).toBe(true)
+    expect(inserted[0]?.table).toBe("crm_leads")
+    expect(inserted[1]?.table).toBe("crm_activities")
   })
 })
