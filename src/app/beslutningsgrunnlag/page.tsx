@@ -9,27 +9,27 @@ import {
 } from "@/components/forms/VerdivurderingIntakeForm";
 
 export const metadata = constructMetadata({
-  path: "/eiernotat",
+  path: "/beslutningsgrunnlag",
   // DRAFT conversion surface. noIndex until the partner-facing offer copy and
-  // the 48-hour memo fulfilment workflow have had a human review (see PR #61 /
-  // plan Track C1). Flip to indexed once the offer is signed off.
+  // the 48-hour fulfilment workflow have had a human review (plan Track C1).
+  // Flip to indexed once the offer is signed off.
   noIndex: true,
-  title: "Eiernotat — beslutningsgrunnlag for næringseiendom | Advanti Estate",
+  title: "Beslutningsgrunnlag for næringseiendom | Advanti Estate",
   description:
-    "Bør du selge, refinansiere, holde, leie ut eller reposisjonere? Be om et eiernotat: et kort, partner-vurdert beslutningsnotat for eiendommen din innen 48 timer.",
+    "Bør du selge, refinansiere, holde, leie ut eller reposisjonere? Be om et beslutningsgrunnlag: en kort, partner-vurdert vurdering av eiendommen din innen 48 timer.",
 });
 
-export default function EiernotatPage() {
-  // The eiernotat reuses the verdivurdering intake form (same fields), but
-  // lands under its own CRM/analytics source and frames a different offer:
-  // a written decision memo rather than a value estimate.
+export default function BeslutningsgrunnlagPage() {
+  // Reuses the verdivurdering intake form (same fields), but lands under its
+  // own CRM/analytics source and frames a different offer: a written decision
+  // basis (sell / refinance / hold) rather than a value estimate.
   const prefill: VerdivurderingPrefill = {};
 
   return (
     <>
       <SubHero
-        breadcrumbs={<Breadcrumbs path="/eiernotat" />}
-        eyebrow="Eiernotat · Partner-vurdert · 48 timer"
+        breadcrumbs={<Breadcrumbs path="/beslutningsgrunnlag" />}
+        eyebrow="Beslutningsgrunnlag · Partner-vurdert · 48 timer"
         title={
           <>
             Bør du selge, refinansiere
@@ -37,7 +37,7 @@ export default function EiernotatPage() {
             eller <span className="italic">holde</span>?
           </>
         }
-        lede="Et eiernotat er et kort, skriftlig beslutningsgrunnlag fra en av partnerne våre — ikke en automatisk takst. Du får en indikativ yield-range, et bilde av hvem de sannsynlige kjøperne er, mulig leieoppside, og en konkret anbefaling om neste steg. Innen 48 timer, uforpliktende."
+        lede="Dette er en kort, skriftlig vurdering fra en av partnerne våre — ikke en automatisk takst. Du får en indikativ yield-range, et bilde av hvem de sannsynlige kjøperne er, mulig leieoppside, og en konkret anbefaling om neste steg. Innen 48 timer, uforpliktende."
       >
         <p
           style={{
@@ -76,20 +76,20 @@ export default function EiernotatPage() {
       <section className="section section-divider" style={{ paddingTop: 64 }}>
         <div className="wrap">
           <div className="contact-grid">
-            {/* LEFT: shared intake form, eiernotat source */}
+            {/* LEFT: shared intake form, beslutningsgrunnlag source */}
             <VerdivurderingIntakeForm
-              page="/eiernotat"
-              source="eiernotat"
-              intakeSource="eiernotat"
+              page="/beslutningsgrunnlag"
+              source="beslutningsgrunnlag"
+              intakeSource="beslutningsgrunnlag"
               prefill={prefill}
-              headingTitle="Be om et eiernotat."
-              headingSubtitle="Noen få felter om eiendommen. Du får notatet innen 48 timer — uforpliktende."
+              headingTitle="Be om et beslutningsgrunnlag."
+              headingSubtitle="Noen få felter om eiendommen. Du får vurderingen innen 48 timer — uforpliktende."
             />
 
-            {/* RIGHT: what the memo contains + process */}
+            {/* RIGHT: what the assessment contains + process */}
             <aside>
               <div className="vv-aside-card">
-                <div className="pre">Hva notatet inneholder</div>
+                <div className="pre">Hva du får</div>
                 <ul className="vv-gets">
                   <li>
                     <span className="ico" aria-hidden="true">
@@ -148,14 +148,15 @@ export default function EiernotatPage() {
                     <div>
                       <h4>En partner går gjennom den</h4>
                       <p>
-                        Vi vurderer eiendommen mot markedet og skriver notatet.
+                        Vi vurderer eiendommen mot markedet og skriver
+                        vurderingen.
                       </p>
                     </div>
                   </li>
                   <li>
                     <span className="n">03</span>
                     <div>
-                      <h4>Du får notatet innen 48 timer</h4>
+                      <h4>Du får vurderingen innen 48 timer</h4>
                       <p>
                         Skriftlig, uforpliktende. Vil du gå videre, tar vi en
                         samtale.

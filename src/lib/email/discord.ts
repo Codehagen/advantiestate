@@ -14,7 +14,7 @@ const SOURCE_LABEL: Record<SubscribeSource, string> = {
   "sjekkliste-verdivurdering": "Sjekkliste-PDF (verdivurdering)",
   markedsrapport: "Markedsrapport (lead magnet)",
   "verdivurdering-intake": "Verdivurdering-intake (HØY INTENT)",
-  eiernotat: "Eiernotat — 48t beslutningsnotat (HØY INTENT)",
+  beslutningsgrunnlag: "Beslutningsgrunnlag — 48t (HØY INTENT)",
   kontakt: "Kontakt-skjema",
   eiendommer: "Eiendommer (varsel om nye oppdrag)",
   presserom: "Presserom (pressevarsel — journalist!)",
@@ -27,7 +27,7 @@ const SOURCE_LABEL: Record<SubscribeSource, string> = {
 // brand-neutral; intake forms are light-blue.
 const HIGH_INTENT: SubscribeSource[] = [
   "verdivurdering-intake",
-  "eiernotat",
+  "beslutningsgrunnlag",
   "service-modal",
   "kontakt",
   "eiendommer",
