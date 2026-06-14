@@ -242,17 +242,19 @@ function Example(props: {
         <span className="ae-label">Eksempel</span>
         {props.title && <h4>{props.title}</h4>}
       </div>
-      <table>
-        <tbody>
-          {steps.map((s, i) => (
-            <tr key={i} className={s.isResult ? "is-result" : undefined}>
-              <td className="ae-elabel">{s.label}</td>
-              {hasCalc && <td className="ae-ecalc">{s.calculation ?? ""}</td>}
-              <td className="ae-eval">{fmt(s.value)}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <div className="ae-table-scroll">
+        <table>
+          <tbody>
+            {steps.map((s, i) => (
+              <tr key={i} className={s.isResult ? "is-result" : undefined}>
+                <td className="ae-elabel">{s.label}</td>
+                {hasCalc && <td className="ae-ecalc">{s.calculation ?? ""}</td>}
+                <td className="ae-eval">{fmt(s.value)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   )
 }
@@ -668,6 +670,14 @@ export function MDX({ code, images, className }: MDXProps) {
           ...components,
           Image: MDXImage,
           img: (props: any) => <MDXImage {...props} />,
+          // Markdown (GFM) tables: wrap in a horizontal scroll container so
+          // wide tables never overflow the viewport on mobile. A wrapper div
+          // (not display:block on the table) preserves the table a11y role.
+          table: (props: any) => (
+            <div className="ae-table-scroll">
+              <table {...props} />
+            </div>
+          ),
         }}
       />
     </article>
