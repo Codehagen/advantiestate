@@ -6,6 +6,7 @@ import Modal from "@/components/blog/modal"
 import { RiCloseLine, RiRoadMapLine, RiCheckLine } from "@remixicon/react"
 import { useState, type Dispatch, type SetStateAction } from "react"
 import { submitCtaLead } from "@/app/actions/cta-lead"
+import { trackLeadSubmit } from "@/lib/analytics"
 
 interface StrategicAdvisoryModalProps {
   showModal: boolean
@@ -42,6 +43,7 @@ export default function StrategicAdvisoryModal({
 
     setIsSubmitting(false)
     if (result.ok) {
+      trackLeadSubmit("service-modal", "Strategisk Rådgivning")
       setIsSuccess(true)
       setTimeout(() => { setShowModal(false); setIsSuccess(false) }, 3000)
     } else {

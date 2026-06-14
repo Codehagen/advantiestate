@@ -7,6 +7,7 @@ import Modal from "@/components/blog/modal"
 import { RiCloseLine, RiCalculatorLine, RiCheckLine } from "@remixicon/react"
 import { useState, type Dispatch, type SetStateAction } from "react"
 import { submitCtaLead } from "@/app/actions/cta-lead"
+import { trackLeadSubmit } from "@/lib/analytics"
 
 interface ValuationRequestModalProps {
   showModal: boolean
@@ -44,6 +45,7 @@ export default function ValuationRequestModal({
 
     setIsSubmitting(false)
     if (result.ok) {
+      trackLeadSubmit("service-modal", "Verdsettelse")
       setIsSuccess(true)
       setTimeout(() => { setShowModal(false); setIsSuccess(false) }, 3000)
     } else {

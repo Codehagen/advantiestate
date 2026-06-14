@@ -7,6 +7,7 @@ import Modal from "@/components/blog/modal"
 import { RiCloseLine, RiBuilding4Line, RiCheckLine } from "@remixicon/react"
 import { useState, type Dispatch, type SetStateAction } from "react"
 import { submitCtaLead } from "@/app/actions/cta-lead"
+import { trackLeadSubmit } from "@/lib/analytics"
 
 interface LeaseRequestModalProps {
   showModal: boolean
@@ -45,6 +46,7 @@ export default function LeaseRequestModal({
 
     setIsSubmitting(false)
     if (result.ok) {
+      trackLeadSubmit("service-modal", "Utleie")
       setIsSuccess(true)
       setTimeout(() => { setShowModal(false); setIsSuccess(false) }, 3000)
     } else {

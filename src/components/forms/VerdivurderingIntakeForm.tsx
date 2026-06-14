@@ -1,9 +1,9 @@
 "use client"
 
-import { useEffect, useState, type FormEvent } from "react"
+import { useEffect, useRef, useState, type FormEvent } from "react"
 
 import { subscribeVerdivurderingIntake } from "@/app/actions/verdivurdering-intake"
-import { trackEvent } from "@/lib/analytics"
+import { trackEvent, trackLeadStart, trackLeadSubmit } from "@/lib/analytics"
 
 type FormStatus =
   | { status: "idle" }
@@ -76,11 +76,20 @@ export function VerdivurderingIntakeForm({
   showHeading = true,
 }: Props) {
   const [state, setState] = useState<FormStatus>({ status: "idle" })
+  // Dedupe the lead_form_start event so it fires once per mount, on the first
+  // real field interaction (not on mere view).
+  const startedRef = useRef(false)
 
   // Fire once when the form is shown so we can measure form-views per surface.
   useEffect(() => {
     trackEvent("journey_step", { step: "skjema", source })
   }, [source])
+
+  function handleFirstFocus() {
+    if (startedRef.current) return
+    startedRef.current = true
+    trackLeadStart(source, "verdivurdering")
+  }
 
   const hasPrefill = Boolean(
     prefill && (prefill.type || prefill.by || prefill.areal || prefill.leie),
@@ -95,6 +104,7 @@ export function VerdivurderingIntakeForm({
       if (result.ok) {
         setState({ status: "success" })
         trackEvent("rapport_bestill", { source })
+        trackLeadSubmit(source, "verdivurdering")
       } else {
         setState({ status: "error", message: result.error })
       }
@@ -125,7 +135,11 @@ export function VerdivurderingIntakeForm({
   const isSubmitting = state.status === "submitting"
 
   return (
-    <form onSubmit={handleSubmit} className="contact-form vv-form">
+    <form
+      onSubmit={handleSubmit}
+      onFocusCapture={handleFirstFocus}
+      className="contact-form vv-form"
+    >
       {showHeading && (
         <>
           <h2>Be om verdivurdering.</h2>

@@ -6,6 +6,7 @@ import Modal from "@/components/blog/modal"
 import { RiCloseLine, RiTeamLine, RiCheckLine } from "@remixicon/react"
 import { useState, type Dispatch, type SetStateAction } from "react"
 import { submitCtaLead } from "@/app/actions/cta-lead"
+import { trackLeadSubmit } from "@/lib/analytics"
 
 interface ConsultationModalProps {
   showModal: boolean
@@ -42,6 +43,7 @@ export default function ConsultationModal({
 
     setIsSubmitting(false)
     if (result.ok) {
+      trackLeadSubmit("service-modal", "Konsultasjon")
       setIsSuccess(true)
       setTimeout(() => { setShowModal(false); setIsSuccess(false) }, 3000)
     } else {
