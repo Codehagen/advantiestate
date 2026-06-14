@@ -227,6 +227,10 @@ export const HelpPost = defineCollection({
     publishedAt: z.string().optional(),
     related: z.array(z.string()).optional(),
     excludeHeadingsFromSearch: z.boolean().optional(),
+    // Optional "Kort fortalt" key points, rendered as a callout box at the top
+    // of the article. Editorial summary, distinct from the lede — keep it short
+    // (typically 3 points). Rendered dynamically, so any count works.
+    takeaways: z.array(z.string()).optional(),
     // Opt-in HowTo schema. Only set on genuine step-by-step procedural
     // articles — the emitted JSON-LD MUST mirror visible page content (Google
     // and schema.org policy), so author the `step` array to match a visible
