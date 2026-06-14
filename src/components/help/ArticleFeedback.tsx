@@ -18,7 +18,7 @@ export function ArticleFeedback({ slug }: { slug: string }) {
 
   if (done) {
     return (
-      <div className="ks-feedback">
+      <div className="ks-feedback" role="status" aria-live="polite">
         <p>
           Takk for{" "}
           <span

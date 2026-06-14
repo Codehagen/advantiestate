@@ -10087,3 +10087,14 @@ h1, h2, h3 {
   .hs-sort { width: 100%; margin-left: 0; }
   .hs-herostats { gap: 32px; }
 }
+/* Honour reduce-motion for the v2 hover nudges + FAQ marker rotation. */
+@media (prefers-reduced-motion: reduce) {
+  .hs-path, .hs-path .steps a .sa, .hs-row, .hs-row .rarrow, .hs-res,
+  .hs-res .rarrow, .hs-pill, .hs-chip, .hs-sortbtn, .hs-search, .hs-minisearch,
+  .hs-faq-aside .askmore, .hs-qa summary::after, .art-toc a, .art-nav .cat .arts a,
+  .art-prevnext a, .ks-art-author .av {
+    transition: none !important;
+  }
+  .hs-row:hover { padding-left: 14px; padding-right: 14px; }
+  .hs-row:hover .rarrow, .hs-path .steps a:hover .sa { transform: none; }
+}
