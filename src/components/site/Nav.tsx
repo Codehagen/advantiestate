@@ -98,12 +98,12 @@ const PANELS: Record<
 > = {
   tjenester: {
     items: [
-      "/tjenester/utleie",
+      "/tjenester/salg",
       "/tjenester/verdivurdering",
       "/tjenester/transaksjoner",
       "/tjenester/radgivning",
       "/tjenester/strategisk-radgivning",
-      "/tjenester/salg",
+      "/tjenester/utleie",
       "/naringsmegler",
     ],
     seeAll: { href: "/tjenester", label: "Se alle tjenester" },
@@ -122,7 +122,6 @@ const PANELS: Record<
       "/markedsinnsikt/kart",
       "/markedsrapport",
       "/verktoy",
-      "/help",
       "/blog",
     ],
     seeAll: { href: "/markedsinnsikt", label: "Gå til markedsinnsikt" },
@@ -606,6 +605,14 @@ export function Nav({ groups }: NavProps) {
           </button>
 
           <Link
+            href="/help"
+            aria-current={isLinkActive("/help") ? "page" : undefined}
+            onMouseEnter={scheduleClose}
+          >
+            Kunnskapssenter
+          </Link>
+
+          <Link
             href="/kontakt"
             aria-current={isLinkActive("/kontakt") ? "page" : undefined}
             onMouseEnter={scheduleClose}
@@ -773,6 +780,15 @@ export function Nav({ groups }: NavProps) {
             }))}
             onLinkClick={() => setMenuOpen(false)}
           />
+
+          <Link
+            prefetch={false}
+            href="/help"
+            aria-current={isLinkActive("/help") ? "page" : undefined}
+            onClick={() => setMenuOpen(false)}
+          >
+            Kunnskapssenter
+          </Link>
 
           <Link
             prefetch={false}

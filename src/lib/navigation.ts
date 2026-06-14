@@ -57,18 +57,18 @@ export const REGISTRY: NavEntry[] = [
     navGroup: "tjenester",
   },
   {
-    path: "/tjenester/verdivurdering",
-    label: "Verdivurdering",
-    description: "Dokumentert markedsverdi med DCF- og yield-analyse.",
+    path: "/tjenester/salg",
+    label: "Salg",
+    description: "Strukturert salgsprosess fra verdivurdering til oppgjør.",
     parent: "/tjenester",
     inNav: true,
     inFooter: true,
     navGroup: "tjenester",
   },
   {
-    path: "/tjenester/salg",
-    label: "Salg",
-    description: "Strukturert salgsprosess fra verdivurdering til oppgjør.",
+    path: "/tjenester/verdivurdering",
+    label: "Verdivurdering",
+    description: "Dokumentert markedsverdi med DCF- og yield-analyse.",
     parent: "/tjenester",
     inNav: true,
     inFooter: true,
@@ -177,13 +177,14 @@ export const REGISTRY: NavEntry[] = [
     navGroup: "innsikt",
     description: "Kalkulatorer for yield, ROI og verdivurdering.",
   },
+  // Kunnskapssenter — promoted to a top-level nav item (own breadcrumb root),
+  // no longer nested under the Innsikt panel.
   {
     path: "/help",
     label: "Kunnskapssenter",
-    parent: "/markedsinnsikt",
+    parent: null,
     inNav: true,
     inFooter: true,
-    navGroup: "innsikt",
     description: "Guider og fagartikler om næringseiendom.",
   },
   {
@@ -273,7 +274,7 @@ export const REGISTRY: NavEntry[] = [
 
   // ── deliberately outside nav/footer (gated or landing pages) ─────────────
   { path: "/presentasjon", label: "Presentasjon", parent: null, inNav: false, inFooter: false },
-  { path: "/verdivurdering", label: "Få verdivurdering", parent: null, inNav: false, inFooter: false },
+  { path: "/verdivurdering", label: "Få verdivurdering", parent: null, inNav: false, inFooter: true },
   // Indexable conversion surface — reached via sitemap + cross-links (SeOgsa),
   // not primary nav. Parent gives it a Tjenester breadcrumb trail.
   { path: "/beslutningsgrunnlag", label: "Beslutningsgrunnlag", parent: "/tjenester", inNav: false, inFooter: false },
@@ -304,7 +305,9 @@ export const footerColumns: Record<"tjenester" | "advanti", NavEntry[]> = {
   tjenester: REGISTRY.filter(
     (e) =>
       e.inFooter === true &&
-      (e.navGroup === "tjenester" || e.path === "/naringsmegler") &&
+      (e.navGroup === "tjenester" ||
+        e.path === "/naringsmegler" ||
+        e.path === "/verdivurdering") &&
       e.path !== "/tjenester" // parent row not shown as a plain link in footer
   ),
   advanti: [
