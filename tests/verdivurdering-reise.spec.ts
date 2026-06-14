@@ -1,17 +1,17 @@
 import { test, expect, type APIRequestContext } from "@playwright/test";
 
 /**
- * Verdivurdering-reise — fase 4 nav/IA-redesign.
+ * Markedsinnsikt-/SeOgsa-reise — fase 4 nav/IA-redesign.
+ *
+ * NB: Forsidenavets CTA peker nå til /analyseportal (ikke /verdivurdering),
+ * så den gamle nav-CTA→/verdivurdering-reisen (tidligere a–c) er pensjonert.
+ * CTA-destinasjon + cta_analyseportal-eventet dekkes nå av tests/nav.spec.ts.
  *
  * Dekker:
- *  a. Forsidenavets CTA har href /verdivurdering (desktop + mobil)
- *  b. Journey-gang: / → CTA-klikk → /verdivurdering; intake-skjema +
- *     sjekkliste- og kalkulator-støttelenker er synlige på destinasjonssiden
- *  c. Analytics: stub dataLayer, klikk CTA, assert cta_verdivurdering med
- *     source-prop
  *  d. Se også på /naringsmegler/bodo: «Forstå markedet»-blokk viser ≤ 3 lenker,
  *     alle hrefs er reelle (ikke href="#")
  *  e. Lenkeintegritet: alle kurerte SeOgsa-hrefs returnerer ikke 404
+ *  f. Analytics: journey_step + seogsa_click
  */
 
 test.beforeEach(async ({ page }) => {
@@ -19,86 +19,6 @@ test.beforeEach(async ({ page }) => {
     /imagedelivery\.net|avatar\.vercel\.sh|\/_next\/image|basemaps\.cartocdn\.com/,
     (route) => route.abort(),
   );
-});
-
-// ── a. CTA href ───────────────────────────────────────────────────────────────
-
-test.describe("CTA href — /verdivurdering", () => {
-  test("desktop nav CTA peker til /verdivurdering", async ({ page }) => {
-    await page.setViewportSize({ width: 1280, height: 800 });
-    await page.goto("/");
-    // .nav-cta er den synlige CTA-knappen i desktop-headeren
-    const cta = page.locator(".nav-cta").first();
-    await expect(cta).toHaveAttribute("href", "/verdivurdering");
-  });
-
-  test("mobil nav CTA (320×568) peker til /verdivurdering", async ({ page }) => {
-    await page.setViewportSize({ width: 320, height: 568 });
-    await page.goto("/");
-    await page.getByRole("button", { name: "Åpne meny" }).click();
-    const cta = page.locator(".nav-mobile-cta");
-    await expect(cta).toHaveAttribute("href", "/verdivurdering");
-  });
-});
-
-// ── b. Journey-gang ───────────────────────────────────────────────────────────
-
-test("journey: / → CTA-klikk → /verdivurdering med skjema + støttelenker", async ({
-  page,
-}) => {
-  await page.setViewportSize({ width: 1280, height: 800 });
-  await page.goto("/");
-
-  // Klikk CTA og vent på at navigasjonen til verdivurderingssiden er ferdig
-  await Promise.all([
-    page.waitForURL("**/verdivurdering"),
-    page.locator(".nav-cta").first().click(),
-  ]);
-
-  // Intake-skjemaet skal være synlig (delt VerdivurderingIntakeForm)
-  await expect(
-    page.getByRole("heading", { name: "Be om verdivurdering." }),
-  ).toBeVisible();
-
-  // Sjekkliste- og kalkulator-støttelenker i hero
-  await expect(
-    page.locator('a[href="/sjekkliste-verdivurdering"]').first(),
-  ).toBeVisible();
-  await expect(
-    page.locator('a[href="/verktoy/naringskalkulator"]').first(),
-  ).toBeVisible();
-});
-
-// ── c. Analytics ──────────────────────────────────────────────────────────────
-
-test("analytics: cta_verdivurdering fyres med source-prop ved CTA-klikk", async ({
-  page,
-}) => {
-  await page.setViewportSize({ width: 1280, height: 800 });
-
-  // Installer dataLayer-stub FØR siden laster
-  await page.addInitScript(() => {
-    (window as { dataLayer?: unknown[] }).dataLayer = [];
-  });
-
-  await page.goto("/");
-
-  // Klikk CTA (navigerer til /verktoy/pris-verdivurdering via CSR)
-  await page.locator(".nav-cta").first().click();
-
-  // Evaluer dataLayer — Next.js CSR bevarer arrayen på tvers av klient­navigasjon
-  const events = await page.evaluate(
-    () => (window as { dataLayer?: unknown[] }).dataLayer ?? [],
-  );
-
-  const ctaEvent = events.find(
-    (e) =>
-      typeof e === "object" &&
-      e !== null &&
-      (e as Record<string, unknown>).event === "cta_verdivurdering" &&
-      (e as Record<string, unknown>).source !== undefined,
-  );
-  expect(ctaEvent).toBeDefined();
 });
 
 // ── d. Se også — /naringsmegler/bodo ─────────────────────────────────────────

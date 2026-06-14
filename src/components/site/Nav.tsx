@@ -616,12 +616,12 @@ export function Nav({ groups }: NavProps) {
 
         <div className="nav-right">
           <Link
-            href="/verdivurdering"
+            href="/analyseportal"
             className="nav-cta"
-            onClick={() => trackEvent("cta_verdivurdering", { source: "nav" })}
+            onClick={() => trackEvent("cta_analyseportal", { source: "nav" })}
             onMouseEnter={scheduleClose}
           >
-            <span>Få verdivurdering</span>
+            <span>Til Analyseportal</span>
             <span className="arrow">→</span>
           </Link>
 
@@ -786,14 +786,14 @@ export function Nav({ groups }: NavProps) {
 
         <Link
           prefetch={false}
-          href="/verdivurdering"
+          href="/analyseportal"
           className="nav-cta nav-mobile-cta"
           onClick={() => {
             setMenuOpen(false);
-            trackEvent("cta_verdivurdering", { source: "nav_mobile" });
+            trackEvent("cta_analyseportal", { source: "nav_mobile" });
           }}
         >
-          <span>Få verdivurdering</span>
+          <span>Til Analyseportal</span>
           <span className="arrow">→</span>
         </Link>
       </div>
