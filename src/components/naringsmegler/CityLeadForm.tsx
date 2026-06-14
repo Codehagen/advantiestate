@@ -12,6 +12,8 @@ import { useRef, useState, useTransition } from "react"
 import { track } from "@vercel/analytics"
 
 import { submitCityLead } from "@/app/actions/naringsmegler-lead"
+import { trackLeadSubmit } from "@/lib/analytics"
+import { useLeadStartOnFocus } from "@/lib/hooks/useLeadFunnel"
 import { PROPERTY_TYPES } from "./leadConstants"
 
 type Props = {
@@ -28,6 +30,7 @@ export function CityLeadForm({ cityName, slug, phone }: Props) {
   // Synchronous double-submit guard: `pending` only flips after a re-render,
   // so two clicks in the same frame would both dispatch the action.
   const submitting = useRef(false)
+  const onFirstFocus = useLeadStartOnFocus("naringsmegler", "city-lead")
 
   function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -41,6 +44,7 @@ export function CityLeadForm({ cityName, slug, phone }: Props) {
         if (result.ok) {
           setSent(true)
           track("naringsmegler_lead", { city: slug })
+          trackLeadSubmit("naringsmegler", "city-lead")
           // Move focus to the receipt so the state change is announced.
           requestAnimationFrame(() => doneHeading.current?.focus())
         } else {
@@ -76,7 +80,7 @@ export function CityLeadForm({ cityName, slug, phone }: Props) {
   }
 
   return (
-    <form className="cy-form" onSubmit={onSubmit}>
+    <form className="cy-form" onSubmit={onSubmit} onFocusCapture={onFirstFocus}>
       <div className="fpre">Uforpliktende · svar vanligvis samme dag</div>
       <h3>
         Din eiendom, <span className="it">vurdert lokalt.</span>

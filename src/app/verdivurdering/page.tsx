@@ -70,7 +70,7 @@ export default async function FaaVerdivurderingPage({
             <Link
               href="/verktoy/naringskalkulator"
               className="underline decoration-warm-grey-75 underline-offset-4 hover:text-warm-grey"
-              style={{ fontWeight: 500, color: "var(--accent)" }}
+              style={{ fontWeight: 500, color: "var(--warm-grey)" }}
             >
               Prøv næringskalkulatoren →
             </Link>
@@ -80,7 +80,7 @@ export default async function FaaVerdivurderingPage({
             <Link
               href="/sjekkliste-verdivurdering"
               className="underline decoration-warm-grey-75 underline-offset-4 hover:text-warm-grey"
-              style={{ fontWeight: 500, color: "var(--accent)" }}
+              style={{ fontWeight: 500, color: "var(--warm-grey)" }}
             >
               Se sjekklisten →
             </Link>

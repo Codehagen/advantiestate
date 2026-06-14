@@ -7,6 +7,8 @@ import Modal from "@/components/blog/modal"
 import { RiCloseLine, RiCalculatorLine, RiCheckLine } from "@remixicon/react"
 import { useState, type Dispatch, type SetStateAction } from "react"
 import { submitCtaLead } from "@/app/actions/cta-lead"
+import { trackLeadSubmit } from "@/lib/analytics"
+import { useLeadStartOnFocus } from "@/lib/hooks/useLeadFunnel"
 
 interface ValuationRequestModalProps {
   showModal: boolean
@@ -18,6 +20,7 @@ export default function ValuationRequestModal({
   setShowModal,
 }: ValuationRequestModalProps) {
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const onFirstFocus = useLeadStartOnFocus("service-modal", "Verdsettelse")
   const [isSuccess, setIsSuccess] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
@@ -44,6 +47,7 @@ export default function ValuationRequestModal({
 
     setIsSubmitting(false)
     if (result.ok) {
+      trackLeadSubmit("service-modal", "Verdsettelse")
       setIsSuccess(true)
       setTimeout(() => { setShowModal(false); setIsSuccess(false) }, 3000)
     } else {
@@ -98,7 +102,7 @@ export default function ValuationRequestModal({
         ) : (
           <>
             {/* Form */}
-            <form onSubmit={handleSubmit} className="px-6 py-6">
+            <form onSubmit={handleSubmit} onFocusCapture={onFirstFocus} className="px-6 py-6">
               <div className="space-y-4">
                 {/* Name Fields */}
                 <div className="grid gap-4 sm:grid-cols-2">

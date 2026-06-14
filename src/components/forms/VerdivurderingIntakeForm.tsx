@@ -3,7 +3,8 @@
 import { useEffect, useState, type FormEvent } from "react"
 
 import { subscribeVerdivurderingIntake } from "@/app/actions/verdivurdering-intake"
-import { trackEvent } from "@/lib/analytics"
+import { trackEvent, trackLeadSubmit } from "@/lib/analytics"
+import { useLeadStartOnFocus } from "@/lib/hooks/useLeadFunnel"
 
 type FormStatus =
   | { status: "idle" }
@@ -23,6 +24,12 @@ type Props = {
   page: string
   /** Analytics source dimension (distinguishes funnel surfaces). */
   source: string
+  /**
+   * CRM source the lead lands under. Defaults server-side to
+   * "verdivurdering-intake"; the eiernotat surface passes "eiernotat" so the
+   * same form/action serves both offers without duplication.
+   */
+  intakeSource?: "verdivurdering-intake" | "eiernotat"
   /** Optional prefill carried from the næringskalkulator via URL params. */
   prefill?: VerdivurderingPrefill
   /**
@@ -30,6 +37,13 @@ type Props = {
    * provides a heading (e.g. the #bestill section on the service page).
    */
   showHeading?: boolean
+  /**
+   * Heading copy when showHeading is true. Defaults to the verdivurdering
+   * wording; the eiernotat surface overrides it so the reused form doesn't
+   * contradict the page it sits on.
+   */
+  headingTitle?: string
+  headingSubtitle?: string
 }
 
 const PROPERTY_TYPES = [
@@ -72,10 +86,17 @@ function matchesType(prefill: string | undefined, value: string): boolean {
 export function VerdivurderingIntakeForm({
   page,
   source,
+  intakeSource,
   prefill,
   showHeading = true,
+  headingTitle = "Be om verdivurdering.",
+  headingSubtitle = "Det tar to minutter. Du forplikter deg ikke til noe.",
 }: Props) {
   const [state, setState] = useState<FormStatus>({ status: "idle" })
+  // Human form label for the funnel events — distinguishes eiernotat from the
+  // verdivurdering reuse of the same form.
+  const formLabel = intakeSource === "eiernotat" ? "eiernotat" : "verdivurdering"
+  const handleFirstFocus = useLeadStartOnFocus(source, formLabel)
 
   // Fire once when the form is shown so we can measure form-views per surface.
   useEffect(() => {
@@ -95,6 +116,7 @@ export function VerdivurderingIntakeForm({
       if (result.ok) {
         setState({ status: "success" })
         trackEvent("rapport_bestill", { source })
+        trackLeadSubmit(source, formLabel)
       } else {
         setState({ status: "error", message: result.error })
       }
@@ -125,17 +147,22 @@ export function VerdivurderingIntakeForm({
   const isSubmitting = state.status === "submitting"
 
   return (
-    <form onSubmit={handleSubmit} className="contact-form vv-form">
+    <form
+      onSubmit={handleSubmit}
+      onFocusCapture={handleFirstFocus}
+      className="contact-form vv-form"
+    >
       {showHeading && (
         <>
-          <h2>Be om verdivurdering.</h2>
-          <p className="sub">
-            Det tar to minutter. Du forplikter deg ikke til noe.
-          </p>
+          <h2>{headingTitle}</h2>
+          <p className="sub">{headingSubtitle}</p>
         </>
       )}
 
       <input type="hidden" name="page" value={page} />
+      {intakeSource && (
+        <input type="hidden" name="intakeSource" value={intakeSource} />
+      )}
 
       {hasPrefill && (
         <p className="vv-prefill-note">

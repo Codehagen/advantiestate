@@ -15,9 +15,11 @@ export type SubscribeSource =
   | "markedsinnsikt"
   | "analyseportal"
   | "service"
+  | "service-modal"
   | "sjekkliste-verdivurdering"
   | "markedsrapport"
   | "verdivurdering-intake"
+  | "eiernotat"
   | "kontakt"
   | "eiendommer"
   | "presserom"
@@ -52,6 +54,8 @@ const RESEND_CONFIGURED = () =>
 
 const HIGH_INTENT: SubscribeSource[] = [
   "verdivurdering-intake",
+  "eiernotat",
+  "service-modal",
   "kontakt",
   "eiendommer",
   "investorportal",

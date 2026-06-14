@@ -1,9 +1,18 @@
 "use server"
 
-import { subscribe } from "@/lib/email/subscribe"
+import { subscribe, type SubscribeSource } from "@/lib/email/subscribe"
 import { checkRateLimit } from "@/lib/rate-limit"
 
 export type IntakeResult = { ok: true } | { ok: false; error: string }
+
+// Surfaces allowed to reuse this intake. Both are high-intent owner
+// requests with identical fields; they differ only in the offer framing and
+// the CRM source they land under. A hidden `intakeSource` field selects which
+// — whitelisted here so a tampered form can't inject an arbitrary source.
+const ALLOWED_SOURCES: SubscribeSource[] = [
+  "verdivurdering-intake",
+  "eiernotat",
+]
 
 /**
  * Verdivurdering intake — the hardest-intent surface on the site.
@@ -48,6 +57,15 @@ export async function subscribeVerdivurderingIntake(
   // service page for backward compatibility.
   const page = get("page") ?? "/tjenester/verdivurdering"
 
+  // `intakeSource` selects the CRM source (verdivurdering vs eiernotat).
+  // Falls back to verdivurdering-intake for every existing form that doesn't
+  // send it, and ignores any value not on the whitelist.
+  const requested = get("intakeSource") as SubscribeSource | undefined
+  const source: SubscribeSource =
+    requested && ALLOWED_SOURCES.includes(requested)
+      ? requested
+      : "verdivurdering-intake"
+
   // Hard-intent minimum: email + property type + location + purpose. firstName
   // is required at the form level so we can address them in the welcome.
   if (!email || !propertyType || !location || !purpose) {
@@ -73,7 +91,7 @@ export async function subscribeVerdivurderingIntake(
   const result = await subscribe({
     email,
     firstName,
-    source: "verdivurdering-intake",
+    source,
     pageUrl: page,
     intake,
   })
