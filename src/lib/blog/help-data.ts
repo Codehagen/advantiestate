@@ -84,13 +84,15 @@ export function helpAuthorName(key: string): string {
 }
 
 /** Search-suggestion pills shown under the hero search field. */
+// Every pill must return results — a "Populært" suggestion that lands on an
+// empty state is a dead end. Verified against current help content.
 export const HELP_SEARCH_SUGGESTIONS = [
   "Yield",
   "Verdivurdering",
   "DCF",
   "Leiekontrakt",
-  "WAULT",
-  "Bodø",
+  "Felleskostnader",
+  "Markedsleie",
 ]
 
 /**
