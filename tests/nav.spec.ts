@@ -10,7 +10,7 @@ import { REGISTRY } from "../src/lib/navigation";
  *  - Click-outside closes the open panel
  *  - Closed-group links are present in DOM (SSR crawlability)
  *  - Active trail: data-active on group button, aria-current on leaf links
- *  - Analytics events: nav_group_open and cta_verdivurdering fire
+ *  - Analytics events: nav_group_open and cta_analyseportal fire
  *  - SSR: GET / contains all inNav hrefs in initial HTML
  *  - Mobile (320×568): hamburger, inline accordion, last link + CTA reachable
  */
@@ -161,7 +161,7 @@ test.describe("Desktop nav groups", () => {
     await expect(leaf).toHaveAttribute("aria-current", "page");
   });
 
-  test("analytics: nav_group_open and cta_verdivurdering events fire", async ({
+  test("analytics: nav_group_open and cta_analyseportal events fire", async ({
     page,
   }) => {
     // Capture dataLayer pushes before the page loads.
@@ -183,7 +183,11 @@ test.describe("Desktop nav groups", () => {
     );
     expect(groupEvent).toBeDefined();
 
-    // Click the CTA — should push cta_verdivurdering
+    // The CTA points at the analyseportal and fires cta_analyseportal.
+    await expect(page.locator(".nav-cta").first()).toHaveAttribute(
+      "href",
+      "/analyseportal",
+    );
     await page.locator(".nav-cta").first().click();
     const dlAfterCta = await page.evaluate(
       () => (window as { dataLayer?: unknown[] }).dataLayer ?? [],
@@ -192,7 +196,7 @@ test.describe("Desktop nav groups", () => {
       (e) =>
         typeof e === "object" &&
         e !== null &&
-        (e as Record<string, unknown>).event === "cta_verdivurdering",
+        (e as Record<string, unknown>).event === "cta_analyseportal",
     );
     expect(ctaEvent).toBeDefined();
   });
