@@ -134,12 +134,13 @@ export default async function HelpArticle({
 
   // Left-rail category nav: all categories with counts; active category's
   // articles (ordered) expanded.
+  // Count by PRIMARY category (categories[0]) so the number matches both the
+  // expanded article list below and the hub library — multi-category articles
+  // (e.g. exit-yield = terms+valuation) belong to their primary category only.
   const navCategories = HELP_CATEGORY_META.map((c) => ({
     slug: c.slug,
     title: c.title,
-    count: allHelpPosts.filter((p) =>
-      (p.categories as string[]).includes(c.slug),
-    ).length,
+    count: allHelpPosts.filter((p) => p.categories[0] === c.slug).length,
   }))
   const categoryArticles = getOrderedHelpPosts(
     allHelpPosts.filter((p) => p.categories[0] === category.slug),
