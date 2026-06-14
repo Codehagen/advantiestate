@@ -90,10 +90,9 @@ describe("buildCrumbs", () => {
   it("resolves /help/article/[slug] through the full parent chain", () => {
     const crumbs = buildCrumbs("/help/article/some-article", "Hva er næringseiendom?")
     expect(crumbs).not.toBeNull()
-    // Hjem → Markedsinnsikt → Kunnskapssenter → [article title]
+    // Kunnskapssenter is now a top-level section: Hjem → Kunnskapssenter → [article title]
     expect(crumbs![0].href).toBe("/")
     const hrefs = crumbs!.map((c) => c.href)
-    expect(hrefs).toContain("/markedsinnsikt")
     expect(hrefs).toContain("/help")
     // Leaf
     expect(crumbs!.at(-1)).toMatchObject({

@@ -18,6 +18,8 @@ describe("navItems()", () => {
     // Top-level labels visible in the desktop nav bar
     expect(paths).toContain("/eiendommer")
     expect(paths).toContain("/kontakt")
+    // Kunnskapssenter promoted to a top-level link (out of the Innsikt group)
+    expect(paths).toContain("/help")
     // Group triggers (Tjenester, Innsikt, Om oss) are also inNav:true + parent:null
     expect(paths).toContain("/tjenester")
     expect(paths).toContain("/markedsinnsikt")
@@ -128,10 +130,10 @@ describe("navGroups.innsikt", () => {
     expect(paths).toContain("/markedsrapport")
   })
 
-  it("includes /verktoy and /help (cross-links to tools and knowledge centre)", () => {
+  it("includes /verktoy; /help was promoted out to a top-level nav link", () => {
     const paths = navGroups.innsikt.map((e) => e.path)
     expect(paths).toContain("/verktoy")
-    expect(paths).toContain("/help")
+    expect(paths).not.toContain("/help")
   })
 
   it("every entry has inNav:true and navGroup === 'innsikt'", () => {
