@@ -4,6 +4,7 @@ import { PhotoBand } from "@/components/site/PhotoBand";
 import { Faq, type FaqItem } from "@/components/site/Faq";
 import StructuredData from "@/components/StructuredData";
 import { Breadcrumbs } from "@/components/site/Breadcrumbs";
+import { SeOgsa } from "@/components/site/SeOgsa";
 import { VerdivurderingIntake } from "./VerdivurderingIntake";
 
 const LAST_UPDATED = "2026-05-22";
@@ -330,6 +331,27 @@ export default function VerdivurderingPage() {
       <PhotoBand src="/building/pexels-abshky-18567185.jpg" alt="Verdivurdering av næringseiendom" caption="Verdivurdering · Nord-Norge" />
 
       <VerdivurderingIntake />
+
+      <section className="section-tight" style={{ paddingTop: 0 }}>
+        <div className="wrap">
+          <SeOgsa
+            heading="Neste steg"
+            from="tjeneste-verdivurdering"
+            links={[
+              {
+                href: "/beslutningsgrunnlag",
+                label: "Bør du selge, refinansiere eller holde?",
+                note: "Få et partner-vurdert beslutningsgrunnlag på 48 timer.",
+              },
+              {
+                href: "/tjenester/salg",
+                label: "Salg av næringseiendom",
+                note: "Strukturert salgsprosess fra verdivurdering til oppgjør.",
+              },
+            ]}
+          />
+        </div>
+      </section>
 
       <div className="wrap pb-16 text-center">
         <p className="eyebrow no-rule">

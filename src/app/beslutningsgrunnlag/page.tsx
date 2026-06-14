@@ -3,6 +3,7 @@ import Link from "next/link";
 import { constructMetadata } from "@/lib/utils";
 import { SubHero } from "@/components/site/SubHero";
 import { Breadcrumbs } from "@/components/site/Breadcrumbs";
+import { SeOgsa } from "@/components/site/SeOgsa";
 import {
   VerdivurderingIntakeForm,
   type VerdivurderingPrefill,
@@ -10,10 +11,6 @@ import {
 
 export const metadata = constructMetadata({
   path: "/beslutningsgrunnlag",
-  // DRAFT conversion surface. noIndex until the partner-facing offer copy and
-  // the 48-hour fulfilment workflow have had a human review (plan Track C1).
-  // Flip to indexed once the offer is signed off.
-  noIndex: true,
   title: "Beslutningsgrunnlag for næringseiendom | Advanti Estate",
   description:
     "Bør du selge, refinansiere, holde, leie ut eller reposisjonere? Be om et beslutningsgrunnlag: en kort, partner-vurdert vurdering av eiendommen din innen 48 timer.",
@@ -167,6 +164,32 @@ export default function BeslutningsgrunnlagPage() {
               </div>
             </aside>
           </div>
+        </div>
+      </section>
+
+      <section className="section-tight" style={{ paddingTop: 0 }}>
+        <div className="wrap">
+          <SeOgsa
+            heading="Se også"
+            from="beslutningsgrunnlag"
+            links={[
+              {
+                href: "/tjenester/verdivurdering",
+                label: "Verdivurdering av næringseiendom",
+                note: "Hva eiendommen er verdt — DCF, yield og lokale transaksjoner.",
+              },
+              {
+                href: "/verktoy/naringskalkulator",
+                label: "Næringskalkulator",
+                note: "Regn ut et yield-basert verdianslag selv på et minutt.",
+              },
+              {
+                href: "/markedsinnsikt",
+                label: "Markedsinnsikt",
+                note: "Yield, leie og transaksjoner per by og segment.",
+              },
+            ]}
+          />
         </div>
       </section>
     </>
