@@ -8,6 +8,8 @@
  * Adding a new blog author: add one entry below — no other file needs editing.
  */
 
+import { allPersonPosts } from "content-collections";
+
 export interface AuthorMeta {
   name: string;
   /** Short role line shown beneath the author name. */
@@ -51,4 +53,41 @@ export const AUTHORS: Record<string, AuthorMeta> = {
  */
 export function getAuthorName(handle: string): string {
   return AUTHORS[handle]?.name ?? handle;
+}
+
+/** Resolved data for the editorial advisor/contact card. */
+export interface AuthorCard {
+  name: string;
+  role: string;
+  portrait: string;
+  phone?: string;
+  email?: string;
+}
+
+/**
+ * Resolves a blog-author handle to the data the <Advisor> card needs.
+ *
+ * Server-only: reads the people collection so phone/email come from the
+ * matching /personer profile when one exists (via `personSlug`). Authors
+ * without a public profile (or unknown handles) still get a valid card from
+ * the AUTHORS metadata — `portrait` always falls back to the author image —
+ * and the card itself degrades to a "Kontakt oss" link when phone/email are
+ * absent. Returns null only for a completely unknown handle.
+ */
+export function resolveAuthorCard(handle: string): AuthorCard | null {
+  const meta = AUTHORS[handle];
+  if (!meta) return null;
+  const person = meta.personSlug
+    ? allPersonPosts.find((p) => p.slug === meta.personSlug)
+    : undefined;
+  return {
+    name: meta.name,
+    // Use the canonical AUTHORS role (editorial " · " form) so the card matches
+    // the byline above it — the people-collection `role` uses a hyphenated form
+    // ("Partner - Næringsmegler") that breaks the design separator convention.
+    role: meta.role,
+    portrait: meta.image,
+    phone: person?.phone,
+    email: person?.email,
+  };
 }

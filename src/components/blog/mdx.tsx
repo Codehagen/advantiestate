@@ -9,6 +9,7 @@ import BlurImage from "@/lib/blog/blur-image"
 import { HELP_CATEGORIES, POPULAR_ARTICLES } from "@/lib/blog/content"
 import { cx } from "@/lib/utils"
 
+import { Advisor } from "./Advisor"
 import CategoryCard from "./category-card"
 import CopyBox from "./copy-box"
 import HelpArticleLink from "./help-article-link"
@@ -602,6 +603,7 @@ const components = {
   Compare,
   ReadMore,
   Changelog,
+  Advisor,
   CopyBox,
   HelpArticles: (props: { articles: string[] }) => (
     <div className="grid gap-2 rounded-xl border border-warm-grey-2/20 bg-warm-grey-2/10 p-4">

@@ -71,6 +71,10 @@ const BlogPost = defineCollection({
     seoDescription: z.string().optional(),
     author: z.string(),
     summary: z.string(),
+    // When true, the article renders its own <Advisor> inline (e.g. a
+    // localized contact card under a "Kontakt" section), so the blog page
+    // suppresses the global author advisor card to avoid showing it twice.
+    advisorInline: z.boolean().default(false),
     related: z.array(z.string()).optional(),
     githubRepos: z.array(z.string()).optional(),
     tweetIds: z.array(z.string()).optional(),

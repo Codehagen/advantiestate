@@ -47,6 +47,34 @@ test("blog article renders editorial Note, Formula and Example components", asyn
   await expect(page.locator(".ae-cta h4").first()).toBeVisible();
 });
 
+test("inline Advisor renders once on Mo i Rana with a tel: link (no global duplicate)", async ({
+  page,
+}) => {
+  // Mo i Rana sets advisorInline:true and places its own localized <Advisor>
+  // under Kontakt — the page must NOT also render the global one.
+  await page.goto("/blog/naringseiendomsmarkedet-mo-i-rana-2026", {
+    waitUntil: "domcontentloaded",
+  });
+  const advisor = page.locator(".ae-advisor");
+  await expect(advisor).toHaveCount(1);
+  await expect(advisor.locator('a[href^="tel:"]').first()).toBeVisible();
+  // The new Compare section ships with this rewrite too.
+  await expect(page.locator(".ae-compare .ae-col.is-accent").first()).toBeVisible();
+});
+
+test("global Advisor renders from author data on a non-inline article", async ({
+  page,
+}) => {
+  // dcf-analyse has no advisorInline flag, so the page renders the global
+  // advisor card from the author's resolved profile (codehagen → christer-hagen).
+  await page.goto("/blog/dcf-analyse-naringseiendom", {
+    waitUntil: "domcontentloaded",
+  });
+  const advisor = page.locator(".ae-advisor");
+  await expect(advisor).toHaveCount(1);
+  await expect(advisor.locator('a[href^="tel:"]').first()).toBeVisible();
+});
+
 test("Summary renders roman numerals (legacy iconName prop ignored)", async ({
   page,
 }) => {
