@@ -2933,6 +2933,21 @@ h1, h2, h3 {
 .mi-tablewrap { overflow-x: auto; }
 .mi-tablewrap .mi-table { min-width: 520px; }
 
+/* Editorial/MDX table scroll container (GFM tables + the Example component).
+   Wide tables scroll horizontally instead of overflowing the mobile viewport;
+   the wrapper (not display:block on <table>) keeps the table a11y role. */
+.ae-table-scroll { overflow-x: auto; max-width: 100%; -webkit-overflow-scrolling: touch; }
+.ae-table-scroll > table { margin: 0; }
+/* Let the table take its intrinsic width inside the scroll container so the
+   WRAPPER scrolls, instead of width:100% clamping the table and letting its
+   rows overflow the page. The .ae-example selector beats `.ae-example table
+   { width:100% }` (higher specificity). */
+.ae-table-scroll > table,
+.ae-example .ae-table-scroll > table {
+  width: max-content;
+  min-width: 100%;
+}
+
 .mi-table {
   width: 100%;
   border-collapse: collapse;
@@ -4135,7 +4150,8 @@ h1, h2, h3 {
 }
 .ks-art-meta {
   display: flex;
-  gap: 18px;
+  flex-wrap: wrap;
+  gap: 8px 18px;
   align-items: center;
   margin-bottom: 32px;
   font-size: 12.5px;
@@ -6317,6 +6333,13 @@ h1, h2, h3 {
   .ae-stat-strip .ae-stat:nth-child(odd) { border-left: 0; padding-left: 0; }
   .ae-stat-strip .ae-stat { border-top: var(--hairline); padding: 22px 0; }
   .ae-stat-strip .ae-stat:nth-child(2n) { padding-left: 24px; border-left: var(--hairline); }
+}
+/* Phones: a 2-col strip is too narrow for non-wrapping values like
+   "1 100–1 700 kr/m²/år" — stack to one column so it never overflows. */
+@media (max-width: 480px) {
+  .ae-stat-strip { grid-template-columns: 1fr; }
+  .ae-stat-strip .ae-stat,
+  .ae-stat-strip .ae-stat:nth-child(2n) { padding-left: 0; border-left: 0; }
 }
 
 /* -- 5 · SUMMARY GRID ------------------------------------- */
