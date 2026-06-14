@@ -1,6 +1,7 @@
 import { describe, it, expect } from "vitest"
 
 import {
+  foldNo,
   getOrderedHelpPosts,
   helpNeighbours,
   helpCategoryTitle,
@@ -19,6 +20,24 @@ const POSTS: Post[] = [
   { slug: "alfa", title: "Alfa", categories: ["terms"] },
   { slug: "invest", title: "Invest", categories: ["for-investors"] },
 ]
+
+describe("foldNo()", () => {
+  it("lets ASCII input match Norwegian special characters", () => {
+    // The whole point: a user typing without æ/ø/å still matches.
+    expect(foldNo("Hva er næringseiendom").includes(foldNo("naring"))).toBe(true)
+    expect(foldNo("Næringsmarkedet i Bodø").includes(foldNo("bodo"))).toBe(true)
+    expect(foldNo("Driftsøkonomi").includes(foldNo("drifts"))).toBe(true)
+  })
+
+  it("is case-insensitive and idempotent on plain ASCII", () => {
+    expect(foldNo("YIELD")).toBe("yield")
+    expect(foldNo(foldNo("Felleskostnader"))).toBe("felleskostnader")
+  })
+
+  it("folds æ→a, ø→o, å→a", () => {
+    expect(foldNo("æøå")).toBe("aoa")
+  })
+})
 
 describe("getOrderedHelpPosts()", () => {
   it("orders by category index then title (nb collation, deterministic)", () => {

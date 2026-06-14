@@ -3,6 +3,8 @@
 import Link from "next/link"
 import { useMemo, useState } from "react"
 
+import { foldNo } from "@/lib/blog/help-data"
+
 export interface LibraryItem {
   slug: string
   title: string
@@ -77,15 +79,15 @@ export function HelpLibrary({
     return map
   }, [items])
 
-  const q = filter.trim().toLowerCase()
+  const q = foldNo(filter.trim())
   const list = useMemo(() => {
     const filtered = items.filter((it) => {
       if (cat !== "all" && it.categorySlug !== cat) return false
       if (q.length === 0) return true
       return (
-        it.title.toLowerCase().includes(q) ||
-        it.summary.toLowerCase().includes(q) ||
-        it.category.toLowerCase().includes(q)
+        foldNo(it.title).includes(q) ||
+        foldNo(it.summary).includes(q) ||
+        foldNo(it.category).includes(q)
       )
     })
     return sortItems(filtered, q ? "popular" : sort)

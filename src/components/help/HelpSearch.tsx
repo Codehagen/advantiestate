@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation"
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 
 import { trackEvent } from "@/lib/analytics"
+import { foldNo } from "@/lib/blog/help-data"
 
 export interface HelpSearchItem {
   slug: string
@@ -94,13 +95,13 @@ export function HelpSearch({
   const q = query.trim()
   const results = useMemo(() => {
     if (q.length === 0) return []
-    const needle = q.toLowerCase()
+    const needle = foldNo(q)
     return index
       .filter(
         (item) =>
-          item.title.toLowerCase().includes(needle) ||
-          item.summary.toLowerCase().includes(needle) ||
-          item.category.toLowerCase().includes(needle),
+          foldNo(item.title).includes(needle) ||
+          foldNo(item.summary).includes(needle) ||
+          foldNo(item.category).includes(needle),
       )
       .slice(0, MAX_RESULTS)
   }, [index, q])

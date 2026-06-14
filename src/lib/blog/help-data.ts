@@ -38,6 +38,22 @@ export function helpCategoryTitle(slug?: string): string {
   return HELP_CATEGORY_META.find((c) => c.slug === slug)?.title ?? "Artikkel"
 }
 
+/**
+ * Norwegian-aware fold for search matching: lowercases and reduces æ/ø/å (and
+ * other diacritics via NFD) to base letters, so a user typing ASCII ("naring",
+ * "bodo", "drift") still matches "næring", "Bodø", etc. Used by both the hero
+ * search and the library minisøk so their matching behaves identically.
+ */
+export function foldNo(s: string): string {
+  return s
+    .toLowerCase()
+    .replace(/æ/g, "a")
+    .replace(/ø/g, "o")
+    .replace(/å/g, "a")
+    .normalize("NFD")
+    .replace(/[̀-ͯ]/g, "")
+}
+
 /** Search-suggestion pills shown under the hero search field. */
 export const HELP_SEARCH_SUGGESTIONS = [
   "Yield",
