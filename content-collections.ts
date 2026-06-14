@@ -10,7 +10,7 @@ import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypeSlug from "rehype-slug";
 
 const computedFields = (
-  type: "blog" | "changelog" | "customers" | "help" | "legal" | "integrations",
+  _type: "blog" | "changelog" | "customers" | "help" | "legal" | "integrations",
 ) => ({
   slug: (document) => {
     const slugger = new GithubSlugger();

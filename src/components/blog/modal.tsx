@@ -33,7 +33,7 @@ export default function Modal({
       return
     }
     // fire onClose event if provided
-    onClose && onClose()
+    if (onClose) onClose()
 
     // if setShowModal is defined, use it to close modal
     if (setShowModal) {

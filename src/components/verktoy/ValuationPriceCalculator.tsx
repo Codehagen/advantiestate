@@ -6,6 +6,29 @@ import { Input } from "@/components/Input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/Select";
 import { RiInformationLine } from "@remixicon/react";
 
+// Pricing tables are pure constants — hoisted to module scope so they are not
+// re-created each render and don't need to be effect dependencies.
+const basePrices = {
+  enkel: { min: 15000, max: 30000 },
+  standard: { min: 30000, max: 60000 },
+  omfattende: { min: 60000, max: 150000 },
+};
+
+const complexityMultipliers = {
+  standard: 1.0,
+  middels: 1.3,
+  høy: 1.6,
+};
+
+// Area multipliers (for larger properties)
+const getAreaMultiplier = (area: number) => {
+  if (area < 500) return 0.8;
+  if (area < 1000) return 1.0;
+  if (area < 2000) return 1.2;
+  if (area < 5000) return 1.5;
+  return 2.0;
+};
+
 export function ValuationPriceCalculator() {
   // Input state
   const [areal, setAreal] = useState(1000);
@@ -16,29 +39,6 @@ export function ValuationPriceCalculator() {
   // Calculated values
   const [estimertPris, setEstimertPris] = useState(0);
   const [prisRange, setPrisRange] = useState<{ min: number; max: number }>({ min: 0, max: 0 });
-
-  // Base prices
-  const basePrices = {
-    enkel: { min: 15000, max: 30000 },
-    standard: { min: 30000, max: 60000 },
-    omfattende: { min: 60000, max: 150000 },
-  };
-
-  // Complexity multipliers
-  const complexityMultipliers = {
-    standard: 1.0,
-    middels: 1.3,
-    høy: 1.6,
-  };
-
-  // Area multipliers (for larger properties)
-  const getAreaMultiplier = (area: number) => {
-    if (area < 500) return 0.8;
-    if (area < 1000) return 1.0;
-    if (area < 2000) return 1.2;
-    if (area < 5000) return 1.5;
-    return 2.0;
-  };
 
   // Calculate on input change
   useEffect(() => {

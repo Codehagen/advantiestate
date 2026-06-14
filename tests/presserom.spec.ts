@@ -234,13 +234,9 @@ test("B8: /presserom JSON-LD — Dataset med distribution.contentUrl, ingen node
   const blocks = await page.locator(LD).allTextContents();
   expect(blocks.length, "JSON-LD blocks på /presserom").toBeGreaterThan(0);
 
-  // Alle blokker skal parses uten feil
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const parsed: any[] = blocks.map((b) => JSON.parse(b));
+  // Alle blokker skal parses uten feil  const parsed: any[] = blocks.map((b) => JSON.parse(b));
 
-  // Minst én Dataset-blokk
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const dataset = parsed.find((b: any) => b["@type"] === "Dataset");
+  // Minst én Dataset-blokk  const dataset = parsed.find((b: any) => b["@type"] === "Dataset");
   expect(dataset, "Dataset JSON-LD blokk").toBeTruthy();
 
   // distribution.contentUrl skal slutte med /presserom/markedstall.csv
@@ -300,11 +296,7 @@ test(`B10: /blog/${CODEHAGEN_SLUG} Article.author @id → /personer/christer-hag
     waitUntil: "domcontentloaded",
   });
 
-  const blocks = await page.locator(LD).allTextContents();
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const parsed: any[] = blocks.map((b) => JSON.parse(b));
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const blocks = await page.locator(LD).allTextContents();  const parsed: any[] = blocks.map((b) => JSON.parse(b));
   const article = parsed.find((b: any) => b["@type"] === "Article");
   expect(article, "Article JSON-LD blokk på bloggpost").toBeTruthy();
 

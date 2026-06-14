@@ -251,7 +251,6 @@ function MapController({
     if (zs) moveTo(zs.center[0], zs.center[1], zs.zoom)
     else moveTo(city.lat, city.lon, 11)
     // Bare selected som trigger — andre deps via stabile refs
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selected, moveTo])
 
   // (b) ViewRequest → eksplisitt kartbevegelse (CTA, chip, reset)

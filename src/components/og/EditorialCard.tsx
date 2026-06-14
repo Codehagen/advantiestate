@@ -226,8 +226,11 @@ export function EditorialCard(props: EditorialCardProps) {
           {props.mode === "article" ? (
             <div style={{ display: "flex", alignItems: "center" }}>
               {props.authorAvatar ? (
+                // OG cards render via satori (next/image is unsupported here).
+                // eslint-disable-next-line @next/next/no-img-element
                 <img
                   src={props.authorAvatar}
+                  alt=""
                   width={48}
                   height={48}
                   style={{

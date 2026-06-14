@@ -21,6 +21,16 @@ const config = [
       "@typescript-eslint/ban-ts-comment": "off",
       "@typescript-eslint/no-explicit-any": "off",
       "@typescript-eslint/no-require-imports": "off",
+      // Honor the repo's `_`-prefix convention for intentionally-unused args,
+      // vars, and caught errors (stub signatures, interface-required params).
+      "@typescript-eslint/no-unused-vars": [
+        "warn",
+        {
+          argsIgnorePattern: "^_",
+          varsIgnorePattern: "^_",
+          caughtErrorsIgnorePattern: "^_",
+        },
+      ],
       "prefer-const": "off",
       "react-hooks/immutability": "off",
       "react-hooks/preserve-manual-memoization": "off",
