@@ -1,3 +1,4 @@
+import { Advisor } from "@/components/blog/Advisor";
 import { ArticleToc } from "@/components/blog/ArticleToc";
 import { MDX } from "@/components/blog/mdx";
 import ScrollProgress from "@/components/blog/scroll-progress";
@@ -9,7 +10,8 @@ import { getBlurDataURL } from "@/lib/blog/images";
 import { calculateReadingTime } from "@/lib/blog/utils";
 import { constructMetadata } from "@/lib/utils";
 import { getBlogPost } from "@/lib/content";
-import { AUTHORS, getAuthorName } from "@/lib/authors";
+import { AUTHORS, getAuthorName, resolveAuthorCard } from "@/lib/authors";
+import { siteConfig } from "@/app/siteConfig";
 import { allBlogPosts } from "content-collections";
 import { Metadata } from "next";
 import Link from "next/link";
@@ -118,6 +120,10 @@ export default async function BlogArticle({
     : null;
   const authorMeta = AUTHORS[data.author];
   const authorName = getAuthorName(data.author);
+  const advisorCard = resolveAuthorCard(data.author);
+  const { streetAddress, postalCode, addressLocality } =
+    siteConfig.contact.address;
+  const advisorAddress = `${siteConfig.name} · ${streetAddress}, ${postalCode} ${addressLocality}`;
   const toc = data.tableOfContents ?? [];
 
   return (
@@ -244,21 +250,17 @@ export default async function BlogArticle({
                 }))}
               />
 
-              {/* Author footer */}
-              {authorMeta && (
-                <div
-                  className="ks-art-author"
-                  style={{ marginTop: 64, marginBottom: 0 }}
-                >
-                  <div
-                    className="av"
-                    style={{ backgroundImage: `url('${authorMeta.image}')` }}
-                  />
-                  <div className="meta">
-                    <span className="name">{authorMeta.name}</span>
-                    <span className="role">{authorMeta.role}</span>
-                  </div>
-                </div>
+              {/* Advisor card — rendered globally from the author's profile,
+                  unless the article placed its own inline (advisorInline). */}
+              {!data.advisorInline && advisorCard && (
+                <Advisor
+                  name={advisorCard.name}
+                  role={advisorCard.role}
+                  portrait={advisorCard.portrait}
+                  address={advisorAddress}
+                  phone={advisorCard.phone}
+                  email={advisorCard.email}
+                />
               )}
 
               {/* Related */}
