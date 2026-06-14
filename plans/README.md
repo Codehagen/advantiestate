@@ -21,7 +21,7 @@ done.
 | 010  | Gjør «Hva er næringseiendom» til pilarside + unike meta descriptions | P2 | M | 009 | DONE (APPROVED @ ff935d2 etter 1 revisjonsrunde; 1542 ord; merget til main via PR #45 `63d3a4e`, 2026-06-12) |
 | 011  | Artikkel-veikart: 15 nye kunnskapsartikler i tre klynger (terms / for-investors / analysis) | P1 | L | 009 (anbefalt etter 010) | DONE (15 artikler i 3 batcher, APPROVED @ c4f3cab etter 3 korrektur-/speilingsrevisjoner; help 12→27 artikler; merget til main via PR #45 `63d3a4e`, 2026-06-12) |
 | 012  | Avkannibaliser blog↔help-duplikatene (sensitivitetsanalyse, DCF) | P2 | S–M | — (anbefalt etter 010) | DONE (APPROVED @ 706e6bf etter 1 terminologirevisjon; rolleregel etablert: help = kanonisk begrep («hva er X»), blog = praktisk/aktuelt; merget til main via PR #45 `63d3a4e`, 2026-06-12) |
-| 013  | Port «Kunnskapssenter v2»-designet (hub + artikkel-id-side) til /help | P1 | L | 009–012 | IN PROGRESS (ENG+DESIGN CLEARED @ 45f9e69; eng 13 funn foldet, design 7→9/10; implementeres på `feat/kunnskapssenter-v2-design`) |
+| 013  | Port «Kunnskapssenter v2»-designet (hub + artikkel-id-side) til /help | P1 | L | 009–012 | DONE (impl @ 3022e5b på `feat/kunnskapssenter-v2-design`; ENG+DESIGN CLEARED; build+typecheck grønt; /qa grønt — 0 konsollfeil, 0 bugs på hub+artikkel, alle nye interaksjoner + mobil verifisert. Ikke pushet/PR-et) |
 
 Status values: TODO | IN PROGRESS | DONE | BLOCKED (with one-line reason) | REJECTED (with one-line rationale)
 
