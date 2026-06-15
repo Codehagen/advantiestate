@@ -6893,10 +6893,12 @@ h1, h2, h3 {
   font-weight: 300;
   letter-spacing: 0.01em;
   line-height: 1.4;
-  /* Wide KatexMath can exceed the block on narrow screens — scroll the
-     formula within the block instead of overflowing the whole page. */
+  /* Wide KatexMath (e.g. the full DCF expression) is auto-scaled to fit by
+     useFitToWidth in katex-math.tsx, so no scrollbar is needed. `hidden` is
+     just a pre-hydration / no-JS safety net that keeps a wide formula from
+     pushing horizontal scroll onto the page — it never shows a scrollbar. */
   max-width: 100%;
-  overflow-x: auto;
+  overflow: hidden;
 }
 .ae-formula .ae-eq sub { font-style: normal; font-size: 0.62em; }
 .ae-formula .ae-desc {
@@ -6908,6 +6910,11 @@ h1, h2, h3 {
 .ae-formula.is-light { background: var(--accent-faint); color: var(--warm-grey); border: var(--hairline); }
 .ae-formula.is-light .ae-label { color: var(--warm-grey-85); }
 .ae-formula.is-light .ae-desc { color: var(--warm-grey-85); }
+/* Tighter gutters on small screens give the auto-scaled formula more room, so
+   it stays legible instead of being shrunk to fit 40px side padding. */
+@media (max-width: 560px) {
+  .ae-formula { padding: 26px 22px; margin: 36px 0; }
+}
 
 /* -- 12 · FIGURE ------------------------------------------ */
 .ae-figure { margin: 48px 0; }

@@ -441,7 +441,7 @@ function MathBlock(props: {
     <div className="ae-formula">
       <span className="ae-label">Formel</span>
       <div className="ae-eq">
-        <KatexMath formula={props.formula} mode={props.mode} />
+        <KatexMath formula={props.formula} mode={props.mode} fit />
       </div>
       {props.description && <div className="ae-desc">{props.description}</div>}
     </div>
