@@ -10686,11 +10686,15 @@ h1, h2, h3 {
   .hs-path, .hs-path .steps a .sa, .hs-row, .hs-row .rarrow, .hs-res,
   .hs-res .rarrow, .hs-pill, .hs-chip, .hs-sortbtn, .hs-search, .hs-minisearch,
   .hs-faq-aside .askmore, .hs-qa summary::after,
-  .art-prevnext a, .ks-art-author .av {
+  .art-prevnext a, .ks-art-author .av,
+  .hs-mr, .hs-cat, .hs-cat .links a, .hs-cat .links a .li-arrow,
+  .hs-cat .seeall, .hs-cat .seeall .sa, .hs-loadmore button {
     transition: none !important;
   }
   .hs-row:hover { padding-left: 14px; padding-right: 14px; }
-  .hs-row:hover .rarrow, .hs-path .steps a:hover .sa { transform: none; }
+  .hs-mr:hover { padding-left: 2px; padding-right: 2px; }
+  .hs-row:hover .rarrow, .hs-path .steps a:hover .sa,
+  .hs-cat .links a:hover .li-arrow, .hs-cat .seeall:hover .sa { transform: none; }
 }
 
 /* ============================================================
