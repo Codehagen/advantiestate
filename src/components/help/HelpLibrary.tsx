@@ -225,9 +225,9 @@ export function HelpLibrary({
           <div className="em-mark" aria-hidden="true">
             ⌕
           </div>
-          <h4>
+          <h3>
             Ingen treff <span className="q">her.</span>
-          </h4>
+          </h3>
           <p>
             Vi fant ingen artikler som matcher
             {q ? ` «${filter.trim()}»` : " filteret"}
