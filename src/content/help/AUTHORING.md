@@ -41,7 +41,7 @@ lage dem i brødteksten:
 | Innholdsfortegnelse + kategori-rail | utledet | H2-er + `categories` |
 | Tilbakemelding («Var dette nyttig?») | sidemal | — |
 | Forrige / Neste | sidemal | kategori-sekvens |
-| Relaterte artikler («Les videre i {kategori}») | frontmatter | `related` |
+| Relaterte artikler («Flere artikler i {kategori}») | frontmatter | `related` |
 | Avsluttende CTA-strip + nyhetsbrev | sidemal | — |
 
 Brødteksten din starter altså med **åpningsprosa**, ikke med tittel/ingress.
@@ -140,7 +140,7 @@ pilar-artikkel, alltid kanonisk URL (`/help/article/<slug>`).
 **Unngå:** «klikk her», samme begrep lenket fem ganger, blindveier (hver artikkel
 skal ha minst tre veier videre).
 
-> Den automatiske «Les videre i {kategori}»-ruten nederst viser **kun
+> Den automatiske «Flere artikler i {kategori}»-ruten nederst viser **kun
 > kunnskapsartikler**. Blogg-kryss-lenken må derfor ligge i en `<ReadMore>` i
 > brødteksten — det er det eneste stedet bloggen kobles inn.
 

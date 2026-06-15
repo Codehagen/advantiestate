@@ -54,6 +54,21 @@ function metaProperty(html: string, prop: string): string | null {
   return tag ? tag.match(/\bcontent="([^"]*)"/i)?.[1] ?? null : null;
 }
 
+/** Parse every <script type="application/ld+json"> block; skip any that don't parse. */
+function ldBlocks(html: string): Array<Record<string, unknown>> {
+  const out: Array<Record<string, unknown>> = [];
+  for (const m of html.matchAll(
+    /<script[^>]*type="application\/ld\+json"[^>]*>(.*?)<\/script>/gis,
+  )) {
+    try {
+      out.push(JSON.parse(m[1]));
+    } catch {
+      /* a malformed block is caught by structured-data.spec's JSON validity test */
+    }
+  }
+  return out;
+}
+
 function pageTitle(html: string): string {
   return (html.match(/<title[^>]*>([^<]*)<\/title>/i)?.[1] ?? "")
     .replace(/&amp;/g, "&")
@@ -186,4 +201,43 @@ test("help article emits both article published_time and modified_time", async (
     published! <= modified!,
     `${path} published (${published}) must not be after modified (${modified})`,
   ).toBe(true);
+})
+
+test("every help article keeps FAQPage schema in lockstep with its visible FAQ", async ({
+  request,
+}) => {
+  // Google's FAQ rich-result policy: the FAQPage schema must mirror the
+  // on-page FAQ exactly. Bidirectional invariant across ALL help articles:
+  //   visible .ks-faq-item  >0  <=>  one FAQPage block whose mainEntity count matches.
+  // Catches a missing schema (lost rich result) AND schema-without-visible
+  // (cloaking — a manual penalty risk). FAQ itself is optional, so an article
+  // with neither is fine and skipped.
+  test.setTimeout(120_000);
+  const urls = await sitemapUrls(request);
+  const helpArticles = urls.filter((u) =>
+    /\/help\/article\//.test(new URL(u).pathname),
+  );
+  expect(helpArticles.length, "help articles in sitemap").toBeGreaterThan(20);
+
+  const failures: string[] = [];
+  for (const u of helpArticles) {
+    const path = new URL(u).pathname;
+    const html = await (await request.get(path)).text();
+    const visible = (html.match(/class="ks-faq-item"/g) ?? []).length;
+    const faq = ldBlocks(html).find((j) => j["@type"] === "FAQPage");
+    const schema = Array.isArray(faq?.mainEntity)
+      ? (faq!.mainEntity as unknown[]).length
+      : 0;
+
+    if (visible === 0) {
+      if (faq) failures.push(`${path} -> FAQPage JSON-LD but no visible FAQ (cloaking)`);
+      continue;
+    }
+    if (!faq) {
+      failures.push(`${path} -> ${visible} visible FAQ items but no FAQPage JSON-LD`);
+    } else if (schema !== visible) {
+      failures.push(`${path} -> FAQPage mainEntity ${schema} != ${visible} visible items`);
+    }
+  }
+  expect(failures, `\n${failures.join("\n")}`).toEqual([]);
 });
