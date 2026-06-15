@@ -1,11 +1,16 @@
 ---
 title: Prime yield vs sekundær yield
 publishedAt: 2026-06-12
-updatedAt: 2026-06-12
+updatedAt: 2026-06-15
 summary: "Prime yield er markedets referansepunkt for prising av næringseiendom. Lær hva prime betyr, hva yield-spread forteller og slik brukes det i verdivurdering."
 author: codehagen
 categories:
   - analysis
+takeaways:
+  - Prime yield er avkastningskravet for den best kvalifiserte eiendommen og fungerer som markedets referansepunkt for all prising.
+  - Fire kriterier kjennetegner en prime-eiendom — sentral beliggenhet, høy bygningskvalitet, lang gjenværende kontraktstid og solid leietaker.
+  - Yield-spread mot sekundæreiendom er et barometer på markedets risikoappetitt; smalt spread betyr høy risikovilje, bredt spread mer selektive investorer.
+  - I verdivurdering og DCF er prime yield ankerpunktet du justerer opp fra basert på eiendommens individuelle risikoprofil.
 related:
   - hva-er-yield
   - exit-yield
@@ -20,9 +25,18 @@ faq:
     answer: "Prime yield brukes som ankerpunkt: analytikeren starter med prime yield og justerer opp basert på eiendomsspesifikke risikoer som beliggenhet, bygningskvalitet, leietakerprofil og gjenværende kontraktstid. I DCF-analyser er prime yield også referansepunkt for valget av exit yield ved analyseperiodens slutt."
 ---
 
+Når du leser en markedsrapport eller skal prise en næringseiendom, dukker prime yield opp som tallet alt annet måles mot. Forstår du hva prime betyr, og hvordan yield-spreaden mot sekundæreiendom beveger seg, leser du markedet langt mer presist.
+
+<Prerequisites>
+  - Grunnleggende forståelse av [yield](/help/article/hva-er-yield) i næringseiendom
+  - Kjennskap til [yield-gap](/help/article/yield-gap) mot alternative plasseringer
+  - Forståelse av [exit yield](/help/article/exit-yield) i DCF-analyser
+  - Slik [leser du en markedsrapport](/help/article/hvordan-lese-markedsrapport)
+</Prerequisites>
+
 ## Hva er prime yield?
 
-[Prime yield](/help/article/prime-yield) er avkastningskravet for den best kvalifiserte eiendommen i et marked — og dermed markedets prisingspunkt for lavest mulig risiko i den aktuelle eiendomsklassen. Begrepet er sentralt i næringseiendom fordi det danner grunnlinjen som alle andre eiendommer prises relativt til. Se [hva er yield](/help/article/hva-er-yield) for en grundigere innføring i yield som begrep.
+**Prime yield** er avkastningskravet for den best kvalifiserte eiendommen i et marked — og dermed markedets prisingspunkt for lavest mulig risiko i den aktuelle eiendomsklassen. Begrepet er sentralt i næringseiendom fordi det danner grunnlinjen som alle andre eiendommer prises relativt til. Se [hva er yield](/help/article/hva-er-yield) for en grundigere innføring i yield som begrep.
 
 ## Hva kjennetegner en prime-eiendom?
 
@@ -38,13 +52,36 @@ Ikke alle eiendommer kan kvalifisere som prime. Typisk må fire egenskaper være
 
 Dersom ett av disse kriteriene svikter — for eksempel at kontrakten nærmer seg forfall, at byggets standard er lav, eller at leietaker er liten og usikker — vil eiendommen prises med et risikopåslag ut fra prime: en høyere yield.
 
-<Note variant="info">
+<Note>
   Definisjonen av «prime» er ikke standardisert på tvers av markedsrapporter. En rapport kan kreve ti år igjen på kontrakten for å kalle en eiendom prime, mens en annen setter grensen lavere. Det er viktig å forstå hvilken definisjon rapporten legger til grunn, slik at prime yield-tallene brukes korrekt som referansepunkt.
 </Note>
 
 ## Yield-spread mot sekundæreiendom
 
 Differansen mellom prime yield og yield for sekundæreiendom kalles yield-spread. Den forteller noe om markedets samlede risikoappetitt og prisingsdisiplin.
+
+<Compare
+  pro={{
+    head: "Prime-eiendom (referansepunktet)",
+    items: [
+      "Sentral beliggenhet i det mest etterspurte delmarkedet",
+      "Høy teknisk standard og fleksible planløsninger",
+      "Lang gjenværende kontraktstid og forutsigbar kontantstrøm",
+      "Solid leietaker med høy kredittverdighet",
+      "Lavest yield i markedet — grunnlinjen alt annet måles mot"
+    ]
+  }}
+  con={{
+    head: "Sekundæreiendom (prises med påslag)",
+    items: [
+      "Svakere på ett eller flere prime-kriterier",
+      "Kortere eller mer usikker gjenværende kontraktstid",
+      "Lavere teknisk standard eller beliggenhet i randsonen",
+      "Mindre eller mer usikker leietaker",
+      "Høyere avkastningskrav — et risikopåslag ut fra prime"
+    ]
+  }}
+/>
 
 Et smalt spread betyr at investorer er villige til å betale nesten like mye for en sekundæreiendom som for prime. Det kan reflektere sterk konkurranse om eiendommer generelt, mangel på prime-tilbud som presser kapital mot sekundærsegmentet, eller en generell risikovilje i markedet.
 
@@ -67,7 +104,7 @@ Prime yield er et kraftfullt referansepunkt, men det har reelle begrensninger ma
 
 **Prime finnes sjelden til salgs.** De beste eiendommene med de beste leietakerne på de lengste kontraktene holdes gjerne lenge av eierne. Markedsomsetningen av faktiske prime-eiendommer er begrenset, noe som gjør at prime yield-estimater tidvis er basert på et tynt transaksjonsgrunnlag.
 
-<Note variant="success">
+<Note variant="positive">
   Bruk prime yield som orienteringspunkt, men kombiner alltid med konkret transaksjonsevidens og en gjennomgang av den individuelle eiendomsprofilen. Et godt ankerpunkt er kun nyttig dersom justeringene fra ankerpunktet er velbegrunnede.
 </Note>
 
@@ -108,6 +145,26 @@ I [DCF-analyser](/help/article/diskontert-kontantstrom) brukes prime yield dessu
       description: "Start med prime yield, juster opp for eiendomsspesifikke risikoer. Samme prinsipp gjelder for exit yield-valg i DCF-analyser.",
       iconName: "lightbulb"
     }
+  ]}
+/>
+
+<ReadMore
+  items={[
+    {
+      href: "/help/article/yield-gap",
+      pre: "Kunnskap",
+      title: "Yield-gap — eiendom mot alternative plasseringer",
+    },
+    {
+      href: "/help/article/hvordan-lese-markedsrapport",
+      pre: "Kunnskap",
+      title: "Slik leser du en markedsrapport for næringseiendom",
+    },
+    {
+      href: "/blog/markedspuls-nord-norge-2025-2026",
+      pre: "Blogg",
+      title: "Markedspuls Nord-Norge 2025–2026",
+    },
   ]}
 />
 

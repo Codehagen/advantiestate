@@ -1586,7 +1586,10 @@ h1, h2, h3 {
 /* ── breadcrumb trail — base (used by Breadcrumbs.tsx outside .subhero) ── */
 .crumb {
   display: inline-flex;
-  gap: 10px;
+  /* Wrap a long trail instead of forcing horizontal page scroll on mobile —
+     a long article title would otherwise push the crumb past the viewport. */
+  flex-wrap: wrap;
+  gap: 6px 10px;
   align-items: center;
   font-size: 12px;
   letter-spacing: 0.14em;
@@ -6667,6 +6670,11 @@ h1, h2, h3 {
   border-bottom: var(--hairline);
   align-items: start;
 }
+/* Let the content column shrink below its content's intrinsic width — without
+   this a wide KaTeX formula in a step blows the 1fr track past the viewport and
+   forces horizontal page scroll on mobile (the .ae-eq overflow:hidden only
+   contains once the grid item itself is allowed to shrink). */
+.ae-step > * { min-width: 0; }
 .ae-step .ae-sn {
   font-family: var(--font-display);
   font-size: 28px;

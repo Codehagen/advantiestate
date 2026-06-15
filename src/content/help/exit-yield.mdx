@@ -1,12 +1,17 @@
 ---
 title: Exit yield og terminalverdi
 publishedAt: 2026-06-12
-updatedAt: 2026-06-12
+updatedAt: 2026-06-15
 summary: "Exit yield er avkastningskravet for terminalverdien i DCF. Lær hva det er, hvorfor det settes høyere enn inngangs-yield, og hva det betyr for verdivurderingen."
 author: codehagen
 categories:
   - terms
   - valuation
+takeaways:
+  - Exit yield er det forventede avkastningskravet ved et fremtidig salg, og brukes til å beregne terminalverdien i en DCF-analyse.
+  - Exit yield settes gjerne noe høyere enn inngangs-yield for å reflektere aldring, kortere kontrakter og fremtidig usikkerhet.
+  - Terminalverdien utgjør en svært stor andel av total nåverdi, så valget av exit yield er en av de mest verdipåvirkende forutsetningene.
+  - Test alltid exit yield i en sensitivitetsanalyse, siden små endringer gir store utslag på konklusjonen.
 related:
   - diskontert-kontantstrom
   - hva-er-yield
@@ -21,9 +26,17 @@ faq:
     answer: "I en typisk 10-års DCF-analyse for næringseiendom vil terminalverdien utgjøre en svært betydelig andel av total nåverdi — ofte mer enn halvparten. Det gjør valget av exit yield til en av de mest verdipåvirkende forutsetningene i hele analysen."
 ---
 
+En DCF-modell stopper ikke når analyseperioden er over — eiendommen antas solgt, og den antatte salgsverdien må estimeres. Exit yield er forutsetningen som styrer dette estimatet, og fordi den slutter på terminalverdien er den blant de mest avgjørende tallene i hele verdivurderingen.
+
+<Prerequisites>
+  - Grunnleggende forståelse av [yield](/help/article/hva-er-yield) i næringseiendom
+  - Kjennskap til [diskontert kontantstrøm (DCF)](/help/article/diskontert-kontantstrom)
+  - Forståelse av [sensitivitetsanalyse](/help/article/sensitivitetsanalyse)
+</Prerequisites>
+
 ## Hva er exit yield?
 
-[Exit yield](/help/article/exit-yield) er det avkastningskravet man forventer at markedet vil legge til grunn for å prise eiendommen på et fremtidig salgstidspunkt — typisk ved slutten av en [DCF-analyse](/help/article/diskontert-kontantstrom). Exit yield brukes til å beregne **terminalverdien**: det estimerte provenyet fra et hypotetisk salg etter analyseperiodens siste år.
+**Exit yield** er det avkastningskravet man forventer at markedet vil legge til grunn for å prise eiendommen på et fremtidig salgstidspunkt — typisk ved slutten av en [DCF-analyse](/help/article/diskontert-kontantstrom). Exit yield brukes til å beregne **terminalverdien**: det estimerte provenyet fra et hypotetisk salg etter analyseperiodens siste år.
 
 Begrepet er uløselig knyttet til DCF-metodikken og er en av de mest verdipåvirkende forutsetningene i enhver kontantstrømsbasert verdivurdering.
 
@@ -48,7 +61,7 @@ Et naturlig spørsmål er om man ikke bare kan bruke dagens [yield](/help/articl
 
 **Leiekontrakter har kortere gjenværende tid.** Verdien av sikre, langsiktige kontrakter — som kanskje var en av verdigrunnlagene ved kjøpet — er redusert ved re-salg fordi kontraktene nå er nærmere forfall.
 
-<Note variant="info">
+<Note>
   En vanlig tilnærming er å sette exit yield noe høyere enn inngangs-yield — for eksempel ett kvart til ett halvt prosentpoeng — for å reflektere usikkerhet og aldring. Men det finnes ingen fast regel; valget må begrunnes konkret ut fra eiendomstype, beliggenhet og kontraktsstruktur.
 </Note>
 
@@ -69,7 +82,7 @@ Valg av exit yield krever vurdering av:
 3. **Bygg- og beliggenhetskvalitet** — Sentral beliggenhet og høy teknisk standard gir grunnlag for lavere exit yield enn periferi og vedlikeholdskrevende bygg.
 4. **Markedsutvikling** — Forventninger om renteutviklingen og generell markedsprisingstrend er sentrale innspill.
 
-<Note variant="success">
+<Note variant="positive">
   Dokumenter alltid begrunnelsen for valg av exit yield. En ubegrunnet exit yield er en svakhet som gjør verdivurderingen vanskelig å etterprøve og kritisere konstruktivt.
 </Note>
 
@@ -96,6 +109,26 @@ Valg av exit yield krever vurdering av:
       description: "Fordi exit yield er så verdisensitiv, bør sensitivitetsanalyse alltid vise verdien under ulike exit yield-scenarier.",
       iconName: "lightbulb"
     }
+  ]}
+/>
+
+<ReadMore
+  items={[
+    {
+      href: "/help/article/diskontert-kontantstrom",
+      pre: "Kunnskap",
+      title: "Diskontert kontantstrøm (DCF) — slik fungerer det",
+    },
+    {
+      href: "/help/article/sensitivitetsanalyse",
+      pre: "Kunnskap",
+      title: "Sensitivitetsanalyse i næringseiendom",
+    },
+    {
+      href: "/blog/dcf-analyse-naringseiendom",
+      pre: "Blogg",
+      title: "DCF-analyse av næringseiendom — praktisk gjennomgang",
+    },
   ]}
 />
 

@@ -84,3 +84,42 @@ for (const route of FAQ_ROUTES) {
     );
   });
 }
+
+/**
+ * Help articles render their FAQ from the same frontmatter `faq` array that
+ * drives the FAQPage JSON-LD (visible markup is .ks-faq-item h3, not the
+ * /tjenester accordion). After the editorial-anatomy rollout every article
+ * carries an FAQ, so this guards that the schema keeps matching the visible
+ * questions verbatim.
+ */
+const HELP_FAQ_ROUTES = [
+  "/help/article/hva-er-yield",
+  "/help/article/sensitivitetsanalyse",
+  "/help/article/verdivurdering-av-naringseiendom",
+];
+
+for (const route of HELP_FAQ_ROUTES) {
+  test(`FAQPage schema matches visible FAQ: ${route}`, async ({ page }) => {
+    await page.goto(route, { waitUntil: "domcontentloaded" });
+
+    const visibleQuestions = await page
+      .locator(".ks-faq .ks-faq-item h3")
+      .allTextContents();
+    expect(
+      visibleQuestions.length,
+      `${route} visible FAQ items`,
+    ).toBeGreaterThanOrEqual(2);
+
+    const faqBlock = (await page.locator(LD).allTextContents())
+      .map((block) => JSON.parse(block))
+      .find((json) => json["@type"] === "FAQPage");
+    expect(faqBlock, `${route} FAQPage JSON-LD`).toBeTruthy();
+
+    const schemaQuestions = faqBlock.mainEntity.map(
+      (q: { name: string }) => q.name,
+    );
+    expect(schemaQuestions, `${route} schema vs visible questions`).toEqual(
+      visibleQuestions.map((q) => q.trim()),
+    );
+  });
+}

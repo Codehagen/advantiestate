@@ -71,6 +71,7 @@ export async function generateMetadata({
     )}&summary=${encodeURIComponent(summary)}`,
     path: `/help/article/${post.slug}`,
     ogType: "article",
+    publishedTime: post.publishedAt ?? post.updatedAt,
     modifiedTime: post.updatedAt,
     authors: [helpAuthorName(post.author)],
   })
@@ -261,7 +262,7 @@ export default async function HelpArticle({
               {relatedArticles.length > 0 && (
                 <div className="ks-related">
                   <h3>
-                    Les videre{" "}
+                    Flere artikler{" "}
                     <span className="italic">
                       i {category.title.toLowerCase()}.
                     </span>

@@ -1,11 +1,16 @@
 ---
 title: KPI-regulering av leie
 publishedAt: 2026-06-12
-updatedAt: 2026-06-12
+updatedAt: 2026-06-15
 summary: "KPI-regulering justerer leien med konsumprisindeksen. Lær klausulen, hva 100 % KPI betyr i praksis, og hvorfor det er avgjørende i kontantstrømsanalysen."
 author: codehagen
 categories:
   - terms
+takeaways:
+  - "KPI-regulering justerer leien med konsumprisindeksen og bevarer leieinntektenes realverdi over kontraktens løpetid."
+  - "100 % KPI er markedsstandard: hele den prosentvise KPI-endringen veltes over på leien."
+  - "Klausulen definerer leievekstraten i en kontantstrømsanalyse; å ignorere den feilpriser fremtidige leieinntekter."
+  - "Andel av KPI, tak, gulv og referansemåned er forhandlbare og avgjøres av maktbalansen mellom partene."
 related:
   - markedsleie-og-leieniva
   - kontantstromsanalyse
@@ -19,6 +24,14 @@ faq:
   - question: "Kan partene avtale noe annet enn 100 % KPI?"
     answer: "Ja. Leieregulering er avtalefritt i næringseiendom. Partene kan avtale 100 % KPI, en fast prosent per år, KPI begrenset til et tak, KPI med et gulv, eller markedsleieregulering til bestemte tidspunkter. Det er forhandlingsmakt og markedsbalansen som avgjør hva som avtales."
 ---
+
+Leien i en næringsleiekontrakt er sjelden fast over tid. De fleste avtaler binder leien til konsumprisindeksen, slik at den følger inflasjonen år for år. Hvordan denne klausulen er formulert avgjør hvor mye leien faktisk vokser — og dermed hva eiendommen er verdt.
+
+<Prerequisites>
+  - Hvordan en [næringsleiekontrakt](/help/article/leiekontrakter-naringseiendom) er bygget opp
+  - Hva [brutto leieinntekter](/help/article/brutto-leieinntekter) er
+  - Forskjellen på avtalt leie og [markedsleie og leienivå](/help/article/markedsleie-og-leieniva)
+</Prerequisites>
 
 ## Hva er KPI-regulering av leie?
 
@@ -37,11 +50,28 @@ Et regneeksempel med generiske tall illustrerer mekanismen:
   description="ΔKPI er den prosentvise endringen i konsumprisindeksen mellom to referansemåneder"
 />
 
-Hvis gammel leie er 1 000 000 kr og KPI har steget 3,0 % siden referansepunktet:
+Et regnestykke med generiske tall viser hvordan en KPI-vekst på 3,0 % slår ut på årsleien:
 
-<Math
-  formula="\text{Ny leie} = 1\,000\,000 \times (1 + 0{,}03) = 1\,030\,000 \text{ kr}"
-  description="Generisk eksempel: 3 % KPI-vekst gir 30 000 kr høyere årsleie"
+<Example
+  title="100 % KPI-regulering — generisk regneeksempel"
+  steps={[
+    {
+      label: "Gammel årsleie",
+      value: 1000000,
+      calculation: "Avtalt leie før regulering"
+    },
+    {
+      label: "KPI-vekst siden referansepunktet",
+      value: "3,0 %",
+      calculation: "Prosentvis endring i konsumprisindeksen"
+    },
+    {
+      label: "Ny årsleie",
+      value: 1030000,
+      calculation: "1 000 000 × (1 + 0,03)",
+      isResult: true
+    }
+  ]}
 />
 
 Beløpene er kun illustrative; det er mekanismen som er poenget.
@@ -50,7 +80,7 @@ Beløpene er kun illustrative; det er mekanismen som er poenget.
 
 I en [kontantstrømsanalyse](/help/article/kontantstromsanalyse) fremskrives leieinntektene år for år. KPI-reguleringsklausulen definerer vekstraten på den kontraktsfestede leien: med 100 % KPI-regulering vokser leien med KPI-antagelsen i modellen.
 
-<Note variant="info">
+<Note>
   I en DCF-modell brukes typisk en langsiktig KPI-antagelse — for eksempel sentralbankens inflasjonsmål — som leievekstrate for KPI-regulerte kontrakter. Den faktiske KPI vil avvike, men antagelsen setter riktig strukturell vekst i modellen.
 </Note>
 
@@ -70,7 +100,7 @@ KPI-regulering er avtalefritt og forhandles mellom partene. De viktigste diskusj
 
 **Markedsleieregulering:** I noen kontrakter suppleres KPI-regulering med rett til markedsleieregulering ved bestemte tidspunkter — for eksempel hvert femte år. Da kan leien justeres til markedsleie uavhengig av KPI-utviklingen.
 
-<Note variant="success">
+<Note variant="positive">
   I sterke leiemarkeder vil utleier foretrekke ren KPI uten tak. I leietakermarkeder er et tak på reguleringen gjerne en forutsetning for å få signert. Forhandlingen reflekterer alltid maktbalansen mellom partene.
 </Note>
 
@@ -97,6 +127,26 @@ KPI-regulering er avtalefritt og forhandles mellom partene. De viktigste diskusj
       description: "Andelen av KPI, tak, gulv og referansemåned er alle forhandlbare. Utfallet avhenger av maktbalansen mellom utleier og leietaker.",
       iconName: "lightbulb"
     }
+  ]}
+/>
+
+<ReadMore
+  items={[
+    {
+      href: "/help/article/kontantstromsanalyse",
+      pre: "Kunnskap",
+      title: "Kontantstrømsanalyse — slik fremskrives leieinntektene",
+    },
+    {
+      href: "/help/article/markedsleie-og-leieniva",
+      pre: "Kunnskap",
+      title: "Markedsleie og leienivå — når KPI ikke er nok",
+    },
+    {
+      href: "/blog/rentestigninger-naringseiendom",
+      pre: "Blogg",
+      title: "Rentestigninger og næringseiendom — slik påvirkes verdiene",
+    },
   ]}
 />
 

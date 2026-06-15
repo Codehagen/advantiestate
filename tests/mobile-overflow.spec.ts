@@ -25,6 +25,16 @@ const ROUTES = [
   "/personer",
   "/kunder",
   "/help",
+  // Help-article template after the 2026-06 editorial-anatomy rollout. These are
+  // the canaries for the mobile horizontal-scroll fixes that pass made:
+  // sensitivitetsanalyse + diskontert-kontantstrom embed <DcfChart> (stat-row
+  // flex-wrap) and wide KaTeX formulas (auto-fit + .ae-step min-width:0);
+  // hva-er-naringseiendom has a long compound H1 + <Compare>/<Example>; every
+  // article's breadcrumb trail must wrap rather than overflow.
+  "/help/article/sensitivitetsanalyse",
+  "/help/article/diskontert-kontantstrom",
+  "/help/article/hva-er-naringseiendom",
+  "/help/article/aksjekjop-vs-innmatskjop",
   "/karriere",
   "/naringsmegler",
   // City-page template after the 2026-06 design upgrade — both variants:

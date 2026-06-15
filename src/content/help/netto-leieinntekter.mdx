@@ -1,136 +1,201 @@
 ---
 title: Netto leieinntekter
-updatedAt: 2025-02-18
+publishedAt: 2025-02-18
+updatedAt: 2026-06-15
 summary: Forståelse av netto leieinntekter i næringseiendom - beregning, betydning og analyse av leieinntekter etter kostnader.
 author: codehagen
 categories:
   - terms
+takeaways:
+  - Netto leieinntekter er brutto leieinntekter minus eierkostnadene som ikke kan viderefaktureres leietaker — tallet som faktisk driver yield og verdi.
+  - Brutto leieinntekt alene sier lite; det er netto som viser eiendommens reelle inntjeningsevne etter at eier har betalt sitt.
+  - Renter, avdrag og avskrivninger trekkes IKKE fra — de hører til finansiering og skatt, ikke til driften av selve eiendommen.
+  - Netto leieinntekter er grunnlaget for både yield-beregning, verdivurdering og DCF — feil her forplanter seg gjennom hele analysen.
 related:
   - hva-er-yield
   - driftskostnader
   - brutto-leieinntekter
+faq:
+  - question: "Hva er forskjellen på netto leieinntekter og NOI?"
+    answer: "Det er to navn på samme tall. NOI (Net Operating Income) er den internasjonale betegnelsen, og begrepene brukes om hverandre i analyser og verdivurderinger. Begge beskriver den løpende driftsinntekten eiendommen gir før finansiering og skatt."
+  - question: "Hvilke kostnader trekkes fra når man beregner NOI?"
+    answer: "Det er eierkostnadene som trekkes fra brutto leieinntekter — altså de utgiftene eier sitter igjen med fordi de ikke kan viderefaktureres leietaker. Typisk gjelder dette ikke-viderefakturerbar drift og vedlikehold, forsikring, eiendomsskatt og forvaltning. Forventet ledighet og tap på leie reduserer også effektiv brutto før netto beregnes."
+  - question: "Hvorfor trekkes ikke renter og avskrivninger fra NOI?"
+    answer: "Renter og avdrag er finansieringskostnader som avhenger av eiers lånegrad, ikke av eiendommen selv. Avskrivninger er en regnskaps- og skattemessig størrelse, ikke en faktisk utbetaling. Begge holdes utenfor nettopp for at NOI skal være sammenlignbart på tvers av eiere — tar du dem med, får du et resultat etter finansiering som ikke kan brukes til å regne yield mot markedet."
+  - question: "Hvorfor driver netto leieinntekter yield og verdi?"
+    answer: "NOI er bindeleddet mellom inntjening og verdi. I en enkel verdivurdering kapitaliseres NOI med en yield ved at den årlige nettoinntekten deles på avkastningskravet, og det samme tallet er startpunktet i en diskontert kontantstrøm. Regner du på brutto i stedet for netto, overvurderer du eiendommen kraftig."
 slug: netto-leieinntekter
 ---
 
+Når en eiendom skal verdsettes eller sammenlignes, er det sjelden brutto leieinntekt som teller — det er hva som er igjen etter at eiers egne kostnader er betalt. Netto leieinntekter er nettopp dette tallet, og det danner grunnlaget for både yield-beregning, verdivurdering og diskontert kontantstrøm.
+
+<Prerequisites>
+  - Hva som inngår i [brutto leieinntekter](/help/article/brutto-leieinntekter)
+  - Hvilke [driftskostnader](/help/article/driftskostnader) som trekkes fra
+  - Hvordan tallet brukes i [yield](/help/article/hva-er-yield)
+</Prerequisites>
+
 ## Hva er netto leieinntekter?
 
-Netto leieinntekter er den faktiske inntekten en eiendom genererer etter at alle driftskostnader og utgifter er trukket fra brutto leieinntekter. Dette er et kritisk begrep innen næringseiendom og brukes blant annet i beregning av yield og verdivurdering.
+Netto leieinntekter er den inntekten en eiendom genererer etter at eiers løpende kostnader er trukket fra brutto leieinntekter. Internasjonalt brukes betegnelsen **NOI** (Net Operating Income) om det samme tallet, og du vil se begrepene brukt om hverandre i analyser og verdivurderinger.
+
+<Fact term="NOI">Net Operating Income — det engelske navnet på netto leieinntekter. Samme tall, samme rolle: den løpende driftsinntekten en eiendom gir før finansiering og skatt.</Fact>
+
+Poenget med å gå fra brutto til netto er å isolere hva *selve eiendommen* tjener, uavhengig av hvordan den er finansiert eller hvem som eier den. To investorer kan ha helt ulik lånegrad og skatteposisjon, men de ser på samme NOI.
 
 <Math 
-  formula="\text{Netto leieinntekter} = \text{Brutto leieinntekter} - \text{Driftskostnader}"
+  formula="\text{Netto leieinntekter (NOI)} = \text{Brutto leieinntekter} - \text{Eierkostnader}"
   description="Grunnleggende formel for beregning av netto leieinntekter"
 />
 
-## Komponenter av netto leieinntekter
+## Hva trekkes fra — og hva som ikke gjør det
 
-<Stepper
-  items={[
+Det som trekkes fra, er eierkostnadene: de utgiftene eier sitter igjen med fordi de ikke kan viderefaktureres leietaker. Hva dette utgjør avhenger sterkt av leiekontrakten — i en ren "barehouse"-kontrakt bærer leietaker det meste, mens eier i andre kontrakter dekker mer selv.
+
+<Summary
+  title="Det som trekkes fra i NOI"
+  points={[
     {
-      title: "Brutto leieinntekter",
-      content: "Den totale summen av alle leieinntekter fra eiendommen før fratrekk av kostnader."
+      title: "Ikke-viderefakturerbare driftskostnader",
+      description: "Den delen av drift, vedlikehold og forvaltning eier dekker selv og ikke får igjen via felleskostnader",
+      iconName: "scales"
     },
     {
-      title: "Driftskostnader",
-      content: "Alle løpende utgifter knyttet til drift og vedlikehold av eiendommen, inkludert:",
-      formula: {
-        math: "\\text{Driftskostnader} = \\sum \\text{Vedlikehold} + \\text{Forsikring} + \\text{Kommunale avgifter} + \\text{Andre kostnader}",
-        description: "Oversikt over typiske driftskostnader",
-        mode: "inline"
-      }
+      title: "Eierkostnader",
+      description: "Forsikring, eiendomsskatt, eierens andel av forvaltning og periodisk vedlikehold",
+      iconName: "barChart"
     },
     {
-      title: "Beregning av netto",
-      content: "Trekk alle driftskostnader fra brutto leieinntekter for å finne netto leieinntekter."
+      title: "Ledighet og tap",
+      description: "Forventet tomgang og tap på leie reduserer den effektive bruttoen før netto beregnes",
+      iconName: "lineChart"
     }
   ]}
 />
 
+Like viktig er det å vite hva som *ikke* hører hjemme i regnestykket. Renter og avdrag på lån er finansieringskostnader, ikke driftskostnader — de avhenger av eiers lånegrad, ikke av eiendommen. Avskrivninger er en regnskaps- og skattemessig størrelse, ikke en faktisk utbetaling. Begge holdes utenfor NOI nettopp for at tallet skal være sammenlignbart på tvers av eiere.
+
+<Note variant="caution">
+  Tar du med renter eller avskrivninger i nettotallet, får du ikke lenger NOI — du får et resultat etter finansiering. Det er en helt annen størrelse, og den kan ikke brukes til å regne yield mot markedet.
+</Note>
+
+## Hvorfor NOI driver yield og verdi
+
+Netto leieinntekter er bindeleddet mellom inntjening og verdi. I den enkleste verdivurderingen kapitaliseres NOI med en yield: du deler den årlige nettoinntekten på avkastningskravet markedet stiller. Et lavere yield-krav gir høyere verdi for samme NOI, og omvendt.
+
+<Math
+  formula="\text{Verdi} = \frac{\text{Netto leieinntekter (NOI)}}{\text{Yield}}"
+  description="Direkte kapitalisering — NOI delt på avkastningskravet gir eiendomsverdien"
+/>
+
+Det samme tallet er startpunktet i en [diskontert kontantstrøm](/help/article/diskontert-kontantstrom): NOI for hvert år framskrives, justeres for leievekst og kostnadsutvikling, og neddiskonteres til nåverdi. Enten du bruker enkel kapitalisering eller full DCF, er det netto leieinntekter — ikke brutto — som er motoren i verdsettelsen.
+
+## Effekten av ledighet og kostnadsvekst
+
+NOI er ikke statisk. To krefter trekker i hver sin retning over tid: leieinntektene reguleres typisk opp (ofte mot KPI), mens kostnadene også vokser. Når kostnadene stiger raskere enn inntektene, krymper marginen og NOI faller selv om bruttoen er uendret.
+
+Ledighet er den mest direkte trusselen mot NOI. Et tomt lokale gir null inntekt, men eier betaler fortsatt forsikring, eiendomsskatt og felleskostnader på den ledige delen. Derfor slår selv kortvarig tomgang hardt ut — og derfor legger en forsiktig analyse alltid inn en forventet ledighet før netto beregnes.
+
+<Note>
+  NOI-vekst over tid er et kvalitetstegn: stabile leietakere, KPI-regulerte kontrakter og kontroll på kostnadene gir en stigende nettoinntekt. Det er denne veksten en DCF forsøker å fange opp.
+</Note>
+
 ## Praktisk eksempel
 
+Tallene under er rent illustrative og kun ment å vise regnegangen fra brutto til verdi — de er ikke markedstall.
+
 <Example
-  title="Beregning av netto leieinntekter"
+  title="Fra brutto leieinntekt til verdi (illustrativt eksempel)"
   steps={[
     {
       label: "Årlig brutto leieinntekt",
       value: 5000000,
     },
     {
-      label: "Vedlikehold",
-      value: 500000,
+      label: "Ledighet og tap (eksempelvis)",
+      value: 250000,
     },
     {
-      label: "Forsikring",
-      value: 100000,
+      label: "Vedlikehold (eiers andel)",
+      value: 350000,
     },
     {
-      label: "Kommunale avgifter",
-      value: 200000,
+      label: "Forsikring og eiendomsskatt",
+      value: 250000,
     },
     {
-      label: "Andre driftskostnader",
-      value: 200000,
+      label: "Forvaltning og andre eierkostnader",
+      value: 150000,
     },
     {
-      label: "Totale driftskostnader",
-      value: 1000000,
-      calculation: "Sum av alle driftskostnader (500 000 + 100 000 + 200 000 + 200 000)"
-    },
-    {
-      label: "Netto leieinntekt",
+      label: "Netto leieinntekt (NOI)",
       value: 4000000,
-      calculation: "Brutto leieinntekt (5 000 000) - Totale driftskostnader (1 000 000)",
+      calculation: "Brutto (5 000 000) − ledighet (250 000) − eierkostnader (750 000)",
+    },
+    {
+      label: "Verdi ved en eksempel-yield på 5,0%",
+      value: 80000000,
+      calculation: "NOI (4 000 000) / yield (0,05)",
       isResult: true
     }
   ]}
 />
 
-## Betydning for eiendomsanalyse
+Legg merke til at om vi hadde kapitalisert *brutto* leieinntekt i stedet for netto, ville verdien blitt 100 millioner — 20 millioner for høyt. Hele differansen skyldes kostnadene og ledigheten vi trakk fra først.
 
-<Summary
-  title="Nøkkelpunkter om netto leieinntekter"
-  points={[
+## Vanlige feil
+
+De fleste feilene i en NOI-beregning handler om å blande sammen hvilke tall som hører hvor.
+
+<Stepper
+  items={[
     {
-      title: "Verdivurdering",
-      description: "Brukes som grunnlag for beregning av yield og verdivurdering av eiendommen",
-      iconName: "barChart"
+      title: "Bruke brutto i stedet for netto",
+      content: "Den klassiske feilen: man regner yield eller verdi på bruttoen og overvurderer eiendommen kraftig, slik eksempelet over viser."
     },
     {
-      title: "Lønnsomhetsanalyse",
-      description: "Gir et realistisk bilde av eiendommens faktiske inntjeningsevne",
-      iconName: "scales"
+      title: "Glemme eierkostnader og vedlikehold",
+      content: "Forsikring, eiendomsskatt og periodisk vedlikehold er lette å overse, men de er reelle utbetalinger som tilhører eier."
     },
     {
-      title: "Investeringsbeslutninger",
-      description: "Nøkkeltall for vurdering av potensielle eiendomsinvesteringer",
-      iconName: "lightbulb"
+      title: "Ignorere ledighet",
+      content: "En analyse uten forventet tomgang antar 100 % utleie til evig tid — sjelden realistisk, og det blåser opp NOI."
     },
     {
-      title: "Benchmarking",
-      description: "Muliggjør sammenligning av ulike eiendommer på tvers av segmenter og lokasjoner",
-      iconName: "lineChart"
+      title: "Ta med renter eller avskrivninger",
+      content: "Disse hører til finansiering og skatt. Tar du dem med, er tallet ikke lenger sammenlignbart med markedet."
     }
   ]}
 />
 
-<Note variant="info">
-  Netto leieinntekter er et sentralt begrep i yield-beregninger og verdivurderinger. For nøyaktige beregninger er det viktig å inkludere alle relevante kostnader.
+<Note variant="positive">
+  Et riktig beregnet NOI gjør at to eiendommer kan sammenlignes på like vilkår — og det er forutsetningen for at både yield, verdivurdering og DCF skal gi mening.
 </Note>
 
-## Vanlige spørsmål
-
-<Prerequisites>
-1. **Hvilke kostnader skal trekkes fra?**
-   - Alle direkte driftskostnader
-   - Vedlikeholdskostnader
-   - Forsikring og kommunale avgifter
-   - Administrative kostnader
-
-2. **Hvorfor er netto leieinntekter viktig?**
-   - Gir realistisk bilde av faktisk inntjening
-   - Grunnlag for yield-beregning
-   - Basis for verdivurdering
-   - Benchmark for sammenligning
-</Prerequisites>
+<ReadMore
+  items={[
+    {
+      href: "/help/article/brutto-leieinntekter",
+      pre: "Kunnskap",
+      title: "Brutto leieinntekter — hva inngår før kostnadene trekkes fra",
+    },
+    {
+      href: "/help/article/driftskostnader",
+      pre: "Kunnskap",
+      title: "Driftskostnader i næringseiendom",
+    },
+    {
+      href: "/help/article/hva-er-yield",
+      pre: "Kunnskap",
+      title: "Hva er yield i næringseiendom?",
+    },
+    {
+      href: "/blog/dcf-analyse-naringseiendom",
+      pre: "Blogg",
+      title: "DCF-analyse av næringseiendom — slik bygger du modellen",
+    },
+  ]}
+/>
 
 <CTA
   badge="Lær mer"
@@ -144,4 +209,4 @@ Netto leieinntekter er den faktiske inntekten en eiendom genererer etter at alle
     label: "Se alle funksjoner",
     href: "/tjenester"
   }}
-/> 
+/>

@@ -1,17 +1,33 @@
 ---
 title: Sensitivitetsanalyse i næringseiendom
-updatedAt: 2025-02-18
+publishedAt: 2025-02-18
+updatedAt: 2026-06-15
 summary: "Hvor robust er eiendomsverdien hvis yield eller leie endrer seg? Sensitivitetsanalyse viser hvilke forutsetninger som betyr mest for verdien."
 author: codehagen
 categories:
   - terms
+takeaways:
+  - En sensitivitetsanalyse viser verdien ved ulike yield-, leie- og kostnadsnivåer samtidig — ikke bare ett anslag.
+  - Små endringer i yield gir store, ikke-lineære utslag i verdien; det er der mesteparten av risikoen sitter.
+  - Bruk analysen til å forstå nedsiden og dokumentere worst case — det er det banken og kjøper faktisk betaler for.
 related:
   - diskontert-kontantstrom
   - hva-er-yield
   - driftskostnader
   - kontantstromsanalyse
+faq:
+  - question: "Hva er en sensitivitetsanalyse i næringseiendom?"
+    answer: "Det er en metode for å undersøke hvordan endringer i ulike variabler påvirker eiendomsverdien og investeringens lønnsomhet. I stedet for ett enkelt anslag viser den verdien ved ulike yield-, leie- og kostnadsnivåer samtidig, slik at investor og bank ser hva som skjer hvis forutsetningene ikke holder."
+  - question: "Hvorfor er yield ofte den mest sensitive faktoren?"
+    answer: "Små endringer i yield gir store, ikke-lineære utslag i verdien, og det er der mesteparten av risikoen sitter. I eksempelet faller verdien rundt 9 prosent når yield øker fra 5,0 til 5,5 prosent, mens en tilsvarende endring i driftskostnader gir langt mindre utslag. Yield er derfor spesielt viktig for stabile eiendommer."
+  - question: "Hva er forskjellen på et punktanslag og en sensitivitetsanalyse?"
+    answer: "En verdivurdering ender alltid med ett tall, men det tallet hviler på forutsetninger som yield, leienivå og ledighet som hver kan bevege seg. Sensitivitetsanalysen erstatter ikke punktanslaget, men viser hvor robust det er ved å teste nedsiden og dokumentere worst case. Det er denne robustheten banken og kjøper faktisk betaler for."
+  - question: "Hvordan bygger jeg en sensitivitetsmatrise?"
+    answer: "En sensitivitetsmatrise viser hvordan kombinasjoner av endringer i flere variabler påvirker verdien samtidig, for eksempel yield opp 0,5 prosent kombinert med leieinntekter opp 5 prosent. Start med å identifisere nøkkelvariablene som betyr mest og er mest usikre, bruk realistiske intervaller basert på historiske data og markedsforhold, og dokumenter forutsetningene som ligger til grunn."
 slug: sensitivitetsanalyse
 ---
+
+En verdivurdering ender alltid med ett tall. Men tallet hviler på forutsetninger — yield, leienivå og ledighet — som hver kan bevege seg. En sensitivitetsanalyse svarer på spørsmålet en investor og en bank egentlig stiller: **hva skjer med verdien hvis forutsetningene ikke holder?**
 
 <Prerequisites>
   - Grunnleggende forståelse av [diskontert kontantstrøm (DCF)](/help/article/diskontert-kontantstrom)
@@ -119,7 +135,7 @@ En sensitivitetsmatrise viser hvordan kombinasjoner av endringer i ulike variabl
   ]}
 />
 
-<Note variant="info">
+<Note>
   Sensitivitetsanalyse er spesielt viktig i usikre markeder eller når man vurderer eiendommer med utviklingspotensial.
 </Note>
 
@@ -187,7 +203,7 @@ For å bedre forstå hvordan ulike faktorer påvirker eiendomsverdien, kan vi br
   ]}
 />
 
-<Note variant="success">
+<Note variant="positive">
   En grundig sensitivitetsanalyse er avgjørende for å forstå risikoen i en eiendomsinvestering og for å identifisere hvilke faktorer som krever særlig oppfølging.
 </Note>
 
@@ -219,7 +235,25 @@ For å bedre forstå hvordan ulike faktorer påvirker eiendomsverdien, kan vi br
   ]}
 />
 
-Vil du se metoden brukt på en konkret investeringscase? Les [slik stressetester du en eiendomsinvestering med sensitivitetsanalyse](/blog/sensitivitetsanalyse-naringseiendom) for en praktisk gjennomgang med regneeksempler og scenariomodellering — fra identifisering av nøkkelvariable til tolkning av worst case-utfall.
+<ReadMore
+  items={[
+    {
+      href: "/help/article/diskontert-kontantstrom",
+      pre: "Kunnskap",
+      title: "Diskontert kontantstrøm (DCF) — slik fungerer det",
+    },
+    {
+      href: "/help/article/hva-er-yield",
+      pre: "Kunnskap",
+      title: "Hva er yield i næringseiendom?",
+    },
+    {
+      href: "/blog/sensitivitetsanalyse-naringseiendom",
+      pre: "Blogg",
+      title: "Slik stressetester du en eiendomsinvestering — praktisk gjennomgang",
+    },
+  ]}
+/>
 
 <CTA
   badge="Analyser nå"
