@@ -221,11 +221,11 @@ export function ValuationYieldCalculator() {
           <>
             <div className="r-value">
               <NumberFlow
-                value={Number(millOnly(r.verdi).replace(",", "."))}
+                value={r.verdi / 1e6}
                 locales="nb-NO"
                 format={{ minimumFractionDigits: 1, maximumFractionDigits: 1 }}
                 prefix="kr "
-                suffix=" mill."
+                suffix={" mill."}
               />
             </div>
             <div className="r-range">
@@ -249,7 +249,7 @@ export function ValuationYieldCalculator() {
                 <div className="k">Netto driftsinntekt</div>
                 <div className="v">
                   <NumberFlow
-                    value={Number(millOnly(r.noi).replace(",", "."))}
+                    value={r.noi / 1e6}
                     locales="nb-NO"
                     format={{
                       minimumFractionDigits: 1,

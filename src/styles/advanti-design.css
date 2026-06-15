@@ -2511,7 +2511,9 @@ h1, h2, h3 {
   font-size: 11px;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--accent);
+  /* Dark, not accent: light-blue on warm-white is illegible (see
+     .calc-inputs .step-mark). Section marks must read as text. */
+  color: var(--warm-grey);
   margin-bottom: 22px;
   padding-bottom: 14px;
   border-bottom: var(--hairline);
@@ -10023,7 +10025,7 @@ h1, h2, h3 {
 }
 .range-ends {
   display: flex; justify-content: space-between;
-  font-size: 11.5px; color: rgba(243,241,239,0.5);
+  font-size: 11.5px; color: rgba(243,241,239,0.6);
   font-variant-numeric: tabular-nums; letter-spacing: 0.02em;
 }
 
@@ -10054,9 +10056,10 @@ h1, h2, h3 {
   text-decoration: none; transition: opacity 0.2s;
 }
 .calc-result .r-cta:hover { opacity: 0.88; }
+.calc-result .r-cta:focus-visible { outline: 2px solid var(--warm-white); outline-offset: 3px; }
 .calc-result .r-foot {
   margin-top: 18px; font-size: 11.5px; line-height: 1.55;
-  color: rgba(243,241,239,0.5); text-align: center;
+  color: rgba(243,241,239,0.6); text-align: center;
 }
 
 @media (max-width: 980px) {
@@ -10105,6 +10108,18 @@ h1, h2, h3 {
 .switch[aria-pressed="true"]::after { transform: translateX(20px); background: var(--warm-grey); }
 .switch:focus-visible { outline: 2px solid var(--warm-grey); outline-offset: 2px; }
 
+/* Coarse-pointer (touch) hit areas — match the site's 44px floor. The visual
+   size of the dense toggles stays; the tap target grows. */
+@media (pointer: coarse) {
+  .unit-seg button { min-height: 44px; }
+  .switch { height: 32px; width: 52px; }
+  .switch::after { width: 24px; height: 24px; }
+  .switch[aria-pressed="true"]::after { transform: translateX(20px); }
+}
+
+/* Financing reveal: the gap above the LTV/rente row (was an inline spacer). */
+.fin-body { padding-top: 28px; }
+
 /* Yield result-card tweaks (scoped) */
 .calc-result.yk-result .r-lbl {
   display: flex; align-items: center; justify-content: space-between; gap: 12px;
@@ -10119,7 +10134,7 @@ h1, h2, h3 {
   display: inline-flex; align-items: baseline; gap: 4px;
 }
 .yk-result .r-value .u { font-size: 0.4em; color: rgba(243,241,239,0.6); font-style: italic; font-weight: 300; }
-.yk-result .r-stat .hint { margin-top: 6px; font-size: 11.5px; color: rgba(243,241,239,0.5); line-height: 1.45; }
+.yk-result .r-stat .hint { margin-top: 6px; font-size: 11.5px; color: rgba(243,241,239,0.6); line-height: 1.45; }
 
 /* Benchmark bar (dark card) */
 .bench { margin: 30px 0 6px; }
@@ -10142,7 +10157,7 @@ h1, h2, h3 {
 }
 .bench-scale {
   display: flex; justify-content: space-between; margin-top: 12px;
-  font-size: 11.5px; color: rgba(243,241,239,0.5);
+  font-size: 11.5px; color: rgba(243,241,239,0.6);
   font-variant-numeric: tabular-nums; letter-spacing: 0.02em;
 }
 .bench-note { margin-top: 16px; font-size: 13px; line-height: 1.55; color: rgba(243,241,239,0.72); }
@@ -10152,7 +10167,7 @@ h1, h2, h3 {
 .r-fin { margin-top: 30px; padding-top: 28px; border-top: 1px solid rgba(243,241,239,0.16); }
 .r-fin .r-fin-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 20px; }
 .r-fin .r-fin-head .lbl { font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(243,241,239,0.6); }
-.r-fin .r-fin-head .params { font-size: 12px; color: rgba(243,241,239,0.5); font-variant-numeric: tabular-nums; }
+.r-fin .r-fin-head .params { font-size: 12px; color: rgba(243,241,239,0.6); font-variant-numeric: tabular-nums; }
 .r-fin .coc-lbl { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(243,241,239,0.55); margin-bottom: 10px; }
 .r-fin .coc { display: flex; align-items: baseline; gap: 4px; font-family: var(--font-display); letter-spacing: -0.025em; line-height: 1; }
 .r-fin .coc .nf { font-size: 40px; font-weight: 400; color: var(--warm-white); font-variant-numeric: tabular-nums; }

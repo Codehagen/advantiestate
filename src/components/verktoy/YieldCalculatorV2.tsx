@@ -9,7 +9,7 @@ import {
   parseNorwegianNumber,
   type PropertyType,
 } from "@/lib/verktoy/naringskalkulator";
-import { computeYield, type DriftMode } from "@/lib/verktoy/yieldCalc";
+import { clamp, computeYield, type DriftMode } from "@/lib/verktoy/yieldCalc";
 
 const fmtInt = (n: number) => Math.round(n).toLocaleString("nb-NO");
 
@@ -43,6 +43,13 @@ export function YieldCalculatorV2() {
   const [ltvStr, setLtvStr] = useState("70");
   const [renteStr, setRenteStr] = useState("5,5");
 
+  // Clamp the free-text finance fields so impossible input (e.g. LTV > 100,
+  // which would make egenkapital negative) can't drive the result card into
+  // nonsensical territory. Display uses the clamped values too.
+  const ltv = clamp(num(ltvStr), 0, 95);
+  const rente = clamp(num(renteStr), 0, 30);
+  const driftPct = clamp(num(driftPctStr), 0, 60);
+
   const r = useMemo(
     () =>
       computeYield({
@@ -51,11 +58,11 @@ export function YieldCalculatorV2() {
         kjop: num(kjopStr),
         driftMode,
         driftKr: num(driftKrStr),
-        driftPct: num(driftPctStr),
-        ltv: num(ltvStr),
-        rente: num(renteStr),
+        driftPct,
+        ltv,
+        rente,
       }),
-    [type, leieStr, kjopStr, driftMode, driftKrStr, driftPctStr, ltvStr, renteStr],
+    [type, leieStr, kjopStr, driftMode, driftKrStr, driftPct, ltv, rente],
   );
 
   const ctaHref = useMemo(() => {
@@ -218,7 +225,6 @@ export function YieldCalculatorV2() {
 
         {finOn && (
           <div className="fin-body">
-            <div style={{ height: 28 }} />
             <div className="calc-two">
               <div className="num-field">
                 <label className="calc-lbl" htmlFor="yk-ltv">
@@ -347,7 +353,7 @@ export function YieldCalculatorV2() {
             <div className="r-fin-head">
               <span className="lbl">Med belåning</span>
               <span className="params">
-                {fmtInt(num(ltvStr))} % lån · {pct1(num(renteStr))} % rente
+                {fmtInt(ltv)} % lån · {pct1(rente)} % rente
               </span>
             </div>
             <div className="coc-lbl">Egenkapitalavkastning (cash-on-cash)</div>
