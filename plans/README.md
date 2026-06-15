@@ -22,9 +22,9 @@ done.
 | 011  | Artikkel-veikart: 15 nye kunnskapsartikler i tre klynger (terms / for-investors / analysis) | P1 | L | 009 (anbefalt etter 010) | DONE (15 artikler i 3 batcher, APPROVED @ c4f3cab etter 3 korrektur-/speilingsrevisjoner; help 12→27 artikler; merget til main via PR #45 `63d3a4e`, 2026-06-12) |
 | 012  | Avkannibaliser blog↔help-duplikatene (sensitivitetsanalyse, DCF) | P2 | S–M | — (anbefalt etter 010) | DONE (APPROVED @ 706e6bf etter 1 terminologirevisjon; rolleregel etablert: help = kanonisk begrep («hva er X»), blog = praktisk/aktuelt; merget til main via PR #45 `63d3a4e`, 2026-06-12) |
 | 013  | Port «Kunnskapssenter v2»-designet (hub + artikkel-id-side) til /help | P1 | L | 009–012 | DONE (impl @ 3022e5b på `feat/kunnskapssenter-v2-design`; ENG+DESIGN CLEARED; build+typecheck grønt; /qa grønt — 0 konsollfeil, 0 bugs på hub+artikkel, alle nye interaksjoner + mobil verifisert. Ikke pushet/PR-et) |
-| 014  | Patch transitive dependency vulnerabilities (serialize-javascript / path-to-regexp via content-collections + fumadocs) | P2 | M | — | TODO |
-| 015  | Proper tab semantics (role="tab"/tablist) for MarkedsinnsiktShell subtab/sector buttons — clears the last 3 lint warnings | P3 | S | — | TODO |
-| 016  | Zod input validation on lead/contact server actions (complements the landed Discord sanitization) | P2 | M | — | TODO |
+| 014  | Patch transitive dependency vulnerabilities (serialize-javascript / path-to-regexp via content-collections + fumadocs) | P2 | M | — | DONE (core 0.8→0.15 + fumadocs 15→16 on `improve/audit-fixes`; schema-as-function → z.object migration; 9→4 audit advisories, the 4 remaining build/dev-chain only; build + 188 tests green) |
+| 015  | Proper tab semantics (role="tab"/tablist) for MarkedsinnsiktShell subtab/sector buttons — clears the last 3 lint warnings | P3 | S | — | DONE (`improve/audit-fixes`; lint now 0 warnings; 3 aria-selected tests still green) |
+| 016  | Zod input validation on lead/contact server actions (complements the landed Discord sanitization) | P2 | M | — | DONE (`improve/audit-fixes`; zod 4 schemas for 5 actions + 9 unit tests; investorportal also re-routed through subscribe() so it actually reaches the CRM) |
 
 Status values: TODO | IN PROGRESS | DONE | BLOCKED (with one-line reason) | REJECTED (with one-line rationale)
 
