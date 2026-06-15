@@ -262,7 +262,7 @@ export default async function HelpArticle({
               {relatedArticles.length > 0 && (
                 <div className="ks-related">
                   <h3>
-                    Les videre{" "}
+                    Flere artikler{" "}
                     <span className="italic">
                       i {category.title.toLowerCase()}.
                     </span>
