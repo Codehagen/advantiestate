@@ -1,0 +1,206 @@
+---
+title: "Slik kredittvurderer banken et lån til næringseiendom"
+updatedAt: 2026-06-15
+summary: "Når du søker banklån til næringseiendom, måler banken kontantstrøm, leietakers soliditet, WAULT og sikkerhet — slik vekter den hver del."
+author: christer-hagen
+advisory: finance
+categories:
+  - for-investors
+takeaways:
+  - "Banken låner først og fremst mot kontantstrømmen, ikke mot eiendommen — rentedekningsgraden er ofte viktigere enn belåningsgraden."
+  - "Leietakers soliditet og WAULT avgjør hvor sikker inntekten er, og dermed både margin og maksimal belåning."
+  - "Sikkerheten (pant i eiendommen) er bankens nedside hvis kontantstrømmen svikter, og bankens egen verdivurdering kan være mer konservativ enn kjøpesummen."
+  - "Lånevilkår med covenants gir banken rett til å gripe inn hvis nøkkeltallene forverres gjennom låneperioden."
+related:
+  - finansiering-av-naringseiendom
+  - rentedekningsgrad
+  - belaningsgrad-ltv
+  - hva-er-wault
+faq:
+  - question: "Hva ser banken mest på når den vurderer et lån til næringseiendom?"
+    answer: "Banken vurderer fire ting samlet: kontantstrømmens evne til å betjene lånet (rentedekningsgrad), leietakernes soliditet, WAULT — den vektede gjenværende kontraktstiden — og sikkerheten i form av pant i eiendommen. Kontantstrømmen veier ofte tyngst, fordi det er leieinntektene som faktisk betaler renter og avdrag. Belåningsgraden (LTV) setter rammen, men en lav LTV redder ikke en sak med svak kontantstrøm."
+  - question: "Hva er rentedekningsgrad (ICR/DSCR)?"
+    answer: "Rentedekningsgrad er forholdet mellom netto leieinntekt og finansieringskostnaden. En ICR ser på renter alene, mens en DSCR (gjeldsbetjeningsgrad) også inkluderer avdrag. En dekningsgrad på 1,0 betyr at inntekten akkurat dekker kostnaden — banken krever normalt en margin over dette slik at det er buffer mot rentehopp og ledighet. Jo høyere dekningsgrad, desto tryggere fremstår lånesaken."
+  - question: "Hvorfor er leietakers soliditet og WAULT viktig for banken?"
+    answer: "Banken låner mot fremtidige leieinntekter, og de inntektene er bare så sikre som leietakerne og kontraktene bak dem. En solid leietaker på lang kontrakt — for eksempel en offentlig aktør — gir forutsigbar inntekt og lav re-utleierisiko. Lang WAULT betyr at inntekten er sikret over tid. Svak leietakerkvalitet eller kort gjenværende kontraktstid kan gi høyere margin, lavere belåning eller krav om ekstra sikkerhet."
+  - question: "Kan banken verdsette eiendommen lavere enn det jeg betaler?"
+    answer: "Ja. Banken gjør sin egen verdivurdering som grunnlag for belåningsgraden, og den kan være mer konservativ enn kjøpesummen — særlig i tynne markeder eller når prisen er presset opp i en budrunde. Belåningen beregnes da av bankens verdi, ikke av prisen du betaler, så et avvik øker egenkapitalen du selv må stille."
+  - question: "Hva er covenants i et næringseiendomslån?"
+    answer: "Covenants er lånevilkår som låntaker forplikter seg til gjennom hele låneperioden, typisk en maksimal belåningsgrad og en minste rentedekningsgrad. Hvis et nøkkeltall brytes — for eksempel fordi en stor leietaker flytter ut — får banken rett til å kreve tiltak, ekstra nedbetaling eller i ytterste konsekvens innfrielse. Covenants er bankens verktøy for å følge risikoen løpende, ikke bare på lånetidspunktet."
+slug: banklan-kredittvurdering
+---
+
+Når du søker banklån til en næringseiendom, vurderer ikke banken egentlig eiendommen først — den vurderer **kontantstrømmen som skal betjene lånet**. Eiendommen er sikkerheten hvis alt annet svikter, men det er leieinntektene som betaler renter og avdrag måned for måned. Forstår du hvordan banken vekter de fire byggesteinene — kontantstrøm, leietaker, WAULT og sikkerhet — forstår du også hvorfor to tilsynelatende like eiendommer får helt ulike lånebetingelser.
+
+<Prerequisites>
+  - Oversikt over [finansiering av næringseiendom](/help/article/finansiering-av-naringseiendom)
+  - Forståelse av [netto leieinntekter](/help/article/netto-leieinntekter)
+  - Kjennskap til [kontantstrømsanalyse](/help/article/kontantstromsanalyse)
+  - Grunnleggende kunnskap om [yield](/help/article/hva-er-yield)
+</Prerequisites>
+
+## Kontantstrømmen er utgangspunktet
+
+Bankens første spørsmål er enkelt: tåler eiendommen å betjene lånet? Svaret leses ut av forholdet mellom netto leieinntekt og finansieringskostnaden. Nøkkeltallet kalles **rentedekningsgrad** (ICR) når man bare ser på renter, og **gjeldsbetjeningsgrad** (DSCR) når avdrag tas med.
+
+<Fact term="Rentedekningsgrad (ICR / DSCR)">
+  Forholdet mellom eiendommens netto leieinntekt og finansieringskostnaden. ICR ser på renter alene; DSCR inkluderer også avdrag. En verdi på 1,0 betyr at inntekten akkurat dekker kostnaden — banken krever normalt en margin over dette som buffer mot renteoppgang og ledighet.
+</Fact>
+
+Poenget med en margin over 1,0 er at virkeligheten sjelden følger budsjettet. Renten kan stige, en leietaker kan flytte ut, og vedlikehold kan overstige planen. Jo høyere dekningsgrad ved lånetidspunktet, desto mer av denne motgangen tåler eiendommen før den ikke lenger klarer å betjene gjelden.
+
+<Math
+  formula="\text{Rentedekningsgrad} = \frac{\text{Netto leieinntekt (NOI)}}{\text{Rentekostnad}}"
+  description="ICR over 1,0 betyr at driften dekker rentene; banken vil normalt se en buffer over dette"
+/>
+
+La oss gjøre det konkret med illustrative, runde tall. Anta en eiendom med en netto leieinntekt på 6 millioner kroner og et lån som koster 4 millioner i årlige renter. Det gir en rentedekningsgrad på 1,5 — altså 50 prosent buffer før rentene spiser hele driftsresultatet.
+
+<Example
+  title="Rentedekningsgrad — illustrativt regneeksempel"
+  steps={[
+    {
+      label: "Netto leieinntekt (NOI)",
+      value: 6000000,
+      calculation: "Leieinntekter minus eier- og driftskostnader"
+    },
+    {
+      label: "Årlig rentekostnad",
+      value: 4000000,
+      calculation: "Lånebeløp × rente (illustrativt)"
+    },
+    {
+      label: "Rentedekningsgrad (ICR)",
+      value: "1,5",
+      calculation: "6,0 / 4,0",
+      isResult: true
+    }
+  ]}
+/>
+
+En [kontantstrømsanalyse](/help/article/kontantstromsanalyse) som stresstester dekningsgraden mot høyere rente er det enkleste grepet for å se om finansieringsrommet faktisk er så romslig som det ser ut ved lånetidspunktet.
+
+## Leietakers soliditet og WAULT
+
+Kontantstrømmen er bare så trygg som leietakerne og kontraktene bak den. Derfor analyserer banken hvem som faktisk betaler leien, og hvor lenge de er bundet. En offentlig aktør eller et solid konsern på lang kontrakt gir forutsigbar inntekt; mange små leietakere på korte kontrakter gir mer usikkerhet og høyere re-utleierisiko.
+
+<Fact term="WAULT">
+  Weighted Average Unexpired Lease Term — den vektede gjennomsnittlige gjenværende kontraktstiden, vektet etter hver leietakers andel av leien. Lang WAULT betyr at inntekten er kontraktsfestet langt frem i tid og at risikoen for tomme lokaler på kort sikt er lav.
+</Fact>
+
+Disse to faktorene henger sammen: en sterk leietaker på en kort kontrakt er ikke nødvendigvis trygg, fordi banken må anta at den kan flytte ut når avtalen utløper. Det er kombinasjonen av god kreditt og lang gjenværende løpetid som gir den beste kredittvurderingen — og dermed lavest margin og mest fleksibel belåning.
+
+<Note>
+  Banken ser på kontraktenes utløpsprofil, ikke bare gjennomsnittet. To eiendommer kan ha samme WAULT, men én der alle kontrakter utløper samtidig er langt mer sårbar enn én der utløpene er spredt jevnt over flere år.
+</Note>
+
+## Sikkerheten: bankens nedside
+
+Pant i eiendommen er det banken faller tilbake på hvis kontantstrømmen likevel svikter. Her er det viktig å forstå at banken gjør sin **egen verdivurdering** som grunnlag for [belåningsgraden (LTV)](/help/article/belaningsgrad-ltv) — og den kan være mer konservativ enn kjøpesummen, særlig i tynnere markeder eller når prisen er presset opp i en budrunde.
+
+Konsekvensen merkes direkte i egenkapitalkravet. Hvis banken verdsetter en eiendom du kjøper for 100 millioner til 95 millioner, og maksimal belåning er 65 prosent, beregnes lånet av 95 — ikke av 100. Da må du dekke differansen med egenkapital i tillegg.
+
+<Math
+  formula="\text{Belåningsgrad (LTV)} = \frac{\text{Lån}}{\text{Bankens verdivurdering}} \times 100"
+  description="Belåningen beregnes av bankens verdi, ikke nødvendigvis av kjøpesummen"
+/>
+
+Teknisk stand, beliggenhet og likviditeten i annenhåndsmarkedet påvirker hvor trygt banken føler seg på pantet. En eiendom med begrenset alternativ bruk i et lite marked verdsettes konservativt, fordi banken må vurdere hvor lett den faktisk lar seg selge i en nedgang.
+
+## Hva styrker og hva svekker lånesaken
+
+Når banken setter sammen helhetsbildet, trekker noen forhold i favør av lave betingelser, mens andre presser margin og egenkapitalkrav opp. Det er nyttig å se de to sidene mot hverandre før du går til banken.
+
+<Compare
+  pro={{
+    head: "Styrker lånesaken",
+    items: [
+      "Høy rentedekningsgrad med tydelig buffer",
+      "Solide leietakere med god kreditthistorikk",
+      "Lang WAULT med spredte kontraktsutløp",
+      "Sentral beliggenhet og likvid annenhåndsmarked",
+      "Moderat belåningsgrad og reell egenkapital"
+    ]
+  }}
+  con={{
+    head: "Svekker lånesaken",
+    items: [
+      "Stram kontantstrøm med dekningsgrad nær 1,0",
+      "Få eller svake leietakere på korte kontrakter",
+      "Kort WAULT eller mange samtidige utløp",
+      "Tynt marked og begrenset alternativ bruk",
+      "Høy belåning uten buffer mot renteoppgang"
+    ]
+  }}
+/>
+
+## Lånevilkår og covenants
+
+Kredittvurderingen stopper ikke når lånet er innvilget. Banken sikrer seg retten til å følge risikoen gjennom hele låneperioden via **covenants** — vilkår låntaker forplikter seg til, typisk en maksimal belåningsgrad og en minste rentedekningsgrad.
+
+<Fact term="Covenants">
+  Løpende lånevilkår som måles gjennom låneperioden. Brytes en grense — for eksempel hvis en stor leietaker flytter ut og dekningsgraden faller — får banken rett til å kreve tiltak, ekstra nedbetaling eller innfrielse. Covenants er bankens verktøy for å gripe inn før en svak utvikling blir et tap.
+</Fact>
+
+For deg som investor betyr dette at nøkkeltallene du presenterte ved lånesøknaden må holdes ved like. En forverring av kontantstrøm eller verdi gjennom eierperioden kan utløse et brudd, selv om du betaler renter og avdrag som avtalt. Det gjør løpende oppfølging av WAULT, leietakermiks og rentenivå til en del av den daglige eiendomsdriften — ikke bare noe man tenker på ved kjøp.
+
+<Summary
+  title="Slik leser banken en lånesak"
+  points={[
+    {
+      title: "Kontantstrøm først",
+      description: "Rentedekningsgraden viser om driften tåler å betjene lånet med buffer mot motgang.",
+      iconName: "barChart"
+    },
+    {
+      title: "Leietaker og WAULT",
+      description: "Soliditet og lang, spredt kontraktstid avgjør hvor sikker den fremtidige inntekten er.",
+      iconName: "scales"
+    },
+    {
+      title: "Sikkerhet og LTV",
+      description: "Bankens egen, gjerne konservative verdivurdering setter rammen for belåningen.",
+      iconName: "lineChart"
+    },
+    {
+      title: "Covenants over tid",
+      description: "Lånevilkårene gir banken rett til å gripe inn hvis nøkkeltallene forverres.",
+      iconName: "lightbulb"
+    }
+  ]}
+/>
+
+<ReadMore
+  items={[
+    {
+      href: "/help/article/finansiering-av-naringseiendom",
+      pre: "Kunnskap",
+      title: "Finansiering av næringseiendom — LTV, rentebinding og gearing",
+    },
+    {
+      href: "/help/article/kontantstromsanalyse",
+      pre: "Kunnskap",
+      title: "Kontantstrømsanalyse — modeller finansieringsdekningen",
+    },
+    {
+      href: "/blog/rentestigninger-naringseiendom",
+      pre: "Blogg",
+      title: "Rentestigninger og næringseiendom — slik slår de inn",
+    },
+  ]}
+/>
+
+<CTA
+  badge="Forbered lånesaken"
+  title="Få en finansieringsklar analyse med Advanti"
+  description="Advanti hjelper deg å dokumentere kontantstrøm, WAULT og rentedekningsgrad slik banken faktisk vurderer dem — før du går i lånemøtet."
+  primaryAction={{
+    label: "Ta kontakt",
+    href: "/kontakt"
+  }}
+  secondaryAction={{
+    label: "Les om finansiering",
+    href: "/help/article/finansiering-av-naringseiendom"
+  }}
+  size="default"
+/>

@@ -60,21 +60,37 @@ export function foldNo(s: string): string {
  * adding an author is a one-place edit (this repo has been bitten by the
  * "update N parallel lists, forget one" drift before).
  */
+// Keys match the /personer slugs so the byline can link to the author's
+// profile (sameAs / E-E-A-T). The legacy `codehagen`/`vsoraas` keys are kept
+// as aliases pointing at Christer so any stray reference still resolves.
 export const HELP_AUTHORS: Record<
   string,
   { name: string; role: string; image: string }
 > = {
-  codehagen: {
+  "christer-hagen": {
     name: "Christer Hagen",
-    role: "Partner & daglig leder · Advanti Estate",
+    role: "Partner, næringsmegler · Advanti Estate",
     image:
       "https://kukzjreikqbgbolxvqaj.supabase.co/storage/v1/object/public/press/christer-hagen-web.jpg",
   },
-  vsoraas: {
-    name: "Vegard Søraas",
-    role: "Partner · Advanti Estate",
+  "mathias-nilssen": {
+    name: "Mathias Nilssen",
+    role: "Partner, næringsmegler · Advanti Estate",
     image:
-      "https://imagedelivery.net/r-6-yk-gGPtjfbIST9-8uA/76037f97-384f-4681-176e-5b8a0ba71300/public",
+      "https://kukzjreikqbgbolxvqaj.supabase.co/storage/v1/object/public/press/mathias-nilssen-web.jpg",
+  },
+  "havard-nome": {
+    name: "Håvard Nome",
+    role: "Næringseiendomskonsulent · Advanti Estate",
+    image:
+      "https://kukzjreikqbgbolxvqaj.supabase.co/storage/v1/object/public/press/havard-nome-web.jpg",
+  },
+  // Deprecated aliases — kept so legacy author keys still resolve.
+  codehagen: {
+    name: "Christer Hagen",
+    role: "Partner, næringsmegler · Advanti Estate",
+    image:
+      "https://kukzjreikqbgbolxvqaj.supabase.co/storage/v1/object/public/press/christer-hagen-web.jpg",
   },
 }
 

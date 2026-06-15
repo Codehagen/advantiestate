@@ -1,0 +1,255 @@
+---
+title: "Rentedekningsgrad og lånevilkår"
+updatedAt: 2026-06-15
+summary: "Rentedekningsgrad (ICR) og gjeldsbetjeningsgrad (DSCR) måler om leieinntektene dekker rentene — og er sentrale covenants i ethvert næringseiendomslån."
+author: christer-hagen
+advisory: finance
+categories:
+  - for-investors
+takeaways:
+  - "Rentedekningsgrad (ICR) måler hvor mange ganger driftsresultatet dekker rentekostnaden — bankens viktigste mål på betjeningsevne."
+  - "DSCR tar med avdrag i tillegg til renter og er et strengere mål enn ICR; begge brukes som covenants i låneavtalen."
+  - "En covenant er et løpende lånevilkår — brytes terskelen, kan banken kreve nedbetaling, økt margin eller misligholde lånet."
+  - "Rentedekningen faller raskt når renten stiger; stresstest alltid nøkkeltallene mot et høyere rentenivå før du belåner deg."
+related:
+  - finansiering-av-naringseiendom
+  - belaningsgrad-ltv
+  - covenants-lanevilkar
+  - kontantstromsanalyse
+faq:
+  - question: "Hva er rentedekningsgrad?"
+    answer: "Rentedekningsgrad, ofte forkortet ICR (Interest Coverage Ratio), måler hvor mange ganger driftsresultatet dekker rentekostnaden. Den beregnes som driftsresultat (NOI eller EBITDA) delt på årlige rentekostnader. En ICR på 2,0 betyr at driftsresultatet er dobbelt så stort som rentene, og at det er god margin å tære på før betjeningsevnen er truet."
+  - question: "Hva er forskjellen på ICR og DSCR?"
+    answer: "ICR (rentedekningsgrad) ser kun på rentekostnaden, mens DSCR (gjeldsbetjeningsgrad, Debt Service Coverage Ratio) også tar med avdrag. DSCR er derfor et strengere mål: et lån kan ha komfortabel ICR, men stram DSCR dersom avdragsprofilen er rask. Banker bruker ofte begge, og DSCR er det som best speiler den faktiske kontantstrømsbelastningen."
+  - question: "Hva er en covenant i en låneavtale?"
+    answer: "En covenant er et løpende vilkår i låneavtalen som låntaker må overholde gjennom hele lånets løpetid, ikke bare ved opptak. Typiske covenants i næringseiendom er minimumskrav til rentedekningsgrad (ICR), gjeldsbetjeningsgrad (DSCR) og maksimal belåningsgrad (LTV). Brytes en covenant, kan banken kreve tiltak som ekstra nedbetaling, økt margin eller i ytterste konsekvens innfri lånet."
+  - question: "Hvilket nivå på rentedekningsgrad krever banken?"
+    answer: "Kravet varierer med eiendomstype, leietakerkvalitet, WAULT og markedsforhold, og settes individuelt i hver låneavtale. Generelt ønsker banken en margin over 1,0 slik at det finnes buffer mot renteoppgang og inntektsbortfall. Jo mer stabil kontantstrøm og lengre kontrakter, desto lavere covenant-terskel kan banken akseptere."
+  - question: "Hvorfor er rentedekningsgrad så følsom for renteendringer?"
+    answer: "Fordi renten står i nevneren. Når renten stiger, øker rentekostnaden mens driftsresultatet er omtrent uendret på kort sikt, så dekningsgraden faller raskt. En eiendom med komfortabel dekning ved lav rente kan havne under covenant-terskelen etter en renteoppgang, og derfor bør nøkkeltallet alltid stresstestes mot et høyere rentenivå."
+slug: rentedekningsgrad
+---
+
+Banken som finansierer en næringseiendom stiller egentlig ett spørsmål: tåler leieinntektene å betjene lånet, også når noe går galt? Rentedekningsgrad er det nøkkeltallet som svarer mest direkte på det — og det er derfor det dukker opp som covenant i nesten enhver låneavtale for næringseiendom.
+
+<Prerequisites>
+  - Oversikt over [finansiering av næringseiendom](/help/article/finansiering-av-naringseiendom)
+  - Forståelse av [netto leieinntekter (NOI)](/help/article/netto-leieinntekter)
+  - Kjennskap til [belåningsgrad (LTV)](/help/article/belaningsgrad-ltv)
+  - Innsikt i [kontantstrømsanalyse](/help/article/kontantstromsanalyse)
+</Prerequisites>
+
+## Hva er rentedekningsgrad?
+
+Rentedekningsgrad måler hvor mange ganger driftsresultatet dekker rentekostnaden. Det er et forholdstall: jo høyere det er, desto mer margin har eiendommen mellom det den tjener og det den skylder banken i renter. I næringseiendom brukes oftest den engelske forkortelsen ICR.
+
+<Fact term="ICR — Interest Coverage Ratio (rentedekningsgrad)">
+  Forholdet mellom driftsresultatet (netto leieinntekt / NOI, eller EBITDA for et driftsselskap) og de årlige rentekostnadene. Et tall på 1,0 betyr at hele driftsresultatet går med til å betale renter; alt over 1,0 er buffer.
+</Fact>
+
+Logikken er enkel. Driftsresultatet er det leieinntektene gir etter at eierkostnadene er trukket fra, men før finansiering og skatt. Rentekostnaden er prisen på gjelden. Setter du det ene over det andre, får du et mål på betjeningsevnen som er uavhengig av eiendommens størrelse.
+
+<Math
+  formula="\text{ICR} = \frac{\text{Driftsresultat (NOI / EBITDA)}}{\text{Årlige rentekostnader}}"
+  description="Rentedekningsgrad — hvor mange ganger driftsresultatet dekker rentene"
+/>
+
+## Et regneeksempel
+
+La oss bruke et rent illustrativt eksempel med runde tall. Tenk deg en eiendom som gir en netto leieinntekt på 6 millioner kroner i året, finansiert med et lån på 80 millioner kroner til en rente på 5 prosent. Tallene er valgt for å vise mekanikken, ikke for å gjengi et faktisk markedsnivå.
+
+<Example
+  title="Rentedekningsgrad ved 5 % rente (illustrativt)"
+  steps={[
+    {
+      label: "Netto leieinntekt (NOI)",
+      value: 6000000,
+      calculation: "Driftsresultat før finansiering"
+    },
+    {
+      label: "Lån",
+      value: 80000000,
+      calculation: "Rentebærende gjeld"
+    },
+    {
+      label: "Rentekostnad (5 % av 80 MNOK)",
+      value: 4000000,
+      calculation: "Årlige renter"
+    },
+    {
+      label: "Rentedekningsgrad (ICR)",
+      value: "1,5x",
+      calculation: "6,0 MNOK / 4,0 MNOK",
+      isResult: true
+    }
+  ]}
+/>
+
+En ICR på 1,5 betyr at driftsresultatet er halvannen gang så stort som rentene. Det finnes altså buffer, men den er ikke stor: faller leieinntekten med en tredjedel, eller stiger renten tilsvarende, er hele marginen spist opp.
+
+<Note>
+  Rentedekningsgrad sier ingenting om avdrag. Et lån kan ha komfortabel rentedekning og likevel være stramt å betjene dersom banken krever rask nedbetaling. Det er her gjeldsbetjeningsgraden kommer inn.
+</Note>
+
+## ICR versus DSCR — to mål på betjeningsevne
+
+Rentedekningsgraden ser bare på renter. Men de fleste næringseiendomslån har også avdrag, og avdrag belaster kontantstrømmen like reelt som renter. Derfor bruker banken et bredere mål ved siden av ICR: gjeldsbetjeningsgrad, eller DSCR.
+
+<Compare
+  pro={{
+    head: "ICR — rentedekningsgrad",
+    items: [
+      "Driftsresultat delt på kun rentekostnaden",
+      "Måler bufferen mot renteoppgang isolert",
+      "Mest brukt på avdragsfrie eller obligasjonsfinansierte strukturer",
+      "Enklere å sammenligne mellom eiendommer"
+    ]
+  }}
+  con={{
+    head: "DSCR — gjeldsbetjeningsgrad",
+    items: [
+      "Driftsresultat delt på renter pluss avdrag",
+      "Måler den faktiske kontantstrømsbelastningen",
+      "Strengere — fanger opp rask avdragsprofil",
+      "Speiler best om eiendommen er selvfinansierende"
+    ]
+  }}
+/>
+
+I praksis er DSCR det strengeste tallet, fordi nevneren er større. En eiendom kan ha ICR på 1,5 og samtidig DSCR rundt 1,1 dersom avdragene er høye. Banken vurderer gjerne begge, men vekter DSCR tungt fordi det er det som avgjør om eiendommen klarer å betjene seg selv uten at eier må skyte inn penger.
+
+<Fact term="DSCR — Debt Service Coverage Ratio (gjeldsbetjeningsgrad)">
+  Forholdet mellom driftsresultatet og samlet gjeldsbetjening, altså renter pluss avdrag. Et tall under 1,0 betyr at kontantstrømmen ikke dekker terminbeløpet, og at eier må tilføre likviditet.
+</Fact>
+
+## Rentedekning som covenant i låneavtalen
+
+Disse nøkkeltallene er ikke bare noe banken regner ut én gang. De skrives inn i låneavtalen som covenants — løpende vilkår som må overholdes gjennom hele lånets løpetid. Det er dette covenant-vokabularet som gjør rentedekningsgrad til mer enn et analysetall: det blir en juridisk forpliktelse.
+
+En typisk avtale kan kreve at ICR aldri faller under et avtalt nivå, og at DSCR holdes over en annen terskel, målt kvartalsvis eller årlig. Bryter du terskelen, utløses bankens rettigheter.
+
+<Stepper
+  items={[
+    {
+      title: "Måling og rapportering",
+      content: "Banken krever jevnlig rapportering av nøkkeltallene, ofte basert på reviderte eller bekreftede regnskapstall. Du må kunne dokumentere driftsresultat og finanskostnad."
+    },
+    {
+      title: "Brudd på covenant (breach)",
+      content: "Faller ICR eller DSCR under avtalt terskel, foreligger et teknisk mislighold — selv om du betaler terminene som normalt. Bruddet må vanligvis varsles banken."
+    },
+    {
+      title: "Bankens reaksjon",
+      content: "Banken kan kreve tiltak: ekstra nedbetaling for å bedre nøkkeltallet, økt rentemargin, stans i utbytte, eller stille ytterligere sikkerhet. Vilkårene står i avtalen."
+    },
+    {
+      title: "Reforhandling eller innfrielse",
+      content: "Løses ikke bruddet, kan banken i ytterste konsekvens si opp lånet og kreve innfrielse — som kan tvinge et salg i et ugunstig marked."
+    }
+  ]}
+/>
+
+Poenget er at en covenant fungerer som et tidlig varsel. Banken oppdager en svekket kontantstrøm lenge før et faktisk betalingsmislighold, og får anledning til å gripe inn mens det fortsatt er handlingsrom. For investor betyr det at marginen i nøkkeltallet er like viktig som selve renten.
+
+## Hvorfor rentenivået er avgjørende
+
+Rentedekningsgraden er spesielt følsom for renteendringer, fordi renten står i nevneren. Når renten stiger, øker rentekostnaden umiddelbart, mens driftsresultatet er omtrent uendret på kort sikt — leiekontraktene reguleres typisk bare årlig. Dekningsgraden faller derfor raskt.
+
+<Example
+  title="Samme eiendom når renten stiger til 6,5 % (illustrativt)"
+  steps={[
+    {
+      label: "Netto leieinntekt (NOI)",
+      value: 6000000,
+      calculation: "Uendret på kort sikt"
+    },
+    {
+      label: "Rentekostnad (6,5 % av 80 MNOK)",
+      value: 5200000,
+      calculation: "Renten opp fra 5 % til 6,5 %"
+    },
+    {
+      label: "Rentedekningsgrad (ICR)",
+      value: "1,15x",
+      calculation: "6,0 MNOK / 5,2 MNOK",
+      isResult: true
+    }
+  ]}
+/>
+
+I eksempelet faller ICR fra 1,5 til 1,15 utelukkende på grunn av renteoppgangen. Var bankens covenant satt til 1,25, ville eiendommen nå være i brudd — uten at noe galt har skjedd med driften. Det illustrerer hvorfor du alltid bør stressteste nøkkeltallene mot et høyere rentenivå før du belåner deg, og hvorfor [rentesikring](/help/article/finansiering-av-naringseiendom) er en del av risikostyringen.
+
+<Note variant="caution">
+  En stram rentedekningsgrad gir lite å gå på. Kombineres høy belåning med flytende rente og kort WAULT, kan en moderat renteoppgang eller én leietaker som flytter ut sende deg under covenant-terskelen. Bygg inn buffer før du trenger den.
+</Note>
+
+## Slik styrker du betjeningsevnen
+
+Rentedekningsgrad er ikke en statisk egenskap ved eiendommen — den kan styres aktivt, både ved opptak og gjennom eierperioden. Det handler om å påvirke enten telleren (driftsresultatet) eller nevneren (finanskostnaden).
+
+<Summary
+  title="Grep som bedrer rentedekningsgraden"
+  points={[
+    {
+      title: "Lavere belåning",
+      description: "Mindre lån gir lavere rentekostnad og dermed høyere dekningsgrad. Egenkapital er den mest direkte bufferen mot covenant-brudd.",
+      iconName: "barChart"
+    },
+    {
+      title: "Rentesikring",
+      description: "Rentebinding eller rentebytteavtale låser finanskostnaden og beskytter dekningsgraden mot renteoppgang i en sårbar periode.",
+      iconName: "scales"
+    },
+    {
+      title: "Sterkere kontantstrøm",
+      description: "Lengre kontrakter, solide leietakere og redusert ledighet løfter driftsresultatet og dermed telleren i brøken.",
+      iconName: "lineChart"
+    },
+    {
+      title: "Avdragsprofil",
+      description: "Avdragsfrihet eller lengre nedbetalingstid letter DSCR, men øker restgjelden ved refinansiering — en avveining mot tid.",
+      iconName: "lightbulb"
+    }
+  ]}
+/>
+
+En [kontantstrømsanalyse](/help/article/kontantstromsanalyse) er det naturlige verktøyet for å se hvordan disse grepene slår ut samtidig. Der kan du modellere ICR og DSCR under ulike rente- og inntektsscenarier, og finne det belåningsnivået som gir komfortabel margin til covenantene selv i et stresscenario.
+
+<Note variant="positive">
+  Rentedekningsgrad er bankens fremste mål på om en næringseiendom kan betjene gjelden sin. Forstår du hvordan ICR og DSCR beregnes — og hvor følsomme de er for rente — kan du strukturere finansieringen med margin og unngå covenant-brudd når markedet snur.
+</Note>
+
+<ReadMore
+  items={[
+    {
+      href: "/help/article/finansiering-av-naringseiendom",
+      pre: "Kunnskap",
+      title: "Finansiering av næringseiendom — LTV, rentebinding og gearing",
+    },
+    {
+      href: "/help/article/kontantstromsanalyse",
+      pre: "Kunnskap",
+      title: "Kontantstrømsanalyse — modeller betjeningsevnen",
+    },
+    {
+      href: "/blog/rentestigninger-naringseiendom",
+      pre: "Blogg",
+      title: "Rentestigninger og næringseiendom — slik slår de inn",
+    },
+  ]}
+/>
+
+<CTA
+  badge="Modeller finansieringen"
+  title="Få oversikt over rentedekning og lånevilkår med Advanti"
+  description="Advanti modellerer kontantstrøm, rentedekningsgrad og DSCR under ulike rentescenarier, slik at du kjenner marginen til bankens covenants før du belåner deg."
+  primaryAction={{
+    label: "Ta kontakt",
+    href: "/kontakt"
+  }}
+  secondaryAction={{
+    label: "Les om finansiering",
+    href: "/help/article/finansiering-av-naringseiendom"
+  }}
+  size="default"
+/>

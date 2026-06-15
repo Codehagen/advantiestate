@@ -4,6 +4,7 @@ import Link from "next/link"
 import { notFound } from "next/navigation"
 
 import { ArticleFeedback } from "@/components/help/ArticleFeedback"
+import { HelpDisclaimer } from "@/components/help/HelpDisclaimer"
 import { ArticleToc } from "@/components/blog/ArticleToc"
 import { CtaStrip } from "@/components/site/CtaStrip"
 import { NewsletterSection } from "@/components/site/NewsletterSection"
@@ -235,6 +236,8 @@ export default async function HelpArticle({
                   ))}
                 </div>
               )}
+
+              {data.advisory && <HelpDisclaimer advisory={data.advisory} />}
 
               <ArticleFeedback slug={data.slug ?? slug} />
 
