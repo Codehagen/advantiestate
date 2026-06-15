@@ -9921,7 +9921,9 @@ h1, h2, h3 {
   font-size: 11px;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--accent);
+  /* Dark, not accent: the light-blue accent is illegible on warm-white.
+     The numbered section marks must read as text, not decoration. */
+  color: var(--warm-grey);
   margin-bottom: 22px;
   padding-bottom: 14px;
   border-bottom: var(--hairline);
@@ -10060,6 +10062,131 @@ h1, h2, h3 {
 @media (max-width: 980px) {
   .calc-result { position: static; }
 }
+
+/* ============================================================
+   YIELD-KALKULATOR v2 — editorial additions.
+   Shares .calc-grid/.calc-inputs/.calc-result/.r-* with naringskalkulator.
+   Yield-only result tweaks are scoped under .yk-result so naringskalkulator
+   is untouched. Light-only (the prototype's .dark variants dropped).
+   ============================================================ */
+
+/* Unit toggle (% / kr) inline with a field label */
+.num-field-top { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+.unit-seg { display: inline-flex; gap: 2px; }
+.unit-seg button {
+  font-family: var(--font-body); font-size: 11px; letter-spacing: 0.08em;
+  text-transform: uppercase; font-weight: 500;
+  color: var(--warm-grey-85); padding: 4px 10px; border: var(--hairline);
+  background: transparent; cursor: pointer; transition: all 0.16s;
+}
+.unit-seg button + button { border-left: 0; }
+.unit-seg button[aria-pressed="true"] {
+  background: var(--warm-grey); color: var(--warm-white); border-color: var(--warm-grey);
+}
+.unit-seg button:focus-visible { outline: 2px solid var(--warm-grey); outline-offset: 2px; }
+
+/* Financing switch row */
+.fin-switch {
+  display: flex; align-items: center; justify-content: space-between; gap: 18px;
+  padding: 22px 0 0; margin-top: 8px;
+}
+.fin-switch .txt .t { font-size: 13.5px; font-weight: 500; color: var(--warm-grey); }
+.fin-switch .txt .s { font-size: 12.5px; color: var(--warm-grey-85); margin-top: 3px; line-height: 1.45; }
+.switch {
+  position: relative; width: 46px; height: 26px; flex: none;
+  border: 1px solid var(--warm-grey-75); background: transparent;
+  cursor: pointer; transition: 0.2s;
+}
+.switch::after {
+  content: ""; position: absolute; top: 3px; left: 3px;
+  width: 18px; height: 18px; background: var(--warm-grey-75); transition: 0.2s;
+}
+.switch[aria-pressed="true"] { border-color: var(--warm-grey); }
+.switch[aria-pressed="true"]::after { transform: translateX(20px); background: var(--warm-grey); }
+.switch:focus-visible { outline: 2px solid var(--warm-grey); outline-offset: 2px; }
+
+/* Yield result-card tweaks (scoped) */
+.calc-result.yk-result .r-lbl {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+}
+.yk-result .r-pill {
+  font-size: 11px; letter-spacing: 0.06em; text-transform: none;
+  color: var(--accent); font-variant-numeric: tabular-nums; font-weight: 500;
+}
+.yk-result .r-pill.neg { color: var(--soft-terrakotta); }
+.calc-result.yk-result .r-value {
+  font-size: clamp(48px, 6vw, 68px); line-height: 0.96;
+  display: inline-flex; align-items: baseline; gap: 4px;
+}
+.yk-result .r-value .u { font-size: 0.4em; color: rgba(243,241,239,0.6); font-style: italic; font-weight: 300; }
+.yk-result .r-stat .hint { margin-top: 6px; font-size: 11.5px; color: rgba(243,241,239,0.5); line-height: 1.45; }
+
+/* Benchmark bar (dark card) */
+.bench { margin: 30px 0 6px; }
+.bench-track { position: relative; height: 4px; border-radius: 2px; background: rgba(243,241,239,0.18); }
+.bench-mark {
+  position: absolute; top: -7px; width: 1px; height: 18px;
+  background: rgba(243,241,239,0.65); transition: left 0.5s cubic-bezier(0.16,1,0.3,1);
+}
+.bench-mark .cap {
+  position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%);
+  white-space: nowrap; margin-bottom: 6px;
+  font-size: 10.5px; letter-spacing: 0.04em; color: rgba(243,241,239,0.7);
+  font-variant-numeric: tabular-nums;
+}
+.bench-dot {
+  position: absolute; top: 50%; transform: translate(-50%,-50%);
+  width: 13px; height: 13px; border-radius: 50%;
+  background: var(--warm-white); border: 2px solid var(--accent);
+  transition: left 0.5s cubic-bezier(0.16,1,0.3,1);
+}
+.bench-scale {
+  display: flex; justify-content: space-between; margin-top: 12px;
+  font-size: 11.5px; color: rgba(243,241,239,0.5);
+  font-variant-numeric: tabular-nums; letter-spacing: 0.02em;
+}
+.bench-note { margin-top: 16px; font-size: 13px; line-height: 1.55; color: rgba(243,241,239,0.72); }
+.bench-note strong { color: var(--accent); font-weight: 500; }
+
+/* Financing sub-block inside dark card */
+.r-fin { margin-top: 30px; padding-top: 28px; border-top: 1px solid rgba(243,241,239,0.16); }
+.r-fin .r-fin-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 20px; }
+.r-fin .r-fin-head .lbl { font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(243,241,239,0.6); }
+.r-fin .r-fin-head .params { font-size: 12px; color: rgba(243,241,239,0.5); font-variant-numeric: tabular-nums; }
+.r-fin .coc-lbl { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(243,241,239,0.55); margin-bottom: 10px; }
+.r-fin .coc { display: flex; align-items: baseline; gap: 4px; font-family: var(--font-display); letter-spacing: -0.025em; line-height: 1; }
+.r-fin .coc .nf { font-size: 40px; font-weight: 400; color: var(--warm-white); font-variant-numeric: tabular-nums; }
+.r-fin .coc .u { font-size: 18px; color: rgba(243,241,239,0.6); font-style: italic; font-weight: 300; }
+.r-fin .fin-rows { display: grid; grid-template-columns: 1fr 1fr; gap: 22px 20px; margin-top: 24px; }
+.r-fin .fin-cell .k { font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(243,241,239,0.55); margin-bottom: 8px; }
+.r-fin .fin-cell .v {
+  font-family: var(--font-display); font-size: 20px; font-weight: 400; letter-spacing: -0.012em;
+  color: var(--warm-white); font-variant-numeric: tabular-nums; white-space: nowrap;
+  display: inline-flex; align-items: baseline; gap: 3px;
+}
+.r-fin .fin-cell .v .u { font-size: 0.55em; font-style: italic; color: rgba(243,241,239,0.6); }
+@media (max-width: 420px) { .yk-result .r-stats { grid-template-columns: 1fr; } }
+
+/* Breakdown strip (light) */
+.yk-break {
+  margin-top: 64px; padding-top: 48px; border-top: var(--hairline);
+  display: grid; grid-template-columns: 0.9fr 1.4fr; gap: 56px; align-items: center;
+}
+.yk-break .bk-head h3 { font-size: clamp(24px, 2.4vw, 32px); font-weight: 400; letter-spacing: -0.018em; line-height: 1.08; }
+.yk-break .bk-head h3 .italic { font-style: italic; font-weight: 300; color: var(--warm-grey-85); }
+.yk-break .bk-head p { margin-top: 14px; font-size: 14.5px; color: var(--warm-grey-85); line-height: 1.55; max-width: 40ch; }
+.yk-break .bk-bar { display: flex; height: 44px; border: var(--hairline); overflow: hidden; }
+.yk-break .bk-seg {
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 500; letter-spacing: 0.02em;
+  transition: flex-basis 0.4s ease; min-width: 2px; font-variant-numeric: tabular-nums;
+}
+.yk-break .bk-seg.opex { background: var(--warm-grey-75); color: var(--warm-grey); }
+.yk-break .bk-seg.noi { background: var(--warm-grey); color: var(--warm-white); }
+.yk-break .bk-legend { display: flex; gap: 32px; margin-top: 18px; flex-wrap: wrap; }
+.yk-break .bk-leg { display: flex; flex-direction: column; gap: 4px; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--warm-grey-85); }
+.yk-break .bk-leg .vv { font-family: var(--font-display); font-size: 22px; letter-spacing: -0.01em; text-transform: none; color: var(--warm-grey); font-variant-numeric: tabular-nums; }
+@media (max-width: 780px) { .yk-break { grid-template-columns: 1fr; gap: 28px; } }
 
 /* ============================================================
    SJEKKLISTE VERDIVURDERING — forberedelses-verktøy (eksisterende tokens)
