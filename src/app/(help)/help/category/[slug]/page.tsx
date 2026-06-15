@@ -7,13 +7,9 @@ import { CtaStrip } from "@/components/site/CtaStrip"
 import { SeOgsa } from "@/components/site/SeOgsa"
 import { SubHero } from "@/components/site/SubHero"
 import { HELP_CATEGORIES, POPULAR_ARTICLES } from "@/lib/blog/content"
+import { helpAuthorName } from "@/lib/blog/help-data"
 import { calculateReadingTime } from "@/lib/blog/utils"
 import { constructMetadata } from "@/lib/utils"
-
-const AUTHOR_NAMES: Record<string, string> = {
-  codehagen: "Christer Hagen",
-  vsoraas: "Vegard Søraas",
-}
 
 const MONTHS_SHORT = [
   "JAN",
@@ -149,7 +145,7 @@ export default async function HelpCategory({
                   ? calculateReadingTime(article.mdx)
                   : null
                 const authorName =
-                  AUTHOR_NAMES[article.author] || article.author
+                  helpAuthorName(article.author)
                 return (
                   <Link
                     key={article.slug}
