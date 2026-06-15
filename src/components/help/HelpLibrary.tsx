@@ -1,9 +1,14 @@
 "use client"
 
 import Link from "next/link"
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 
 import { foldNo } from "@/lib/blog/help-data"
+
+// Front-page index is capped — the design rule: never render 100+ rows at once.
+// "Vis flere" reveals more; search/filter narrows the set rather than expanding
+// the wall. The exhaustive list lives on the category pages.
+const PAGE = 12
 
 export interface LibraryItem {
   slug: string
@@ -72,6 +77,7 @@ export function HelpLibrary({
   const [cat, setCat] = useState<string>("all")
   const [filter, setFilter] = useState("")
   const [sort, setSort] = useState<SortKey>("popular")
+  const [visible, setVisible] = useState(PAGE)
 
   const counts = useMemo(() => {
     const map: Record<string, number> = {}
@@ -92,6 +98,13 @@ export function HelpLibrary({
     })
     return sortItems(filtered, q ? "popular" : sort)
   }, [items, cat, q, sort])
+
+  // Reset the visible window whenever the result set changes, so a new
+  // filter/search/sort always starts from the top of a fresh, capped list.
+  useEffect(() => {
+    setVisible(PAGE)
+  }, [q, cat, sort])
+  const shown = list.slice(0, visible)
 
   const reset = () => {
     setCat("all")
@@ -152,13 +165,14 @@ export function HelpLibrary({
         </div>
 
         {q.length === 0 && (
-          <div className="hs-sort">
-            <span className="lbl">Sorter</span>
+          <div className="hs-sort" role="group" aria-label="Sorter">
+            <span className="lbl" aria-hidden="true">Sorter</span>
             {SORTS.map((s) => (
               <button
                 key={s.key}
                 type="button"
                 className="hs-sortbtn"
+                aria-pressed={sort === s.key}
                 data-on={sort === s.key ? "1" : undefined}
                 onClick={() => setSort(s.key)}
               >
@@ -170,8 +184,9 @@ export function HelpLibrary({
       </div>
 
       {list.length > 0 ? (
+        <>
         <div className="hs-index">
-          {list.map((it) => (
+          {shown.map((it) => (
             <Link
               key={it.slug}
               className="hs-row"
@@ -196,14 +211,23 @@ export function HelpLibrary({
             </Link>
           ))}
         </div>
+        {list.length > visible && (
+          <div className="hs-loadmore">
+            <button type="button" onClick={() => setVisible((v) => v + PAGE)}>
+              Vis flere{" "}
+              <span className="lm-count">({list.length - visible} igjen)</span>
+            </button>
+          </div>
+        )}
+        </>
       ) : (
         <div className="hs-empty">
           <div className="em-mark" aria-hidden="true">
             ⌕
           </div>
-          <h4>
+          <h3>
             Ingen treff <span className="q">her.</span>
-          </h4>
+          </h3>
           <p>
             Vi fant ingen artikler som matcher
             {q ? ` «${filter.trim()}»` : " filteret"}

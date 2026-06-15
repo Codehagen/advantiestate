@@ -10515,6 +10515,50 @@ h1, h2, h3 {
   .hs-path .steps a:hover .sa { transform: translateX(3px); color: var(--warm-grey); }
 }
 
+/* ---- Mest lest (curated top list) ---- */
+.hs-mostread { display: grid; grid-template-columns: 1fr 1fr; gap: 0 48px; border-top: var(--hairline); }
+.hs-mr { display: grid; grid-template-columns: 30px 1fr auto; align-items: baseline; gap: 16px; padding: 16px 2px; border-bottom: var(--hairline); text-decoration: none; color: var(--warm-grey); transition: background 0.15s, padding 0.15s; }
+.hs-mr .mn { font-family: var(--font-display); font-size: 17px; color: var(--accent-soft); font-variant-numeric: tabular-nums; }
+.hs-mr .mt { font-family: var(--font-display); font-size: 18px; font-weight: 400; letter-spacing: -0.01em; line-height: 1.2; }
+.hs-mr .mtag { font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--warm-grey-85); white-space: nowrap; }
+@media (hover: hover) { .hs-mr:hover { background: var(--accent-faint); padding-left: 12px; padding-right: 12px; } }
+
+/* ---- Bla på tema (category browse cards) ---- */
+.hs-browse { display: grid; grid-template-columns: repeat(3, 1fr); border-top: var(--hairline); border-left: var(--hairline); }
+.hs-cat { border-right: var(--hairline); border-bottom: var(--hairline); padding: 26px 26px 22px; display: flex; flex-direction: column; transition: background 0.3s; }
+.hs-cat .chead { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 16px; }
+.hs-cat .pre { font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--warm-grey-85); font-variant-numeric: tabular-nums; }
+.hs-cat h3 { font-size: 21px; font-weight: 400; letter-spacing: -0.015em; line-height: 1.12; margin-top: 7px; }
+.hs-cat .cn { font-size: 12px; color: var(--warm-grey-85); font-variant-numeric: tabular-nums; white-space: nowrap; padding-top: 2px; }
+.hs-cat .links { list-style: none; display: flex; flex-direction: column; border-top: 1px solid rgba(215,208,200,0.55); }
+.hs-cat .links a { display: flex; align-items: baseline; gap: 8px; padding: 8px 0; font-size: 14px; line-height: 1.35; text-decoration: none; color: var(--warm-grey); border-bottom: 1px solid rgba(215,208,200,0.55); transition: color 0.15s; }
+.hs-cat .links a .li-arrow { color: var(--accent-soft); transition: transform 0.15s; }
+.hs-cat .seeall { margin-top: auto; padding-top: 16px; display: inline-flex; align-items: center; gap: 7px; font-size: 13px; text-decoration: none; color: var(--warm-grey); }
+.hs-cat .seeall .sa { color: var(--warm-grey-85); transition: transform 0.15s; }
+@media (hover: hover) {
+  .hs-cat:hover { background: var(--accent-faint); }
+  .hs-cat .links a:hover { color: var(--warm-grey-85); }
+  .hs-cat .links a:hover .li-arrow { transform: translateX(2px); }
+  .hs-cat .seeall:hover .sa { transform: translateX(3px); }
+}
+
+/* ---- Vis flere (capped index) ---- */
+.hs-loadmore { display: flex; justify-content: center; padding: 28px 0 4px; }
+.hs-loadmore button { appearance: none; cursor: pointer; font-family: var(--font-body); font-size: 14px; color: var(--warm-grey); background: transparent; border: 1px solid var(--warm-grey); border-radius: 999px; padding: 12px 26px; display: inline-flex; align-items: center; gap: 9px; transition: background 0.15s, color 0.15s; }
+.hs-loadmore button:hover { background: var(--warm-grey); color: var(--warm-white); }
+.hs-loadmore .lm-count { color: var(--warm-grey-85); font-variant-numeric: tabular-nums; }
+.hs-loadmore button:hover .lm-count { color: rgba(243,241,239,0.6); }
+
+/* Coarse-pointer touch-target floor — matches .ks-toc a / .ks-feedback / .btn-sm.
+   The compact preview links (category cards, "Se alle", reading-path steps) and
+   the load-more button are otherwise ~30-43px, below the 44px touch minimum. */
+@media (pointer: coarse) {
+  .hs-cat .links a { min-height: 44px; align-items: center; }
+  .hs-cat .seeall { min-height: 44px; }
+  .hs-loadmore button { min-height: 44px; }
+  .hs-path .steps a { min-height: 44px; }
+}
+
 /* ---- Library: toolbar + index ---- */
 .hs-lib-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; flex-wrap: wrap; margin-bottom: 28px; }
 .hs-lib-head h2 { font-size: clamp(30px, 3.4vw, 46px); font-weight: 400; letter-spacing: -0.02em; line-height: 1.04; }
@@ -10570,8 +10614,8 @@ h1, h2, h3 {
 
 .hs-empty { padding: 64px 14px; text-align: center; border-bottom: var(--hairline); }
 .hs-empty .em-mark { font-family: var(--font-display); font-size: 44px; color: var(--warm-grey-75); }
-.hs-empty h4 { font-family: var(--font-display); font-size: 24px; font-weight: 400; margin: 12px 0 8px; }
-.hs-empty h4 .q { font-style: italic; color: var(--warm-grey-85); }
+.hs-empty h3 { font-family: var(--font-display); font-size: 24px; font-weight: 400; margin: 12px 0 8px; }
+.hs-empty h3 .q { font-style: italic; color: var(--warm-grey-85); }
 .hs-empty p { font-size: 14.5px; color: var(--warm-grey-85); max-width: 44ch; margin: 0 auto 22px; line-height: 1.55; }
 .hs-empty-actions { display: inline-flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
 .hs-empty .clearbtn { appearance: none; cursor: pointer; font-family: var(--font-body); font-size: 13.5px; background: var(--warm-grey); color: var(--warm-white); border: none; padding: 11px 20px; border-radius: 4px; }
@@ -10623,12 +10667,17 @@ h1, h2, h3 {
 .hs-pill:focus-visible, .hs-chip:focus-visible, .hs-sortbtn:focus-visible,
 .hs-res:focus-visible, .hs-row:focus-visible, .hs-qa summary:focus-visible,
 .hs-search input:focus-visible, .hs-empty .clearbtn:focus-visible,
-.hs-empty .ghostbtn:focus-visible, .hs-res-cta:focus-visible {
+.hs-empty .ghostbtn:focus-visible, .hs-res-cta:focus-visible,
+.hs-mr:focus-visible, .hs-cat .links a:focus-visible, .hs-cat .seeall:focus-visible,
+.hs-loadmore button:focus-visible {
   outline: 2px solid var(--warm-grey); outline-offset: 2px; border-radius: 4px;
 }
 @media (max-width: 980px) {
   .hs-paths { grid-template-columns: 1fr; border-left: 0; }
   .hs-path { border-right: 0; }
+  .hs-browse { grid-template-columns: 1fr; border-left: 0; }
+  .hs-cat { border-right: 0; }
+  .hs-mostread { grid-template-columns: 1fr; gap: 0; }
   .hs-faq-grid { grid-template-columns: 1fr; gap: 36px; }
   .art-prevnext { grid-template-columns: 1fr; }
   .art-prevnext a.next { text-align: left; align-items: flex-start; border-left: 0; border-top: var(--hairline); }
@@ -10641,17 +10690,25 @@ h1, h2, h3 {
   .hs-search .kbd { display: none; }
   .hs-sort { width: 100%; margin-left: 0; }
   .hs-herostats { gap: 32px; }
+  /* Mest lest: drop the nowrap category tag onto its own line so long
+     Norwegian titles don't get squeezed by the auto tag column on phones. */
+  .hs-mr { grid-template-columns: 30px 1fr; align-items: start; }
+  .hs-mr .mtag { grid-column: 2; margin-top: 4px; }
 }
 /* Honour reduce-motion for the v2 hover nudges + FAQ marker rotation. */
 @media (prefers-reduced-motion: reduce) {
   .hs-path, .hs-path .steps a .sa, .hs-row, .hs-row .rarrow, .hs-res,
   .hs-res .rarrow, .hs-pill, .hs-chip, .hs-sortbtn, .hs-search, .hs-minisearch,
   .hs-faq-aside .askmore, .hs-qa summary::after,
-  .art-prevnext a, .ks-art-author .av {
+  .art-prevnext a, .ks-art-author .av,
+  .hs-mr, .hs-cat, .hs-cat .links a, .hs-cat .links a .li-arrow,
+  .hs-cat .seeall, .hs-cat .seeall .sa, .hs-loadmore button {
     transition: none !important;
   }
   .hs-row:hover { padding-left: 14px; padding-right: 14px; }
-  .hs-row:hover .rarrow, .hs-path .steps a:hover .sa { transform: none; }
+  .hs-mr:hover { padding-left: 2px; padding-right: 2px; }
+  .hs-row:hover .rarrow, .hs-path .steps a:hover .sa,
+  .hs-cat .links a:hover .li-arrow, .hs-cat .seeall:hover .sa { transform: none; }
 }
 
 /* ============================================================

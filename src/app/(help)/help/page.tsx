@@ -90,6 +90,23 @@ export default function HelpCenter() {
       .filter((s): s is { slug: string; title: string } => s !== null),
   }))
 
+  // "Bla på tema" — one card per canonical category, previewing the top 3
+  // articles (curated popRank first, then newest) and linking to the full
+  // category page. New articles grow the category page, not this front page.
+  const categoryCards = HELP_CATEGORY_META.map((c) => {
+    const inCat = libraryItems.filter((it) => it.categorySlug === c.slug)
+    const top = [...inCat]
+      .sort((a, b) => {
+        const ra = a.popRank ?? Infinity
+        const rb = b.popRank ?? Infinity
+        if (ra !== rb) return ra - rb
+        return Date.parse(b.updated) - Date.parse(a.updated)
+      })
+      .slice(0, 3)
+      .map((t) => ({ slug: t.slug, title: t.title }))
+    return { slug: c.slug, title: c.title, count: inCat.length, top }
+  })
+
   return (
     <>
       <SubHero
@@ -175,6 +192,87 @@ export default function HelpCenter() {
                     </li>
                   ))}
                 </ul>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* MEST LEST — curated top list */}
+      {popularDto.length > 0 && (
+        <section className="section-tight" style={{ paddingTop: 8, paddingBottom: 48 }}>
+          <div className="wrap">
+            <div className="head-compact" style={{ marginBottom: 24 }}>
+              <span className="eyebrow">Mest lest</span>
+              <div>
+                <h2>
+                  Start med <span className="italic">det folk faktisk leser.</span>
+                </h2>
+              </div>
+            </div>
+
+            <div className="hs-mostread">
+              {popularDto.map((a, i) => (
+                <Link
+                  key={a.slug}
+                  className="hs-mr"
+                  href={`/help/article/${a.slug}`}
+                  prefetch={false}
+                >
+                  <span className="mn">{String(i + 1).padStart(2, "0")}</span>
+                  <span className="mt">{a.title}</span>
+                  <span className="mtag">{a.category}</span>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* BLA PÅ TEMA — category browse cards */}
+      <section className="section-tight" style={{ paddingTop: 8, paddingBottom: 48 }}>
+        <div className="wrap">
+          <div className="head-compact" style={{ marginBottom: 24 }}>
+            <span className="eyebrow">Bla på tema</span>
+            <div>
+              <h2>
+                {HELP_CATEGORY_META.length} temaer{" "}
+                <span className="italic">å utforske.</span>
+              </h2>
+              <p>
+                Bla deg inn i ett område — hvert tema har sin egen side med hele
+                listen.
+              </p>
+            </div>
+          </div>
+
+          <div className="hs-browse">
+            {categoryCards.map((c, i) => (
+              <div className="hs-cat" key={c.slug}>
+                <div className="chead">
+                  <div>
+                    <span className="pre">
+                      Tema · {String(i + 1).padStart(2, "0")}
+                    </span>
+                    <h3>{c.title}</h3>
+                  </div>
+                  <span className="cn">{c.count}</span>
+                </div>
+                <ul className="links">
+                  {c.top.map((a) => (
+                    <li key={a.slug}>
+                      <Link href={`/help/article/${a.slug}`} prefetch={false}>
+                        <span className="li-arrow" aria-hidden="true">
+                          →
+                        </span>
+                        {a.title}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+                <Link className="seeall" href={`/help/category/${c.slug}`}>
+                  Se alle {c.count} <span className="sa" aria-hidden="true">→</span>
+                </Link>
               </div>
             ))}
           </div>
