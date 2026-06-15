@@ -2,6 +2,7 @@
 
 import { subscribe, type SubscribeSource } from "@/lib/email/subscribe"
 import { checkRateLimit } from "@/lib/rate-limit"
+import { verdivurderingIntakeSchema } from "@/lib/forms/schemas"
 
 export type IntakeResult = { ok: true } | { ok: false; error: string }
 
@@ -29,68 +30,63 @@ export async function subscribeVerdivurderingIntake(
     return { ok: false, error: "For mange forsøk. Prøv igjen om noen minutter." }
   }
 
-  const get = (k: string) => {
-    const v = String(formData.get(k) ?? "").trim()
-    return v.length > 0 ? v : undefined
+  // Validate + cap. Hard-intent minimum: email (valid) + property type +
+  // location + purpose; firstName is required at the form level. Optional /
+  // surface-specific fields (address, company, free-text areal/leie from the
+  // næringskalkulator, legacy size/horizon) are length-capped and dropped when
+  // blank so they don't clutter the Discord notification.
+  const parsed = verdivurderingIntakeSchema.safeParse({
+    email: String(formData.get("email") ?? ""),
+    firstName: String(formData.get("firstName") ?? ""),
+    propertyType: String(formData.get("propertyType") ?? ""),
+    location: String(formData.get("location") ?? ""),
+    purpose: String(formData.get("purpose") ?? ""),
+    address: String(formData.get("address") ?? ""),
+    company: String(formData.get("company") ?? ""),
+    areal: String(formData.get("areal") ?? ""),
+    leie: String(formData.get("leie") ?? ""),
+    size: String(formData.get("size") ?? ""),
+    horizon: String(formData.get("horizon") ?? ""),
+    phone: String(formData.get("phone") ?? ""),
+    notes: String(formData.get("notes") ?? ""),
+    page: String(formData.get("page") ?? ""),
+    intakeSource: String(formData.get("intakeSource") ?? ""),
+  })
+  if (!parsed.success) {
+    return { ok: false, error: "Fyll ut alle påkrevde felt." }
   }
-
-  const email = get("email") ?? ""
-  const firstName = get("firstName")
-  const propertyType = get("propertyType") ?? ""
-  const location = get("location") ?? ""
-  const purpose = get("purpose") ?? ""
-
-  // Optional / surface-specific fields. The dedicated /verdivurdering page
-  // sends address + company + free-text areal/leie (carried from the
-  // næringskalkulator); the legacy #bestill form may send size/horizon.
-  const address = get("address")
-  const company = get("company")
-  const areal = get("areal")
-  const leie = get("leie")
-  const size = get("size")
-  const horizon = get("horizon")
-  const phone = get("phone")
-  const notes = get("notes")
-
-  // `page` distinguishes which surface produced the lead so the funnel can be
-  // measured (verdivurdering-page vs tjeneste-bestill). Defaults to the legacy
-  // service page for backward compatibility.
-  const page = get("page") ?? "/tjenester/verdivurdering"
+  const d = parsed.data
 
   // `intakeSource` selects the CRM source (verdivurdering vs beslutningsgrunnlag).
   // Falls back to verdivurdering-intake for every existing form that doesn't
   // send it, and ignores any value not on the whitelist.
-  const requested = get("intakeSource") as SubscribeSource | undefined
+  const requested = d.intakeSource as SubscribeSource | undefined
   const source: SubscribeSource =
     requested && ALLOWED_SOURCES.includes(requested)
       ? requested
       : "verdivurdering-intake"
 
-  // Hard-intent minimum: email + property type + location + purpose. firstName
-  // is required at the form level so we can address them in the welcome.
-  if (!email || !propertyType || !location || !purpose) {
-    return { ok: false, error: "Fyll ut alle påkrevde felt." }
-  }
+  // `page` distinguishes which surface produced the lead (funnel measurement).
+  // Defaults to the legacy service page for backward compatibility.
+  const page = d.page ?? "/tjenester/verdivurdering"
 
-  // Build the structured context dynamically so empty optional fields don't
-  // clutter the Discord notification.
   const intake: Record<string, string | undefined> = {
-    Eiendomstype: propertyType,
-    Adresse: address,
-    Sted: location,
-    Areal: areal ? `${areal} m²` : undefined,
-    "Årlig leie": leie,
-    Størrelse: size,
-    Formål: purpose,
-    Tidshorisont: horizon,
-    Selskap: company,
-    Telefon: phone,
-    Beskjed: notes,
+    Eiendomstype: d.propertyType,
+    Adresse: d.address,
+    Sted: d.location,
+    Areal: d.areal ? `${d.areal} m²` : undefined,
+    "Årlig leie": d.leie,
+    Størrelse: d.size,
+    Formål: d.purpose,
+    Tidshorisont: d.horizon,
+    Selskap: d.company,
+    Telefon: d.phone,
+    Beskjed: d.notes,
   }
 
   const result = await subscribe({
-    email,
-    firstName,
+    email: d.email,
+    firstName: d.firstName,
     source,
     pageUrl: page,
     intake,

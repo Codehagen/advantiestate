@@ -288,10 +288,12 @@ function YieldView() {
       </div>
 
       <div className="miv-controls">
-        <div className="mi-subtabs">
+        <div className="mi-subtabs" role="tablist" aria-label="Visning">
           {SUB_TABS.map((t) => (
             <button
               key={t.id}
+              type="button"
+              role="tab"
               aria-selected={sub === t.id}
               onClick={() => setSub(t.id)}
             >
@@ -493,10 +495,12 @@ function LeieView() {
       </div>
 
       <div className="miv-controls">
-        <div className="mi-subtabs">
+        <div className="mi-subtabs" role="tablist" aria-label="Visning">
           {SUB_TABS.map((t) => (
             <button
               key={t.id}
+              type="button"
+              role="tab"
               aria-selected={sub === t.id}
               onClick={() => setSub(t.id)}
             >
@@ -1188,12 +1192,16 @@ export function MarkedsinnsiktShell() {
 
   return (
     <div className="mi-shell">
-      <aside className="mi-nav" aria-label="Sektorer">
-        <div className="mi-nav-label">Sektor</div>
+      <aside className="mi-nav" role="tablist" aria-label="Sektorer">
+        <div className="mi-nav-label" aria-hidden="true">
+          Sektor
+        </div>
         {SECTORS.map((s, i) => (
           <Fragment key={s.id}>
-            {i === 4 && <div className="divider" />}
+            {i === 4 && <div className="divider" aria-hidden="true" />}
             <button
+              type="button"
+              role="tab"
               data-sector={s.id}
               aria-selected={sector === s.id}
               onClick={() => selectSector(s.id)}

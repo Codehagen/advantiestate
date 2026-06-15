@@ -1,5 +1,6 @@
 import "server-only"
-import type { SubscribeSource } from "./subscribe"
+import { HIGH_INTENT, type SubscribeSource } from "./subscribe"
+import { sanitizeDiscordValue } from "./sanitize"
 
 const WEBHOOK = process.env.DISCORD_WEBHOOK_URL
 
@@ -24,16 +25,8 @@ const SOURCE_LABEL: Record<SubscribeSource, string> = {
 
 // Pages that match a hard-intent signal get a high-priority colour stripe in
 // Discord so they jump out of the digest. Marketing-funnel signups are
-// brand-neutral; intake forms are light-blue.
-const HIGH_INTENT: SubscribeSource[] = [
-  "verdivurdering-intake",
-  "beslutningsgrunnlag",
-  "service-modal",
-  "kontakt",
-  "eiendommer",
-  "investorportal",
-  "naringsmegler",
-]
+// brand-neutral; intake forms are light-blue. The high-intent set is the
+// shared HIGH_INTENT constant from subscribe.ts (single source of truth).
 const WARM_GREY = 0x2c2825
 const LIGHT_BLUE = 0xcbeef2
 
@@ -68,7 +61,11 @@ export async function notifyLead(args: Args): Promise<boolean> {
     { name: "🕐 Tidspunkt", value: timestamp, inline: true },
   ]
   if (args.firstName) {
-    fields.push({ name: "👤 Navn", value: args.firstName, inline: true })
+    fields.push({
+      name: "👤 Navn",
+      value: sanitizeDiscordValue(args.firstName, 200),
+      inline: true,
+    })
   }
   if (args.pageUrl) {
     fields.push({ name: "🔗 Side", value: args.pageUrl, inline: false })
@@ -83,7 +80,7 @@ export async function notifyLead(args: Args): Promise<boolean> {
   if (args.intake) {
     const intakeFields = Object.entries(args.intake)
       .filter(([, v]) => v !== undefined && v !== "")
-      .map(([k, v]) => `**${k}:** ${v}`)
+      .map(([k, v]) => `**${sanitizeDiscordValue(k, 60)}:** ${sanitizeDiscordValue(v)}`)
       .join("\n")
     if (intakeFields) {
       fields.push({

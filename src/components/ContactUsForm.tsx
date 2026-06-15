@@ -70,7 +70,7 @@ export default function ContactUsForm() {
       } else {
         setError(result.error || "Innsending feilet. Vennligst prøv igjen.");
       }
-    } catch (err) {
+    } catch {
       setError("En uventet feil oppstod. Vennligst prøv igjen.");
     } finally {
       setIsSubmitting(false);

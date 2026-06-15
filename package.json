@@ -48,12 +48,13 @@
     "resend": "^6.12.3",
     "tailwind-merge": "^2.6.0",
     "tailwind-variants": "^0.3.0",
-    "vaul": "^1.1.2"
+    "vaul": "^1.1.2",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
-    "@content-collections/core": "^0.8.0",
-    "@content-collections/mdx": "^0.2.0",
-    "@content-collections/next": "^0.2.4",
+    "@content-collections/core": "^0.15.1",
+    "@content-collections/mdx": "^0.2.2",
+    "@content-collections/next": "^0.2.11",
     "@playwright/test": "^1.60.0",
     "@tailwindcss/forms": "^0.5.10",
     "@testing-library/react": "^16.3.2",
@@ -66,7 +67,7 @@
     "@types/react-katex": "^3.0.4",
     "eslint": "^9.0.0",
     "eslint-config-next": "16.2.9",
-    "fumadocs-core": "^15.0.8",
+    "fumadocs-core": "^16.10.3",
     "github-slugger": "^2.0.0",
     "jsdom": "^29.1.1",
     "postcss": "^8.4.49",

@@ -2,6 +2,7 @@
 
 import { subscribe, type SubscribeSource } from "@/lib/email/subscribe"
 import { checkRateLimit } from "@/lib/rate-limit"
+import { newsletterSchema } from "@/lib/forms/schemas"
 
 // Form-state shape consumed by useFormState in NewsletterSignup. Lets the
 // client component render the same surface for idle / success / error.
@@ -18,16 +19,21 @@ export async function subscribeNewsletter(
     return { status: "error", message: "For mange forsøk. Prøv igjen om noen minutter." }
   }
 
-  const email = String(formData.get("email") ?? "")
-  const source = (String(formData.get("source") ?? "footer") as SubscribeSource)
-  const pageUrl = String(formData.get("pageUrl") ?? "")
-  const firstName = String(formData.get("firstName") ?? "") || undefined
+  const parsed = newsletterSchema.safeParse({
+    email: String(formData.get("email") ?? ""),
+    source: String(formData.get("source") ?? ""),
+    pageUrl: String(formData.get("pageUrl") ?? ""),
+    firstName: String(formData.get("firstName") ?? ""),
+  })
+  if (!parsed.success) {
+    return { status: "error", message: "Fyll inn en gyldig e-postadresse." }
+  }
 
   const result = await subscribe({
-    email,
-    source,
-    pageUrl,
-    firstName,
+    email: parsed.data.email,
+    source: (parsed.data.source ?? "footer") as SubscribeSource,
+    pageUrl: parsed.data.pageUrl ?? "",
+    firstName: parsed.data.firstName,
     marketingConsent: true,
   })
 

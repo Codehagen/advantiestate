@@ -2,6 +2,7 @@
 
 import { PROPERTY_TYPES } from "@/components/naringsmegler/leadConstants"
 import { subscribe } from "@/lib/email/subscribe"
+import { sanitizeDiscordValue } from "@/lib/email/sanitize"
 import { checkRateLimit } from "@/lib/rate-limit"
 
 export type CityLeadResult = { ok: true } | { ok: false; error: string }
@@ -11,18 +12,12 @@ export type CityLeadResult = { ok: true } | { ok: false; error: string }
 // Discord digest / CRM via pageUrl.
 const SLUG_RE = /^[a-z0-9-]{1,40}$/
 
-/**
- * Trim + hard-cap a field, and neutralize Discord-markdown metacharacters and
- * newlines — intake values are interpolated into embed markdown that the team
- * reads as trusted (`**${k}:** ${v}`), so a submitter must not be able to
- * forge extra labelled lines or masked links.
- */
+// Trim + hard-cap + neutralize Discord-markdown metacharacters via the shared
+// sanitizer (see lib/email/sanitize.ts). discord.ts now also sanitizes at the
+// choke point, so this is belt-and-suspenders, but cleaning here keeps the
+// capped values consistent with the per-field limits below.
 function clean(v: FormDataEntryValue | null, max: number): string {
-  return String(v ?? "")
-    .replace(/[\r\n*_`~|[\]]/g, " ")
-    .replace(/\s+/g, " ")
-    .trim()
-    .slice(0, max)
+  return sanitizeDiscordValue(v as string | null, max)
 }
 
 /**

@@ -52,7 +52,17 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 const RESEND_CONFIGURED = () =>
   Boolean(AUDIENCE_ID && process.env.RESEND_API_KEY)
 
-const HIGH_INTENT: SubscribeSource[] = [
+/**
+ * Sales-qualified sources: warrant a durable destination (Discord/CRM) and a
+ * curated `crm_leads` row rather than the lightweight `web_signups` table.
+ *
+ * SINGLE SOURCE OF TRUTH — imported by `discord.ts` (color/label tier) and
+ * `supabase/leads.ts` (CRM-vs-web_signups routing). Previously this list was
+ * duplicated in all three files and drifted: `leads.ts` omitted
+ * `investorportal`, so investor-portal leads silently landed in `web_signups`
+ * instead of the CRM. Keep this the only definition.
+ */
+export const HIGH_INTENT: SubscribeSource[] = [
   "verdivurdering-intake",
   "beslutningsgrunnlag",
   "service-modal",

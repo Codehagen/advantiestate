@@ -6,18 +6,25 @@ import { describe, it, expect, vi, beforeEach } from "vitest"
 // ---------------------------------------------------------------------------
 
 const inserted: Array<{ table: string; row: unknown }> = []
+// When true, the crm_activities insert reports an error — used to prove the
+// activity write is best-effort and never discards a saved crm_leads row.
+let failActivities = false
 
 const fakeClient = {
   from: (table: string) => ({
     insert: (row: unknown) => {
       inserted.push({ table, row })
+      const err =
+        table === "crm_activities" && failActivities
+          ? { message: "activity insert failed" }
+          : null
       return {
         select: () => ({
           single: async () => ({ data: { id: "lead-1" }, error: null }),
         }),
         // Thenable so `await supabase.from(t).insert(row)` resolves cleanly
-        then: (resolve: (v: { error: null }) => void) =>
-          resolve({ error: null }),
+        then: (resolve: (v: { error: unknown }) => void) =>
+          resolve({ error: err }),
       }
     },
   }),
@@ -88,6 +95,7 @@ describe("buildActivitySummary", () => {
 describe("recordSignup routing", () => {
   beforeEach(() => {
     inserted.splice(0) // reset the captured inserts
+    failActivities = false
   })
 
   it("routes HIGH_INTENT 'kontakt' → crm_leads then crm_activities", async () => {
@@ -123,6 +131,32 @@ describe("recordSignup routing", () => {
       firstName: "Ola Nordmann",
       intake: { Type: "Verdsettelse", Telefon: "999 88 777" },
     })
+    expect(ok).toBe(true)
+    expect(inserted[0]?.table).toBe("crm_leads")
+    expect(inserted[1]?.table).toBe("crm_activities")
+  })
+
+  // Regression: the three HIGH_INTENT lists (subscribe/discord/leads) drifted —
+  // leads.ts omitted 'investorportal', so investor-portal leads silently landed
+  // in web_signups instead of the curated CRM. Consolidated to one shared
+  // constant; this locks investorportal to crm_leads.
+  it("routes HIGH_INTENT 'investorportal' → crm_leads then crm_activities", async () => {
+    const ok = await recordSignup({
+      email: "investor@example.no",
+      source: "investorportal",
+      firstName: "Kari Investor",
+    })
+    expect(ok).toBe(true)
+    expect(inserted[0]?.table).toBe("crm_leads")
+    expect(inserted[1]?.table).toBe("crm_activities")
+  })
+
+  // Regression: a crm_activities insert failure must NOT discard the already
+  // saved crm_leads row (it previously returned false, reporting the lead as
+  // lost). The activity is best-effort; the lead still counts as recorded.
+  it("returns true when the lead saved but crm_activities insert fails", async () => {
+    failActivities = true
+    const ok = await recordSignup({ email: "a@b.no", source: "kontakt" })
     expect(ok).toBe(true)
     expect(inserted[0]?.table).toBe("crm_leads")
     expect(inserted[1]?.table).toBe("crm_activities")

@@ -30,8 +30,7 @@ import {
   Megaphone,
 } from "lucide-react";
 import { trackEvent } from "@/lib/analytics";
-import { EIENDOM_CITIES, type NavEntry } from "@/lib/navigation";
-import { stripHash } from "@/lib/stripHash";
+import { EIENDOM_CITIES, stripHash, type NavEntry } from "@/lib/navigation";
 
 const useIsoLayoutEffect =
   typeof window !== "undefined" ? useLayoutEffect : useEffect;

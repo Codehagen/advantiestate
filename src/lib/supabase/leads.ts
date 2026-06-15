@@ -1,6 +1,6 @@
 import "server-only"
 import { getSupabase, isSupabaseConfigured } from "./server"
-import type { SubscribeSource } from "@/lib/email/subscribe"
+import { HIGH_INTENT, type SubscribeSource } from "@/lib/email/subscribe"
 
 type RecordSignupArgs = {
   email: string
@@ -12,16 +12,9 @@ type RecordSignupArgs = {
   alreadySubscribed?: boolean
 }
 
-// Sources that are sales-qualified and warrant a row in the curated CRM.
-// Everything else lands in the lightweight web_signups table.
-const HIGH_INTENT: SubscribeSource[] = [
-  "verdivurdering-intake",
-  "beslutningsgrunnlag",
-  "service-modal",
-  "kontakt",
-  "eiendommer",
-  "naringsmegler",
-]
+// HIGH_INTENT (sales-qualified → curated CRM; everything else → lightweight
+// web_signups) is the shared constant from subscribe.ts — the single source of
+// truth across subscribe/discord/leads. Do not redefine it here.
 
 // Visitor-facing Norwegian terms → crm_leads `property_type` enum values.
 // The enum is: kontor, industri, lager, butikk, senter, tomt.
@@ -88,7 +81,6 @@ export async function recordSignup(args: RecordSignupArgs): Promise<boolean> {
 async function insertWebSignup(
   // Loosely typed because the @supabase/supabase-js generic is heavy and
   // we don't have generated types for this project yet.
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   supabase: any,
   args: RecordSignupArgs,
 ): Promise<boolean> {
@@ -108,7 +100,6 @@ async function insertWebSignup(
 }
 
 async function insertCrmLead(
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   supabase: any,
   args: RecordSignupArgs,
 ): Promise<boolean> {
@@ -119,15 +110,14 @@ async function insertCrmLead(
   // Build the lead row. Most fields default to NULL / empty array when the
   // intake didn't supply them; only firma_navn, kontakt_navn, kontakt_epost
   // are NOT NULL at the schema level.
+  const sted = intakeString(intake, "Sted")
   const leadRow = {
     firma_navn: intakeString(intake, "Bedrift") ?? "Ukjent (skjema-innsending)",
     kontakt_navn: args.firstName ?? "Ukjent",
     kontakt_epost: args.email,
     kontakt_telefon: intakeString(intake, "Telefon") ?? null,
     behov_type_eiendom: mapPropertyType(intakeString(intake, "Eiendomstype")),
-    behov_geografi: intakeString(intake, "Sted")
-      ? [intakeString(intake, "Sted")!]
-      : [],
+    behov_geografi: sted ? [sted] : [],
     tidshorisont: intakeString(intake, "Tidshorisont") ?? null,
     behov_beskrivelse: intakeString(intake, "Bakgrunn") ?? null,
     notater: intakeString(intake, "Beskjed") ?? null,
@@ -148,7 +138,11 @@ async function insertCrmLead(
   }
 
   // Activity timeline entry so the lead shows up with context in the CRM's
-  // activity feed instead of appearing as an empty new row.
+  // activity feed instead of appearing as an empty new row. Best-effort: the
+  // lead row is already durably saved, so an activity failure must NOT discard
+  // that success (returning false here would report the lead as lost and, for a
+  // high-intent source with Discord also down, surface a false error to the
+  // visitor). Log it and still report success.
   const summary = buildActivitySummary(args, intake)
   const { error: actErr } = await supabase.from("crm_activities").insert({
     type: "notat",
@@ -158,8 +152,10 @@ async function insertCrmLead(
     utført_av: "system: advantiestate.no",
   })
   if (actErr) {
-    console.error("Supabase crm_activities.insert error:", actErr)
-    return false
+    console.error(
+      "Supabase crm_activities.insert error (lead saved, activity skipped):",
+      actErr,
+    )
   }
   return true
 }
