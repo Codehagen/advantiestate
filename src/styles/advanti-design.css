@@ -10549,6 +10549,16 @@ h1, h2, h3 {
 .hs-loadmore .lm-count { color: var(--warm-grey-85); font-variant-numeric: tabular-nums; }
 .hs-loadmore button:hover .lm-count { color: rgba(243,241,239,0.6); }
 
+/* Coarse-pointer touch-target floor — matches .ks-toc a / .ks-feedback / .btn-sm.
+   The compact preview links (category cards, "Se alle", reading-path steps) and
+   the load-more button are otherwise ~30-43px, below the 44px touch minimum. */
+@media (pointer: coarse) {
+  .hs-cat .links a { min-height: 44px; align-items: center; }
+  .hs-cat .seeall { min-height: 44px; }
+  .hs-loadmore button { min-height: 44px; }
+  .hs-path .steps a { min-height: 44px; }
+}
+
 /* ---- Library: toolbar + index ---- */
 .hs-lib-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; flex-wrap: wrap; margin-bottom: 28px; }
 .hs-lib-head h2 { font-size: clamp(30px, 3.4vw, 46px); font-weight: 400; letter-spacing: -0.02em; line-height: 1.04; }
