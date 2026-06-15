@@ -165,13 +165,14 @@ export function HelpLibrary({
         </div>
 
         {q.length === 0 && (
-          <div className="hs-sort">
-            <span className="lbl">Sorter</span>
+          <div className="hs-sort" role="group" aria-label="Sorter">
+            <span className="lbl" aria-hidden="true">Sorter</span>
             {SORTS.map((s) => (
               <button
                 key={s.key}
                 type="button"
                 className="hs-sortbtn"
+                aria-pressed={sort === s.key}
                 data-on={sort === s.key ? "1" : undefined}
                 onClick={() => setSort(s.key)}
               >
