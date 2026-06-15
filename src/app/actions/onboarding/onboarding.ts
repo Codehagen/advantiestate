@@ -3,6 +3,7 @@
 import { cookies } from "next/headers";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { subscribe } from "@/lib/email/subscribe";
+import { sanitizeDiscordValue } from "@/lib/email/sanitize";
 
 interface DiscordMessage {
   content: string;
@@ -50,22 +51,22 @@ export async function submitOnboarding(data: OnboardingData) {
           fields: [
             {
               name: "Purpose",
-              value: data.purpose,
+              value: sanitizeDiscordValue(data.purpose),
             },
             {
               name: "Company Details",
               value: [
-                `**Name**: ${data.company.name}`,
-                `**Org Number**: ${data.company.orgNumber}`,
-                `**Address**: ${data.company.address}`,
+                `**Name**: ${sanitizeDiscordValue(data.company.name)}`,
+                `**Org Number**: ${sanitizeDiscordValue(data.company.orgNumber)}`,
+                `**Address**: ${sanitizeDiscordValue(data.company.address)}`,
               ].join("\n"),
             },
             {
               name: "Contact Information",
               value: [
-                `**Name**: ${data.contact.name}`,
-                `**Email**: ${data.contact.email}`,
-                `**Phone**: ${data.contact.phone}`,
+                `**Name**: ${sanitizeDiscordValue(data.contact.name)}`,
+                `**Email**: ${sanitizeDiscordValue(data.contact.email)}`,
+                `**Phone**: ${sanitizeDiscordValue(data.contact.phone)}`,
               ].join("\n"),
             },
             {
@@ -170,18 +171,18 @@ export async function submitContactInquiry(data: ContactInquiryData) {
               description: `**${data.name}** — ${data.service}`,
               color: 0x00ff88,
               fields: [
-                { name: "Navn", value: data.name },
-                { name: "E-post", value: data.email },
-                { name: "Telefon", value: data.phone },
-                { name: "Ønsket tjeneste", value: data.service },
+                { name: "Navn", value: sanitizeDiscordValue(data.name) },
+                { name: "E-post", value: sanitizeDiscordValue(data.email) },
+                { name: "Telefon", value: sanitizeDiscordValue(data.phone) },
+                {
+                  name: "Ønsket tjeneste",
+                  value: sanitizeDiscordValue(data.service),
+                },
                 ...(data.message
                   ? [
                       {
                         name: "Melding",
-                        value:
-                          data.message.length > 1024
-                            ? data.message.substring(0, 1021) + "..."
-                            : data.message,
+                        value: sanitizeDiscordValue(data.message, 1024),
                       },
                     ]
                   : []),

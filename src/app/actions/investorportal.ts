@@ -1,6 +1,7 @@
 "use server"
 
 import { notifyLead } from "@/lib/email/discord"
+import { subscribe } from "@/lib/email/subscribe"
 import { checkRateLimit } from "@/lib/rate-limit"
 
 export type InvestorAccessFormState =
@@ -38,7 +39,11 @@ export async function requestInvestorAccess(
     }
   }
 
-  await notifyLead({
+  // Route through the shared pipeline (Discord + Supabase crm_leads) rather than
+  // notifyLead alone — investorportal is high-intent, so the access request must
+  // land as a curated CRM lead, not just a Discord ping that's lost when missed.
+  // No marketingConsent: an access request is not a newsletter opt-in.
+  const result = await subscribe({
     email,
     source: "investorportal",
     pageUrl: "/investorportal",
@@ -50,6 +55,9 @@ export async function requestInvestorAccess(
     },
   })
 
+  if (!result.ok) {
+    return { status: "error", message: result.error }
+  }
   return { status: "success" }
 }
 
