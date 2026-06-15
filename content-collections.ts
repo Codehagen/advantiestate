@@ -4,6 +4,7 @@
 // own pipeline, not by the app's `tsc --noEmit`.
 import { defineCollection, defineConfig } from "@content-collections/core";
 import { compileMDX } from "@content-collections/mdx";
+import { z } from "zod";
 import { remarkGfm } from "fumadocs-core/mdx-plugins";
 import GithubSlugger from "github-slugger";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
@@ -57,7 +58,7 @@ const BlogPost = defineCollection({
   name: "BlogPost",
   directory: "src/content/blog",
   include: "**/*.mdx",
-  schema: (z) => ({
+  schema: z.object({
     title: z.string(),
     categories: z
       .array(z.enum(["company", "valuation", "market-analysis", "casestudies"]))
@@ -116,7 +117,7 @@ const ChangelogPost = defineCollection({
   name: "ChangelogPost",
   directory: "src/content/changelog",
   include: "*.mdx",
-  schema: (z) => ({
+  schema: z.object({
     title: z.string(),
     publishedAt: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
     summary: z.string(),
@@ -159,7 +160,7 @@ export const CustomersPost = defineCollection({
   name: "CustomersPost",
   directory: "src/content/customers",
   include: "*.mdx",
-  schema: (z) => ({
+  schema: z.object({
     title: z.string(),
     publishedAt: z.string(),
     summary: z.string(),
@@ -209,7 +210,7 @@ export const HelpPost = defineCollection({
   name: "HelpPost",
   directory: "src/content/help",
   include: "*.mdx",
-  schema: (z) => ({
+  schema: z.object({
     title: z.string(),
     updatedAt: z.string(),
     summary: z.string(),
@@ -286,7 +287,7 @@ export const LegalPost = defineCollection({
   name: "LegalPost",
   directory: "src/content/legal",
   include: "*.mdx",
-  schema: (z) => ({
+  schema: z.object({
     title: z.string(),
     updatedAt: z.string(),
     slug: z.string().optional(),
@@ -326,7 +327,7 @@ export const IntegrationsPost = defineCollection({
   name: "IntegrationsPost",
   directory: "src/content/integrations",
   include: "*.mdx",
-  schema: (z) => ({
+  schema: z.object({
     title: z.string(),
     publishedAt: z.string(),
     summary: z.string(),
@@ -375,7 +376,7 @@ export const PersonPost = defineCollection({
   name: "PersonPost",
   directory: "src/content/people",
   include: "*.mdx",
-  schema: (z) => ({
+  schema: z.object({
     name: z.string(),
     role: z.string(),
     avatar: z.string(),
@@ -441,7 +442,7 @@ export const LocationPost = defineCollection({
   name: "LocationPost",
   directory: "src/content/locations",
   include: "**/*.mdx",
-  schema: (z) => ({
+  schema: z.object({
     name: z.string(),
     order: z.number(),
     region: z.string(),
@@ -564,7 +565,7 @@ export const ListingPost = defineCollection({
   name: "ListingPost",
   directory: "src/content/listings",
   include: "*.mdx",
-  schema: (z) => ({
+  schema: z.object({
     // Editorial title — split into a non-italic head and an italic tail so
     // the H1 + listing-card H3 render with the design's two-tone treatment
     // without authors having to embed JSX in frontmatter. `title` (plain) is
