@@ -163,4 +163,27 @@ test("blog post and help article emit og:type=article", async ({ request }) => {
     const html = await (await request.get(path)).text();
     expect(metaProperty(html, "og:type"), `${path} og:type`).toBe("article");
   }
+})
+
+test("help article emits both article published_time and modified_time", async ({
+  request,
+}) => {
+  // Regression: generateMetadata once passed only modifiedTime, so the OG
+  // article:published_time tag was missing. Both must render, both must be
+  // ISO YYYY-MM-DD, and published must not be after modified.
+  const urls = await sitemapUrls(request);
+  const help = urls.find((u) => /\/help\/article\//.test(new URL(u).pathname));
+  expect(help, "a help article URL exists in the sitemap").toBeTruthy();
+
+  const path = new URL(help!).pathname;
+  const html = await (await request.get(path)).text();
+
+  const published = metaProperty(html, "article:published_time");
+  const modified = metaProperty(html, "article:modified_time");
+  expect(published, `${path} article:published_time`).toMatch(/^\d{4}-\d{2}-\d{2}/);
+  expect(modified, `${path} article:modified_time`).toMatch(/^\d{4}-\d{2}-\d{2}/);
+  expect(
+    published! <= modified!,
+    `${path} published (${published}) must not be after modified (${modified})`,
+  ).toBe(true);
 });
