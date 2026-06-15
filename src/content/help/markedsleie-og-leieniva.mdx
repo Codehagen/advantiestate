@@ -10,7 +10,7 @@ takeaways:
   - Markedsleie er det leienivået et lokale oppnår ved ny utleie under dagens markedsforhold.
   - "Beliggenhet, byggets kvalitet og tilbud og etterspørsel er de viktigste prisdriverne."
   - "Leienivåene varierer kraftig per segment: kontor, handel og lager prises hver for seg."
-  - "Vurder alltid leien sammen med totale leiekostnader, inkludert felleskostnader og tillegg."
+  - "Gapet mellom kontraktsleie og markedsleie — over- eller underrent — avgjør oppsiden ved reforhandling og utløp."
 related:
   - verdivurdering-av-naringseiendom
   - driftskostnader
@@ -28,60 +28,82 @@ Når et lokale skal leies ut på nytt, er spørsmålet alltid det samme: hva er 
 
 ## Hva er markedsleie?
 
-Markedsleie er det leienivået som kan oppnås ved ny utleie av et lokale under gjeldende markedsforhold. Dette nivået påvirkes av tilbud og etterspørsel, beliggenhet, lokalets kvalitet og markedstrender.
+Markedsleie er det leienivået som kan oppnås ved ny utleie av et lokale under gjeldende markedsforhold, mellom en villig utleier og en villig leietaker. Begrepet er hypotetisk: det beskriver hva lokalet ville oppnådd om det ble lagt ut i dag, uavhengig av hva den sittende leietakeren faktisk betaler.
 
-<Math 
-  formula="\text{Markedsleie} = \text{Basis leie} + \text{Tillegg/Fradrag for faktorer}"
-  description="Grunnleggende tilnærming til markedsleie"
+Kontraktsleie er derimot den leien som står i den løpende avtalen. Den ble satt da kontrakten ble inngått og justeres typisk årlig etter [konsumprisindeksen](/help/article/kpi-regulering-av-leie), men følger ikke nødvendigvis markedet. Over en lang leieperiode kan de to nivåene gli fra hverandre.
+
+<Compare
+  pro={{
+    head: "Markedsleie",
+    items: [
+      "Hypotetisk nivå ved ny utleie i dag",
+      "Settes av tilbud, etterspørsel og lokalets kvaliteter",
+      "Endrer seg med markedet, ikke med kontrakten",
+      "Grunnlaget for verdivurdering og reforhandling",
+    ],
+  }}
+  con={{
+    head: "Kontraktsleie",
+    items: [
+      "Faktisk avtalt leie i den løpende kontrakten",
+      "Satt ved inngåelse, justert etter KPI",
+      "Bundet av avtalens lengde og vilkår",
+      "Det som faktisk treffer kontoen i dag",
+    ],
+  }}
 />
 
 ## Faktorer som påvirker markedsleie
 
-Ingen lokaler er like, og prisen settes av et samspill av faktorer. Fire forhold forklarer det meste av forskjellen mellom to ellers sammenlignbare lokaler.
+Ingen lokaler er like, og prisen settes av et samspill av faktorer. Beliggenhet og mikrolokasjon forklarer ofte mest: to bygg i samme by kan ligge langt fra hverandre i pris alt etter gateadresse, synlighet og nærhet til kollektivknutepunkt. Deretter kommer byggets standard, tekniske tilstand og arealeffektivitet — hvor stor andel av arealet leietakeren faktisk får brukt.
 
 <Stepper
   items={[
     {
-      title: "Beliggenhet",
-      content: "Områdets attraktivitet, tilgjengelighet og nærhet til kollektivtransport og servicetilbud.",
+      title: "Beliggenhet og mikrolokasjon",
+      content: "Områdets attraktivitet, synlighet, tilgjengelighet og nærhet til kollektivtransport og servicetilbud.",
     },
     {
-      title: "Byggets kvalitet",
-      content: "Standard, tekniske løsninger, miljøsertifisering og generell attraktivitet.",
+      title: "Standard og teknisk tilstand",
+      content: "Byggets kvalitet, tekniske løsninger, arealeffektivitet og eventuell miljøsertifisering.",
     },
     {
-      title: "Markedsforhold",
-      content: "Tilbud og etterspørsel i området, økonomiske forhold og bransjespesifikke trender.",
+      title: "Segment",
+      content: "Kontor, handel, lager og industri prises hver for seg, med ulik logikk for hva som driver verdien.",
     },
     {
-      title: "Kontraktsforhold",
-      content: "Leieperiode, reguleringsmekanismer og fordeling av kostnader."
-    }
+      title: "Makroforhold",
+      content: "Rentenivå, generell tilbud-og-etterspørsel og ledighet i området påvirker hele leiemarkedet.",
+    },
   ]}
 />
 
-## Eksempel på leieprisfastsettelse
+Segmentet er avgjørende fordi prislogikken er ulik. Handelslokaler prises etter omsetningspotensial og kundestrøm, kontor etter beliggenhet og standard, mens lager og industri i stor grad styres av logistikk og takhøyde. Derfor kan du ikke overføre et leienivå fra ett segment til et annet — de lever i adskilte markeder.
+
+## Slik fastsettes markedsleie i praksis
+
+Markedsleie kan ikke slås opp i en tabell; den utledes av sammenlignbare leiekontrakter. Megleren samler nylige avtaler for liknende lokaler, justerer for forskjeller i standard, areal og beliggenhet, og lander på et nivå. Eksempelet under er kun til illustrasjon — det viser metoden, ikke faktiske priser i et bestemt marked.
 
 <Example
-  title="Beregning av markedsleie for kontorlokale"
+  title="Illustrativt regneeksempel — kontorlokale"
   steps={[
     {
-      label: "Basis områdeleie",
+      label: "Anta basis områdeleie",
       value: 2500,
-      calculation: "Gjennomsnittlig leiepris per kvm i området"
+      calculation: "Illustrativt nivå per kvm fra sammenlignbare avtaler"
     },
     {
       label: "Tillegg for høy standard",
       value: 300,
-      calculation: "Kvalitetstillegg per kvm"
+      calculation: "Illustrativt kvalitetstillegg per kvm"
     },
     {
       label: "Tillegg for miljøsertifisering",
       value: 200,
-      calculation: "BREEAM-NOR Excellent tillegg"
+      calculation: "Illustrativt tillegg per kvm"
     },
     {
-      label: "Markedsleie per kvm/år",
+      label: "Markedsleie per kvm/år (illustrativt)",
       value: 3000,
       calculation: "2 500 + 300 + 200",
       isResult: true
@@ -90,85 +112,35 @@ Ingen lokaler er like, og prisen settes av et samspill av faktorer. Fire forhold
 />
 
 <Note>
-  Markedsleie varierer betydelig mellom ulike segmenter og lokasjoner. Det er viktig å analysere sammenlignbare leieforhold i området.
+  Tallene over er kun ment å vise metoden. Reelle leienivåer varierer betydelig mellom segmenter og lokasjoner og må alltid kontrolleres mot faktiske, nylige transaksjoner i ditt område.
 </Note>
 
-## Leienivåer per segment
+## Gapet mellom kontraktsleie og markedsleie
 
-Leienivåene varierer kraftig mellom eiendomstyper, og hvert segment har sin egen prisstruktur fra prime til sekundær. Intervallene under er veiledende og må alltid kontrolleres mot faktiske transaksjoner i ditt område.
+Forskjellen mellom kontraktsleie og markedsleie kalles over- eller underrent. Ligger kontraktsleien over markedet (overrent), betaler leietakeren mer enn et nytt lokale ville kostet — en oppside for utleier som er sårbar ved reforhandling. Ligger den under (underrent), sitter eiendommen med en skjult potensiell oppside som først realiseres når kontrakten løper ut eller reforhandles.
 
-1. Kontor
-   - Prime: 3000-4500 kr/kvm
-   - Normal: 2000-3000 kr/kvm
-   - Sekundær: 1000-2000 kr/kvm
+Dette gapet er sentralt i verdivurdering. En [verdivurdering](/help/article/verdivurdering-av-naringseiendom) tar høyde for at kontraktsleien før eller siden vil bevege seg mot markedsleie — det som kalles reversion. En eiendom med lange kontrakter på underrent verdsettes med forventning om høyere leie ved utløp, mens overrent trekker i motsatt retning.
 
-2. Handel
-   - Prime: 8000-15000 kr/kvm
-   - Normal: 3000-8000 kr/kvm
-   - Sekundær: 1500-3000 kr/kvm
-
-3. Lager/Logistikk
-   - Prime: 1200-1800 kr/kvm
-   - Normal: 800-1200 kr/kvm
-   - Sekundær: 500-800 kr/kvm
-
-<Note variant="positive">
-  Leienivåer bør alltid vurderes i sammenheng med totale leiekostnader, inkludert felleskostnader og andre tillegg.
+<Note variant="caution">
+  Lang gjenværende leietid på overrent kan se betryggende ut, men skjuler en fremtidig nedjustering når kontrakten en gang skal fornyes til markedsnivå. Vurder alltid kontraktsleien opp mot markedsleie, ikke isolert.
 </Note>
 
-## Analyse av markedsleie
+## Insentiver og effektiv leie
 
-For å fastsette markedsleie i praksis følger man en strukturert prosess. Den går fra innsamling av sammenlignbare data til en endelig justering for markedstrender.
+Den nominelle leien som står i kontrakten, forteller ikke alltid hele historien. For å lande en avtale gir utleiere ofte insentiver: leiefritak i en oppstartsperiode eller et tilpasningsbidrag til leietakers innredning. Disse senker det leietakeren reelt betaler over leieperioden — den effektive leien — selv om den nominelle leien holdes høy.
 
-<Stepper
-  items={[
-    {
-      title: "Markedsundersøkelse",
-      content: "Innhenting av data om sammenlignbare leieforhold og nylige transaksjoner i området.",
-    },
-    {
-      title: "Lokalvurdering",
-      content: "Analyse av lokalets kvaliteter og begrensninger sammenlignet med markedet.",
-    },
-    {
-      title: "Kostnadsvurdering",
-      content: "Beregning av totale leiekostnader inkludert felleskostnader og andre tillegg.",
-    },
-    {
-      title: "Markedsjustering",
-      content: "Tilpasning basert på markedstrender og fremtidsutsikter."
-    }
-  ]}
+Skillet er viktig når du sammenligner kontrakter. To avtaler med samme kr/kvm kan ha svært ulik effektiv leie dersom den ene har et halvt års fritak og et solid tilpasningsbidrag. Når du leter etter sammenlignbare avtaler for å fastsette markedsleie, må insentivene regnes inn — ellers overvurderer du det reelle markedsnivået.
+
+## Markedsleie, yield og verdi
+
+Markedsleie er inngangen til hele verdikjeden. Leien danner grunnlaget for [brutto leieinntekter](/help/article/brutto-leieinntekter), som etter fradrag for eier- og driftskostnader gir netto leieinntekt. Denne netto-inntekten kapitaliseres med en [yield](/help/article/hva-er-yield) for å gi eiendomsverdien.
+
+<Math
+  formula="\text{Verdi} = \frac{\text{Netto leieinntekt}}{\text{Yield}}"
+  description="Markedsleie driver netto leieinntekt, som kapitaliseres med yield til verdi"
 />
 
-## Leieregulering og indeksering
-
-Markedsleie settes ved inngåelse, men de fleste næringskontrakter justeres årlig etter konsumprisindeksen (KPI). Det holder leien i takt med prisutviklingen gjennom hele leieperioden.
-
-<Math 
-  formula="\text{Ny leie} = \text{Gammel leie} \times \frac{\text{Ny KPI}}{\text{Gammel KPI}}"
-  description="Standard formel for KPI-regulering av leie"
-/>
-
-<Example
-  title="Årlig leieregulering"
-  steps={[
-    {
-      label: "Opprinnelig leie",
-      value: 1000000,
-    },
-    {
-      label: "KPI-endring",
-      value: "3,5%",
-    },
-    {
-      label: "Ny årlig leie",
-      value: 1035000,
-      calculation: "1 000 000 × (1 + 0,035)",
-      isResult: true
-    }
-  ]}
-/>
+Fordi verdien er så følsom for både leie og yield, slår en feilvurdert markedsleie rett inn i prisen. Ligger anslaget for høyt, fremstår eiendommen mer verdt enn den er; ligger det for lavt, undervurderes oppsiden ved reforhandling. Det er derfor markedsleie alltid bør forankres i faktiske transaksjoner og leses i sammenheng med totale leiekostnader, inkludert [felleskostnader](/help/article/felleskostnader) og tillegg.
 
 ## Oppsummering
 
@@ -176,23 +148,23 @@ Markedsleie settes ved inngåelse, men de fleste næringskontrakter justeres år
   title="Nøkkelpunkter om markedsleie"
   points={[
     {
-      title: "Markedsforståelse",
-      description: "God innsikt i lokale markedsforhold er avgjørende",
-      iconName: "barChart"
-    },
-    {
-      title: "Prisdrivere",
-      description: "Kjennskap til faktorer som påvirker leienivåer",
+      title: "Markedsleie vs. kontraktsleie",
+      description: "Markedsleie er nivået i dag; kontraktsleie er det som faktisk betales",
       iconName: "scales"
     },
     {
-      title: "Segmentering",
-      description: "Forståelse av ulike markedssegmenter og deres særtrekk",
+      title: "Prisdrivere",
+      description: "Beliggenhet, standard, segment og makroforhold setter nivået",
+      iconName: "barChart"
+    },
+    {
+      title: "Over- og underrent",
+      description: "Gapet styrer reversion ved reforhandling, utløp og verdivurdering",
       iconName: "lineChart"
     },
     {
-      title: "Analyse",
-      description: "Grundig analyse av sammenlignbare leieforhold",
+      title: "Effektiv leie",
+      description: "Insentiver senker reell leie under det nominelle nivået",
       iconName: "lightbulb"
     }
   ]}
@@ -231,4 +203,4 @@ Markedsleie settes ved inngåelse, men de fleste næringskontrakter justeres år
     href: "/tjenester"
   }}
   size="default"
-/> 
+/>

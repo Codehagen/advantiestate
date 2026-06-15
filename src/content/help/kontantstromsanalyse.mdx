@@ -28,24 +28,34 @@ En verdivurdering forteller hva en eiendom er verdt; kontantstrømsanalysen fort
 
 ## Hva er kontantstrømsanalyse?
 
-Kontantstrømsanalyse er en metode for å vurdere en eiendoms lønnsomhet ved å analysere alle inn- og utbetalinger over tid. Dette gir et helhetlig bilde av eiendommens økonomiske prestasjon og er et viktig verktøy for investeringsbeslutninger.
+Kontantstrømsanalyse er en metode for å vurdere en eiendoms lønnsomhet ved å følge alle inn- og utbetalinger over tid. I stedet for å hvile på ett enkelt øyeblikksbilde, viser den hvordan økonomien faktisk utvikler seg år for år.
+
+Et [yield](/help/article/hva-er-yield)-tall forteller deg hva eiendommen kaster av seg akkurat nå, gitt dagens leie og dagens verdi. Det er nyttig, men statisk. En kontantstrømsanalyse fanger derimot opp det yield-tallet skjuler: ledige perioder, trappetrinn i leiekontrakter, vedlikehold som kommer i bølger, og hvordan rentekostnaden endrer seg når lånet skal betjenes. Det er forskjellen på et bilde og en film.
 
 <Math 
   formula="\text{Netto kontantstrøm} = \text{Innbetalinger} - \text{Utbetalinger}"
   description="Grunnleggende formel for kontantstrøm"
 />
 
-## Komponenter i kontantstrømsanalysen
+## Slik bygger kontantstrømmen seg opp
+
+Kontantstrømmen bygges trinnvis nedover, fra det øverste inntektstallet til det som faktisk står igjen. Hvert trinn trekker fra en ny type kostnad, og rekkefølgen er viktig — blander du nivåene, blir tallet i bunnen feil.
+
+Det første skillet er mellom brutto og netto. [Brutto leieinntekter](/help/article/brutto-leieinntekter) er full leie ved full utleie; [netto leieinntekter](/help/article/netto-leieinntekter) er det som er igjen etter ledighet og kostnadene eier selv bærer. Forveksles disse to, overvurderer du raskt hva eiendommen gir.
+
+<Fact term="Netto driftsinntekter (NOI)">
+  Leieinntekter minus drifts- og eierkostnader, før finanskostnader og skatt. NOI er det laget i regnestykket som beskriver eiendommens egen drift — uavhengig av hvordan kjøpet er finansiert.
+</Fact>
 
 <Stepper
   items={[
     {
       title: "Innbetalinger",
-      content: "Primært leieinntekter, men kan også inkludere andre inntekter som parkering, fellesutgifter og eventuelle tilleggstjenester.",
+      content: "Primært leieinntekter, men kan også inkludere andre inntekter som parkering, fellesutgifter og eventuelle tilleggstjenester. Husk å trekke fra forventet ledighet.",
     },
     {
-      title: "Driftskostnader",
-      content: "Alle løpende kostnader knyttet til eiendommens drift, inkludert vedlikehold, forsikring, og kommunale avgifter.",
+      title: "Drifts- og eierkostnader",
+      content: "Alle løpende kostnader knyttet til eiendommens drift, inkludert vedlikehold, forsikring og kommunale avgifter — samt eierkostnadene utleier selv dekker.",
       formula: {
         math: "\\text{Netto driftsinntekter} = \\text{Leieinntekter} - \\text{Driftskostnader}",
         description: "Beregning av netto driftsinntekter",
@@ -53,23 +63,39 @@ Kontantstrømsanalyse er en metode for å vurdere en eiendoms lønnsomhet ved å
       }
     },
     {
-      title: "Finanskostnader",
-      content: "Renter og avdrag på lån knyttet til eiendommen.",
+      title: "Kapitalkostnader",
+      content: "Renter og avdrag på lån knyttet til eiendommen. Dette er trinnet som gjør kontantstrømmen følsom for rentenivået.",
     },
     {
-      title: "Investeringer",
-      content: "Større oppgraderinger eller påkostninger som ikke inngår i vanlig vedlikehold."
+      title: "Investeringer og eventuell skatt",
+      content: "Større oppgraderinger eller påkostninger som ikke inngår i vanlig vedlikehold, samt skatt der det er relevant for eierstrukturen."
     }
   ]}
 />
 
+Trekker du finanskostnadene fra NOI, sitter du igjen med netto kontantstrøm — pengene eier faktisk disponerer etter at både drift og lån er betjent. Det er dette tallet som avgjør om eiendommen forsørger seg selv.
+
+## Forholdet til DCF-analysen
+
+Kontantstrømsanalysen er ikke en konkurrent til [diskontert kontantstrøm (DCF)](/help/article/diskontert-kontantstrom) — den er grunnlaget DCF-en bygger på. Først setter du opp de fremtidige netto kontantstrømmene år for år. Deretter diskonterer DCF-en disse strømmene tilbake til en nåverdi med en avkastningskrav-rente.
+
+Med andre ord: en DCF er bare så god som kontantstrømmene den diskonterer. Er forutsetningene om leie, ledighet og kostnader urealistiske, blir nåverdien det også — uansett hvor presis selve diskonteringen er.
+
 <Note>
-  En god kontantstrømsanalyse bør se minst 10 år frem i tid for å fange opp langsiktige trender og sykliske kostnader.
+  En god kontantstrømsanalyse bør se flere år frem i tid for å fange opp langsiktige trender, leiejusteringer og sykliske vedlikeholdskostnader — ikke bare ett representativt år.
 </Note>
+
+## Slik tolker du kontantstrømmen
+
+Et tall i bunnen sier lite alene. Det avgjørende er å lese kontantstrømmen langs to akser samtidig: likviditet og lønnsomhet.
+
+**Likviditet** handler om at det er nok penger inn til å dekke det som skal ut hvert år. En positiv kontantstrøm betyr at driften forsørger seg selv; en negativ betyr at eier må skyte inn penger for å holde eiendommen gående. **Lønnsomhet** handler om at avkastningen står i forhold til kapitalen som er bundet — en eiendom kan ha positiv kontantstrøm og likevel være en svak investering om egenkapitalen kunne ha jobbet bedre andre steder.
+
+Bindeleddet mellom de to er evnen til å betjene lånet. Her ser banken og en kjøper på dekningsgraden: hvor godt netto driftsinntekter dekker finanskostnadene. Jo større margin, desto mer tåler kontantstrømmen av renteøkning eller ledighet før den blir negativ.
 
 ## Eksempel på kontantstrømsanalyse
 
-Tallene blir tydeligere med et regnestykke. Eksempelet under følger en eiendom fra brutto leieinntekter helt ned til netto kontantstrøm, slik en typisk analyse settes opp.
+Tallene blir tydeligere med et regnestykke. Eksempelet under er rent illustrativt — runde tall valgt for å vise oppsettet, ikke faktiske markedsnivåer. Det følger en tenkt eiendom fra brutto leieinntekter helt ned til netto kontantstrøm, slik en typisk analyse settes opp.
 
 <Example
   title="Årlig kontantstrømsanalyse"
@@ -101,6 +127,14 @@ Tallene blir tydeligere med et regnestykke. Eksempelet under følger en eiendom 
     }
   ]}
 />
+
+## Vanlige fallgruver
+
+De fleste feilene i en kontantstrømsanalyse handler ikke om regnefeil, men om utelatte poster og sammenblandede nivåer. Resultatet ser ofte tilforlatelig ut — det er nettopp derfor feilene er farlige.
+
+<Note variant="caution">
+  Pass særlig på fire ting: at du regner med realistisk **ledighet** og ikke full utleie hvert år, at **vedlikehold** tas med som en jevn kostnad og ikke glemmes til det smeller, at **kapitalkostnadene** faktisk er trukket fra, og at du ikke blander **brutto og netto** leie underveis i oppsettet.
+</Note>
 
 ## Viktige nøkkeltall i kontantstrømsanalysen
 
