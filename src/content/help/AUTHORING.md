@@ -215,42 +215,31 @@ Referanseimplementasjon: `sensitivitetsanalyse.mdx` (modellartikkelen i designki
 
 ---
 
-## Migreringsstatus (per juni 2026)
+## Migreringsstatus (juni 2026) — fullført
 
-Revisjon av alle 27 artikler. ✓ = på plass, — = mangler.
+Alle **27 artikler** er løftet til standarden:
 
-| Artikkel | Kort fortalt | Forutsetn. | Blogg-lenke (ReadMore) | Note-rydding | Ord | Merk |
-|---|:--:|:--:|:--:|:--:|--:|---|
-| sensitivitetsanalyse | ✓ | ✓ | ✓ | ✓ | 700+ | **modell — ferdig** |
-| verdivurdering-av-naringseiendom | ✓ | — | — | — | 426 | har takeaways; tynn |
-| diskontert-kontantstrom | — | ✓ | — | — | 769 | |
-| netto-leieinntekter | — | ✓ | — | — | 369 | tynn |
-| hva-er-naringseiendom | — | — | — | — | 1369 | kun Math+Note; trenger komponenter |
-| finansiering-av-naringseiendom | — | — | — | — | 1043 | |
-| due-diligence-naringseiendom | — | — | — | — | 1038 | |
-| skatt-avskrivninger-naringseiendom | — | — | — | — | 1006 | |
-| aksjekjop-vs-innmatskjop | — | — | — | — | 998 | egnet for `<Compare>` |
-| kjope-naringseiendom | — | — | — | — | 990 | |
-| leiekontrakter-naringseiendom | — | — | — | — | 914 | |
-| kontorledighet | — | — | — | — | 891 | |
-| prime-yield | — | — | — | — | 889 | |
-| hvordan-lese-markedsrapport | — | — | — | — | 794 | |
-| eierkostnader | — | — | — | — | 576 | |
-| kpi-regulering-av-leie | — | — | — | — | 582 | |
-| brutto-leieinntekter | — | — | — | — | 617 | |
-| yield-gap | — | — | — | — | 617 | |
-| arealbegreper-bta-bra | — | — | — | — | 611 | |
-| exit-yield | — | — | — | — | 628 | |
-| hva-er-yield | — | — | — | — | 577 | pilar-artikkel |
-| driftskostnader | — | — | — | — | 522 | |
-| markedsleie-og-leieniva | — | — | — | — | 414 | tynn |
-| tjene-mer-pa-naringseiendom | — | — | — | — | 431 | tynn |
-| felleskostnader | — | — | — | — | 433 | tynn |
-| hva-er-advanti | — | — | — | — | 375 | tynn (oversikt) |
-| kontantstromsanalyse | — | — | — | — | 337 | tynn |
+- **Kort fortalt (`takeaways`)** på alle 27.
+- **`<Prerequisites>`** på alle begrepsartikler (utelatt på de to oversikts-/pilar-
+  artiklene `hva-er-advanti` og `hva-er-naringseiendom` der det ikke hører hjemme).
+- **`<ReadMore>` med minst én blogg-kryss-lenke** på alle 27.
+- **Kanoniske `<Note>`-varianter** — ingen `info`/`success`/`warning` igjen.
+- Komponent-løft der det trengtes: `<Compare>` (aksjekjop-vs-innmatskjop, prime-yield,
+  hva-er-naringseiendom), `<Example>`/`<Summary>` på tidligere tynne/prosa-tunge sider.
 
-**Komponenter:** ingen nye trengs — hele anatomien finnes allerede i
-`mdx.tsx` + sidemalen. Arbeidet er innholdsadopsjon, ikke kodeendring.
+**Komponenter:** ingen nye redaksjonelle komponenter trengtes — hele anatomien fantes
+allerede i `mdx.tsx` + sidemalen. Tre responsive feil ble funnet og rettet under
+design-review (mobil horisontal-scroll): brødsmule-wrap (`.crumb`), stepper-celle
+`min-width:0` (`.ae-step`), og DcfChart sin tall-rad (`flex-wrap`).
+
+Validert: alle 27 rendrer 200, lenker oppløses, ingen mobil horisontal-scroll.
+
+### Gjenstående redaksjonelt (ikke blokkerende)
+
+Noen begreps-/oppslagsartikler er fortsatt korte (< ~450 ord: `kontantstromsanalyse`,
+`hva-er-advanti`, `markedsleie-og-leieniva`, `tjene-mer-pa-naringseiendom`,
+`felleskostnader`, `netto-leieinntekter`, `verdivurdering-av-naringseiendom`). De er
+gyldige oppslag, men kan utvides mot 600–1200 ord ved neste redaksjonelle runde.
 
 ---
 
