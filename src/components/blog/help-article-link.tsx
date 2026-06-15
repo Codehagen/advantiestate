@@ -1,10 +1,13 @@
-import { HelpPost } from "content-collections"
 import Link from "next/link"
 
 import ExpandingArrow from "./icons/expanding-arrow"
 
+// Only slug + title are needed to render the link. Typed against the
+// lightweight HELP_LINK_INDEX (not the full HelpPost) so this component never
+// drags the compiled-MDX corpus into the client bundle. `article` may be
+// undefined when a referenced slug isn't in the index — guarded below.
 interface HelpArticleLinkProps {
-  article: HelpPost
+  article?: { slug: string; title: string }
 }
 
 export default function HelpArticleLink({ article }: HelpArticleLinkProps) {

@@ -1,12 +1,12 @@
 "use client"
 
 import { MDXContent } from "@content-collections/mdx/react"
-import { allHelpPosts } from "content-collections"
 import dynamic from "next/dynamic"
 import Link from "next/link"
 
 import BlurImage from "@/lib/blog/blur-image"
 import { HELP_CATEGORIES, POPULAR_ARTICLES } from "@/lib/blog/content"
+import { HELP_LINK_INDEX } from "@/lib/blog/help-link-index"
 import { cx } from "@/lib/utils"
 
 import { Advisor } from "./Advisor"
@@ -612,7 +612,7 @@ const components = {
       {(props.articles || POPULAR_ARTICLES).map((slug) => (
         <HelpArticleLink
           key={slug}
-          article={allHelpPosts.find((post) => post.slug === slug)!}
+          article={HELP_LINK_INDEX.find((a) => a.slug === slug)}
         />
       ))}
     </div>
