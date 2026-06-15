@@ -34,6 +34,7 @@ import {
   MAKRO_F,
   SEG_COLOR,
   CITY_COLOR,
+  CITY_META,
   PORTAL_PALETTE,
   PORTAL_LATEST,
   isEstimatedLeie,
@@ -194,27 +195,55 @@ function viewYield(s: ViewState): ViewSpec {
     </table>
   )
 
+  // Prime yield per city — published snapshot (registry-derived, all six
+  // cities). No per-city trend exists (single release), so this is the current
+  // quarter only, sorted low→high (lowest yield = tightest/prime market).
+  const cityYieldBar = CITY_META.map((c) => ({
+    label: c.name,
+    yld: c.yieldPct,
+    color: CITY_COLOR[c.name as PortalCity],
+  })).sort((a, b) => a.yld - b.yld)
+
   const compare = (
-    <div className="ap-compare">
-      <div className="ap-compare-head">Prime yield · alle segmenter</div>
-      <div className="ap-spark-grid">
-        {PORTAL_SEGMENTS.map((sg) => {
-          const a = PORTAL_YIELD[sg.key]
-          return (
-            <div className="ap-spark" key={sg.key}>
-              <div className="ap-spark-top">
-                <span className="nm">{sg.label}</span>
-                <span className="vv">{fmtPct2p(lastOf(a))}</span>
+    <>
+      <div className="ap-compare">
+        <div className="ap-compare-head">Prime yield · alle segmenter</div>
+        <div className="ap-spark-grid">
+          {PORTAL_SEGMENTS.map((sg) => {
+            const a = PORTAL_YIELD[sg.key]
+            return (
+              <div className="ap-spark" key={sg.key}>
+                <div className="ap-spark-top">
+                  <span className="nm">{sg.label}</span>
+                  <span className="vv">{fmtPct2p(lastOf(a))}</span>
+                </div>
+                <Spark data={a.map((v) => ({ v }))} color={SEG_COLOR[sg.key]} />
+                <div className="ap-spark-foot">
+                  <Delta n={bpsChange(a, 4)} unit=" bps" /> 12 mnd
+                </div>
               </div>
-              <Spark data={a.map((v) => ({ v }))} color={SEG_COLOR[sg.key]} />
-              <div className="ap-spark-foot">
-                <Delta n={bpsChange(a, 4)} unit=" bps" /> 12 mnd
-              </div>
-            </div>
-          )
-        })}
+            )
+          })}
+        </div>
       </div>
-    </div>
+      <div className="ap-compare">
+        <div className="ap-compare-head">
+          Prime yield kontor per by · {PORTAL_LATEST.quarter}
+        </div>
+        <SnapshotBar
+          data={cityYieldBar}
+          dataKey="yld"
+          yFmt={(v) => fmtComma(v, 1) + "%"}
+          tipFmt={fmtPct2p}
+          name="Prime yield"
+          animate={s.animate}
+        />
+        <p className="ap-note">
+          Publisert kvartalssnapshot for prime kontoryield i de seks byene vi
+          dekker. Lavest yield = strammest, mest likvide marked.
+        </p>
+      </div>
+    </>
   )
 
   const spreadBps = Math.round(spread * 100)
