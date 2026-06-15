@@ -159,6 +159,10 @@ export default async function BlogArticle({
         }}
       />
 
+      <a href="#art-main" className="skip-link">
+        Hopp til innhold
+      </a>
+
       <div className="page-pad" />
 
       {/* HERO — breadcrumb only */}
@@ -241,7 +245,7 @@ export default async function BlogArticle({
           </div>
 
           <div className="ks-article">
-            <article className="ks-art-body">
+            <article className="ks-art-body" id="art-main">
               <MDX
                 code={data.mdx}
                 images={images.map((image) => ({

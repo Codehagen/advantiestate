@@ -4176,6 +4176,9 @@ h1, h2, h3 {
 .ks-article > * { min-width: 0; }
 .ks-art-body {
   max-width: 720px;
+  /* Skip-link / anchor target sits below the fixed nav (~64px) instead of
+     under it. Matches the heading scroll-margin used for autolinked anchors. */
+  scroll-margin-top: 88px;
 }
 .ks-art-meta {
   display: flex;
