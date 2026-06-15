@@ -232,14 +232,15 @@ allerede i `mdx.tsx` + sidemalen. Tre responsive feil ble funnet og rettet under
 design-review (mobil horisontal-scroll): brødsmule-wrap (`.crumb`), stepper-celle
 `min-width:0` (`.ae-step`), og DcfChart sin tall-rad (`flex-wrap`).
 
+Alle artikler er dessuten utvidet til full lengde (600–1200 ord) med ekte faglig
+dybde — de tidligere tynne begreps-/oppslagsartiklene (`kontantstromsanalyse`,
+`netto-leieinntekter`, `markedsleie-og-leieniva`, `verdivurdering-av-naringseiendom`,
+`tjene-mer-pa-naringseiendom`, `felleskostnader`, `hva-er-advanti`) er nå fyldige.
+Under utvidelsen ble også oppdiktede markedstall som lå som «fakta» (kr/kvm-tabeller
+i `felleskostnader` og `markedsleie`) fjernet og erstattet med klart illustrative
+regneeksempler.
+
 Validert: alle 27 rendrer 200, lenker oppløses, ingen mobil horisontal-scroll.
-
-### Gjenstående redaksjonelt (ikke blokkerende)
-
-Noen begreps-/oppslagsartikler er fortsatt korte (< ~450 ord: `kontantstromsanalyse`,
-`hva-er-advanti`, `markedsleie-og-leieniva`, `tjene-mer-pa-naringseiendom`,
-`felleskostnader`, `netto-leieinntekter`, `verdivurdering-av-naringseiendom`). De er
-gyldige oppslag, men kan utvides mot 600–1200 ord ved neste redaksjonelle runde.
 
 ---
 
