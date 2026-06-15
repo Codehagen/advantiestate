@@ -253,6 +253,11 @@ export const HelpPost = defineCollection({
       .array(z.object({ question: z.string(), answer: z.string() }))
       .min(2)
       .optional(),
+    // Opt-in professional-advice disclaimer rendered at the bottom of the
+    // article by the page template. Set on tax/legal/finance articles where a
+    // reader should consult an advokat/revisor before acting. The value picks
+    // which authoritative sources to cite (Skatteetaten/Lovdata/Kartverket).
+    advisory: z.enum(["tax", "legal", "finance"]).optional(),
     slug: z.string().optional(),
   }),
   transform: async (document, context) => {
