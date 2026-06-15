@@ -69,7 +69,7 @@ export const HELP_AUTHORS: Record<
 > = {
   "christer-hagen": {
     name: "Christer Hagen",
-    role: "Partner & daglig leder · Advanti Estate",
+    role: "Partner, næringsmegler · Advanti Estate",
     image:
       "https://kukzjreikqbgbolxvqaj.supabase.co/storage/v1/object/public/press/christer-hagen-web.jpg",
   },
@@ -88,7 +88,7 @@ export const HELP_AUTHORS: Record<
   // Deprecated aliases — kept so legacy author keys still resolve.
   codehagen: {
     name: "Christer Hagen",
-    role: "Partner & daglig leder · Advanti Estate",
+    role: "Partner, næringsmegler · Advanti Estate",
     image:
       "https://kukzjreikqbgbolxvqaj.supabase.co/storage/v1/object/public/press/christer-hagen-web.jpg",
   },
