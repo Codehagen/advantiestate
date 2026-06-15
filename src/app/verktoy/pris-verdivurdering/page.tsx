@@ -1,8 +1,7 @@
 import { CalculatorLayout } from "@/components/verktoy/CalculatorLayout";
-import { ValuationPriceCalculator } from "@/components/verktoy/ValuationPriceCalculator";
+import { ValuationYieldCalculator } from "@/components/verktoy/ValuationYieldCalculator";
 import { constructMetadata } from "@/lib/utils";
 import { AnimatedCTA } from "@/components/ui/AnimatedCTA";
-import { CalculatorCTA } from "@/components/verktoy/CalculatorCTA";
 import {
   JourneyStepTracker,
   SjekklisteJourneyLink,
@@ -10,32 +9,28 @@ import {
 
 export const metadata = constructMetadata({
   path: "/verktoy/pris-verdivurdering",
-  title: "Pris på Verdivurdering Kalkulator | Estimat for Næringseiendom | Advanti Estate",
+  title: "Prøv en verdivurdering selv | Estimert eiendomsverdi | Advanti Estate",
   description:
-    "Beregn estimert pris for verdivurdering av næringseiendom basert på størrelse, kompleksitet og formål. Få en indikasjon på kostnaden før du bestiller en profesjonell verdsettelse.",
+    "Prøv en verdivurdering selv: sett leie, driftskostnader og avkastningskrav (yield), så ser du estimert markedsverdi for næringseiendommen din i sanntid. Yield-metoden meglere bruker — et godt utgangspunkt før en presis verdivurdering i Nord-Norge.",
 });
 
 export default function PrisVerdiPage() {
   return (
     <>
       <CalculatorLayout
-        title="Pris på Verdivurdering Kalkulator"
-        description="Beregn estimert pris for verdivurdering av din næringseiendom. Prisen varierer basert på størrelse, kompleksitet, formål og tidsramme. Dette er et estimat – kontakt oss for et nøyaktig tilbud."
-        badge="Prisestimering"
+        title="Prøv en verdivurdering"
+        description="Sett leie, driftskostnader og avkastningskrav — så ser du estimert markedsverdi i sanntid. Det er den samme yield-metoden meglere bruker, og et godt utgangspunkt før en presis verdivurdering."
+        badge="Verdivurdering"
       >
-        <ValuationPriceCalculator />
+        <ValuationYieldCalculator />
       </CalculatorLayout>
 
-      <section className="mx-auto mt-12 w-full max-w-6xl px-3">
-        <CalculatorCTA
-          title="Trenger du et nøyaktig tilbud?"
-          description="Denne kalkulatoren gir et estimat basert på generelle priser. For et nøyaktig tilbud tilpasset din spesifikke situasjon, kontakt oss for en uforpliktende samtale. Vi leverer verdsettelser på 48 timer med lokal markedsinnsikt i Nord-Norge."
-        />
-      </section>
+      {/* CalculatorLayout already renders a CalculatorCTA; the in-calculator
+          "Få en presis verdivurdering" link + the AnimatedCTA below carry the
+          conversion path, so no extra CalculatorCTA here. */}
 
       {/* Typografisk dempet støtte­lenke — ikke en knapp, ikke konkurrent til
-          primær-CTAen nedenfor. Plassert mellom tilbudsskjemaet og den store
-          profesjonell-verdivurdering-seksjonen. */}
+          primær-CTAen nedenfor. */}
       <p className="mx-auto mt-6 w-full max-w-6xl px-3 text-center text-sm">
         <SjekklisteJourneyLink />
       </p>

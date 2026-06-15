@@ -25,6 +25,7 @@ done.
 | 014  | Patch transitive dependency vulnerabilities (serialize-javascript / path-to-regexp via content-collections + fumadocs) | P2 | M | — | DONE (core 0.8→0.15 + fumadocs 15→16 on `improve/audit-fixes`; schema-as-function → z.object migration; 9→4 audit advisories, the 4 remaining build/dev-chain only; build + 188 tests green) |
 | 015  | Proper tab semantics (role="tab"/tablist) for MarkedsinnsiktShell subtab/sector buttons — clears the last 3 lint warnings | P3 | S | — | DONE (`improve/audit-fixes`; lint now 0 warnings; 3 aria-selected tests still green) |
 | 016  | Zod input validation on lead/contact server actions (complements the landed Discord sanitization) | P2 | M | — | DONE (`improve/audit-fixes`; zod 4 schemas for 5 actions + 9 unit tests; investorportal also re-routed through subscribe() so it actually reaches the CRM) |
+| 017  | PR #74 calculator hardening: extract+test the yield/valuation math, dedup shared markup, clamp storage, trim duplicate CTA, SEO slug decision | tests/tech-debt/UX | S–M | — | DONE (`feat/verdivurdering-yield-kalkulator`; 5 findings planned+fixed in one session; `yieldCalc.ts`+18 tests → 206 total; build green) |
 
 Status values: TODO | IN PROGRESS | DONE | BLOCKED (with one-line reason) | REJECTED (with one-line rationale)
 

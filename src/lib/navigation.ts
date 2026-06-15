@@ -280,6 +280,8 @@ export const REGISTRY: NavEntry[] = [
   { path: "/beslutningsgrunnlag", label: "Beslutningsgrunnlag", parent: "/tjenester", inNav: false, inFooter: false },
   { path: "/landing/verdivurdering", label: "Verdivurdering landingsside", parent: null, inNav: false, inFooter: false },
   { path: "/sjekkliste-verdivurdering", label: "Sjekkliste verdivurdering", parent: null, inNav: false, inFooter: false },
+  // Reached from the Verktøy hub; mandate-registration form is forthcoming.
+  { path: "/off-market-tilgang", label: "Off-market tilgang", parent: "/verktoy", inNav: false, inFooter: false },
 
   // ── integrasjoner ─────────────────────────────────────────────────────────
   { path: "/integrasjoner", label: "Integrasjoner", parent: null, inNav: false, inFooter: false },

@@ -1,201 +1,340 @@
-import { Badge } from "@/components/Badge";
-import { AnimatedCTA } from "@/components/ui/AnimatedCTA";
-import FeatureDivider from "@/components/ui/FeatureDivider";
-import { constructMetadata } from "@/lib/utils";
-import {
-  RiBarChartBoxLine,
-  RiBuilding2Line,
-  RiCalculatorLine,
-  RiCheckboxMultipleLine,
-  RiLineChartLine,
-  RiPieChartLine,
-} from "@remixicon/react";
 import Link from "next/link";
-import Balancer from "react-wrap-balancer";
+import type { ReactNode } from "react";
+
+import { CtaStrip } from "@/components/site/CtaStrip";
+import { SubHero } from "@/components/site/SubHero";
+import { constructMetadata } from "@/lib/utils";
 
 export const metadata = constructMetadata({
   path: "/verktoy",
-  title: "Verktøy for Næringseiendom | Advanti Estate",
+  title: "Verktøy for næringseiendom i Nord-Norge | Advanti Estate",
   description:
-    "Bruk våre profesjonelle kalkulatorer for yield, ROI, boliglån og mer. Få umiddelbare beregninger for næringseiendomsinvesteringer i Nord-Norge.",
+    "Advanti Estates verktøykasse for næringseiendom i Nord-Norge: næringskalkulator, yield-kalkulator, gratis verdivurdering, sjekklister, markedsinnsikt og analyseportal — fritt tilgjengelig, uten innlogging.",
 });
 
-const calculators = [
+interface Tool {
+  href: string;
+  title: ReactNode;
+  description: string;
+  badge: string;
+  cta: string;
+  feature?: boolean;
+}
+
+interface Group {
+  n: string;
+  title: ReactNode;
+  note: string;
+  tools: Tool[];
+}
+
+const GROUPS: Group[] = [
   {
-    title: "Næringskalkulator",
-    description:
-      "Få et yield-basert verdiestimat på næringseiendommen din på minuttet — med NOI, anvendt yield og verdiintervall.",
-    icon: RiBuilding2Line,
-    href: "/verktoy/naringskalkulator",
-    color: "text-light-blue",
+    n: "01",
+    title: (
+      <>
+        Beregn &amp; <span className="italic">vurdér</span>
+      </>
+    ),
+    note: "Kalkulatorer og sjekklister for raske, etterprøvbare overslag.",
+    tools: [
+      {
+        href: "/verktoy/naringskalkulator",
+        title: "Næringskalkulator",
+        description:
+          "Beregn verdi, direkteavkastning og kontantstrøm for et næringsbygg basert på leie, ledighet, eierkostnader og yield — med sensitivitet på de viktigste driverne.",
+        badge: "Mest brukt",
+        cta: "Åpne kalkulator",
+        feature: true,
+      },
+      {
+        href: "/verktoy/yield-kalkulator",
+        title: (
+          <>
+            Yield-<span className="italic">kalkulator</span>
+          </>
+        ),
+        description:
+          "Regn deg fram til netto yield, brutto yield og implisitt verdi — og se hvordan små endringer i leie eller rente slår ut.",
+        badge: "Kalkulator",
+        cta: "Åpne",
+      },
+      {
+        href: "/verdivurdering",
+        title: (
+          <>
+            Gratis <span className="italic">verdivurdering</span>
+          </>
+        ),
+        description:
+          "Få et uforpliktende verdiestimat på din næringseiendom fra en seniorrådgiver. Du fyller inn nøkkeltall — vi tar resten.",
+        badge: "Uforpliktende",
+        cta: "Be om estimat",
+      },
+      {
+        href: "/sjekkliste-verdivurdering",
+        title: (
+          <>
+            Sjekkliste for <span className="italic">verdivurdering</span>
+          </>
+        ),
+        description:
+          "Alt du bør ha klart før en verdivurdering — leiekontrakter, tekniske forhold og økonomi. Huk av punktene før møtet.",
+        badge: "Sjekkliste",
+        cta: "Åpne",
+      },
+    ],
   },
   {
-    title: "Sjekkliste for verdivurdering",
-    description:
-      "Kryss av for dokumentene du har, se hva som gjenstår. Interaktiv liste med må-ha- og bra-å-ha-punkter, lagret i nettleseren.",
-    icon: RiCheckboxMultipleLine,
-    href: "/sjekkliste-verdivurdering",
-    color: "text-warm-grey-3",
+    n: "02",
+    title: (
+      <>
+        Marked &amp; <span className="italic">analyse</span>
+      </>
+    ),
+    note: "Yield, leie, ledighet og transaksjoner — by for by, kvartal for kvartal.",
+    tools: [
+      {
+        href: "/markedsinnsikt",
+        title: "Markedsinnsikt",
+        description:
+          "Interaktivt dashbord over næringseiendomsmarkedet i Nord-Norge. Følg yield, markedsleie, ledighet og transaksjonsvolum på tvers av kontor, handel og logistikk.",
+        badge: "Live data",
+        cta: "Åpne dashbord",
+        feature: true,
+      },
+      {
+        href: "/markedsinnsikt/kart",
+        title: (
+          <>
+            Markedskart <span className="italic">Nord-Norge</span>
+          </>
+        ),
+        description:
+          "Sammenlign byene side om side på kart — Tromsø, Bodø, Alta, Narvik, Harstad og Mo i Rana — på yield, leie og volum.",
+        badge: "Interaktivt kart",
+        cta: "Åpne kart",
+      },
+      {
+        href: "/analyseportal",
+        title: (
+          <>
+            Analyse<span className="italic">portal</span>
+          </>
+        ),
+        description:
+          "Dypere snitt av markedsdataene — segmenter, tidsserier og eksport. For deg som vil grave i tallene selv.",
+        badge: "Portal",
+        cta: "Åpne",
+      },
+    ],
   },
   {
-    title: "Pris på Verdivurdering",
-    description:
-      "Beregn estimert pris for verdivurdering basert på størrelse, kompleksitet og formål.",
-    icon: RiCalculatorLine,
-    href: "/verktoy/pris-verdivurdering",
-    color: "text-light-blue",
+    n: "03",
+    title: (
+      <>
+        Kunnskap &amp; <span className="italic">innsikt</span>
+      </>
+    ),
+    note: "Begrepene og metodikken bak tallene — forklart enkelt.",
+    tools: [
+      {
+        href: "/help",
+        title: (
+          <>
+            Kunnskaps<span className="italic">senter</span>
+          </>
+        ),
+        description:
+          "Konkrete forklaringer av yield, DCF, leiekontrakter og verdivurdering — skrevet for eiere og investorer, ikke for fagfolk.",
+        badge: "Gratis · åpent",
+        cta: "Les mer",
+      },
+    ],
   },
   {
-    title: "Yield Kalkulator",
-    description:
-      "Beregn brutto og netto yield for næringseiendom basert på leieinntekter og driftskostnader.",
-    icon: RiPieChartLine,
-    href: "/verktoy/yield-kalkulator",
-    color: "text-warm-grey-3",
-  },
-  {
-    title: "ROI Kalkulator",
-    description:
-      "Estimer total avkastning på investering over tid med verdiøkning og kontantstrøm.",
-    icon: RiLineChartLine,
-    href: "/verktoy/roi-kalkulator",
-    color: "text-warm-grey-2",
-  },
-  {
-    title: "Boliglån Kalkulator",
-    description:
-      "Beregn månedlige kostnader, total rentekostnad og nedbetalingsplan for næringslån.",
-    icon: RiBarChartBoxLine,
-    href: "/verktoy/boliglan-kalkulator",
-    color: "text-warm-grey-2",
+    n: "04",
+    title: (
+      <>
+        For <span className="italic">investorer</span>
+      </>
+    ),
+    note: "Tilgang til oppdrag og porteføljedata for aktive aktører.",
+    tools: [
+      {
+        href: "/investorportal",
+        title: (
+          <>
+            Investor<span className="italic">portal</span>
+          </>
+        ),
+        description:
+          "Samlet oversikt over aktuelle oppdrag, nøkkeltall og dokumenter — for investorer i nettverket vårt.",
+        badge: "For nettverk",
+        cta: "Åpne portal",
+      },
+      {
+        href: "/off-market-tilgang",
+        title: (
+          <>
+            Off-market <span className="italic">tilgang</span>
+          </>
+        ),
+        description:
+          "Registrer ditt mandat og få tilgang til oppdrag som ikke annonseres åpent. Diskré formidling mellom kjente parter.",
+        badge: "Diskré",
+        cta: "Be om tilgang",
+      },
+    ],
   },
 ];
 
+const TOOL_COUNT = GROUPS.reduce((sum, g) => sum + g.tools.length, 0);
+
+function ToolCard({ tool, index }: { tool: Tool; index: number }) {
+  return (
+    <Link href={tool.href} className={`vk-tool${tool.feature ? " feature" : ""}`}>
+      <div className="vk-top">
+        <span className="vk-num">
+          VERKTØY {String(index).padStart(2, "0")}
+        </span>
+        <h3>{tool.title}</h3>
+        <p>{tool.description}</p>
+      </div>
+      <div className="vk-foot">
+        <span className="vk-meta">
+          <span className="badge">{tool.badge}</span>
+        </span>
+        <span className="vk-open">
+          {tool.cta} <span aria-hidden="true">→</span>
+        </span>
+      </div>
+    </Link>
+  );
+}
+
+// Sequential VERKTØY NN label offset for the first tool in each group.
+const GROUP_OFFSETS = GROUPS.reduce<number[]>((acc, _group, i) => {
+  acc.push(i === 0 ? 0 : acc[i - 1] + GROUPS[i - 1].tools.length);
+  return acc;
+}, []);
+
 export default function VerktoyPage() {
   return (
-    <div className="mt-36 flex flex-col overflow-hidden px-3">
-      {/* Hero Section */}
-      <section
-        aria-labelledby="tools-overview"
-        className="animate-slide-up-fade"
-        style={{
-          animationDuration: "600ms",
-          animationFillMode: "backwards",
+    <>
+      <SubHero
+        crumb={[{ label: "Hjem", href: "/" }, { label: "Verktøy" }]}
+        eyebrow="Verktøykassen"
+        title={
+          <>
+            Beregn, vurdér og <br />
+            forstå markedet{" "}
+            <span className="italic">— på egen hånd.</span>
+          </>
+        }
+        lede="Vi har samlet kalkulatorene, sjekklistene og markedsdataene vi bruker i det daglige — fritt tilgjengelig for eiere, investorer og utviklere i Nord-Norge. Et solid utgangspunkt før du tar kontakt."
+        actions={[
+          {
+            label: "Prøv næringskalkulatoren",
+            href: "/verktoy/naringskalkulator",
+          },
+          { label: "Se alle verktøy", href: "#verktoy", variant: "outline" },
+        ]}
+        metaRow={[
+          { value: String(TOOL_COUNT), label: "Verktøy & ressurser" },
+          { value: "1 400+", label: "Eiendommer i database" },
+          { value: "Gratis", label: "Ingen innlogging" },
+        ]}
+        photo={{
+          src: "/building/pexels-grayscale-buildings-10156133.jpg",
+          alt: "Næringsbygg i Nord-Norge",
         }}
-      >
-        <Badge>Verktøy</Badge>
-        <h1
-          id="tools-overview"
-          className="mt-2 inline-block bg-gradient-to-t from-warm-grey to-warm-grey-3 bg-clip-text py-2 text-4xl font-bold tracking-tighter text-transparent sm:text-6xl md:text-6xl"
-        >
-          <Balancer>
-            Profesjonelle kalkulatorer for næringseiendom
-          </Balancer>
-        </h1>
-        <p className="mt-6 max-w-2xl text-lg text-warm-grey-2">
-          Bruk våre avanserte verktøy for å analysere investeringsmuligheter,
-          beregne avkastning og ta informerte beslutninger. Alle beregninger er
-          skreddersydd for det norske markedet.
-        </p>
+      />
+
+      {/* OVERSIKT */}
+      <section className="section-tight section-divider">
+        <div className="wrap">
+          <div className="vk-overview">
+            <div className="ov">
+              <div className="v">
+                3<span className="unit">kalkulatorer</span>
+              </div>
+              <div className="l">
+                Næring, yield og verdivurdering — beregn nøkkeltall på minutter.
+              </div>
+            </div>
+            <div className="ov">
+              <div className="v">
+                Kvartal<span className="unit">vis</span>
+              </div>
+              <div className="l">
+                Markedsdata og innsikt oppdatert for hele landsdelen.
+              </div>
+            </div>
+            <div className="ov">
+              <div className="v">
+                Åpent<span className="unit">døgnet</span>
+              </div>
+              <div className="l">
+                Alle verktøy er tilgjengelige uten konto — når det passer deg.
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
 
-      <FeatureDivider className="mt-16" />
+      {/* VERKTØY */}
+      <section className="section" id="verktoy">
+        <div className="wrap">
+          <div className="head-compact">
+            <span className="eyebrow">Verktøy</span>
+            <div>
+              <h2>
+                Alt på <span className="italic">ett sted.</span>
+              </h2>
+              <p>
+                Fra raske overslag til dyptgående markedsanalyse. Verktøyene
+                henter fra samme datagrunnlag som rådgiverne våre jobber med hver
+                dag.
+              </p>
+            </div>
+          </div>
 
-      {/* Calculator Grid */}
-      <section className="mt-24">
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {calculators.map((calculator, index) => {
-            const Icon = calculator.icon;
-            return (
-              <Link
-                key={calculator.href}
-                href={calculator.href}
-                className="group relative overflow-hidden rounded-xl border border-warm-grey-1/20 bg-warm-white p-8 transition-all duration-300 hover:border-warm-grey-1/40 hover:shadow-xl"
-                style={{
-                  animationDelay: `${index * 100}ms`,
-                  animationDuration: "600ms",
-                  animationFillMode: "backwards",
-                }}
-              >
-                <div className="relative">
-                  <div
-                    className={`mb-4 inline-flex rounded-lg bg-warm-grey/5 p-3 ${calculator.color}`}
-                  >
-                    <Icon className="size-6" />
-                  </div>
-                  <h3 className="mb-2 text-xl font-semibold text-warm-grey">
-                    {calculator.title}
-                  </h3>
-                  <p className="mb-6 text-warm-grey-2">
-                    {calculator.description}
-                  </p>
-                  <div className="flex items-center text-sm font-medium text-light-blue">
-                    Prøv nå
-                    <span className="ml-2 transition-transform duration-300 group-hover:translate-x-1">
-                      →
-                    </span>
-                  </div>
+          {GROUPS.map((group, gi) => (
+            <div className="vk-group" key={group.n}>
+              <div className="vk-group-head">
+                <div className="gh-left">
+                  <span className="gn">{group.n}</span>
+                  <h2>{group.title}</h2>
                 </div>
-
-                {/* Hover effect background */}
-                <div className="absolute inset-0 -z-10 bg-gradient-to-br from-light-blue/5 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-              </Link>
-            );
-          })}
+                <p className="gh-note">{group.note}</p>
+              </div>
+              <div className="vk-grid">
+                {group.tools.map((tool, ti) => (
+                  <ToolCard
+                    key={tool.href}
+                    tool={tool}
+                    index={GROUP_OFFSETS[gi] + ti + 1}
+                  />
+                ))}
+              </div>
+            </div>
+          ))}
         </div>
       </section>
 
-      {/* Info Section */}
-      <section className="mx-auto mt-24 max-w-3xl text-center">
-        <h2 className="text-2xl font-semibold text-warm-grey">
-          Hvorfor bruke våre kalkulatorer?
-        </h2>
-        <p className="mt-4 text-warm-grey-2">
-          Våre verktøy er utviklet av erfarne næringsmeglere og skreddersydd for
-          det norske markedet. Du får nøyaktige beregninger basert på
-          bransjestandarder og best practice.
-        </p>
-        <div className="mt-8 grid gap-6 sm:grid-cols-3">
-          <div>
-            <div className="mb-2 text-3xl font-bold text-light-blue">100%</div>
-            <div className="text-sm text-warm-grey-2">
-              Gratis å bruke
-            </div>
-          </div>
-          <div>
-            <div className="mb-2 text-3xl font-bold text-light-blue">
-              <RiBarChartBoxLine className="mx-auto size-8" />
-            </div>
-            <div className="text-sm text-warm-grey-2">
-              Sanntids beregninger
-            </div>
-          </div>
-          <div>
-            <div className="mb-2 text-3xl font-bold text-light-blue">10+</div>
-            <div className="text-sm text-warm-grey-2">
-              Års erfaring
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="mt-24">
-        <AnimatedCTA
-          badge="Trenger du hjelp?"
-          title="Usikker på beregningene?"
-          description="Våre eksperter hjelper deg gjerne med å tolke resultatene og gi deg skreddersy rådgivning for din eiendomsinvestering."
-          primaryAction={{
-            label: "Kontakt oss",
-            href: "/kontakt",
-          }}
-          secondaryAction={{
-            label: "Snakk med en ekspert",
-            href: "/personer",
-          }}
-          size="default"
-        />
-      </section>
-    </div>
+      <CtaStrip
+        eyebrow="Trenger du et menneske?"
+        title={
+          <>
+            Verktøy tar deg langt. <br />
+            <span className="italic">En rådgiver tar deg hele veien.</span>
+          </>
+        }
+        sub="Når du har gjort overslagene, hjelper vi deg å lese tallene riktig — og legge en plan. Ta en uforpliktende prat med en av rådgiverne våre."
+        primary={{ label: "Kontakt oss", href: "/kontakt" }}
+        secondary={{ label: "+47 984 53 571", href: "tel:+4798453571" }}
+      />
+    </>
   );
 }
