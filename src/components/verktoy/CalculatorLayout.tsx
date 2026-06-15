@@ -17,7 +17,7 @@ export function CalculatorLayout({
   children,
 }: CalculatorLayoutProps) {
   return (
-    <div className="mt-36 flex flex-col overflow-hidden px-3">
+    <div className="mx-auto mt-36 flex w-full max-w-6xl flex-col overflow-hidden px-3">
       {/* Back Link */}
       <Link
         href="/verktoy"

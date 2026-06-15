@@ -1721,6 +1721,216 @@ h1, h2, h3 {
   .head-compact { grid-template-columns: 1fr; gap: 18px; padding-bottom: 36px; }
 }
 
+/* ============================================================
+   VERKTØY (hub) — grouped editorial tool directory.
+   Numbered groups, each leading with a full-width feature card,
+   the rest in a 2-up gallery. Gallery layout only (light-only).
+   ============================================================ */
+
+/* Overview strip directly under the subhero */
+.vk-overview {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-top: var(--hairline);
+  border-bottom: var(--hairline);
+  margin-top: 8px;
+}
+.vk-overview .ov {
+  padding: 30px 28px 30px 0;
+  border-right: var(--hairline);
+}
+.vk-overview .ov:last-child { border-right: 0; padding-right: 0; }
+.vk-overview .ov:not(:first-child) { padding-left: 28px; }
+.vk-overview .ov .v {
+  font-family: var(--font-display);
+  font-size: clamp(30px, 3vw, 44px);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.vk-overview .ov .v .unit {
+  font-size: 0.42em;
+  color: var(--accent);
+  font-style: italic;
+  font-weight: 300;
+}
+.vk-overview .ov .l {
+  margin-top: 14px;
+  font-size: 13px;
+  color: var(--warm-grey-85);
+  line-height: 1.5;
+  max-width: 30ch;
+}
+@media (max-width: 780px) {
+  .vk-overview { grid-template-columns: 1fr; }
+  .vk-overview .ov { border-right: 0; border-bottom: var(--hairline); padding: 26px 0; }
+  .vk-overview .ov:last-child { border-bottom: 0; }
+  .vk-overview .ov:not(:first-child) { padding-left: 0; }
+}
+
+/* Group heading row */
+.vk-group { margin-top: 88px; }
+.vk-group:first-of-type { margin-top: 0; }
+.vk-group-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 24px;
+  padding-bottom: 28px;
+  border-bottom: var(--hairline);
+  flex-wrap: wrap;
+}
+.vk-group-head .gh-left { display: flex; align-items: baseline; gap: 20px; }
+.vk-group-head .gn {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+.vk-group-head h2 {
+  font-size: clamp(26px, 2.6vw, 36px);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+}
+.vk-group-head h2 .italic { font-style: italic; font-weight: 300; color: var(--warm-grey-85); }
+.vk-group-head .gh-note {
+  font-size: 13px;
+  color: var(--warm-grey-85);
+  max-width: 38ch;
+  text-align: right;
+  line-height: 1.5;
+}
+
+/* Tool grid + card (gallery) */
+.vk-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 28px;
+  margin-top: 36px;
+}
+.vk-tool {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 34px 34px 30px;
+  border: var(--hairline);
+  background: var(--warm-white);
+  min-height: 300px;
+  justify-content: space-between;
+  color: var(--warm-grey);
+  text-decoration: none;
+  transition: background 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
+}
+.vk-tool:hover { border-color: var(--warm-grey); transform: translateY(-3px); }
+.vk-tool .vk-top { display: flex; flex-direction: column; gap: 16px; }
+.vk-tool .vk-num {
+  order: -1;
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  color: var(--warm-grey-85);
+  font-variant-numeric: tabular-nums;
+  flex-shrink: 0;
+}
+.vk-tool h3 {
+  font-size: clamp(24px, 2.2vw, 31px);
+  font-weight: 400;
+  letter-spacing: -0.018em;
+  line-height: 1.06;
+}
+.vk-tool h3 .italic { font-style: italic; font-weight: 300; color: var(--warm-grey-85); }
+.vk-tool p {
+  font-size: 15px;
+  max-width: 40ch;
+  color: var(--warm-grey-85);
+  line-height: 1.55;
+  text-wrap: pretty;
+}
+.vk-tool .vk-foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: auto;
+  padding-top: 20px;
+  border-top: var(--hairline);
+}
+.vk-tool .vk-meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--warm-grey-85);
+  font-variant-numeric: tabular-nums;
+}
+.vk-tool .vk-meta .badge {
+  border: var(--hairline);
+  border-radius: 999px;
+  padding: 4px 11px;
+  line-height: 1;
+}
+.vk-tool .vk-open {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  color: var(--warm-grey);
+  transition: gap 0.2s ease;
+}
+.vk-tool:hover .vk-open { gap: 14px; }
+
+/* First tool in a group spans full width as a feature row */
+.vk-grid .vk-tool.feature {
+  grid-column: 1 / -1;
+  flex-direction: row;
+  align-items: stretch;
+  min-height: 0;
+  gap: 0;
+  padding: 0;
+}
+.vk-grid .vk-tool.feature .vk-top {
+  padding: 38px 40px;
+  flex: 1;
+  gap: 18px;
+  justify-content: center;
+}
+.vk-grid .vk-tool.feature h3 { font-size: clamp(28px, 3vw, 42px); }
+.vk-grid .vk-tool.feature p { font-size: 16px; max-width: 52ch; }
+.vk-grid .vk-tool.feature .vk-foot {
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 18px;
+  width: 300px;
+  flex-shrink: 0;
+  margin: 0;
+  padding: 38px 40px;
+  border-top: 0;
+  border-left: var(--hairline);
+  background: var(--accent-faint);
+}
+
+@media (max-width: 880px) {
+  .vk-grid { grid-template-columns: 1fr; gap: 18px; }
+  .vk-grid .vk-tool.feature { flex-direction: column; }
+  .vk-grid .vk-tool.feature .vk-foot {
+    width: auto;
+    flex-direction: row;
+    justify-content: space-between;
+    border-left: 0;
+    border-top: var(--hairline);
+  }
+  .vk-grid .vk-tool.feature .vk-top { padding: 30px 28px; }
+  .vk-group-head .gh-note { text-align: left; }
+}
+
 /* Hub: Service tiles (used on tjenester hub) */
 .tile-grid {
   display: grid;

@@ -1,10 +1,20 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import NumberFlow, { type Format } from "@number-flow/react";
-import { RiInformationLine } from "@remixicon/react";
+import NumberFlow from "@number-flow/react";
 
-import { YIELDS, type PropertyType } from "@/lib/verktoy/naringskalkulator";
+import { type PropertyType } from "@/lib/verktoy/naringskalkulator";
+import { clamp, computeYield } from "@/lib/verktoy/yieldCalc";
+import {
+  BreakdownBar,
+  cardBase,
+  Chips,
+  decParse,
+  ExplainerCards,
+  Field,
+  Seg,
+  Stat,
+} from "./calcFields";
 
 /* ---------- domain constants (delt med naringskalkulator) ---------- */
 const TYPES: PropertyType[] = [
@@ -15,176 +25,6 @@ const TYPES: PropertyType[] = [
 ];
 
 const STORE = "advanti-yield-v2";
-
-const fmtInt = new Intl.NumberFormat("no-NO", { maximumFractionDigits: 0 });
-const intParse = (s: string): number | null => {
-  const n = parseInt(s.replace(/[^\d]/g, ""), 10);
-  return Number.isNaN(n) ? null : n;
-};
-const decParse = (s: string): number | null => {
-  const n = parseFloat(s.replace(/\s/g, "").replace(",", "."));
-  return Number.isNaN(n) ? null : n;
-};
-
-/* ---------- small shared bits ---------- */
-function Info({ children }: { children: React.ReactNode }) {
-  return (
-    <span className="group/info relative ml-1.5 inline-flex cursor-help text-warm-grey-2">
-      <RiInformationLine className="size-[15px]" />
-      <span className="pointer-events-none absolute bottom-[130%] left-1/2 z-10 w-56 -translate-x-1/2 rounded-lg bg-warm-grey px-3 py-2 text-xs font-normal leading-snug text-warm-white opacity-0 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.4)] transition-opacity group-hover/info:opacity-100">
-        {children}
-      </span>
-    </span>
-  );
-}
-
-interface FieldProps {
-  label: string;
-  tip?: string;
-  value: number;
-  onChange: (n: number) => void;
-  min: number;
-  max: number;
-  step: number;
-  unit: string;
-  format?: (n: number) => string;
-  parse?: (s: string) => number | null;
-  scaleLeft: string;
-  scaleRight: string;
-  right?: React.ReactNode;
-}
-
-function Field({
-  label,
-  tip,
-  value,
-  onChange,
-  min,
-  max,
-  step,
-  unit,
-  format = (n) => fmtInt.format(n),
-  parse = intParse,
-  scaleLeft,
-  scaleRight,
-  right,
-}: FieldProps) {
-  // `draft` lets the user type freely; null means "show the formatted value".
-  const [draft, setDraft] = useState<string | null>(null);
-  const display = draft ?? format(value);
-
-  return (
-    <div className="mt-6">
-      <div className="flex items-center justify-between gap-2.5">
-        <span className="flex items-center text-sm font-medium text-warm-grey">
-          {label}
-          {tip && <Info>{tip}</Info>}
-        </span>
-        <span className="flex items-baseline gap-1.5">
-          <input
-            inputMode="numeric"
-            aria-label={`${label} (${unit})`}
-            value={display}
-            onFocus={() => setDraft(String(value))}
-            onChange={(e) => {
-              setDraft(e.target.value);
-              const n = parse(e.target.value);
-              if (n != null) onChange(Math.min(max, Math.max(min, n)));
-            }}
-            onBlur={() => setDraft(null)}
-            style={{ width: display.length + 1 + "ch" }}
-            className="min-w-[40px] border-none bg-transparent p-0 text-right text-base font-semibold text-warm-grey outline-none [appearance:textfield]"
-          />
-          <span className="text-[13px] font-medium text-warm-grey-2">
-            {unit}
-          </span>
-          {right}
-        </span>
-      </div>
-      <input
-        type="range"
-        className="yk-range mt-4"
-        aria-label={`${label} (${unit})`}
-        min={min}
-        max={max}
-        step={step}
-        value={value}
-        onChange={(e) => onChange(Number(e.target.value))}
-      />
-      <div className="mt-2 flex justify-between text-[11.5px] text-warm-grey-2">
-        <span>{scaleLeft}</span>
-        <span>{scaleRight}</span>
-      </div>
-    </div>
-  );
-}
-
-function Seg({
-  mode,
-  onMode,
-}: {
-  mode: "pct" | "kr";
-  onMode: (m: "pct" | "kr") => void;
-}) {
-  return (
-    <span className="ml-2 inline-flex gap-0.5 rounded-lg bg-warm-grey/[0.05] p-[3px]">
-      {(["pct", "kr"] as const).map((m) => (
-        <button
-          key={m}
-          type="button"
-          aria-pressed={mode === m}
-          onClick={() => onMode(m)}
-          className={
-            "rounded-md px-2.5 py-[3px] text-xs font-semibold transition-colors " +
-            (mode === m
-              ? "bg-warm-white text-warm-grey shadow-[0_1px_2px_rgba(44,40,37,0.12)]"
-              : "text-warm-grey-2")
-          }
-        >
-          {m === "pct" ? "%" : "kr"}
-        </button>
-      ))}
-    </span>
-  );
-}
-
-interface StatProps {
-  k: string;
-  tip?: string;
-  value: number;
-  unit?: string;
-  decimals?: number;
-  hint?: string;
-  currency?: boolean;
-}
-
-function Stat({ k, tip, value, unit, decimals = 1, hint, currency }: StatProps) {
-  const format: Format = currency
-    ? { style: "currency", currency: "NOK", maximumFractionDigits: 0 }
-    : { minimumFractionDigits: decimals, maximumFractionDigits: decimals };
-  return (
-    <div className="rounded-xl border border-warm-grey-1/20 bg-warm-white p-5">
-      <div className="flex items-center text-[13px] font-medium text-warm-grey-2">
-        {k}
-        {tip && <Info>{tip}</Info>}
-      </div>
-      <div className="mt-2.5 flex items-baseline gap-1">
-        <NumberFlow
-          className="text-[26px] font-bold tracking-tight text-warm-grey"
-          value={value}
-          format={format}
-          locales="no-NO"
-        />
-        {unit && (
-          <span className="text-sm font-semibold text-warm-grey-2">{unit}</span>
-        )}
-      </div>
-      {hint && <div className="mt-2 text-xs text-warm-grey-2">{hint}</div>}
-    </div>
-  );
-}
-
-const cardBase = "rounded-xl border border-warm-grey-1/20 bg-warm-white";
 
 export function YieldCalculator() {
   const [type, setType] = useState<PropertyType>("Kontor");
@@ -204,15 +44,17 @@ export function YieldCalculator() {
   useEffect(() => {
     try {
       const s = JSON.parse(localStorage.getItem(STORE) || "{}");
+      // Clamp stored numbers to each field's range so a stale/edited value
+      // can't render out of sync with its slider.
       if (s.type && TYPES.includes(s.type)) setType(s.type);
-      if (typeof s.leie === "number") setLeie(s.leie);
-      if (typeof s.kjop === "number") setKjop(s.kjop);
+      if (typeof s.leie === "number") setLeie(clamp(s.leie, 0, 10000000));
+      if (typeof s.kjop === "number") setKjop(clamp(s.kjop, 1000000, 150000000));
       if (s.driftMode === "pct" || s.driftMode === "kr") setDriftMode(s.driftMode);
-      if (typeof s.driftKr === "number") setDriftKr(s.driftKr);
-      if (typeof s.driftPct === "number") setDriftPct(s.driftPct);
+      if (typeof s.driftKr === "number") setDriftKr(clamp(s.driftKr, 0, 5000000));
+      if (typeof s.driftPct === "number") setDriftPct(clamp(s.driftPct, 0, 50));
       if (typeof s.finOn === "boolean") setFinOn(s.finOn);
-      if (typeof s.ltv === "number") setLtv(s.ltv);
-      if (typeof s.rente === "number") setRente(s.rente);
+      if (typeof s.ltv === "number") setLtv(clamp(s.ltv, 0, 85));
+      if (typeof s.rente === "number") setRente(clamp(s.rente, 1, 10));
     } catch {
       /* ignore malformed storage */
     }
@@ -237,31 +79,29 @@ export function YieldCalculator() {
     );
   }, [hydrated, type, leie, kjop, driftMode, driftKr, driftPct, finOn, ltv, rente]);
 
-  /* ---------- derived ---------- */
-  const drift = driftMode === "pct" ? leie * (driftPct / 100) : driftKr;
-  const noi = Math.max(0, leie - drift);
-  const brutto = kjop > 0 ? (leie / kjop) * 100 : 0;
-  const netto = kjop > 0 ? (noi / kjop) * 100 : 0;
-  const manedlig = noi / 12;
-  const payback = noi > 0 ? kjop / noi : 0;
-
-  const lan = kjop * (ltv / 100);
-  const egenkapital = kjop - lan;
-  const renter = lan * (rente / 100);
-  const cfEtter = noi - renter;
-  const coc = egenkapital > 0 ? (cfEtter / egenkapital) * 100 : 0;
-
-  const market = YIELDS[type] ?? 7.0;
-  const diff = netto - market;
+  /* ---------- derived (pure math in lib/verktoy/yieldCalc) ---------- */
+  const {
+    drift,
+    noi,
+    brutto,
+    netto,
+    manedlig,
+    payback,
+    egenkapital,
+    cfEtter,
+    coc,
+    market,
+    diff,
+    opexShare,
+    noiShare,
+  } = computeYield({ type, leie, kjop, driftMode, driftKr, driftPct, ltv, rente });
   const diffStr = Math.abs(diff).toFixed(2).replace(".", ",");
 
+  // Benchmark-bar position (UI only): map a yield onto the 3–10% track.
   const SMIN = 3;
   const SMAX = 10;
   const pos = (v: number) =>
     Math.min(100, Math.max(0, ((v - SMIN) / (SMAX - SMIN)) * 100));
-
-  const opexShare = leie > 0 ? Math.min(100, (drift / leie) * 100) : 0;
-  const noiShare = 100 - opexShare;
 
   return (
     <>
@@ -275,24 +115,7 @@ export function YieldCalculator() {
             Eiendomstype styrer markedsreferansen.
           </p>
 
-          <div className="mt-5 flex flex-wrap gap-2">
-            {TYPES.map((t) => (
-              <button
-                key={t}
-                type="button"
-                aria-pressed={type === t}
-                onClick={() => setType(t)}
-                className={
-                  "rounded-lg border px-3.5 py-2 text-[13.5px] font-medium transition-colors " +
-                  (type === t
-                    ? "border-warm-grey bg-warm-grey text-warm-white"
-                    : "border-warm-grey-1/20 text-warm-grey-3 hover:border-warm-grey-2")
-                }
-              >
-                {t}
-              </button>
-            ))}
-          </div>
+          <Chips items={TYPES} value={type} onPick={setType} />
 
           <Field
             label="Årlig leieinntekt"
@@ -564,47 +387,18 @@ export function YieldCalculator() {
           )}
 
           {/* breakdown */}
-          <div className={`${cardBase} px-6 py-[22px]`}>
-            <span className="text-sm font-medium text-warm-grey-2">
-              Slik fordeler leien seg
-            </span>
-            <div className="mt-3.5 flex h-9 overflow-hidden rounded-[9px] border border-warm-grey-1/20">
-              <div
-                className="flex min-w-[2px] items-center justify-center bg-warm-grey-1 text-xs font-semibold text-warm-grey-3 transition-[flex-basis] duration-[400ms] ease-out"
-                style={{ flexBasis: opexShare + "%" }}
-              >
-                {opexShare > 12 ? Math.round(opexShare) + "%" : ""}
-              </div>
-              <div
-                className="flex min-w-[2px] items-center justify-center bg-warm-grey text-xs font-semibold text-warm-white transition-[flex-basis] duration-[400ms] ease-out"
-                style={{ flexBasis: noiShare + "%" }}
-              >
-                {noiShare > 12 ? Math.round(noiShare) + "%" : ""}
-              </div>
-            </div>
-            <div className="mt-3.5 flex flex-wrap gap-x-[22px] gap-y-2">
-              <span className="flex items-center gap-2 text-[12.5px] text-warm-grey-3">
-                <span className="size-[11px] rounded-[3px] bg-warm-grey-1" />
-                Driftskostnader{" "}
-                <b className="font-semibold text-warm-grey">
-                  {fmtInt.format(Math.round(drift))} kr
-                </b>
-              </span>
-              <span className="flex items-center gap-2 text-[12.5px] text-warm-grey-3">
-                <span className="size-[11px] rounded-[3px] bg-warm-grey" />
-                Netto driftsinntekt (NOI){" "}
-                <b className="font-semibold text-warm-grey">
-                  {fmtInt.format(Math.round(noi))} kr
-                </b>
-              </span>
-            </div>
-          </div>
+          <BreakdownBar
+            opexShare={opexShare}
+            noiShare={noiShare}
+            drift={drift}
+            noi={noi}
+          />
         </div>
       </div>
 
       {/* explainer */}
-      <div className="mt-6 flex flex-wrap gap-4">
-        {[
+      <ExplainerCards
+        items={[
           {
             h: "Brutto yield",
             body: (
@@ -641,18 +435,8 @@ export function YieldCalculator() {
               </>
             ),
           },
-        ].map((e) => (
-          <div
-            key={e.h}
-            className="flex-1 basis-[200px] rounded-xl border border-warm-grey-1/20 bg-warm-white p-5"
-          >
-            <h4 className="text-sm font-semibold text-warm-grey">{e.h}</h4>
-            <p className="mt-2 text-[12.5px] leading-relaxed text-warm-grey-2">
-              {e.body}
-            </p>
-          </div>
-        ))}
-      </div>
+        ]}
+      />
     </>
   );
 }
