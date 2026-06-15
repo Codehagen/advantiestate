@@ -48,7 +48,12 @@ export default async function RootLayout({
         <GoogleTagManager />
         <TrackingListener />
         <Nav groups={navGroups} />
-        {children}
+        <a href="#hovedinnhold" className="skip-link">
+          Hopp til innhold
+        </a>
+        <main id="hovedinnhold" tabIndex={-1}>
+          {children}
+        </main>
         <Footer />
         {/* Only on real Vercel deploys — locally/CI the insights script 404s
             and trips the zero-console-error test assertions. */}

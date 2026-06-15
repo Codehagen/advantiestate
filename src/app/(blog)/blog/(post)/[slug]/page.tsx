@@ -159,10 +159,6 @@ export default async function BlogArticle({
         }}
       />
 
-      <a href="#art-main" className="skip-link">
-        Hopp til innhold
-      </a>
-
       <div className="page-pad" />
 
       {/* HERO — breadcrumb only */}

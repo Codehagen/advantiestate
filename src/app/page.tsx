@@ -166,7 +166,7 @@ const CASES = [
 
 export default function Home() {
   return (
-    <main>
+    <>
       {/* ===== HERO ===== */}
       <section className="hero" id="top">
         <div className="hero-photo">
@@ -473,6 +473,6 @@ export default function Home() {
         primary={{ label: "Send henvendelse", href: "/kontakt" }}
         secondary={{ label: "Ta kontakt med teamet", href: "/personer" }}
       />
-    </main>
+    </>
   );
 }

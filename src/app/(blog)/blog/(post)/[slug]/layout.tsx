@@ -6,7 +6,8 @@ export default async function Layout({ children }: MarketingLayoutProps) {
   return (
     <>
       {/* <Header /> */}
-      <main>{children}</main>
+      {/* <main> landmark is provided once by the root layout */}
+      {children}
       {/* <Footer /> */}
     </>
   )

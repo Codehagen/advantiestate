@@ -150,10 +150,6 @@ export default async function HelpArticle({
         <StructuredData type="faq" data={{ faqs: data.faq }} />
       )}
 
-      <a href="#art-main" className="skip-link">
-        Hopp til innhold
-      </a>
-
       <div className="page-pad" />
 
       {/* HERO — breadcrumb only (emits BreadcrumbList JSON-LD) */}

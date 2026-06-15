@@ -160,6 +160,10 @@ h1, h2, h3 {
   outline: 2px solid var(--warm-white);
   outline-offset: 2px;
 }
+/* The skip target is the root <main id="hovedinnhold" tabindex="-1">. It takes
+   focus when the skip link is activated; suppress the ring on the wrapper
+   itself (focus is just a scroll/landmark anchor, not an interactive control). */
+#hovedinnhold:focus { outline: none; }
 
 /* ============================================================
    NAV
