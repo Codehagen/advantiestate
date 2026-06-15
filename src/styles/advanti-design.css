@@ -138,6 +138,29 @@ h1, h2, h3 {
 .section-tight { padding: 80px 0; }
 .section-divider { border-top: var(--hairline); }
 
+/* Skip link — visually hidden until keyboard focus, then a solid pill above
+   the fixed nav (z 50). Keyboard-only affordance; never visible on load. */
+.skip-link {
+  position: absolute;
+  left: 16px;
+  top: -64px;
+  z-index: 60;
+  padding: 10px 18px;
+  background: var(--warm-grey);
+  color: var(--warm-white);
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: top 0.2s ease;
+}
+.skip-link:focus,
+.skip-link:focus-visible {
+  top: 14px;
+  outline: 2px solid var(--warm-white);
+  outline-offset: 2px;
+}
+
 /* ============================================================
    NAV
    ============================================================ */
@@ -4138,8 +4161,14 @@ h1, h2, h3 {
 .ks-article {
   display: grid;
   grid-template-columns: 1fr 240px;
-  gap: 96px;
+  gap: 72px;
   padding-top: 8px;
+  /* Cap and center the body+TOC pair. Without this the 1fr body track
+     fills the full 1480px .wrap while the prose stays capped at 720px,
+     leaving a ~400px dead river between the article and the TOC and
+     pinning the sidebar to the far right edge on wide screens. */
+  max-width: 1080px;
+  margin-inline: auto;
 }
 /* Let the body/TOC tracks shrink below their content's intrinsic width —
    without this a wide table or KaTeX block inflates the grid past the
@@ -4147,6 +4176,9 @@ h1, h2, h3 {
 .ks-article > * { min-width: 0; }
 .ks-art-body {
   max-width: 720px;
+  /* Skip-link / anchor target sits below the fixed nav (~64px) instead of
+     under it. Matches the heading scroll-margin used for autolinked anchors. */
+  scroll-margin-top: 88px;
 }
 .ks-art-meta {
   display: flex;
@@ -4327,11 +4359,17 @@ h1, h2, h3 {
   margin-left: -14px;
 }
 .ks-toc a:hover { color: var(--warm-grey); }
+.ks-toc a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 /* No font-weight change on active — that reflows the text and shifts the
    layout. The accent bar plus the darker colour carry the active state. */
 .ks-toc a.active {
   color: var(--warm-grey);
   border-left-color: var(--accent);
+}
+/* Coarse pointers (touch): the 8px padding leaves TOC links ~35px tall —
+   below the 44px tap floor. Center the label in a 44px box on touch only. */
+@media (pointer: coarse) {
+  .ks-toc a { min-height: 44px; display: flex; align-items: center; }
 }
 .ks-toc .toc-meta {
   margin-top: 32px;
@@ -4897,6 +4935,12 @@ h1, h2, h3 {
   transition: all 0.2s ease;
 }
 .ks-feedback button:hover { background: var(--warm-grey); color: var(--warm-white); border-color: var(--warm-grey); }
+.ks-feedback button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+/* Coarse pointers (touch): 10px padding leaves the Ja/Nei buttons ~42px —
+   just under the 44px tap floor. */
+@media (pointer: coarse) {
+  .ks-feedback button { min-height: 44px; }
+}
 
 /* FAQ section */
 .ks-faq {
@@ -4956,6 +5000,7 @@ h1, h2, h3 {
 }
 .ks-related-list .item:nth-child(2n) { padding-left: 24px; padding-right: 0; border-left: var(--hairline); }
 .ks-related-list .item:hover { background: var(--accent-faint); }
+.ks-related-list .item:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
 .ks-related-list .item .pre {
   font-size: 11px;
   letter-spacing: 0.14em;
@@ -10195,6 +10240,7 @@ h1, h2, h3 {
 .art-prevnext { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border-top: var(--hairline); margin-top: 56px; }
 .art-prevnext a { display: flex; flex-direction: column; gap: 8px; padding: 28px 24px; text-decoration: none; color: var(--warm-grey); transition: background 0.2s; }
 .art-prevnext a:hover { background: var(--accent-faint); }
+.art-prevnext a:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
 .art-prevnext a.next { text-align: right; align-items: flex-end; border-left: var(--hairline); }
 .art-prevnext .dir { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--warm-grey-85); }
 .art-prevnext .ti { font-family: var(--font-display); font-size: 19px; font-weight: 400; letter-spacing: -0.012em; line-height: 1.2; }
@@ -10234,4 +10280,48 @@ h1, h2, h3 {
   }
   .hs-row:hover { padding-left: 14px; padding-right: 14px; }
   .hs-row:hover .rarrow, .hs-path .steps a:hover .sa { transform: none; }
+}
+
+/* ============================================================
+   === Yield Kalkulator v2 ===
+   Range-slider styling for the interactive yield calculator
+   (src/components/verktoy/YieldCalculator.tsx). Everything else
+   in that component is Tailwind; only the cross-browser slider
+   thumb/track needs real CSS. Built on existing tokens:
+   --warm-grey, --warm-white, --warm-grey-75.
+   ============================================================ */
+input[type="range"].yk-range {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 5px;
+  border-radius: 999px;
+  background: var(--warm-grey-75);
+  outline: none;
+  cursor: pointer;
+}
+.yk-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 19px;
+  height: 19px;
+  border-radius: 50%;
+  background: var(--warm-white);
+  border: 1.5px solid var(--warm-grey);
+  box-shadow: 0 1px 3px rgba(44, 40, 37, 0.25);
+  transition: transform 0.12s;
+}
+.yk-range::-webkit-slider-thumb:hover { transform: scale(1.1); }
+.yk-range::-moz-range-thumb {
+  width: 19px;
+  height: 19px;
+  border-radius: 50%;
+  background: var(--warm-white);
+  border: 1.5px solid var(--warm-grey);
+  box-shadow: 0 1px 3px rgba(44, 40, 37, 0.25);
+}
+.yk-range:focus-visible { outline: 2px solid var(--warm-grey); outline-offset: 4px; }
+@media (prefers-reduced-motion: reduce) {
+  .yk-range::-webkit-slider-thumb { transition: none; }
+  .yk-range::-webkit-slider-thumb:hover { transform: none; }
 }
