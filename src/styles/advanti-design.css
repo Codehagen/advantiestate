@@ -10690,6 +10690,10 @@ h1, h2, h3 {
   .hs-search .kbd { display: none; }
   .hs-sort { width: 100%; margin-left: 0; }
   .hs-herostats { gap: 32px; }
+  /* Mest lest: drop the nowrap category tag onto its own line so long
+     Norwegian titles don't get squeezed by the auto tag column on phones. */
+  .hs-mr { grid-template-columns: 30px 1fr; align-items: start; }
+  .hs-mr .mtag { grid-column: 2; margin-top: 4px; }
 }
 /* Honour reduce-motion for the v2 hover nudges + FAQ marker rotation. */
 @media (prefers-reduced-motion: reduce) {
