@@ -71,6 +71,7 @@ export async function generateMetadata({
     )}&summary=${encodeURIComponent(summary)}`,
     path: `/help/article/${post.slug}`,
     ogType: "article",
+    publishedTime: post.publishedAt ?? post.updatedAt,
     modifiedTime: post.updatedAt,
     authors: [helpAuthorName(post.author)],
   })
