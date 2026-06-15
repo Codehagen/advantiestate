@@ -132,7 +132,7 @@ export function DcfChart({
           Viser netto driftsinntekter og nåverdi over tid
         </p>
       </div>
-      <div className="mt-6 flex gap-8">
+      <div className="mt-6 flex flex-wrap gap-x-8 gap-y-4">
         <div>
           <p className="text-sm text-warm-grey-2">
             Netto driftsinntekt (NOI)
