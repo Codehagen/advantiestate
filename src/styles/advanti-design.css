@@ -138,6 +138,29 @@ h1, h2, h3 {
 .section-tight { padding: 80px 0; }
 .section-divider { border-top: var(--hairline); }
 
+/* Skip link — visually hidden until keyboard focus, then a solid pill above
+   the fixed nav (z 50). Keyboard-only affordance; never visible on load. */
+.skip-link {
+  position: absolute;
+  left: 16px;
+  top: -64px;
+  z-index: 60;
+  padding: 10px 18px;
+  background: var(--warm-grey);
+  color: var(--warm-white);
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: top 0.2s ease;
+}
+.skip-link:focus,
+.skip-link:focus-visible {
+  top: 14px;
+  outline: 2px solid var(--warm-white);
+  outline-offset: 2px;
+}
+
 /* ============================================================
    NAV
    ============================================================ */
@@ -10240,4 +10263,48 @@ h1, h2, h3 {
   }
   .hs-row:hover { padding-left: 14px; padding-right: 14px; }
   .hs-row:hover .rarrow, .hs-path .steps a:hover .sa { transform: none; }
+}
+
+/* ============================================================
+   === Yield Kalkulator v2 ===
+   Range-slider styling for the interactive yield calculator
+   (src/components/verktoy/YieldCalculator.tsx). Everything else
+   in that component is Tailwind; only the cross-browser slider
+   thumb/track needs real CSS. Built on existing tokens:
+   --warm-grey, --warm-white, --warm-grey-75.
+   ============================================================ */
+input[type="range"].yk-range {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 5px;
+  border-radius: 999px;
+  background: var(--warm-grey-75);
+  outline: none;
+  cursor: pointer;
+}
+.yk-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 19px;
+  height: 19px;
+  border-radius: 50%;
+  background: var(--warm-white);
+  border: 1.5px solid var(--warm-grey);
+  box-shadow: 0 1px 3px rgba(44, 40, 37, 0.25);
+  transition: transform 0.12s;
+}
+.yk-range::-webkit-slider-thumb:hover { transform: scale(1.1); }
+.yk-range::-moz-range-thumb {
+  width: 19px;
+  height: 19px;
+  border-radius: 50%;
+  background: var(--warm-white);
+  border: 1.5px solid var(--warm-grey);
+  box-shadow: 0 1px 3px rgba(44, 40, 37, 0.25);
+}
+.yk-range:focus-visible { outline: 2px solid var(--warm-grey); outline-offset: 4px; }
+@media (prefers-reduced-motion: reduce) {
+  .yk-range::-webkit-slider-thumb { transition: none; }
+  .yk-range::-webkit-slider-thumb:hover { transform: none; }
 }
