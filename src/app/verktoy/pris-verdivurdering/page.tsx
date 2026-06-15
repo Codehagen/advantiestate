@@ -2,7 +2,6 @@ import { CalculatorLayout } from "@/components/verktoy/CalculatorLayout";
 import { ValuationYieldCalculator } from "@/components/verktoy/ValuationYieldCalculator";
 import { constructMetadata } from "@/lib/utils";
 import { AnimatedCTA } from "@/components/ui/AnimatedCTA";
-import { CalculatorCTA } from "@/components/verktoy/CalculatorCTA";
 import {
   JourneyStepTracker,
   SjekklisteJourneyLink,
@@ -26,16 +25,12 @@ export default function PrisVerdiPage() {
         <ValuationYieldCalculator />
       </CalculatorLayout>
 
-      <section className="mx-auto mt-12 w-full max-w-6xl px-3">
-        <CalculatorCTA
-          title="Trenger du et presist tall?"
-          description="Denne kalkulatoren gir et estimat basert på leien og yielden du oppgir. For en presis verdivurdering tilpasset din eiendom, kontakt oss for en uforpliktende samtale. Vi leverer verdsettelser på 48 timer med lokal markedsinnsikt i Nord-Norge."
-        />
-      </section>
+      {/* CalculatorLayout already renders a CalculatorCTA; the in-calculator
+          "Få en presis verdivurdering" link + the AnimatedCTA below carry the
+          conversion path, so no extra CalculatorCTA here. */}
 
       {/* Typografisk dempet støtte­lenke — ikke en knapp, ikke konkurrent til
-          primær-CTAen nedenfor. Plassert mellom tilbudsskjemaet og den store
-          profesjonell-verdivurdering-seksjonen. */}
+          primær-CTAen nedenfor. */}
       <p className="mx-auto mt-6 w-full max-w-6xl px-3 text-center text-sm">
         <SjekklisteJourneyLink />
       </p>

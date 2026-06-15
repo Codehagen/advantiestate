@@ -5,7 +5,18 @@ import Link from "next/link";
 import NumberFlow from "@number-flow/react";
 
 import { YIELDS, type PropertyType } from "@/lib/verktoy/naringskalkulator";
-import { cardBase, decParse, Field, fmtInt, Seg, Stat } from "./calcFields";
+import { clamp, computeValuation } from "@/lib/verktoy/yieldCalc";
+import {
+  BreakdownBar,
+  cardBase,
+  Chips,
+  decParse,
+  ExplainerCards,
+  Field,
+  fmtInt,
+  Seg,
+  Stat,
+} from "./calcFields";
 
 /* ---------- domain constants (delt med naringskalkulator) ---------- */
 const TYPES: PropertyType[] = [
@@ -38,13 +49,15 @@ export function ValuationYieldCalculator() {
   useEffect(() => {
     try {
       const s = JSON.parse(localStorage.getItem(STORE) || "{}");
+      // Clamp stored numbers to each field's range so a stale/edited value
+      // can't render out of sync with its slider.
       if (s.type && TYPES.includes(s.type)) setType(s.type);
-      if (typeof s.leie === "number") setLeie(s.leie);
+      if (typeof s.leie === "number") setLeie(clamp(s.leie, 0, 20000000));
       if (s.driftMode === "pct" || s.driftMode === "kr") setDriftMode(s.driftMode);
-      if (typeof s.driftKr === "number") setDriftKr(s.driftKr);
-      if (typeof s.driftPct === "number") setDriftPct(s.driftPct);
-      if (typeof s.ytelse === "number") setYtelse(s.ytelse);
-      if (typeof s.areal === "number") setAreal(s.areal);
+      if (typeof s.driftKr === "number") setDriftKr(clamp(s.driftKr, 0, 8000000));
+      if (typeof s.driftPct === "number") setDriftPct(clamp(s.driftPct, 0, 50));
+      if (typeof s.ytelse === "number") setYtelse(clamp(s.ytelse, 3, 10));
+      if (typeof s.areal === "number") setAreal(clamp(s.areal, 0, 20000));
     } catch {
       /* ignore malformed storage */
     }
@@ -66,25 +79,13 @@ export function ValuationYieldCalculator() {
     setYtelse(YIELDS[t] ?? 7.0);
   }
 
-  /* ---------- derived ---------- */
-  const drift = driftMode === "pct" ? leie * (driftPct / 100) : driftKr;
-  const noi = Math.max(0, leie - drift);
+  /* ---------- derived (pure math in lib/verktoy/yieldCalc) ---------- */
+  const { drift, noi, verdi, low, high, perM2, bruttoYield, market, opexShare, noiShare } =
+    computeValuation({ type, leie, driftMode, driftKr, driftPct, ytelse, areal });
 
-  const verdi = ytelse > 0 ? noi / (ytelse / 100) : 0;
-  const lowYield = ytelse + 0.5;
-  const highYield = ytelse - 0.5;
-  const low = lowYield > 0 ? noi / (lowYield / 100) : 0;
-  const high = highYield > 0 ? noi / (highYield / 100) : verdi;
-  const perM2 = areal > 0 ? verdi / areal : 0;
-  const bruttoYield = verdi > 0 ? (leie / verdi) * 100 : 0;
-
-  // Point estimate position within the [low, high] band.
+  // Point estimate position within the [low, high] band (UI only).
   const dotPos =
     high > low ? Math.min(100, Math.max(0, ((verdi - low) / (high - low)) * 100)) : 50;
-
-  const market = YIELDS[type] ?? 7.0;
-  const opexShare = leie > 0 ? Math.min(100, (drift / leie) * 100) : 0;
-  const noiShare = 100 - opexShare;
 
   // Prefill the verdivurdering funnel with what the user entered.
   const ctaHref = useMemo(() => {
@@ -107,24 +108,7 @@ export function ValuationYieldCalculator() {
             verdien følge med.
           </p>
 
-          <div className="mt-5 flex flex-wrap gap-2">
-            {TYPES.map((t) => (
-              <button
-                key={t}
-                type="button"
-                aria-pressed={type === t}
-                onClick={() => pickType(t)}
-                className={
-                  "rounded-lg border px-3.5 py-2 text-[13.5px] font-medium transition-colors " +
-                  (type === t
-                    ? "border-warm-grey bg-warm-grey text-warm-white"
-                    : "border-warm-grey-1/20 text-warm-grey-3 hover:border-warm-grey-2")
-                }
-              >
-                {t}
-              </button>
-            ))}
-          </div>
+          <Chips items={TYPES} value={type} onPick={pickType} />
 
           <Field
             label="Årlig leieinntekt"
@@ -275,41 +259,12 @@ export function ValuationYieldCalculator() {
           </div>
 
           {/* breakdown */}
-          <div className={`${cardBase} px-6 py-[22px]`}>
-            <span className="text-sm font-medium text-warm-grey-2">
-              Slik fordeler leien seg
-            </span>
-            <div className="mt-3.5 flex h-9 overflow-hidden rounded-[9px] border border-warm-grey-1/20">
-              <div
-                className="flex min-w-[2px] items-center justify-center bg-warm-grey-1 text-xs font-semibold text-warm-grey-3 transition-[flex-basis] duration-[400ms] ease-out"
-                style={{ flexBasis: opexShare + "%" }}
-              >
-                {opexShare > 12 ? Math.round(opexShare) + "%" : ""}
-              </div>
-              <div
-                className="flex min-w-[2px] items-center justify-center bg-warm-grey text-xs font-semibold text-warm-white transition-[flex-basis] duration-[400ms] ease-out"
-                style={{ flexBasis: noiShare + "%" }}
-              >
-                {noiShare > 12 ? Math.round(noiShare) + "%" : ""}
-              </div>
-            </div>
-            <div className="mt-3.5 flex flex-wrap gap-x-[22px] gap-y-2">
-              <span className="flex items-center gap-2 text-[12.5px] text-warm-grey-3">
-                <span className="size-[11px] rounded-[3px] bg-warm-grey-1" />
-                Driftskostnader{" "}
-                <b className="font-semibold text-warm-grey">
-                  {fmtInt.format(Math.round(drift))} kr
-                </b>
-              </span>
-              <span className="flex items-center gap-2 text-[12.5px] text-warm-grey-3">
-                <span className="size-[11px] rounded-[3px] bg-warm-grey" />
-                Netto driftsinntekt (NOI){" "}
-                <b className="font-semibold text-warm-grey">
-                  {fmtInt.format(Math.round(noi))} kr
-                </b>
-              </span>
-            </div>
-          </div>
+          <BreakdownBar
+            opexShare={opexShare}
+            noiShare={noiShare}
+            drift={drift}
+            noi={noi}
+          />
 
           {/* bridge to a real verdivurdering, prefilled */}
           <Link
@@ -322,8 +277,8 @@ export function ValuationYieldCalculator() {
       </div>
 
       {/* explainer */}
-      <div className="mt-6 flex flex-wrap gap-4">
-        {[
+      <ExplainerCards
+        items={[
           {
             h: "Yield-metoden",
             body: (
@@ -356,18 +311,8 @@ export function ValuationYieldCalculator() {
               </>
             ),
           },
-        ].map((e) => (
-          <div
-            key={e.h}
-            className="flex-1 basis-[200px] rounded-xl border border-warm-grey-1/20 bg-warm-white p-5"
-          >
-            <h4 className="text-sm font-semibold text-warm-grey">{e.h}</h4>
-            <p className="mt-2 text-[12.5px] leading-relaxed text-warm-grey-2">
-              {e.body}
-            </p>
-          </div>
-        ))}
-      </div>
+        ]}
+      />
     </>
   );
 }

@@ -3,12 +3,15 @@
 import { useEffect, useState } from "react";
 import NumberFlow from "@number-flow/react";
 
-import { YIELDS, type PropertyType } from "@/lib/verktoy/naringskalkulator";
+import { type PropertyType } from "@/lib/verktoy/naringskalkulator";
+import { clamp, computeYield } from "@/lib/verktoy/yieldCalc";
 import {
+  BreakdownBar,
   cardBase,
+  Chips,
   decParse,
+  ExplainerCards,
   Field,
-  fmtInt,
   Seg,
   Stat,
 } from "./calcFields";
@@ -41,15 +44,17 @@ export function YieldCalculator() {
   useEffect(() => {
     try {
       const s = JSON.parse(localStorage.getItem(STORE) || "{}");
+      // Clamp stored numbers to each field's range so a stale/edited value
+      // can't render out of sync with its slider.
       if (s.type && TYPES.includes(s.type)) setType(s.type);
-      if (typeof s.leie === "number") setLeie(s.leie);
-      if (typeof s.kjop === "number") setKjop(s.kjop);
+      if (typeof s.leie === "number") setLeie(clamp(s.leie, 0, 10000000));
+      if (typeof s.kjop === "number") setKjop(clamp(s.kjop, 1000000, 150000000));
       if (s.driftMode === "pct" || s.driftMode === "kr") setDriftMode(s.driftMode);
-      if (typeof s.driftKr === "number") setDriftKr(s.driftKr);
-      if (typeof s.driftPct === "number") setDriftPct(s.driftPct);
+      if (typeof s.driftKr === "number") setDriftKr(clamp(s.driftKr, 0, 5000000));
+      if (typeof s.driftPct === "number") setDriftPct(clamp(s.driftPct, 0, 50));
       if (typeof s.finOn === "boolean") setFinOn(s.finOn);
-      if (typeof s.ltv === "number") setLtv(s.ltv);
-      if (typeof s.rente === "number") setRente(s.rente);
+      if (typeof s.ltv === "number") setLtv(clamp(s.ltv, 0, 85));
+      if (typeof s.rente === "number") setRente(clamp(s.rente, 1, 10));
     } catch {
       /* ignore malformed storage */
     }
@@ -74,31 +79,29 @@ export function YieldCalculator() {
     );
   }, [hydrated, type, leie, kjop, driftMode, driftKr, driftPct, finOn, ltv, rente]);
 
-  /* ---------- derived ---------- */
-  const drift = driftMode === "pct" ? leie * (driftPct / 100) : driftKr;
-  const noi = Math.max(0, leie - drift);
-  const brutto = kjop > 0 ? (leie / kjop) * 100 : 0;
-  const netto = kjop > 0 ? (noi / kjop) * 100 : 0;
-  const manedlig = noi / 12;
-  const payback = noi > 0 ? kjop / noi : 0;
-
-  const lan = kjop * (ltv / 100);
-  const egenkapital = kjop - lan;
-  const renter = lan * (rente / 100);
-  const cfEtter = noi - renter;
-  const coc = egenkapital > 0 ? (cfEtter / egenkapital) * 100 : 0;
-
-  const market = YIELDS[type] ?? 7.0;
-  const diff = netto - market;
+  /* ---------- derived (pure math in lib/verktoy/yieldCalc) ---------- */
+  const {
+    drift,
+    noi,
+    brutto,
+    netto,
+    manedlig,
+    payback,
+    egenkapital,
+    cfEtter,
+    coc,
+    market,
+    diff,
+    opexShare,
+    noiShare,
+  } = computeYield({ type, leie, kjop, driftMode, driftKr, driftPct, ltv, rente });
   const diffStr = Math.abs(diff).toFixed(2).replace(".", ",");
 
+  // Benchmark-bar position (UI only): map a yield onto the 3–10% track.
   const SMIN = 3;
   const SMAX = 10;
   const pos = (v: number) =>
     Math.min(100, Math.max(0, ((v - SMIN) / (SMAX - SMIN)) * 100));
-
-  const opexShare = leie > 0 ? Math.min(100, (drift / leie) * 100) : 0;
-  const noiShare = 100 - opexShare;
 
   return (
     <>
@@ -112,24 +115,7 @@ export function YieldCalculator() {
             Eiendomstype styrer markedsreferansen.
           </p>
 
-          <div className="mt-5 flex flex-wrap gap-2">
-            {TYPES.map((t) => (
-              <button
-                key={t}
-                type="button"
-                aria-pressed={type === t}
-                onClick={() => setType(t)}
-                className={
-                  "rounded-lg border px-3.5 py-2 text-[13.5px] font-medium transition-colors " +
-                  (type === t
-                    ? "border-warm-grey bg-warm-grey text-warm-white"
-                    : "border-warm-grey-1/20 text-warm-grey-3 hover:border-warm-grey-2")
-                }
-              >
-                {t}
-              </button>
-            ))}
-          </div>
+          <Chips items={TYPES} value={type} onPick={setType} />
 
           <Field
             label="Årlig leieinntekt"
@@ -401,47 +387,18 @@ export function YieldCalculator() {
           )}
 
           {/* breakdown */}
-          <div className={`${cardBase} px-6 py-[22px]`}>
-            <span className="text-sm font-medium text-warm-grey-2">
-              Slik fordeler leien seg
-            </span>
-            <div className="mt-3.5 flex h-9 overflow-hidden rounded-[9px] border border-warm-grey-1/20">
-              <div
-                className="flex min-w-[2px] items-center justify-center bg-warm-grey-1 text-xs font-semibold text-warm-grey-3 transition-[flex-basis] duration-[400ms] ease-out"
-                style={{ flexBasis: opexShare + "%" }}
-              >
-                {opexShare > 12 ? Math.round(opexShare) + "%" : ""}
-              </div>
-              <div
-                className="flex min-w-[2px] items-center justify-center bg-warm-grey text-xs font-semibold text-warm-white transition-[flex-basis] duration-[400ms] ease-out"
-                style={{ flexBasis: noiShare + "%" }}
-              >
-                {noiShare > 12 ? Math.round(noiShare) + "%" : ""}
-              </div>
-            </div>
-            <div className="mt-3.5 flex flex-wrap gap-x-[22px] gap-y-2">
-              <span className="flex items-center gap-2 text-[12.5px] text-warm-grey-3">
-                <span className="size-[11px] rounded-[3px] bg-warm-grey-1" />
-                Driftskostnader{" "}
-                <b className="font-semibold text-warm-grey">
-                  {fmtInt.format(Math.round(drift))} kr
-                </b>
-              </span>
-              <span className="flex items-center gap-2 text-[12.5px] text-warm-grey-3">
-                <span className="size-[11px] rounded-[3px] bg-warm-grey" />
-                Netto driftsinntekt (NOI){" "}
-                <b className="font-semibold text-warm-grey">
-                  {fmtInt.format(Math.round(noi))} kr
-                </b>
-              </span>
-            </div>
-          </div>
+          <BreakdownBar
+            opexShare={opexShare}
+            noiShare={noiShare}
+            drift={drift}
+            noi={noi}
+          />
         </div>
       </div>
 
       {/* explainer */}
-      <div className="mt-6 flex flex-wrap gap-4">
-        {[
+      <ExplainerCards
+        items={[
           {
             h: "Brutto yield",
             body: (
@@ -478,18 +435,8 @@ export function YieldCalculator() {
               </>
             ),
           },
-        ].map((e) => (
-          <div
-            key={e.h}
-            className="flex-1 basis-[200px] rounded-xl border border-warm-grey-1/20 bg-warm-white p-5"
-          >
-            <h4 className="text-sm font-semibold text-warm-grey">{e.h}</h4>
-            <p className="mt-2 text-[12.5px] leading-relaxed text-warm-grey-2">
-              {e.body}
-            </p>
-          </div>
-        ))}
-      </div>
+        ]}
+      />
     </>
   );
 }
