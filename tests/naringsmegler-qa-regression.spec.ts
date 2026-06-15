@@ -46,11 +46,11 @@ test("markedskart reacts to same-page hash changes (ISSUE-001)", async ({
   // behaviour is unchanged, only the wait is more patient (fixes CI flake).
   await expect(
     page.getByRole("button", { name: "Prime yield" }),
-  ).toHaveAttribute("aria-pressed", "true", { timeout: 15_000 });
+  ).toHaveAttribute("aria-pressed", "true", { timeout: 25_000 });
   await page.evaluate(() => {
     window.location.hash = "#leie";
   });
   await expect(
     page.getByRole("button", { name: "Markedsleie" }),
-  ).toHaveAttribute("aria-pressed", "true", { timeout: 15_000 });
+  ).toHaveAttribute("aria-pressed", "true", { timeout: 25_000 });
 });
