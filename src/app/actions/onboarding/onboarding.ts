@@ -4,6 +4,7 @@ import { cookies } from "next/headers";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { subscribe } from "@/lib/email/subscribe";
 import { sanitizeDiscordValue } from "@/lib/email/sanitize";
+import { contactInquirySchema } from "@/lib/forms/schemas";
 
 interface DiscordMessage {
   content: string;
@@ -141,11 +142,20 @@ export async function submitContactInquiry(data: ContactInquiryData) {
     return { success: false, error: "For mange forsøk. Prøv igjen om noen minutter." };
   }
 
+  const parsed = contactInquirySchema.safeParse(data);
+  if (!parsed.success) {
+    return {
+      success: false,
+      error: "Fyll inn navn, en gyldig e-postadresse og ønsket tjeneste.",
+    };
+  }
+  const d = parsed.data;
+
   try {
     const intake: Record<string, string | undefined> = {
-      Telefon: data.phone,
-      Tjeneste: data.service,
-      Beskjed: data.message,
+      Telefon: d.phone,
+      Tjeneste: d.service,
+      Beskjed: d.message,
     };
 
     // Full pipeline: Resend (audience + welcome), Discord #team digest
@@ -153,8 +163,8 @@ export async function submitContactInquiry(data: ContactInquiryData) {
     // "kontakt" source is already wired end-to-end in lib/email and
     // lib/supabase — see leads.ts HIGH_INTENT.
     const pipeline = subscribe({
-      email: data.email,
-      firstName: data.name,
+      email: d.email,
+      firstName: d.name,
       source: "kontakt",
       pageUrl: "/kontakt",
       intake,
@@ -168,21 +178,21 @@ export async function submitContactInquiry(data: ContactInquiryData) {
           embeds: [
             {
               title: "📬 Ny nettside-henvendelse",
-              description: `**${data.name}** — ${data.service}`,
+              description: `**${sanitizeDiscordValue(d.name)}** — ${sanitizeDiscordValue(d.service)}`,
               color: 0x00ff88,
               fields: [
-                { name: "Navn", value: sanitizeDiscordValue(data.name) },
-                { name: "E-post", value: sanitizeDiscordValue(data.email) },
-                { name: "Telefon", value: sanitizeDiscordValue(data.phone) },
+                { name: "Navn", value: sanitizeDiscordValue(d.name) },
+                { name: "E-post", value: sanitizeDiscordValue(d.email) },
+                { name: "Telefon", value: sanitizeDiscordValue(d.phone) },
                 {
                   name: "Ønsket tjeneste",
-                  value: sanitizeDiscordValue(data.service),
+                  value: sanitizeDiscordValue(d.service),
                 },
-                ...(data.message
+                ...(d.message
                   ? [
                       {
                         name: "Melding",
-                        value: sanitizeDiscordValue(data.message, 1024),
+                        value: sanitizeDiscordValue(d.message, 1024),
                       },
                     ]
                   : []),

@@ -3,6 +3,7 @@
 import { notifyLead } from "@/lib/email/discord"
 import { subscribe } from "@/lib/email/subscribe"
 import { checkRateLimit } from "@/lib/rate-limit"
+import { investorAccessSchema } from "@/lib/forms/schemas"
 
 export type InvestorAccessFormState =
   | { status: "idle" }
@@ -27,17 +28,19 @@ export async function requestInvestorAccess(
     }
   }
 
-  const name = String(formData.get("name") ?? "").trim().slice(0, 200)
-  const email = String(formData.get("email") ?? "").trim().toLowerCase()
-  const company = String(formData.get("company") ?? "").trim().slice(0, 200)
-  const mandate = String(formData.get("mandate") ?? "").trim().slice(0, 500)
-
-  if (!name || !EMAIL_RE.test(email)) {
+  const parsed = investorAccessSchema.safeParse({
+    name: String(formData.get("name") ?? ""),
+    email: String(formData.get("email") ?? ""),
+    company: String(formData.get("company") ?? ""),
+    mandate: String(formData.get("mandate") ?? ""),
+  })
+  if (!parsed.success) {
     return {
       status: "error",
       message: "Fyll inn navn og en gyldig e-postadresse.",
     }
   }
+  const { name, email, company, mandate } = parsed.data
 
   // Route through the shared pipeline (Discord + Supabase crm_leads) rather than
   // notifyLead alone — investorportal is high-intent, so the access request must

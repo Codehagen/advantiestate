@@ -2,6 +2,7 @@
 
 import { subscribe } from "@/lib/email/subscribe"
 import { checkRateLimit } from "@/lib/rate-limit"
+import { ctaLeadSchema } from "@/lib/forms/schemas"
 
 export type CtaLeadInput = {
   /** Norwegian form label, e.g. "Verdsettelse" — shown in the Discord digest. */
@@ -17,7 +18,6 @@ export type CtaLeadInput = {
 
 export type CtaLeadResult = { ok: true } | { ok: false; error: string }
 
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 const MAX_FIELDS = 15
 const MAX_VALUE_LEN = 500
 
@@ -26,15 +26,15 @@ export async function submitCtaLead(input: CtaLeadInput): Promise<CtaLeadResult>
     return { ok: false, error: "For mange forsøk. Prøv igjen om noen minutter." }
   }
 
-  const email = String(input.email ?? "").trim().toLowerCase()
-  const name = String(input.name ?? "").trim().slice(0, 200)
-  if (!EMAIL_RE.test(email) || !name) {
+  const parsed = ctaLeadSchema.safeParse(input)
+  if (!parsed.success) {
     return { ok: false, error: "Fyll inn navn og en gyldig e-postadresse." }
   }
+  const { email, name, formType, phone, pageUrl, fields } = parsed.data
 
-  const intake: Record<string, string> = { Type: String(input.formType ?? "").slice(0, 100) }
-  if (input.phone) intake.Telefon = String(input.phone).slice(0, 50)
-  for (const [k, v] of Object.entries(input.fields ?? {}).slice(0, MAX_FIELDS)) {
+  const intake: Record<string, string> = { Type: formType ?? "" }
+  if (phone) intake.Telefon = phone
+  for (const [k, v] of Object.entries(fields ?? {}).slice(0, MAX_FIELDS)) {
     const value = String(v ?? "").trim().slice(0, MAX_VALUE_LEN)
     if (value) intake[String(k).slice(0, 50)] = value
   }
@@ -47,7 +47,7 @@ export async function submitCtaLead(input: CtaLeadInput): Promise<CtaLeadResult>
   const result = await subscribe({
     email,
     source: "service-modal",
-    pageUrl: input.pageUrl?.slice(0, 200),
+    pageUrl,
     firstName: name,
     intake,
   })
