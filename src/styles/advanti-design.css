@@ -4362,6 +4362,11 @@ h1, h2, h3 {
   color: var(--warm-grey);
   border-left-color: var(--accent);
 }
+/* Coarse pointers (touch): the 8px padding leaves TOC links ~35px tall —
+   below the 44px tap floor. Center the label in a 44px box on touch only. */
+@media (pointer: coarse) {
+  .ks-toc a { min-height: 44px; display: flex; align-items: center; }
+}
 .ks-toc .toc-meta {
   margin-top: 32px;
   padding-top: 20px;
@@ -4926,6 +4931,11 @@ h1, h2, h3 {
   transition: all 0.2s ease;
 }
 .ks-feedback button:hover { background: var(--warm-grey); color: var(--warm-white); border-color: var(--warm-grey); }
+/* Coarse pointers (touch): 10px padding leaves the Ja/Nei buttons ~42px —
+   just under the 44px tap floor. */
+@media (pointer: coarse) {
+  .ks-feedback button { min-height: 44px; }
+}
 
 /* FAQ section */
 .ks-faq {
