@@ -187,6 +187,15 @@ for (const seg of ["kontor", "handel", "logistikk"] as Segment[]) {
   }
 }
 
+/**
+ * A city's leie series is OBSERVED when the city is a key in the canonical
+ * LEIE[seg] (marketData.ts); otherwise it was genRent()-generated above — a
+ * smooth multiplier curve anchored to the last published level, where only the
+ * endpoint is real. Used to render estimated cities as dashed lines.
+ */
+export const isEstimatedLeie = (seg: Segment, city: string): boolean =>
+  !(city in LEIE[seg])
+
 // ════════════════════════════════════════════════════════════════════════════
 // TRANSAKSJONER — per-segment split of the canonical annual totals.
 // Asserted: per-year segment sum === VOLUME.total (the published series).

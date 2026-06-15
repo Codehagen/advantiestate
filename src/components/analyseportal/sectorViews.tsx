@@ -34,8 +34,10 @@ import {
   MAKRO_F,
   SEG_COLOR,
   CITY_COLOR,
+  CITY_META,
   PORTAL_PALETTE,
   PORTAL_LATEST,
+  isEstimatedLeie,
   lastOf,
   bpsChange,
   pctGrowth,
@@ -193,27 +195,55 @@ function viewYield(s: ViewState): ViewSpec {
     </table>
   )
 
+  // Prime yield per city — published snapshot (registry-derived, all six
+  // cities). No per-city trend exists (single release), so this is the current
+  // quarter only, sorted low→high (lowest yield = tightest/prime market).
+  const cityYieldBar = CITY_META.map((c) => ({
+    label: c.name,
+    yld: c.yieldPct,
+    color: CITY_COLOR[c.name as PortalCity],
+  })).sort((a, b) => a.yld - b.yld)
+
   const compare = (
-    <div className="ap-compare">
-      <div className="ap-compare-head">Prime yield · alle segmenter</div>
-      <div className="ap-spark-grid">
-        {PORTAL_SEGMENTS.map((sg) => {
-          const a = PORTAL_YIELD[sg.key]
-          return (
-            <div className="ap-spark" key={sg.key}>
-              <div className="ap-spark-top">
-                <span className="nm">{sg.label}</span>
-                <span className="vv">{fmtPct2p(lastOf(a))}</span>
+    <>
+      <div className="ap-compare">
+        <div className="ap-compare-head">Prime yield · alle segmenter</div>
+        <div className="ap-spark-grid">
+          {PORTAL_SEGMENTS.map((sg) => {
+            const a = PORTAL_YIELD[sg.key]
+            return (
+              <div className="ap-spark" key={sg.key}>
+                <div className="ap-spark-top">
+                  <span className="nm">{sg.label}</span>
+                  <span className="vv">{fmtPct2p(lastOf(a))}</span>
+                </div>
+                <Spark data={a.map((v) => ({ v }))} color={SEG_COLOR[sg.key]} />
+                <div className="ap-spark-foot">
+                  <Delta n={bpsChange(a, 4)} unit=" bps" /> 12 mnd
+                </div>
               </div>
-              <Spark data={a.map((v) => ({ v }))} color={SEG_COLOR[sg.key]} />
-              <div className="ap-spark-foot">
-                <Delta n={bpsChange(a, 4)} unit=" bps" /> 12 mnd
-              </div>
-            </div>
-          )
-        })}
+            )
+          })}
+        </div>
       </div>
-    </div>
+      <div className="ap-compare">
+        <div className="ap-compare-head">
+          Prime yield kontor per by · {PORTAL_LATEST.quarter}
+        </div>
+        <SnapshotBar
+          data={cityYieldBar}
+          dataKey="yld"
+          yFmt={(v) => fmtComma(v, 1) + "%"}
+          tipFmt={fmtPct2p}
+          name="Prime yield"
+          animate={s.animate}
+        />
+        <p className="ap-note">
+          Publisert kvartalssnapshot for prime kontoryield i de seks byene vi
+          dekker. Lavest yield = strammest, mest likvide marked.
+        </p>
+      </div>
+    </>
   )
 
   const spreadBps = Math.round(spread * 100)
@@ -295,6 +325,8 @@ function viewLeie(s: ViewState): ViewSpec {
     hist: data[c],
     fc: dataF[c],
     width: c === "Tromsø" ? 2.6 : 2,
+    // Cities without observed history render dashed (endpoint-anchored estimate).
+    dashed: isEstimatedLeie(seg, c),
   }))
   const rows = rangeWindow(mergeForecast(QUARTERS, QUARTERS_F, series), s.range)
   const names: Record<string, string> = {}
@@ -328,6 +360,7 @@ function viewLeie(s: ViewState): ViewSpec {
               <td className="lbl">
                 <span className="sw" style={{ background: CITY_COLOR[c] }} />
                 {c}
+                {isEstimatedLeie(seg, c) && <span className="sub2">estimert</span>}
               </td>
               <td className="r">{fmtKrM2(lastOf(v))}</td>
               <td className="r"><Delta n={Math.round(pctGrowth(v, 4) * 10) / 10} unit=" %" decimals={1} /></td>
@@ -350,7 +383,10 @@ function viewLeie(s: ViewState): ViewSpec {
           return (
             <div className="ap-spark" key={c}>
               <div className="ap-spark-top">
-                <span className="nm">{c}</span>
+                <span className="nm">
+                  {c}
+                  {isEstimatedLeie(seg, c) && <span className="est"> · est.</span>}
+                </span>
                 <span className="vv">{fmtGroup(lastOf(v))}</span>
               </div>
               <Spark data={v.map((x) => ({ v: x }))} color={CITY_COLOR[c]} />
@@ -401,6 +437,10 @@ function viewLeie(s: ViewState): ViewSpec {
     chartFoot: (
       <>
         <span>Prime = toppleie for nybygg / klasse A i sentrum. Snittleier ligger 10–25 % under.</span>
+        <span>
+          Heltrukket = observert i Advantis leiekontraktbase. Stiplet = estimert
+          utvikling, forankret i siste publiserte nivå ({PORTAL_LATEST.quarter}).
+        </span>
         {fcFoot}
       </>
     ),
@@ -408,7 +448,7 @@ function viewLeie(s: ViewState): ViewSpec {
     compare,
     csv,
     method:
-      "Markedsleie er prime toppleie observert i Advantis leiekontraktbase, oppgitt som kr/m²/år eks. felleskost. Velg byer i kontrollinjen for å sammenligne.",
+      "Markedsleie er prime toppleie observert i Advantis leiekontraktbase, oppgitt som kr/m²/år eks. felleskost. Byer med stiplet linje har estimert utvikling forankret i siste publiserte nivå. Velg byer i kontrollinjen for å sammenligne.",
     insights: (
       <>
         <Insight n="01" h="Tromsø leder på nivå.">

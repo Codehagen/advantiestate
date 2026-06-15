@@ -5,7 +5,8 @@ interface MarketingLayoutProps {
 export default async function Layout({ children }: MarketingLayoutProps) {
   return (
     <>
-      <main>{children}</main>
+      {/* <main> landmark is provided once by the root layout */}
+      {children}
     </>
   )
 }

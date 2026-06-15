@@ -42,7 +42,8 @@ const RANGES: { key: RangeKey; label: string }[] = [
   { key: "all", label: "Alt" },
 ]
 
-const DEFAULT_CITIES: PortalCity[] = ["Tromsø", "Bodø", "Harstad"]
+// Default to all six cities — estimated series render dashed (see viewLeie).
+const DEFAULT_CITIES: PortalCity[] = [...PORTAL_CITIES]
 
 // ── hash <-> state (whitelist-validated both ways) ──────────────────────────
 interface HashState {
