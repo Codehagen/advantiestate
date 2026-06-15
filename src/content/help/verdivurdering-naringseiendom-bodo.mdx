@@ -1,0 +1,163 @@
+---
+title: Verdivurdering av næringseiendom i Bodø
+updatedAt: 2026-06-15
+summary: "Slik verdsettes næringseiendom i Bodø — yield-basert metode og DCF, med lokal prime yield og kontorleie som markedsinput i et illustrativt regneeksempel."
+author: christer-hagen
+categories:
+  - valuation
+takeaways:
+  - En verdivurdering i Bodø bygger på to metoder — yield-basert kapitalisering og diskontert kontantstrøm (DCF) — som bør gi samme svar.
+  - "Det lokale markedet leverer de avgjørende forutsetningene: prime yield rundt 6,35 prosent og kontorleie rundt 2 400 kr/m²/år (Analyseportalen, Q4 2025)."
+  - Yield-valget styrer verdien mer enn noe annet tall — derfor må det forankres i faktiske transaksjoner i samme by og segment.
+  - Bruk markedstall som utgangspunkt, men juster for beliggenhet, leietakerprofil og kontraktslengde på den konkrete eiendommen.
+related:
+  - verdivurdering-av-naringseiendom
+  - hva-er-yield
+  - diskontert-kontantstrom
+  - prime-yield
+faq:
+  - question: "Hvordan verdsettes næringseiendom i Bodø?"
+    answer: "Verdivurdering i Bodø bygger på to metoder som krysspeiler hverandre: yield-basert kapitalisering, der netto leieinntekt deles på et avkastningskrav, og diskontert kontantstrøm (DCF), der fremtidige kontantstrømmer neddiskonteres. Begge forankres i lokale markedstall — for Bodø en prime yield rundt 6,35 prosent og kontorleie rundt 2 400 kr/m²/år ifølge Analyseportalen (Q4 2025)."
+  - question: "Hva er prime yield i Bodø?"
+    answer: "Prime yield i Bodø ligger på rundt 6,35 prosent ifølge Analyseportalen (Q4 2025). Prime yield gjelder de beste eiendommene — sentral beliggenhet, solide leietakere og lange kontrakter — og er gulvet i markedet. Eiendommer med mer risiko verdsettes med høyere avkastningskrav, altså lavere verdi per krone leieinntekt. Tallene endres kvartalsvis."
+  - question: "Hvorfor betyr yield-valget så mye for verdien?"
+    answer: "Fordi verdien beregnes som leieinntekt delt på yield, slår selv små endringer i avkastningskravet kraftig ut. Med en netto leieinntekt på 6 mnok gir en yield på 6,35 prosent en verdi rundt 94 mnok, mens 6,85 prosent gir rundt 88 mnok. Et halvt prosentpoeng kan altså flytte verdien flere millioner, og derfor må yield forankres i faktiske transaksjoner i samme by og segment."
+  - question: "Hvilke lokale forhold påvirker verdivurderingen i Bodø?"
+    answer: "Beliggenhet i sentrum kontra randsone, leietakerens soliditet, gjenværende kontraktslengde og byggets standard. Bodø er et voksende logistikk- og kontormarked, men markedet er mindre likvid enn de største byene, så referansetransaksjoner er færre og må vektes med skjønn."
+slug: verdivurdering-naringseiendom-bodo
+---
+
+En verdivurdering av næringseiendom i Bodø handler om å oversette eiendommens leieinntekter til en markedspris — og det krever to ting: en anerkjent metode og pålitelige lokale markedstall. Metoden er den samme over hele landet, men forutsetningene som mates inn må hentes fra Bodø-markedet for at svaret skal stemme.
+
+<Prerequisites>
+  - Grunnmetoden for [verdivurdering av næringseiendom](/help/article/verdivurdering-av-naringseiendom)
+  - Hva [yield](/help/article/hva-er-yield) er og hvordan det brukes
+  - Hvordan [diskontert kontantstrøm (DCF)](/help/article/diskontert-kontantstrom) fungerer
+  - Hva [prime yield](/help/article/prime-yield) forteller om markedet
+</Prerequisites>
+
+## To metoder som skal peke samme vei
+
+Profesjonell verdivurdering hviler på to metoder som brukes parallelt. **Yield-basert kapitalisering** tar netto leieinntekt på normalisert nivå og deler den på et avkastningskrav (yield). **Diskontert kontantstrøm (DCF)** bygger opp verdien fra fremtidige kontantstrømmer som neddiskonteres til nåverdi, og fanger opp leieregulering, kontraktsforfall og en exit-verdi ved slutten av analyseperioden.
+
+De to metodene skal i prinsippet gi samme svar. Når de spriker, er det et signal om at en forutsetning bør utfordres — for eksempel et leienivå som ikke er bærekraftig, eller et yield-valg som ikke matcher eiendommens risiko. Det er nettopp denne krysspeilingen som gjør en verdivurdering robust.
+
+## Markedstallene for Bodø
+
+Det som gjør vurderingen *lokal*, er forutsetningene. For Bodø henter vi to nøkkeltall fra markedet: avkastningskravet for de beste eiendommene og oppnåelig kontorleie. Begge publiseres løpende i Advantis analyseportal.
+
+<StatStrip
+  items={[
+    { value: "6,35", unit: "%", label: "Prime yield, Bodø" },
+    { value: "2 400", unit: "kr/m²/år", label: "Kontorleie, Bodø" },
+    { value: "4,6", unit: "%", label: "Kontorledighet, Bodø" }
+  ]}
+/>
+
+Prime yield på 6,35 prosent gjelder de beste eiendommene — sentral beliggenhet, solide leietakere og lange kontrakter. Det er gulvet i markedet; eiendommer med mer risiko verdsettes med et høyere avkastningskrav og dermed lavere verdi per krone leieinntekt. Kontorleien på 2 400 kr/m²/år er utgangspunktet for å normalisere inntektssiden, mens en lav ledighet på 4,6 prosent forteller at kontormarkedet i Bodø er relativt stramt.
+
+<Note variant="caution">
+  Tallene over er per Q4 2025 fra Analyseportalen og endres kvartalsvis. Bruk dem som utgangspunkt, men hent alltid ferske tall fra [analyseportalen](/analyseportal) før en faktisk vurdering. Transaksjonseksempelet lenger nede er en anonymisert illustrasjon, ikke en konkret eiendom.
+</Note>
+
+## Et yield-basert regneeksempel
+
+La oss verdsette et tenkt kontorbygg i Bodø sentrum på 4 200 m². Vi bruker kontorleien på 2 400 kr/m²/år som markedsinput, trekker fra et normalisert nivå for eier- og driftskostnader, og kapitaliserer netto leieinntekt med prime yield på 6,35 prosent.
+
+<Example
+  title="Yield-basert verdi — kontorbygg Bodø sentrum (illustrativt)"
+  steps={[
+    {
+      label: "Brutto leieinntekt",
+      value: "10 080 000",
+      calculation: "4 200 m² × 2 400 kr/m²/år"
+    },
+    {
+      label: "Eierkostnader (anslag)",
+      value: "−1 080 000",
+      calculation: "Normalisert kostnadsnivå"
+    },
+    {
+      label: "Netto leieinntekt (NOI)",
+      value: "9 000 000",
+      calculation: "Grunnlag for kapitalisering"
+    },
+    {
+      label: "Markedsverdi",
+      value: "141 700 000",
+      calculation: "9 000 000 ÷ 6,35 %",
+      isResult: true
+    }
+  ]}
+/>
+
+Tallene for areal og leie er hentet fra markedet, mens kostnadsanslaget er en illustrasjon — i en reell vurdering bygges det opp post for post fra regnskap og budsjett. Poenget er hvor mye yield-valget styrer resultatet: hadde vi brukt 6,85 prosent i stedet for 6,35 prosent, ville verdien falt fra rundt 142 til om lag 131 mnok. Et halvt prosentpoeng flytter altså verdien med over ti millioner.
+
+## Yield må forankres i faktiske handler
+
+Fordi avkastningskravet betyr så mye, kan det ikke settes på magefølelse. Det forankres i hva sammenlignbare eiendommer faktisk har blitt omsatt for i samme by og segment. To anonymiserte eksempler fra Bodø-markedet illustrerer spennet.
+
+<Example
+  title="Anonymiserte referansetransaksjoner — Bodø"
+  steps={[
+    {
+      label: "Kontor, Bodø sentrum · 4 200 m²",
+      value: "~98 mnok",
+      calculation: "Omsatt på yield ~6,1 %"
+    },
+    {
+      label: "Logistikk, Bodø · 18 200 m²",
+      value: "~215 mnok",
+      calculation: "Omsatt på yield ~6,8 %",
+      isResult: true
+    }
+  ]}
+/>
+
+Forskjellen i yield mellom de to handlene er ikke tilfeldig: sentralt kontor med kort vei til leietakere og lav ledighet prises strammere enn logistikk i randsonen. Det viser hvorfor man ikke kan bruke prime yield på alt — den gjelder toppsjiktet, og resten av markedet ligger over. En verdivurdering må derfor velge yield ut fra den konkrete eiendommens beliggenhet, leietakerprofil og kontraktslengde.
+
+## Når DCF gir mer presisjon
+
+For eiendommer med ujevn kontantstrøm — for eksempel kontrakter som forfaller om noen år, trappeleie eller planlagt oppgradering — gir den rene yield-metoden et for grovt bilde. Da bygger man en DCF som tar hver enkelt kontantstrøm for seg og neddiskonterer den, før en exit-verdi legges til ved slutten av perioden. DCF fanger opp at en kontrakt under markedsleie vil normalisere seg ved forfall, eller at et ledig areal først gir inntekt etter en utleieperiode.
+
+I praksis brukes begge metodene sammen: yield-metoden gir et raskt, markedsforankret anslag, mens DCF tester om kontantstrømmen faktisk bærer den verdien over tid. Spriker de mye, ligger svaret som regel i en forutsetning som bør justeres.
+
+<ReadMore
+  items={[
+    {
+      href: "/help/article/verdivurdering-av-naringseiendom",
+      pre: "Kunnskap",
+      title: "Verdivurdering av næringseiendom — metoden steg for steg",
+    },
+    {
+      href: "/help/article/prime-yield",
+      pre: "Kunnskap",
+      title: "Prime yield — hva det er og hvorfor det er gulvet i markedet",
+    },
+    {
+      href: "/help/article/diskontert-kontantstrom",
+      pre: "Kunnskap",
+      title: "Diskontert kontantstrøm (DCF) — slik fungerer det",
+    },
+    {
+      href: "/blog/naringseiendomsmarkedet-bodo-2025",
+      pre: "Blogg",
+      title: "Næringseiendomsmarkedet i Bodø 2025",
+    },
+  ]}
+/>
+
+<CTA
+  badge="Verdivurdering"
+  title="Få en profesjonell verdivurdering i Bodø"
+  description="Advanti verdsetter næringseiendom i Bodø med yield-basert metode og DCF, forankret i ferske lokale markedstall. Kontakt oss for en vurdering av din eiendom."
+  primaryAction={{
+    label: "Be om verdivurdering",
+    href: "/tjenester/verdivurdering"
+  }}
+  secondaryAction={{
+    label: "Næringsmegler i Bodø",
+    href: "/naringsmegler/bodo"
+  }}
+  size="default"
+/>
