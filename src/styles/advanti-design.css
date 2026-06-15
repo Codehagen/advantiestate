@@ -4138,8 +4138,14 @@ h1, h2, h3 {
 .ks-article {
   display: grid;
   grid-template-columns: 1fr 240px;
-  gap: 96px;
+  gap: 72px;
   padding-top: 8px;
+  /* Cap and center the body+TOC pair. Without this the 1fr body track
+     fills the full 1480px .wrap while the prose stays capped at 720px,
+     leaving a ~400px dead river between the article and the TOC and
+     pinning the sidebar to the far right edge on wide screens. */
+  max-width: 1080px;
+  margin-inline: auto;
 }
 /* Let the body/TOC tracks shrink below their content's intrinsic width —
    without this a wide table or KaTeX block inflates the grid past the
