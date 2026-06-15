@@ -38,9 +38,9 @@ const calculators = [
     color: "text-warm-grey-3",
   },
   {
-    title: "Pris på Verdivurdering",
+    title: "Prøv en verdivurdering",
     description:
-      "Beregn estimert pris for verdivurdering basert på størrelse, kompleksitet og formål.",
+      "Sett leie, driftskostnader og avkastningskrav (yield) og se estimert markedsverdi i sanntid — yield-metoden meglere bruker.",
     icon: RiCalculatorLine,
     href: "/verktoy/pris-verdivurdering",
     color: "text-light-blue",

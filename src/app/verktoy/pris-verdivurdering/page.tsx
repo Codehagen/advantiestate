@@ -1,5 +1,5 @@
 import { CalculatorLayout } from "@/components/verktoy/CalculatorLayout";
-import { ValuationPriceCalculator } from "@/components/verktoy/ValuationPriceCalculator";
+import { ValuationYieldCalculator } from "@/components/verktoy/ValuationYieldCalculator";
 import { constructMetadata } from "@/lib/utils";
 import { AnimatedCTA } from "@/components/ui/AnimatedCTA";
 import { CalculatorCTA } from "@/components/verktoy/CalculatorCTA";
@@ -10,26 +10,26 @@ import {
 
 export const metadata = constructMetadata({
   path: "/verktoy/pris-verdivurdering",
-  title: "Pris på Verdivurdering Kalkulator | Estimat for Næringseiendom | Advanti Estate",
+  title: "Prøv en verdivurdering selv | Estimert eiendomsverdi | Advanti Estate",
   description:
-    "Beregn estimert pris for verdivurdering av næringseiendom basert på størrelse, kompleksitet og formål. Få en indikasjon på kostnaden før du bestiller en profesjonell verdsettelse.",
+    "Prøv en verdivurdering selv: sett leie, driftskostnader og avkastningskrav (yield), så ser du estimert markedsverdi for næringseiendommen din i sanntid. Yield-metoden meglere bruker — et godt utgangspunkt før en presis verdivurdering i Nord-Norge.",
 });
 
 export default function PrisVerdiPage() {
   return (
     <>
       <CalculatorLayout
-        title="Pris på Verdivurdering Kalkulator"
-        description="Beregn estimert pris for verdivurdering av din næringseiendom. Prisen varierer basert på størrelse, kompleksitet, formål og tidsramme. Dette er et estimat – kontakt oss for et nøyaktig tilbud."
-        badge="Prisestimering"
+        title="Prøv en verdivurdering"
+        description="Sett leie, driftskostnader og avkastningskrav — så ser du estimert markedsverdi i sanntid. Det er den samme yield-metoden meglere bruker, og et godt utgangspunkt før en presis verdivurdering."
+        badge="Verdivurdering"
       >
-        <ValuationPriceCalculator />
+        <ValuationYieldCalculator />
       </CalculatorLayout>
 
       <section className="mx-auto mt-12 w-full max-w-6xl px-3">
         <CalculatorCTA
-          title="Trenger du et nøyaktig tilbud?"
-          description="Denne kalkulatoren gir et estimat basert på generelle priser. For et nøyaktig tilbud tilpasset din spesifikke situasjon, kontakt oss for en uforpliktende samtale. Vi leverer verdsettelser på 48 timer med lokal markedsinnsikt i Nord-Norge."
+          title="Trenger du et presist tall?"
+          description="Denne kalkulatoren gir et estimat basert på leien og yielden du oppgir. For en presis verdivurdering tilpasset din eiendom, kontakt oss for en uforpliktende samtale. Vi leverer verdsettelser på 48 timer med lokal markedsinnsikt i Nord-Norge."
         />
       </section>
 
