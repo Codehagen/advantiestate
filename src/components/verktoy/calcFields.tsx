@@ -182,3 +182,109 @@ export function Stat({ k, tip, value, unit, decimals = 1, hint, currency }: Stat
     </div>
   );
 }
+
+/** Property-type selector (the segment chips both calculators share). */
+export function Chips<T extends string>({
+  items,
+  value,
+  onPick,
+}: {
+  items: readonly T[];
+  value: T;
+  onPick: (t: T) => void;
+}) {
+  return (
+    <div className="mt-5 flex flex-wrap gap-2">
+      {items.map((t) => (
+        <button
+          key={t}
+          type="button"
+          aria-pressed={value === t}
+          onClick={() => onPick(t)}
+          className={
+            "rounded-lg border px-3.5 py-2 text-[13.5px] font-medium transition-colors " +
+            (value === t
+              ? "border-warm-grey bg-warm-grey text-warm-white"
+              : "border-warm-grey-1/20 text-warm-grey-3 hover:border-warm-grey-2")
+          }
+        >
+          {t}
+        </button>
+      ))}
+    </div>
+  );
+}
+
+/** "Slik fordeler leien seg" — opex vs NOI split bar + legend. */
+export function BreakdownBar({
+  opexShare,
+  noiShare,
+  drift,
+  noi,
+}: {
+  opexShare: number;
+  noiShare: number;
+  drift: number;
+  noi: number;
+}) {
+  return (
+    <div className={`${cardBase} px-6 py-[22px]`}>
+      <span className="text-sm font-medium text-warm-grey-2">
+        Slik fordeler leien seg
+      </span>
+      <div className="mt-3.5 flex h-9 overflow-hidden rounded-[9px] border border-warm-grey-1/20">
+        <div
+          className="flex min-w-[2px] items-center justify-center bg-warm-grey-1 text-xs font-semibold text-warm-grey-3 transition-[flex-basis] duration-[400ms] ease-out"
+          style={{ flexBasis: opexShare + "%" }}
+        >
+          {opexShare > 12 ? Math.round(opexShare) + "%" : ""}
+        </div>
+        <div
+          className="flex min-w-[2px] items-center justify-center bg-warm-grey text-xs font-semibold text-warm-white transition-[flex-basis] duration-[400ms] ease-out"
+          style={{ flexBasis: noiShare + "%" }}
+        >
+          {noiShare > 12 ? Math.round(noiShare) + "%" : ""}
+        </div>
+      </div>
+      <div className="mt-3.5 flex flex-wrap gap-x-[22px] gap-y-2">
+        <span className="flex items-center gap-2 text-[12.5px] text-warm-grey-3">
+          <span className="size-[11px] rounded-[3px] bg-warm-grey-1" />
+          Driftskostnader{" "}
+          <b className="font-semibold text-warm-grey">
+            {fmtInt.format(Math.round(drift))} kr
+          </b>
+        </span>
+        <span className="flex items-center gap-2 text-[12.5px] text-warm-grey-3">
+          <span className="size-[11px] rounded-[3px] bg-warm-grey" />
+          Netto driftsinntekt (NOI){" "}
+          <b className="font-semibold text-warm-grey">
+            {fmtInt.format(Math.round(noi))} kr
+          </b>
+        </span>
+      </div>
+    </div>
+  );
+}
+
+/** Row of explainer cards under the calculator grid. */
+export function ExplainerCards({
+  items,
+}: {
+  items: { h: string; body: React.ReactNode }[];
+}) {
+  return (
+    <div className="mt-6 flex flex-wrap gap-4">
+      {items.map((e) => (
+        <div
+          key={e.h}
+          className="flex-1 basis-[200px] rounded-xl border border-warm-grey-1/20 bg-warm-white p-5"
+        >
+          <h4 className="text-sm font-semibold text-warm-grey">{e.h}</h4>
+          <p className="mt-2 text-[12.5px] leading-relaxed text-warm-grey-2">
+            {e.body}
+          </p>
+        </div>
+      ))}
+    </div>
+  );
+}
