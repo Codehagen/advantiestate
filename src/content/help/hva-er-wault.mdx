@@ -1,0 +1,205 @@
+---
+title: "Hva er WAULT? Vektet gjenværende leietid forklart"
+updatedAt: 2026-06-15
+summary: "WAULT måler vektet gjennomsnittlig gjenværende leietid i en eiendom og er et nøkkeltall for inntektssikkerhet, yield-prising og risiko ved kjøp."
+author: codehagen
+categories:
+  - valuation
+takeaways:
+  - "WAULT er vektet gjennomsnittlig gjenværende leietid og forteller hvor lenge dagens leiekontrakter sikrer inntektene."
+  - "Tallet vektes vanligvis etter leieinntekt, slik at de største leietakerne påvirker WAULT mest."
+  - "Lang WAULT gir mer forutsigbar kontantstrøm og presser yield ned; kort WAULT øker reforhandlings- og ledighetsrisiko."
+  - "Skill mellom WAULT til utløp og WAULT til første oppsigelsesrett (break) — de kan gi svært ulike tall."
+related:
+  - leiekontrakter-naringseiendom
+  - hva-er-yield
+  - exit-yield
+  - verdivurdering-av-naringseiendom
+faq:
+  - question: "Hva betyr WAULT?"
+    answer: "WAULT står for Weighted Average Unexpired Lease Term — vektet gjennomsnittlig gjenværende leietid. Det er et nøkkeltall som viser hvor mange år dagens leiekontrakter i gjennomsnitt har igjen, vektet etter hvor stor leieinntekt hver kontrakt utgjør. WAULT brukes til å vurdere hvor sikker og forutsigbar inntektsstrømmen fra en næringseiendom er."
+  - question: "Hvordan beregnes WAULT?"
+    answer: "WAULT beregnes ved å multiplisere hver leiekontrakts årsleie med kontraktens gjenværende leietid, summere alle produktene, og dele på samlet årsleie. Resultatet er et inntektsvektet gjennomsnitt målt i år. Fordi vektingen er etter leieinntekt, vil de største leietakerne påvirke WAULT mest, mens små kontrakter betyr lite for det samlede tallet."
+  - question: "Hva er forskjellen på WAULT til utløp og WAULT til break?"
+    answer: "WAULT til utløp regner gjenværende tid frem til kontrakten formelt opphører. WAULT til break (eller WALB) regner frem til leietakers første mulige oppsigelsesrett, altså den tidligste datoen leietaker lovlig kan gå ut av avtalen. Hvis kontraktene har break-opsjoner, er WAULT til break alltid lavere og gir et mer forsiktig bilde av inntektssikkerheten."
+  - question: "Hvorfor påvirker WAULT yield og verdi?"
+    answer: "Lang WAULT gir mer forutsigbar kontantstrøm og lavere reforhandlings- og ledighetsrisiko, noe markedet belønner med lavere yield og dermed høyere verdi. Kort WAULT betyr at en større andel av inntektene snart skal reforhandles, som øker usikkerheten og typisk gir høyere yield og lavere pris alt annet likt."
+  - question: "Hva er en god WAULT?"
+    answer: "Det finnes ingen fast fasit, fordi hva som er bra avhenger av eiendomstype, leietakerkvalitet og strategi. En kontoreiendom med solide offentlige leietakere og lang WAULT prises som en stabil, obligasjonslignende investering, mens en investor med verdiøkningsstrategi kan bevisst kjøpe kort WAULT for å reforhandle leien opp. WAULT må alltid vurderes sammen med leietakernes kredittkvalitet og markedsleien."
+slug: hva-er-wault
+---
+
+Når en investor vurderer en næringseiendom, er ett av de første spørsmålene hvor lenge inntektene er sikret. WAULT er nøkkeltallet som besvarer nettopp det: det forteller hvor lenge dagens leiekontrakter i gjennomsnitt løper, vektet etter hvor mye hver leietaker betaler.
+
+<Prerequisites>
+  - Forståelse av [leiekontrakter i næringseiendom](/help/article/leiekontrakter-naringseiendom)
+  - Kjennskap til [brutto leieinntekter](/help/article/brutto-leieinntekter)
+  - Grunnleggende forståelse av [yield](/help/article/hva-er-yield)
+</Prerequisites>
+
+## Hva er WAULT?
+
+WAULT er en forkortelse for det engelske *Weighted Average Unexpired Lease Term*, på norsk vektet gjennomsnittlig gjenværende leietid. Tallet oppgis i antall år og brukes for å vurdere hvor forutsigbar og sikker inntektsstrømmen fra en eiendom er.
+
+<Fact term="WAULT (vektet gjenværende leietid)">
+  Det inntektsvektede gjennomsnittet av gjenværende løpetid på alle leiekontraktene i en eiendom eller en portefølje, uttrykt i år. Jo høyere WAULT, desto lengre er inntektene kontraktfestet.
+</Fact>
+
+Poenget med vektingen er at ikke alle kontrakter er like viktige. En leietaker som betaler halvparten av byggets leie betyr langt mer for inntektssikkerheten enn en liten leietaker i et hjørnelokale. Derfor vekter man hver kontrakts gjenværende tid etter hvor stor andel av leien den utgjør.
+
+## Slik regnes WAULT ut
+
+WAULT beregnes ved å multiplisere hver kontrakts årsleie med dens gjenværende leietid, summere alle disse produktene, og dele på samlet årsleie for eiendommen.
+
+<Math
+  formula="\text{WAULT} = \frac{\sum_i (\text{Årsleie}_i \times \text{Gjenv. leietid}_i)}{\sum_i \text{Årsleie}_i}"
+  description="Hver kontrakts gjenværende leietid vektes etter kontraktens andel av samlet årsleie"
+/>
+
+Resultatet er et gjennomsnitt i år. Fordi vektingen skjer etter leieinntekt og ikke etter areal eller antall kontrakter, kan en eiendom med mange korte kontrakter likevel ha høy WAULT dersom den dominerende leietakeren har en lang avtale.
+
+Et konkret regneeksempel gjør mekanismen tydeligere. Tallene under er illustrative og kun valgt for å vise utregningen.
+
+<Example
+  title="WAULT for en eiendom med tre leietakere"
+  steps={[
+    {
+      label: "Leietaker A",
+      value: "24,0",
+      calculation: "3,0 MNOK årsleie × 8 år gjenstår"
+    },
+    {
+      label: "Leietaker B",
+      value: "4,5",
+      calculation: "1,5 MNOK årsleie × 3 år gjenstår"
+    },
+    {
+      label: "Leietaker C",
+      value: "0,5",
+      calculation: "0,5 MNOK årsleie × 1 år gjenstår"
+    },
+    {
+      label: "Sum vektede år",
+      value: "29,0",
+      calculation: "24,0 + 4,5 + 0,5"
+    },
+    {
+      label: "WAULT",
+      value: "5,8 år",
+      calculation: "29,0 ÷ 5,0 MNOK samlet årsleie",
+      isResult: true
+    }
+  ]}
+/>
+
+Legg merke til at WAULT på 5,8 år ligger nær leietaker A sin løpetid, selv om to av tre kontrakter har kort tid igjen. Det er fordi A alene står for 60 prosent av leien og dermed dominerer vektingen.
+
+## WAULT til utløp eller til break
+
+Et tall som «WAULT» kan bety to forskjellige ting, og forskjellen er viktig å forstå før man sammenligner eiendommer. Mange norske leiekontrakter inneholder en oppsigelsesrett (break-opsjon) som lar leietaker gå ut av avtalen før den formelle utløpsdatoen.
+
+<Compare
+  pro={{
+    head: "WAULT til utløp",
+    items: [
+      "Regner frem til kontraktens formelle sluttdato",
+      "Gir det høyeste, mest optimistiske tallet",
+      "Forutsetter at leietaker blir hele perioden ut",
+      "Brukes ofte i markedsføring av eiendommen"
+    ]
+  }}
+  con={{
+    head: "WAULT til break (WALB)",
+    items: [
+      "Regner frem til leietakers første oppsigelsesrett",
+      "Gir et lavere, mer forsiktig tall",
+      "Reflekterer den reelle, garanterte inntektshorisonten",
+      "Foretrekkes i konservativ risikovurdering"
+    ]
+  }}
+/>
+
+I en seriøs verdivurdering bør begge tallene oppgis, slik at kjøper ser både det optimistiske og det forsiktige scenariet. En eiendom som markedsføres med en høy WAULT til utløp, men som har break-opsjoner om to år, har i praksis en langt mer usikker inntektsstrøm enn overskriften antyder.
+
+<Note variant="caution">
+  Sjekk alltid om WAULT er oppgitt til utløp eller til break, og om den er vektet etter leieinntekt eller etter areal. Ulike aktører bruker ulike definisjoner, og sammenligner du tall med forskjellig grunnlag, trekker du feil konklusjon.
+</Note>
+
+## Hvorfor WAULT påvirker yield og verdi
+
+WAULT er tett knyttet til hvordan markedet priser risiko. En eiendom med lang WAULT og solide leietakere har en forutsigbar kontantstrøm som ligner en obligasjon, og slik trygghet belønnes med lavere [yield](/help/article/hva-er-yield) — som igjen betyr høyere verdi.
+
+Kort WAULT trekker i motsatt retning. Når en stor andel av leien snart skal reforhandles, øker både ledighetsrisiko og usikkerhet om fremtidig leienivå. Markedet kompenserer for dette med høyere yield og lavere pris, alt annet likt.
+
+<Summary
+  title="WAULT som risikoindikator"
+  points={[
+    {
+      title: "Inntektssikkerhet",
+      description: "Lang WAULT betyr at en større del av inntektene er kontraktfestet langt frem i tid.",
+      iconName: "barChart"
+    },
+    {
+      title: "Yield-effekt",
+      description: "Lang WAULT presser yield ned og verdien opp; kort WAULT gjør det motsatte.",
+      iconName: "lineChart"
+    },
+    {
+      title: "Reforhandlingsrisiko",
+      description: "Kort WAULT betyr at mye leie snart skal reforhandles, med usikkert utfall.",
+      iconName: "scales"
+    },
+    {
+      title: "Exit-betydning",
+      description: "WAULT på salgstidspunktet påvirker hvilken exit yield en fremtidig kjøper vil legge til grunn.",
+      iconName: "lightbulb"
+    }
+  ]}
+/>
+
+WAULT betyr også noe for [exit yield](/help/article/exit-yield) i en DCF-modell. Dersom kontraktene er nær utløp ved slutten av analyseperioden, vil en fremtidig kjøper kreve høyere avkastning, og terminalverdien faller. Derfor henger leietidsprofilen og verdivurderingens forutsetninger tett sammen.
+
+## Hva er en god WAULT?
+
+Det finnes ingen universell fasit på hva som er en god WAULT, fordi det avhenger av strategi og eiendomstype. En investor som ønsker stabil, langsiktig avkastning vil prioritere lang WAULT med solide leietakere. En aktør med en mer aktiv verdiøkningsstrategi kan derimot bevisst søke kort WAULT, fordi reforhandling eller utskifting av leietakere åpner for å løfte leien mot markedsnivå.
+
+<Note variant="positive">
+  WAULT skal aldri vurderes alene. Tallet må alltid leses sammen med leietakernes kredittkvalitet, hvordan leien ligger an mot markedsleien, og om kontraktene har break-opsjoner. En lang WAULT med en svak leietaker er ikke nødvendigvis tryggere enn en kortere WAULT med en solid leietaker.
+</Note>
+
+For å vurdere en eiendom riktig bør du derfor kombinere WAULT med en gjennomgang av leiekontraktenes vilkår, leietakernes betalingsevne og en realistisk vurdering av reforhandlingsmulighetene.
+
+<ReadMore
+  items={[
+    {
+      href: "/help/article/leiekontrakter-naringseiendom",
+      pre: "Kunnskap",
+      title: "Leiekontrakter i næringseiendom — det du må vite",
+    },
+    {
+      href: "/help/article/exit-yield",
+      pre: "Kunnskap",
+      title: "Exit yield og terminalverdi",
+    },
+    {
+      href: "/blog/dcf-analyse-naringseiendom",
+      pre: "Blogg",
+      title: "DCF-analyse av næringseiendom — praktisk gjennomgang",
+    },
+  ]}
+/>
+
+<CTA
+  badge="Vurder riktig"
+  title="Forstå inntektssikkerheten i eiendommen din"
+  description="Advanti analyserer leietidsprofil, WAULT og kontraktsrisiko som del av en helhetlig verdivurdering av næringseiendom."
+  primaryAction={{
+    label: "Få en verdivurdering",
+    href: "/tjenester/verdsettelse"
+  }}
+  secondaryAction={{
+    label: "Kontakt oss",
+    href: "/kontakt"
+  }}
+  size="default"
+/>
