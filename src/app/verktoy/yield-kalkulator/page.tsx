@@ -7,7 +7,7 @@ export const metadata = constructMetadata({
   path: "/verktoy/yield-kalkulator",
   title: "Yield Kalkulator | Advanti Estate",
   description:
-    "Beregn brutto og netto yield for næringseiendom. Få umiddelbar oversikt over avkastning basert på leieinntekter og driftskostnader.",
+    "Beregn brutto- og netto-yield for næringseiendom — og se hva belåning gjør med egenkapitalavkastningen (cash-on-cash). Dra i tallene og følg resultatet i sanntid, målt mot markedsyield i Nord-Norge.",
 });
 
 export default function YieldKalkulatorPage() {
@@ -15,7 +15,7 @@ export default function YieldKalkulatorPage() {
     <>
       <CalculatorLayout
         title="Yield Kalkulator"
-        description="Beregn brutto og netto yield for næringseiendom. Yield er et viktig nøkkeltall som viser avkastningen på investeringen din basert på leieinntekter."
+        description="Beregn brutto- og netto-yield for næringseiendom — og se hva belåning gjør med egenkapitalavkastningen. Dra i tallene og følg resultatet i sanntid, målt mot markedsreferansen for ditt segment i Nord-Norge."
         badge="Yield"
       >
         <YieldCalculator />
