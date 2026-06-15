@@ -1,11 +1,16 @@
 ---
 title: "Skatt og avskrivninger på næringseiendom"
 publishedAt: 2026-06-12
-updatedAt: 2026-06-12
+updatedAt: 2026-06-15
 summary: "Saldoavskrivninger reduserer skattebelastningen og påvirker kontantstrøm etter skatt. Lær systemet, skillet mellom tomt, bygg og teknisk installasjon."
 author: codehagen
 categories:
   - for-investors
+takeaways:
+  - "Saldoavskrivning er degressiv: høyest fradrag tidlig i eierperioden, lavere etter hvert som saldoverdien faller."
+  - Tomt kan ikke avskrives — bare bygningsdelen og faste tekniske installasjoner gir skattefradrag.
+  - Avskrivninger er ikke en kontantutgift, men reduserer skattbart overskudd og bedrer kontantstrøm etter skatt.
+  - Latent skatt vokser når saldoverdien faller under markedsverdi — sentralt ved transaksjoner.
 related:
   - aksjekjop-vs-innmatskjop
   - kontantstromsanalyse
@@ -20,11 +25,17 @@ faq:
     answer: "Regnskapsmessig avskrivning følger regnskapsreglene (NGAAP) og kan settes til antatt faktisk verdifall. Skattemessig avskrivning følger skattelovens saldosystem med faste satser etter gruppe — og denne avskrivningen er den som gir faktiske skattefradrag. De to kan avvike vesentlig, og det er den skattemessige saldoverdien som er relevant for den latente skatteberegningen ved transaksjoner."
 ---
 
-<Note variant="warning">
+Avskrivninger er en av de viktigste skattemessige mekanismene for eiendomsinvestorer. De reduserer skattbart overskudd, påvirker kontantstrøm etter skatt, og danner grunnlaget for beregningen av latent skatt ved transaksjoner. En grunnleggende forståelse av avskrivningssystemet er nødvendig for å analysere eiendomsinvesteringer korrekt.
+
+<Prerequisites>
+  - Skillet mellom [aksjekjøp og innmatskjøp](/help/article/aksjekjop-vs-innmatskjop)
+  - Oversikt over [eierkostnader](/help/article/eierkostnader) i næringseiendom
+  - Grunnleggende kunnskap om [finansiering av næringseiendom](/help/article/finansiering-av-naringseiendom)
+</Prerequisites>
+
+<Note variant="caution">
   Denne artikkelen er generell informasjon om skatt og avskrivninger på næringseiendom — ikke skatterådgivning. Reglene er komplekse, endres over tid og anvendes ulikt avhengig av eierstruktur og eiendomstype. Involver alltid kvalifisert skatterådgiver for konkrete vurderinger.
 </Note>
-
-Avskrivninger er en av de viktigste skattemessige mekanismene for eiendomsinvestorer. De reduserer skattbart overskudd, påvirker kontantstrøm etter skatt, og danner grunnlaget for beregningen av latent skatt ved transaksjoner. En grunnleggende forståelse av avskrivningssystemet er nødvendig for å analysere eiendomsinvesteringer korrekt.
 
 ## Saldoavskrivningssystemet
 
@@ -32,7 +43,7 @@ Norsk skattelov benytter et saldoavskrivningssystem for driftsmidler. Driftsmidl
 
 Saldoavskrivning er **degressiv**: avskrivningsbeløpet er høyest i de første årene og faller gradvis over tid etter hvert som saldoverdien synker. Dette skiller seg fra lineær avskrivning, der samme beløp avskrives hvert år.
 
-<Note variant="info">
+<Note>
   De konkrete saldosatsene for de ulike gruppene fastsettes av Stortinget og kan endres. Denne artikkelen beskriver systemet kvalitativt uten å oppgi konkrete satser, ettersom satsene bør verifiseres mot gjeldende regelverk hos Skatteetaten (skatteetaten.no) ved praktisk bruk.
 </Note>
 
@@ -40,11 +51,28 @@ Saldoavskrivning er **degressiv**: avskrivningsbeløpet er høyest i de første 
 
 Det kanskje viktigste prinsippet i eiendomsskatteretten er at **tomt ikke kan avskrives**. Tomteverdien er ikke et saldodriftsmiddel og gir ingen skattemessig fradragsrett. Kun bygningsdelen og faste tekniske installasjoner er avskrivbare.
 
-Dette skillet er praktisk viktig ved kjøp. Dersom en eiendom er kjøpt til en samlet sum, må kjøpesummen fordeles mellom:
+Dette skillet er praktisk viktig ved kjøp. Dersom en eiendom er kjøpt til en samlet sum, må kjøpesummen fordeles mellom de tre komponentene:
 
-1. **Tomt** — ingen avskrivning
-2. **Bygningsdelen** — avskrives i sin saldogruppe
-3. **Fast teknisk installasjon** — avskrives i en separat, gunstigere saldogruppe
+<Summary
+  title="Fordeling av kjøpesummen"
+  points={[
+    {
+      title: "Tomt",
+      description: "Ingen avskrivning — tomteverdi er ikke et saldodriftsmiddel og gir ingen fradragsrett.",
+      iconName: "scales"
+    },
+    {
+      title: "Bygningsdelen",
+      description: "Avskrives i sin saldogruppe.",
+      iconName: "barChart"
+    },
+    {
+      title: "Fast teknisk installasjon",
+      description: "Avskrives i en separat, gunstigere saldogruppe.",
+      iconName: "lineChart"
+    }
+  ]}
+/>
 
 Fordelingen er ikke alltid åpenbar og bør fastsettes av en fagperson. En høyere andel til tekniske installasjoner gir raskere avskrivning og høyere skattefradrag i tidlige år — noe som er verdifullt for kontantstrøm etter skatt.
 
@@ -69,7 +97,7 @@ Mekanismen er slik: Et selskap med netto leieinntekter på eksempelvis 5 million
 
 En fullstendig [kontantstrømsanalyse](/help/article/kontantstromsanalyse) av en næringseiendom bør alltid inkludere en modellering av skattemessige avskrivninger og effektiv skattebelastning — fordi disse faktorene påvirker hva investoren faktisk sitter igjen med etter skatt.
 
-<Note variant="info">
+<Note>
   I en DCF-analyse (diskontert kontantstrøm) er det vanlig å beregne kontantstrøm både før og etter skatt. Avskrivningenes verdi synker over tid etter hvert som saldoverdien faller — det betyr at skattefordelen gradvis reduseres gjennom eierperioden.
 </Note>
 
@@ -120,6 +148,26 @@ Grensedragningen mellom vedlikehold og påkostning er ikke alltid enkel og er en
       description: "Reglene er komplekse og kan endre seg. Skattemessig optimering av eiendomsportefølje bør alltid gjøres med hjelp av kvalifisert skatterådgiver.",
       iconName: "lightbulb"
     }
+  ]}
+/>
+
+<ReadMore
+  items={[
+    {
+      href: "/help/article/aksjekjop-vs-innmatskjop",
+      pre: "Kunnskap",
+      title: "Aksjekjøp eller innmatskjøp — og latent skatt",
+    },
+    {
+      href: "/help/article/kontantstromsanalyse",
+      pre: "Kunnskap",
+      title: "Kontantstrømsanalyse — slik modellerer du etter skatt",
+    },
+    {
+      href: "/blog/dcf-analyse-naringseiendom",
+      pre: "Blogg",
+      title: "DCF-analyse av næringseiendom — praktisk gjennomgang",
+    },
   ]}
 />
 

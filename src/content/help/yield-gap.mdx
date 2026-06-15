@@ -1,11 +1,16 @@
 ---
 title: "Yield gap: eiendomsyield mot rente"
 publishedAt: 2026-06-12
-updatedAt: 2026-06-12
+updatedAt: 2026-06-15
 summary: "Yield gap er differansen mellom eiendomsyield og risikofri rente — risikopremien investorer krever. Lær hva gapet sier om prisnivå og rentesensitivitet."
 author: codehagen
 categories:
   - terms
+takeaways:
+  - "Yield gap er eiendomsyield minus risikofri rente — risikopremien investorer krever for å bære eiendomsrisiko fremfor en sikker renteplassering."
+  - "Et smalt yield gap betyr at eiendom er priset nær rentemarkedet, og verdiene er da mer utsatt for fall ved renteoppgang."
+  - "Når renten stiger, følger eiendomsyield vanligvis etter — og siden yield og verdi er inverse, presses eiendomsverdiene ned."
+  - "Bruk yield gap som bakteppe, men kombiner alltid med kontrakts- og leietakervurdering og en sensitivitetsanalyse."
 related:
   - hva-er-yield
   - exit-yield
@@ -19,6 +24,14 @@ faq:
   - question: "Hvordan påvirker renteøkninger eiendomsverdier?"
     answer: "Når risikofri rente stiger, må eiendomsyield typisk stige tilsvarende for å opprettholde et rimelig yield gap. Siden yield og verdi er inverse størrelser — høyere yield betyr lavere verdi gitt samme netto leieinntekt — fører renteøkninger til press nedover på eiendomspriser."
 ---
+
+En eiendomsinvestor velger alltid mellom å plassere kapital i eiendom eller i et rentebærende alternativ uten risiko. Yield gap er tallet som sier hvor godt eiendom betaler for risikoen den ekstra plasseringen innebærer — og det er en av de viktigste indikatorene for om prisnivået i eiendomsmarkedet er bærekraftig i et renteperspektiv.
+
+<Prerequisites>
+  - Forståelse av [yield](/help/article/hva-er-yield) i næringseiendom
+  - Kjennskap til [prime yield](/help/article/prime-yield) som markedsreferanse
+  - Hva [exit yield](/help/article/exit-yield) er og hvorfor den betyr noe
+</Prerequisites>
 
 ## Hva er yield gap?
 
@@ -35,7 +48,7 @@ Investorer i næringseiendom tar på seg risiko som ikke finnes i en statsobliga
 
 Et bredt yield gap betyr at eiendom gir vesentlig høyere avkastning enn risikofri rente — eiendom er priset rimelig relativt til rentemarkedet, og investorene kompenseres godt for risikoen. Et smalt yield gap betyr at prisingen av eiendom er nær rentemarkedet — lite rom for renteoppgang uten at eiendomsverdiene presses ned.
 
-<Note variant="info">
+<Note>
   Yield gap er ikke en fast størrelse. Det varierer over tid med markedssentiment, tilbud og etterspørsel etter eiendom, og ikke minst med rentenivået. I perioder med fallende renter har yield gap i mange markeder blitt svært smale, noe som reflekterer at eiendom har blitt priset som et kvasi-obligasjonsprodukt.
 </Note>
 
@@ -45,17 +58,61 @@ Mekanismen er direkte: eiendomsverdien er netto leieinntekter delt på yield. N�
 
 Matematikken er enkel å illustrere: en eiendom med gitte netto leieinntekter og en gitt yield har en beregnet verdi. Dersom markedet krever ett prosentpoeng høyere yield for å gjenspeile renteoppgangen, faller verdien — og fallet er ikke lineært, men akselererer jo lavere utgangsnivå på yield.
 
+<Example
+  title="Verdifall når yield stiger ett prosentpoeng"
+  steps={[
+    {
+      label: "Netto leieinntekt (NOI)",
+      value: 5000000,
+      calculation: "Utgangspunkt for begge beregninger"
+    },
+    {
+      label: "Verdi ved yield 4,0 %",
+      value: 125000000,
+      calculation: "5 000 000 / 0,040"
+    },
+    {
+      label: "Verdi ved yield 5,0 %",
+      value: 100000000,
+      calculation: "5 000 000 / 0,050"
+    },
+    {
+      label: "Relativt verdifall",
+      value: "-20 %",
+      calculation: "Ett prosentpoeng høyere yield gir 20 % lavere verdi",
+      isResult: true
+    }
+  ]}
+/>
+
 Dette er årsaken til at eiendommer med svært lav yield er spesielt eksponert for renteoppgang: selv en moderat renteøkning kan gi stor relativ verdinedgang.
 
 ## Hva investor bør se på
 
-Yield gap er et nyttig bakteppebegrep for vurdering av eiendomsinvesteringer i et renteperspektiv. Det gir svar på spørsmål som:
+Yield gap er et nyttig bakteppebegrep for vurdering av eiendomsinvesteringer i et renteperspektiv. Det gir svar på tre spørsmål en investor bør stille før en handel.
 
-- **Er eiendom priset rimelig relativt til alternativene?** Et historisk lavt yield gap kan indikere at investorer godtar lav risikopremie.
-- **Hva er rentesensitiviteten?** Eiendommer med smalt yield gap og lav absolutt yield er mest utsatt ved renteoppgang.
-- **Hva er bufferkapasiteten?** Et bredt yield gap gir rom for at rentene kan stige noe uten at eiendom umiddelbart blir uattraktivt priset.
+<Summary
+  title="Tre spørsmål yield gap besvarer"
+  points={[
+    {
+      title: "Er eiendom priset rimelig?",
+      description: "Et historisk lavt yield gap kan indikere at investorer godtar lav risikopremie relativt til alternativene.",
+      iconName: "scales"
+    },
+    {
+      title: "Hva er rentesensitiviteten?",
+      description: "Eiendommer med smalt yield gap og lav absolutt yield er mest utsatt ved renteoppgang.",
+      iconName: "lineChart"
+    },
+    {
+      title: "Hva er bufferkapasiteten?",
+      description: "Et bredt yield gap gir rom for at rentene kan stige noe uten at eiendom umiddelbart blir uattraktivt priset.",
+      iconName: "barChart"
+    }
+  ]}
+/>
 
-<Note variant="info">
+<Note>
   Yield gap er en markedsindikator, ikke en fasit. En eiendom med smalt yield gap kan fortsatt være en god investering dersom leieinntektene er særlig sikre og stabile. Analysen bør alltid kombineres med en vurdering av kontrakts- og leietakerkvalitet, og med en [sensitivitetsanalyse](/help/article/sensitivitetsanalyse) av rentescenarier.
 </Note>
 
@@ -86,6 +143,26 @@ I en [DCF-analyse](/help/article/diskontert-kontantstrom) er forholdet mellom ei
       description: "Yield gap er et bakteppebegrep. Kombiner alltid med kontrakts- og leietakervurdering og sensitivitetsanalyse av rentescenarier.",
       iconName: "lightbulb"
     }
+  ]}
+/>
+
+<ReadMore
+  items={[
+    {
+      href: "/help/article/hva-er-yield",
+      pre: "Kunnskap",
+      title: "Hva er yield i næringseiendom?",
+    },
+    {
+      href: "/help/article/exit-yield",
+      pre: "Kunnskap",
+      title: "Exit yield — hvorfor sluttyield avgjør verdien",
+    },
+    {
+      href: "/blog/rentestigninger-naringseiendom",
+      pre: "Blogg",
+      title: "Hvordan rentestigninger påvirker næringseiendom",
+    },
   ]}
 />
 
