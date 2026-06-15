@@ -9423,6 +9423,7 @@ h1, h2, h3 {
 .ap-spark { border: var(--hairline); padding: 14px 14px 8px; background: var(--paper); }
 .ap-spark-top { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; margin-bottom: 4px; }
 .ap-spark-top .nm { font-size: 12.5px; font-weight: 500; }
+.ap-spark-top .nm .est { color: var(--warm-grey-85); font-weight: 400; }
 .ap-spark-top .vv { font-family: var(--font-display); font-size: 16px; letter-spacing: -0.01em; font-variant-numeric: tabular-nums; }
 .ap-spark-foot { font-size: 11px; color: var(--warm-grey-85); margin-top: 4px; }
 @media (max-width: 720px) { .ap-spark-grid, .ap-spark-grid.six { grid-template-columns: 1fr 1fr; } }

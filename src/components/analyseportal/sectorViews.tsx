@@ -36,6 +36,7 @@ import {
   CITY_COLOR,
   PORTAL_PALETTE,
   PORTAL_LATEST,
+  isEstimatedLeie,
   lastOf,
   bpsChange,
   pctGrowth,
@@ -295,6 +296,8 @@ function viewLeie(s: ViewState): ViewSpec {
     hist: data[c],
     fc: dataF[c],
     width: c === "Tromsø" ? 2.6 : 2,
+    // Cities without observed history render dashed (endpoint-anchored estimate).
+    dashed: isEstimatedLeie(seg, c),
   }))
   const rows = rangeWindow(mergeForecast(QUARTERS, QUARTERS_F, series), s.range)
   const names: Record<string, string> = {}
@@ -328,6 +331,7 @@ function viewLeie(s: ViewState): ViewSpec {
               <td className="lbl">
                 <span className="sw" style={{ background: CITY_COLOR[c] }} />
                 {c}
+                {isEstimatedLeie(seg, c) && <span className="sub2">estimert</span>}
               </td>
               <td className="r">{fmtKrM2(lastOf(v))}</td>
               <td className="r"><Delta n={Math.round(pctGrowth(v, 4) * 10) / 10} unit=" %" decimals={1} /></td>
@@ -350,7 +354,10 @@ function viewLeie(s: ViewState): ViewSpec {
           return (
             <div className="ap-spark" key={c}>
               <div className="ap-spark-top">
-                <span className="nm">{c}</span>
+                <span className="nm">
+                  {c}
+                  {isEstimatedLeie(seg, c) && <span className="est"> · est.</span>}
+                </span>
                 <span className="vv">{fmtGroup(lastOf(v))}</span>
               </div>
               <Spark data={v.map((x) => ({ v: x }))} color={CITY_COLOR[c]} />
@@ -401,6 +408,10 @@ function viewLeie(s: ViewState): ViewSpec {
     chartFoot: (
       <>
         <span>Prime = toppleie for nybygg / klasse A i sentrum. Snittleier ligger 10–25 % under.</span>
+        <span>
+          Heltrukket = observert i Advantis leiekontraktbase. Stiplet = estimert
+          utvikling, forankret i siste publiserte nivå ({PORTAL_LATEST.quarter}).
+        </span>
         {fcFoot}
       </>
     ),
@@ -408,7 +419,7 @@ function viewLeie(s: ViewState): ViewSpec {
     compare,
     csv,
     method:
-      "Markedsleie er prime toppleie observert i Advantis leiekontraktbase, oppgitt som kr/m²/år eks. felleskost. Velg byer i kontrollinjen for å sammenligne.",
+      "Markedsleie er prime toppleie observert i Advantis leiekontraktbase, oppgitt som kr/m²/år eks. felleskost. Byer med stiplet linje har estimert utvikling forankret i siste publiserte nivå. Velg byer i kontrollinjen for å sammenligne.",
     insights: (
       <>
         <Insight n="01" h="Tromsø leder på nivå.">
