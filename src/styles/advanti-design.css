@@ -9568,19 +9568,22 @@ h1, h2, h3 {
 .ap-focus-val .u { font-size: 0.35em; font-style: italic; color: var(--warm-grey-85); margin-left: 4px; }
 .ap-focus-delta { font-size: 13px; color: var(--warm-grey-85); margin-top: 12px; }
 
-/* Multi-city focus strip (yield entry view): Tromsø · Bodø · Alta side by side. */
-.ap-focus-aside { text-align: right; }
-.ap-focus-cities { display: flex; justify-content: flex-end; gap: 32px; }
+/* Multi-city focus band (yield entry view): a deliberate full-width stat row —
+   Tromsø · Bodø · Alta — under the heading, hairline-separated. Always wraps to
+   its own row (width:100%) rather than crowding the heading on the right, so the
+   three markets read as one intentional band at every desktop column width. */
+.ap-focus-aside { width: 100%; margin-top: 10px; padding-top: 22px; border-top: var(--hairline); text-align: left; }
+.ap-focus-cities { display: flex; flex-wrap: wrap; justify-content: flex-start; gap: clamp(28px, 6vw, 72px); }
 .ap-focus-city { text-align: left; }
 .ap-focus-city .cy { display: flex; align-items: center; gap: 7px; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--warm-grey-85); font-weight: 500; margin-bottom: 8px; }
 .ap-focus-city .cy .dot { width: 8px; height: 8px; border-radius: 50%; flex: none; }
-.ap-focus-city .vl { font-family: var(--font-display); font-size: clamp(28px, 3.4vw, 40px); font-weight: 400; letter-spacing: -0.03em; line-height: 0.95; font-variant-numeric: tabular-nums; }
+.ap-focus-city .vl { font-family: var(--font-display); font-size: clamp(30px, 3.4vw, 42px); font-weight: 400; letter-spacing: -0.03em; line-height: 0.95; font-variant-numeric: tabular-nums; }
 .ap-focus-city .vl .u { font-size: 0.38em; font-style: italic; color: var(--warm-grey-85); margin-left: 3px; }
 .ap-focus-city .nt { font-size: 12px; color: var(--warm-grey-85); margin-top: 8px; }
-.ap-focus-cities-foot { font-size: 13px; color: var(--warm-grey-85); margin-top: 16px; }
+.ap-focus-cities-foot { font-size: 13px; color: var(--warm-grey-85); margin-top: 18px; }
 @media (max-width: 640px) {
-  .ap-focus-cities { gap: 20px; }
-  .ap-focus-city .vl { font-size: 26px; }
+  .ap-focus-cities { gap: 24px; }
+  .ap-focus-city .vl { font-size: 28px; }
 }
 
 .ap-delta { font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap; }
