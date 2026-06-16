@@ -24,7 +24,7 @@ const PRESENTATION: Record<
   },
   "mathias-nilssen": {
     office: "Bodø",
-    specialty: "Strategisk rådgivning · Relasjonsbygging",
+    specialty: "Transaksjoner · Verdivurdering · Relasjonsbygging",
   },
   "daniel-adamsen": {
     office: "Alta",
