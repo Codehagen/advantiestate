@@ -62,10 +62,13 @@ export async function generateMetadata({
     return
   }
 
-  const { title, summary } = post
+  const { title, seoTitle, summary } = post
 
   return constructMetadata({
-    title: `${title} – Advanti Kunnskapsbase`,
+    // `seoTitle` (when authored) is the SERP-tuned <title>; otherwise the
+    // visible H1 title. Suffix kept short (" – Advanti") so titles stay under
+    // Google's ~60-char SERP limit — long descriptive H1s set their own seoTitle.
+    title: `${seoTitle ?? title} – Advanti`,
     description: summary,
     image: `/api/og/help?title=${encodeURIComponent(
       title,

@@ -60,6 +60,30 @@ const GROUPS: Group[] = [
         cta: "Åpne",
       },
       {
+        href: "/verktoy/roi-kalkulator",
+        title: (
+          <>
+            ROI-<span className="italic">kalkulator</span>
+          </>
+        ),
+        description:
+          "Beregn avkastning på investering (ROI) for næringseiendom — total avkastning inkludert leieinntekter og verdiøkning over tid.",
+        badge: "Kalkulator",
+        cta: "Åpne",
+      },
+      {
+        href: "/verktoy/boliglan-kalkulator",
+        title: (
+          <>
+            Låne<span className="italic">kalkulator</span>
+          </>
+        ),
+        description:
+          "Beregn månedlige kostnader, total rentekostnad og nedbetalingsplan for næringslån — og få oversikt over finansieringen av eiendommen.",
+        badge: "Kalkulator",
+        cta: "Åpne",
+      },
+      {
         href: "/verdivurdering",
         title: (
           <>

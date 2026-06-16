@@ -131,6 +131,30 @@ function nok(value: number | null | undefined): number | undefined {
   return value === null || value === undefined ? undefined : value / 1_000_000
 }
 
+// Canonical broker portraits (Supabase `press` bucket) keyed by display name.
+// Mirrors the avatars in help-data.ts / the people collection.
+const PRESS_BUCKET =
+  "https://kukzjreikqbgbolxvqaj.supabase.co/storage/v1/object/public/press"
+const MEGLER_AVATAR_BY_NAME: Record<string, string> = {
+  "Christer Hagen": `${PRESS_BUCKET}/christer-hagen-web.jpg`,
+  "Mathias Nilssen": `${PRESS_BUCKET}/mathias-nilssen-web.jpg`,
+  "Håvard Nome": `${PRESS_BUCKET}/havard-nome-web.jpg`,
+}
+
+/**
+ * Guard against a megler avatar that isn't an absolute URL — a legacy CRM value
+ * like "/havard.jpg" points at a non-existent /public asset and makes
+ * next/image return 400 (a "broken image" SEO issue). When the avatar isn't an
+ * http(s) URL, fall back to the canonical press portrait by name. This survives
+ * a future CRM re-publish that would otherwise reintroduce the bad path.
+ */
+function normalizeMegler<T extends ListingMegler | undefined>(megler: T): T {
+  if (!megler) return megler
+  if (/^https?:\/\//i.test(megler.avatar)) return megler
+  const canonical = MEGLER_AVATAR_BY_NAME[megler.name]
+  return canonical ? { ...megler, avatar: canonical } : megler
+}
+
 type MdxListing = ReturnType<typeof getActiveListings>[number]
 
 function mapMdxToListing(post: MdxListing): Listing {
@@ -167,7 +191,7 @@ function mapMdxToListing(post: MdxListing): Listing {
     gallery: post.gallery,
     summary: post.summary,
     lede: post.lede,
-    megler: post.megler,
+    megler: normalizeMegler(post.megler),
     facts: post.facts,
     tenants: post.tenants,
     tenantsNote: post.tenantsNote,
@@ -337,7 +361,7 @@ export function mapProfileToListing(row: ProfileRow): Listing {
     photoCount: row.photo_count ?? undefined,
     summary: row.summary ?? "",
     lede: row.lede ?? undefined,
-    megler: row.megler ?? undefined,
+    megler: normalizeMegler(row.megler ?? undefined),
     facts: row.facts ?? undefined,
     tenantsNote: row.tenants_note ?? undefined,
     financials,

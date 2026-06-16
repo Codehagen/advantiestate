@@ -212,6 +212,12 @@ export const HelpPost = defineCollection({
   include: "*.mdx",
   schema: z.object({
     title: z.string(),
+    // Optional SEO <title> override. The authored `title` doubles as the
+    // visible H1 and can be long/descriptive; `seoTitle` (when set) is the
+    // SERP-tuned variant the article page feeds to the <title> tag instead,
+    // so the H1 stays human-readable while the title stays under ~60 chars
+    // (incl. the " – Advanti" suffix). Mirrors BlogPost.seoTitle.
+    seoTitle: z.string().optional(),
     updatedAt: z.string(),
     summary: z.string(),
     author: z.string(),
