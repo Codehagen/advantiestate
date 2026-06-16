@@ -85,9 +85,26 @@ export async function generateMetadata({
   // listings past Google's SERP truncation at ~60. og:site_name + canonical
   // already carry the brand. Use the per-listing OG card route so social
   // shares show price/yield/BTA over the cover photo.
+  // A long marketing headline blows past Google's ~60-char SERP truncation.
+  // For those, fall back to a tight "address – type" <title> (good for local
+  // SEO); keep the full headline when it already fits. The visible H1 is
+  // unaffected — it still renders listing.title / titleHead / titleTail.
+  const shortType = (listing.typeLabel ?? "").split(/[·+]/)[0].trim();
+  const composedMeta = [listing.address, shortType]
+    .filter(Boolean)
+    .join(" – ");
+  const metaTitle =
+    listing.title.length <= 60
+      ? listing.title
+      : composedMeta.length > 0 && composedMeta.length <= 60
+        ? composedMeta
+        : listing.address && listing.address.length <= 60
+          ? listing.address
+          : listing.title;
+
   return constructMetadata({
     path: `/eiendommer/${listing.slug}`,
-    title: listing.title,
+    title: metaTitle,
     description: listing.summary,
     image: `/api/og/listing/${listing.slug}`,
     imageAlt: listing.coverImageAlt,

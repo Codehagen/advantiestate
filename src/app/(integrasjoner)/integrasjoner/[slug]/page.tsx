@@ -27,10 +27,10 @@ export async function generateMetadata({
     return;
   }
 
-  const { title, summary, image } = post;
+  const { title, seoTitle, summary, image } = post;
 
   return constructMetadata({
-    title: `${title} – Advanti Datakilder`,
+    title: `${seoTitle ?? title} – Advanti`,
     description: summary,
     image,
     path: `/integrasjoner/${slug}`,

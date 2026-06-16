@@ -162,6 +162,9 @@ export const CustomersPost = defineCollection({
   include: "*.mdx",
   schema: z.object({
     title: z.string(),
+    // Optional SERP-tuned <title> override; the visible H1 uses `title`.
+    // Keeps `<title>` under ~60 chars when the case-study headline is long.
+    seoTitle: z.string().optional(),
     publishedAt: z.string(),
     summary: z.string(),
     image: z.string(),
@@ -366,6 +369,8 @@ export const IntegrationsPost = defineCollection({
   include: "*.mdx",
   schema: z.object({
     title: z.string(),
+    // Optional SERP-tuned <title> override; the visible H1 uses `title`.
+    seoTitle: z.string().optional(),
     publishedAt: z.string(),
     summary: z.string(),
     image: z.string(),

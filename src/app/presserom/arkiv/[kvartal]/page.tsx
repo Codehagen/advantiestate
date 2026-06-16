@@ -43,7 +43,7 @@ export async function generateMetadata({
 
   return constructMetadata({
     path: `/presserom/arkiv/${release.slug}`,
-    title: `Markedstall ${release.quarter} (arkiv) — næringseiendom Nord-Norge | Advanti Estate`,
+    title: `Markedstall ${release.quarter} – næringseiendom Nord-Norge | Advanti`,
     description: `Arkivert kvartalsutgivelse: prime yield, markedsleie og kontorledighet per by i Nord-Norge. Kilde: Advanti Estate · ${release.quarter}.`,
   })
 }

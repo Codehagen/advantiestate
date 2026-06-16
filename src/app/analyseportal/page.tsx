@@ -15,7 +15,7 @@ import {
 
 export const metadata = constructMetadata({
   path: "/analyseportal",
-  title: "Analyseportal — markedsdata for næringseiendom i Nord-Norge | Advanti Estate",
+  title: "Analyseportal – markedsdata for næringseiendom | Advanti",
   description:
     "Interaktiv analyseportal for næringseiendom i Nord-Norge: prime yield, markedsleie, transaksjonsvolum, arealledighet, nybygg og makro — kvartal for kvartal, by for by. Last ned tallene som CSV.",
 })
