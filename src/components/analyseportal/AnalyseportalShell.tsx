@@ -348,13 +348,15 @@ export function AnalyseportalShell({ analyst }: { analyst: AnalystCard | null })
               </div>
               <h2>{view.focusTitle}</h2>
             </div>
-            <div className="ap-focus-r">
-              <div className="ap-focus-val">
-                {view.focusValue}
-                <span className="u">{view.focusUnit}</span>
+            {view.focusAside ?? (
+              <div className="ap-focus-r">
+                <div className="ap-focus-val">
+                  {view.focusValue}
+                  <span className="u">{view.focusUnit}</span>
+                </div>
+                <div className="ap-focus-delta">{view.focusDelta}</div>
               </div>
-              <div className="ap-focus-delta">{view.focusDelta}</div>
-            </div>
+            )}
           </div>
 
           {/* chart card */}
