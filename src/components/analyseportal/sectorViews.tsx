@@ -18,9 +18,11 @@ import {
   PORTAL_SEGMENTS,
   PORTAL_CITIES,
   PORTAL_YIELD,
-  PORTAL_YIELD_F,
+  PORTAL_YIELD_CITY,
+  PORTAL_YIELD_CITY_F,
+  isEstimatedYield,
+  yieldCityNow,
   PORTAL_RATES,
-  PORTAL_RATES_F,
   PORTAL_LEIE,
   PORTAL_LEIE_F,
   PORTAL_VOLUME,
@@ -34,7 +36,6 @@ import {
   MAKRO_F,
   SEG_COLOR,
   CITY_COLOR,
-  CITY_META,
   PORTAL_PALETTE,
   PORTAL_LATEST,
   isEstimatedLeie,
@@ -91,7 +92,7 @@ export const CONTROLS: Record<
   SectorKey,
   { segment: boolean; threeSeg: boolean; cities: boolean; range: boolean; legendToggle: boolean }
 > = {
-  yield: { segment: true, threeSeg: false, cities: false, range: true, legendToggle: true },
+  yield: { segment: true, threeSeg: false, cities: true, range: true, legendToggle: false },
   leie: { segment: true, threeSeg: true, cities: true, range: true, legendToggle: false },
   tx: { segment: true, threeSeg: false, cities: false, range: false, legendToggle: true },
   ledighet: { segment: true, threeSeg: true, cities: false, range: false, legendToggle: false },
@@ -149,12 +150,19 @@ const fcFoot = (
 // ════════════════════════════════════════════════════════════════════════════
 function viewYield(s: ViewState): ViewSpec {
   const seg = s.segment
-  const series: SeriesDef[] = [
-    { key: "yield", label: `Prime yield ${segLabel(seg).toLowerCase()}`, color: SEG_COLOR[seg], width: 2.6, hist: PORTAL_YIELD[seg], fc: PORTAL_YIELD_F[seg] },
-    { key: "swap", label: "5 år SWAP", color: PORTAL_PALETTE.blue, hist: PORTAL_RATES.swap5y, fc: PORTAL_RATES_F.swap5y },
-    { key: "gov", label: "10 år stat", color: PORTAL_PALETTE.mist, dashed: true, hist: PORTAL_RATES.gov10y, fc: PORTAL_RATES_F.gov10y },
-    { key: "rente", label: "Styringsrente", color: PORTAL_PALETTE.terra, hist: PORTAL_RATES.styringsrente, fc: PORTAL_RATES_F.styringsrente },
-  ]
+  // Per-city prime-yield lines for the active segment. Tromsø is observed
+  // (published segment curve); the rest are dashed Advanti house view (published
+  // kontor spread + segment premium — see portalSeries). Rates are dropped from
+  // the chart and kept only for the spread story in the band/insights.
+  const series: SeriesDef[] = s.cities.map((c) => ({
+    key: c,
+    label: c,
+    color: CITY_COLOR[c],
+    hist: PORTAL_YIELD_CITY[seg][c],
+    fc: PORTAL_YIELD_CITY_F[seg][c],
+    width: c === "Tromsø" ? 2.6 : 2,
+    dashed: isEstimatedYield(seg, c),
+  }))
   const rows = rangeWindow(mergeForecast(QUARTERS, QUARTERS_F, series), s.range)
   const names: Record<string, string> = {}
   const colors: Record<string, string> = {}
@@ -166,6 +174,12 @@ function viewYield(s: ViewState): ViewSpec {
   const arr = PORTAL_YIELD[seg]
   const spread = lastOf(arr) - lastOf(PORTAL_RATES.swap5y)
   const d12 = bpsChange(arr, 4)
+
+  const csv = rows.map((r) => {
+    const out: Record<string, string | number | null> = { Kvartal: r.label }
+    for (const c of s.cities) out[c] = (r[c] ?? r[`${c}_f`]) as number | null
+    return out
+  })
 
   const table = (
     <table className="ap-table">
@@ -198,13 +212,12 @@ function viewYield(s: ViewState): ViewSpec {
     </table>
   )
 
-  // Prime yield per city — published snapshot (registry-derived, all six
-  // cities). No per-city trend exists (single release), so this is the current
-  // quarter only, sorted low→high (lowest yield = tightest/prime market).
-  const cityYieldBar = CITY_META.map((c) => ({
-    label: c.name,
-    yld: c.yieldPct,
-    color: CITY_COLOR[c.name as PortalCity],
+  // Prime yield per city for the ACTIVE segment, sorted low→high (lowest yield
+  // = tightest/prime market). Kontor = published; other segments = house view.
+  const cityYieldBar = PORTAL_CITIES.map((c) => ({
+    label: c as string,
+    yld: yieldCityNow(seg, c),
+    color: CITY_COLOR[c],
   })).sort((a, b) => a.yld - b.yld)
 
   const compare = (
@@ -231,7 +244,7 @@ function viewYield(s: ViewState): ViewSpec {
       </div>
       <div className="ap-compare">
         <div className="ap-compare-head">
-          Prime yield kontor per by · {PORTAL_LATEST.quarter}
+          Prime yield {segLabel(seg).toLowerCase()} per by · {PORTAL_LATEST.quarter}
         </div>
         <SnapshotBar
           data={cityYieldBar}
@@ -242,8 +255,10 @@ function viewYield(s: ViewState): ViewSpec {
           animate={s.animate}
         />
         <p className="ap-note">
-          Publisert kvartalssnapshot for prime kontoryield i de seks byene vi
-          dekker. Lavest yield = strammest, mest likvide marked.
+          {seg === "kontor"
+            ? "Publisert kvartalssnapshot for prime kontoryield i de seks byene vi dekker."
+            : `Per-by ${segLabel(seg).toLowerCase()}yield = publisert kontor-spread + segmentpåslag (Advanti basisestimat).`}{" "}
+          Lavest yield = strammest, mest likvide marked.
         </p>
       </div>
     </>
@@ -251,12 +266,10 @@ function viewYield(s: ViewState): ViewSpec {
 
   const spreadBps = Math.round(spread * 100)
 
-  // Entry view (kontor) leads with the three headline markets — Tromsø, Bodø
-  // and Alta — so a Bodø/Alta investor sees their own market up top, not just
-  // Tromsø. Per-city yield exists only as the published kontor snapshot
-  // (CITY_META), so the strip is kontor-only; other segments keep the single
-  // big-number focus rather than inventing per-segment city series.
-  const isKontor = seg === "kontor"
+  // The band fronts three headline markets — Tromsø, Bodø, Alta — on EVERY
+  // segment tab. Kontor values are published; handel/logistikk/hotell carry an
+  // "est." badge (Advanti house view). A Bodø/Alta investor sees their own
+  // market up top, whichever segment they land on.
   const HEADLINE_CITIES: { city: PortalCity; note: string }[] = [
     { city: "Tromsø", note: "Størst i nord" },
     { city: "Bodø", note: "Vårt hjemmemarked" },
@@ -264,14 +277,10 @@ function viewYield(s: ViewState): ViewSpec {
   ]
 
   return {
-    focusTitle: isKontor ? (
-      <>
-        Prime yield kontor, <span className="it">by for by.</span>
-      </>
-    ) : (
+    focusTitle: (
       <>
         Prime yield {segLabel(seg).toLowerCase()},{" "}
-        <span className="it">Tromsø sentrum.</span>
+        <span className="it">by for by.</span>
       </>
     ),
     focusValue: fmtComma(lastOf(arr), 2),
@@ -281,20 +290,20 @@ function viewYield(s: ViewState): ViewSpec {
         <Delta n={d12} unit=" bps" /> siste 12 mnd · spread {fmtPct2p(spread)} mot SWAP
       </>
     ),
-    focusAside: isKontor ? (
+    focusAside: (
       <div className="ap-focus-aside">
         <div className="ap-focus-cities">
           {HEADLINE_CITIES.map(({ city, note }) => {
-            const cm = CITY_META.find((m) => m.name === city)
-            if (!cm) return null
+            const est = isEstimatedYield(seg, city)
             return (
               <div className="ap-focus-city" key={city}>
                 <div className="cy">
                   <span className="dot" style={{ background: CITY_COLOR[city] }} />
                   {city}
+                  {est && <span className="est">est.</span>}
                 </div>
                 <div className="vl">
-                  {fmtComma(cm.yieldPct, 2)}
+                  {fmtComma(yieldCityNow(seg, city), 2)}
                   <span className="u">%</span>
                 </div>
                 <div className="nt">{note}</div>
@@ -303,21 +312,19 @@ function viewYield(s: ViewState): ViewSpec {
           })}
         </div>
         <div className="ap-focus-cities-foot">
-          Prime kontor · {PORTAL_LATEST.quarter} · spread {fmtPct2p(spread)} mot
-          5-års SWAP
+          Prime {segLabel(seg).toLowerCase()} · {PORTAL_LATEST.quarter} · spread{" "}
+          {fmtPct2p(spread)} mot 5-års SWAP
         </div>
       </div>
-    ) : undefined,
-    chartTitle: "Yield mot rentemarkedet — kvartalsvis",
-    legend: <PortalLegend items={series} hidden={s.hidden} onToggle={s.onToggleHidden} />,
+    ),
+    chartTitle: `Prime yield ${segLabel(seg).toLowerCase()} per by — kvartalsvis (%)`,
+    legend: <PortalLegend items={series} />,
     chart: (
       <TrendChart
         data={rows}
         series={series}
         hidden={s.hidden}
         yFmt={(v) => fmtComma(v, 1) + "%"}
-        yDomain={[0, 8]}
-        yTicks={9}
         tipFmt={fmtPct2p}
         names={names}
         colors={colors}
@@ -326,15 +333,19 @@ function viewYield(s: ViewState): ViewSpec {
     ),
     chartFoot: (
       <>
-        <span>Prime yield = beste eiendom i klassen, sentralt beliggende med lang WAULT.</span>
+        <span>
+          Heltrukket = observert (Tromsø-segmentkurver + publisert per-by kontor).
+          Stiplet = Advanti basisestimat: publisert kontor-spread + segmentpåslag,
+          kalibrert mot Newsec Q2 2026.
+        </span>
         {fcFoot}
       </>
     ),
     table,
     compare,
-    csv: csvRows(rows, { yield: "Yield", swap: "SWAP5", gov: "Stat10", rente: "Styringsrente" }),
+    csv,
     method:
-      "Prime yield reflekterer beste eiendom i sin klasse. Referanserenter er NOK 5-års SWAP og 10-års statsobligasjon. Prognose er Advantis basisscenario.",
+      "Prime yield = beste eiendom i sin klasse, sentralt med lang WAULT. Kontor per by er publiserte snapshot-tall; handel/logistikk/hotell per by er Advanti basisestimat (publisert kontor-spread + segmentpåslag på +0,45 / +0,75 / +0,90 pp, kalibrert mot Newsec Q2 2026). Per-by tidsserier følger Tromsø-banen, forankret i siste publiserte nivå.",
     insights: (
       <>
         <Insight n="01" h="Yielden har flatet ut.">
