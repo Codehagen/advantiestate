@@ -267,7 +267,10 @@ export function AnalyseportalShell({ analyst }: { analyst: AnalystCard | null })
                   className={`ap-pill${segment === it.key ? " on" : ""}`}
                   aria-pressed={segment === it.key}
                   onClick={() => {
-                    animateRef.current = false
+                    // Animate the chart redraw when switching segment (the band
+                    // fades via its keyed wrapper below). City-chip toggles stay
+                    // unanimated — frequent interaction, "speed over delight".
+                    animateRef.current = true
                     setSegment(it.key)
                   }}
                 >
@@ -348,7 +351,13 @@ export function AnalyseportalShell({ analyst }: { analyst: AnalystCard | null })
               </div>
               <h2>{view.focusTitle}</h2>
             </div>
-            {view.focusAside ?? (
+            {view.focusAside ? (
+              // Keyed by sector+segment so the band re-fades on each switch
+              // (CSS animation in advanti-design.css, off under reduced-motion).
+              <div className="ap-focus-aside-wrap" key={`${sector}-${segment}`}>
+                {view.focusAside}
+              </div>
+            ) : (
               <div className="ap-focus-r">
                 <div className="ap-focus-val">
                   {view.focusValue}

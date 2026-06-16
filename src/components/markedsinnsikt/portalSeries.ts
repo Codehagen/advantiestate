@@ -297,6 +297,64 @@ export const CITY_META = LATEST_RELEASE.cities.map((c) => ({
 }))
 
 // ════════════════════════════════════════════════════════════════════════════
+// PER-CITY × SEGMENT YIELD — published anchors + research-calibrated house view
+// ════════════════════════════════════════════════════════════════════════════
+// Construction (honest, anchored — see /analyseportal yield band):
+//   · KONTOR per city = the PUBLISHED snapshot (CITY_META / release registry):
+//     Tromsø 6.10 < Bodø 6.35 < Harstad 6.55 < Alta 6.75 < Mo 6.80 < Narvik 6.90.
+//   · Other segments = that city's published kontor + a SEGMENT PREMIUM
+//     (handel +0.45, logistikk +0.75, hotell +0.90 pp). The premiums reproduce
+//     Tromsø's published PORTAL_YIELD segment endpoints (6.55/6.85/7.00) exactly,
+//     and are calibrated against Newsec Quality Board Yieldtabell Q2 2026 national
+//     prime spreads (office 4.50 vs retail/logistics 5.25, hotel 4.75) + regional
+//     reports (Norion Trondheim, Gokstad Nordic hotel 7-8%).
+//   · Per-city TIME SERIES = the published Tromsø segment curve (PORTAL_YIELD[seg])
+//     shifted by the city's published kontor spread vs Tromsø (constant parallel
+//     shift; endpoint therefore lands on the value above — asserted).
+//
+// OBSERVED (solid): Tromsø (all segments — published segment curves) + every
+// city's kontor endpoint (published snapshot). ESTIMATED (dashed + "est."):
+// handel/logistikk/hotell for every city except Tromsø — Advanti house view.
+export const YIELD_SEG_PREMIUM: Record<PortalSegment, number> = {
+  kontor: 0,
+  handel: 0.45,
+  logistikk: 0.75,
+  hotell: 0.9,
+}
+
+const CITY_KONTOR_YIELD = Object.fromEntries(
+  CITY_META.map((c) => [c.name, c.yieldPct]),
+) as Record<PortalCity, number>
+const TROMSO_KONTOR_YIELD = CITY_KONTOR_YIELD["Tromsø"]
+const round2 = (v: number) => Math.round(v * 100) / 100
+/** Published per-city kontor spread vs Tromsø — the parallel shift applied to every segment curve. */
+const cityYieldOffset = (city: PortalCity) => CITY_KONTOR_YIELD[city] - TROMSO_KONTOR_YIELD
+
+export const PORTAL_YIELD_CITY = {} as Record<PortalSegment, Record<PortalCity, number[]>>
+export const PORTAL_YIELD_CITY_F = {} as Record<PortalSegment, Record<PortalCity, number[]>>
+for (const seg of PORTAL_SEGMENTS.map((s) => s.key)) {
+  PORTAL_YIELD_CITY[seg] = {} as Record<PortalCity, number[]>
+  PORTAL_YIELD_CITY_F[seg] = {} as Record<PortalCity, number[]>
+  for (const city of PORTAL_CITIES) {
+    const off = cityYieldOffset(city)
+    PORTAL_YIELD_CITY[seg][city] = PORTAL_YIELD[seg].map((v) => round2(v + off))
+    PORTAL_YIELD_CITY_F[seg][city] = PORTAL_YIELD_F[seg].map((v) => round2(v + off))
+  }
+}
+
+/** Endpoint (current quarter) prime yield per city × segment — derived from the series. */
+export const yieldCityNow = (seg: PortalSegment, city: PortalCity): number =>
+  lastOf(PORTAL_YIELD_CITY[seg][city])
+
+/**
+ * A yield cell is OBSERVED when it is the published Tromsø segment curve (any
+ * segment) or a published per-city kontor endpoint; otherwise it is the
+ * research-calibrated Advanti house view. Drives dashed lines + "est." badges.
+ */
+export const isEstimatedYield = (seg: PortalSegment, city: PortalCity): boolean =>
+  city !== "Tromsø" && seg !== "kontor"
+
+// ════════════════════════════════════════════════════════════════════════════
 // KPI derivation — every delta computed from canonical series, never typed in.
 // ════════════════════════════════════════════════════════════════════════════
 export type Dir = "up" | "down" | "flat"
@@ -424,6 +482,24 @@ function assertIntegrity() {
     const vac = VACANCY_TREND.kontor[c.name]
     if (vac && lastOf(vac) !== c.vacPct)
       throw new Error(`portalSeries: VACANCY kontor ${c.name} endpoint ${lastOf(vac)} != release ${c.vacPct}`)
+  }
+  // Per-city yield: lengths, kontor endpoint anchored to the published snapshot,
+  // and Tromsø segment curves identical to the published PORTAL_YIELD (offset 0).
+  for (const sg of PORTAL_SEGMENTS.map((s) => s.key)) {
+    for (const city of PORTAL_CITIES) {
+      const a = PORTAL_YIELD_CITY[sg][city]
+      if (a.length !== QUARTERS.length)
+        throw new Error(`portalSeries: PORTAL_YIELD_CITY.${sg}.${city} has ${a.length} points, expected ${QUARTERS.length}`)
+      if (PORTAL_YIELD_CITY_F[sg][city].length !== QUARTERS_F.length)
+        throw new Error(`portalSeries: PORTAL_YIELD_CITY_F.${sg}.${city} bad length`)
+    }
+    if (lastOf(PORTAL_YIELD_CITY[sg]["Tromsø"]) !== lastOf(PORTAL_YIELD[sg]))
+      throw new Error(`portalSeries: yield Tromsø ${sg} must equal published PORTAL_YIELD endpoint`)
+  }
+  for (const c of LATEST_RELEASE.cities) {
+    const end = lastOf(PORTAL_YIELD_CITY.kontor[c.name as PortalCity])
+    if (end !== c.yieldPct)
+      throw new Error(`portalSeries: YIELD kontor ${c.name} endpoint ${end} != release ${c.yieldPct}`)
   }
 }
 if (process.env.NODE_ENV !== "production") assertIntegrity()
