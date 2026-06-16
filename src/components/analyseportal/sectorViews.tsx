@@ -104,6 +104,9 @@ export interface ViewSpec {
   focusValue: string
   focusUnit: string
   focusDelta: ReactNode
+  /** Optional richer focus block (e.g. a multi-city strip) that replaces the
+   *  default single big-number focus-r when present. */
+  focusAside?: ReactNode
   chartTitle: string
   legend: ReactNode
   chart: ReactNode
@@ -247,8 +250,25 @@ function viewYield(s: ViewState): ViewSpec {
   )
 
   const spreadBps = Math.round(spread * 100)
+
+  // Entry view (kontor) leads with the three headline markets — Tromsø, Bodø
+  // and Alta — so a Bodø/Alta investor sees their own market up top, not just
+  // Tromsø. Per-city yield exists only as the published kontor snapshot
+  // (CITY_META), so the strip is kontor-only; other segments keep the single
+  // big-number focus rather than inventing per-segment city series.
+  const isKontor = seg === "kontor"
+  const HEADLINE_CITIES: { city: PortalCity; note: string }[] = [
+    { city: "Tromsø", note: "Størst i nord" },
+    { city: "Bodø", note: "Vårt hjemmemarked" },
+    { city: "Alta", note: "Inngang Finnmark" },
+  ]
+
   return {
-    focusTitle: (
+    focusTitle: isKontor ? (
+      <>
+        Prime yield kontor, <span className="it">by for by.</span>
+      </>
+    ) : (
       <>
         Prime yield {segLabel(seg).toLowerCase()},{" "}
         <span className="it">Tromsø sentrum.</span>
@@ -261,6 +281,33 @@ function viewYield(s: ViewState): ViewSpec {
         <Delta n={d12} unit=" bps" /> siste 12 mnd · spread {fmtPct2p(spread)} mot SWAP
       </>
     ),
+    focusAside: isKontor ? (
+      <div className="ap-focus-aside">
+        <div className="ap-focus-cities">
+          {HEADLINE_CITIES.map(({ city, note }) => {
+            const cm = CITY_META.find((m) => m.name === city)
+            if (!cm) return null
+            return (
+              <div className="ap-focus-city" key={city}>
+                <div className="cy">
+                  <span className="dot" style={{ background: CITY_COLOR[city] }} />
+                  {city}
+                </div>
+                <div className="vl">
+                  {fmtComma(cm.yieldPct, 2)}
+                  <span className="u">%</span>
+                </div>
+                <div className="nt">{note}</div>
+              </div>
+            )
+          })}
+        </div>
+        <div className="ap-focus-cities-foot">
+          Prime kontor · {PORTAL_LATEST.quarter} · spread {fmtPct2p(spread)} mot
+          5-års SWAP
+        </div>
+      </div>
+    ) : undefined,
     chartTitle: "Yield mot rentemarkedet — kvartalsvis",
     legend: <PortalLegend items={series} hidden={s.hidden} onToggle={s.onToggleHidden} />,
     chart: (
