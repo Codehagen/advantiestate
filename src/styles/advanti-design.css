@@ -252,7 +252,10 @@ h1, h2, h3 {
   font-size: 13px;
   font-weight: 500;
   letter-spacing: -0.005em;
-  transition: all 0.2s ease;
+  /* Explicit properties (not `all`): background snaps on hover; colour + border
+     follow the nav's transparent→solid colour change at the same 0.35s. */
+  transition: background-color 0.2s ease, color 0.35s ease,
+    border-color 0.35s ease;
   white-space: nowrap;
   flex-shrink: 0;
 }
@@ -348,10 +351,20 @@ h1, h2, h3 {
   cursor: pointer;
 }
 .nav-group-btn::after {
-  content: " ▾";
+  content: "▾";
+  display: inline-block;
+  margin-left: 4px;
   font-size: 10px;
   opacity: 0.65;
   vertical-align: middle;
+  transition: transform 200ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+/* Flip the chevron while the group is open — a clear open/close affordance. */
+.nav-group-btn[aria-expanded="true"]::after {
+  transform: rotate(180deg);
+}
+@media (prefers-reduced-motion: reduce) {
+  .nav-group-btn::after { transition: none; }
 }
 /* Hover kun på ekte pekere — touch får ingen sticky hover-tilstand (Emil). */
 @media (hover: hover) {
@@ -372,11 +385,19 @@ h1, h2, h3 {
   outline-offset: 2px;
 }
 
-/* Active-trail: accent underline replaces the old inline fontWeight (E6). */
+/* Active-trail: underline replaces the old inline fontWeight (E6). Uses
+   currentColor so it stays visible in BOTH nav states — dark (warm-grey) on the
+   solid white bar, light (warm-white) over the dark hero. The old pale --accent
+   underline was invisible on the light surface. */
 .nav-links a[aria-current="page"],
 .nav-group-btn[data-active="true"] {
-  border-bottom: 1.5px solid var(--accent);
+  border-bottom: 2px solid currentColor;
   padding-bottom: 2px;
+}
+/* Open trigger already shows the accent pill — drop the underline so it doesn't
+   read as a stray line under the rounded pill. */
+.nav-group-btn[data-active="true"][aria-expanded="true"] {
+  border-bottom-color: transparent;
 }
 
 /* Open trigger gets a soft pill (reference look). Negative margin cancels the
@@ -419,6 +440,17 @@ h1, h2, h3 {
     opacity 160ms ease-out,
     transform 220ms cubic-bezier(0.22, 1, 0.36, 1),
     visibility 0s linear 240ms;
+}
+/* Hover bridge: a transparent strip spanning the 6px gap between the bar and
+   the card, so moving the cursor from a trigger down into the panel never
+   crosses dead space (which would start the close timer). */
+.nav-panel-shell::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -10px;
+  height: 10px;
 }
 .nav-panel-shell.open {
   transform: translateX(-50%) translateY(0);

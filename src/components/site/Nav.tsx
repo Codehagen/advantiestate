@@ -199,7 +199,7 @@ export function Nav({ groups }: NavProps) {
     closeTimer.current = window.setTimeout(() => {
       hoverOpened.current = null;
       setOpenGroup(null);
-    }, 140);
+    }, 240);
   };
   const openByHover = (id: GroupId) => {
     if (!canHover.current) return;
@@ -392,10 +392,17 @@ export function Nav({ groups }: NavProps) {
     [],
   );
 
+  // Hover-intent (E1A): the LEAVE handler lives on the links row / panel shell,
+  // not on each trigger — so sweeping the cursor across the 30px gaps between
+  // triggers never schedules a close. Entering a trigger just switches which
+  // group is open; only leaving the whole row (or the panel) starts the timer.
   const hoverProps = (id: GroupId) => ({
     onMouseEnter: () => openByHover(id),
-    onMouseLeave: scheduleClose,
   });
+  const linksRowHoverProps = {
+    onMouseEnter: cancelClose,
+    onMouseLeave: scheduleClose,
+  };
   const panelHoverProps = {
     onMouseEnter: cancelClose,
     onMouseLeave: scheduleClose,
@@ -550,7 +557,7 @@ export function Nav({ groups }: NavProps) {
           <span className="sub">Estate</span>
         </Link>
 
-        <div className="nav-links">
+        <div className="nav-links" {...linksRowHoverProps}>
           <button
             type="button"
             className="nav-group-btn"
