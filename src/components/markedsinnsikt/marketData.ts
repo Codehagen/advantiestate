@@ -63,6 +63,26 @@ export const VACANCY = [
   { city: "Mo i Rana", kontor: 5.4, handel: 4.0, logistikk: 2.8 },
 ]
 
+// ---------------------------------------------------------------------------
+// TOTAL næringsledighet — MÅLT, halvårlig (Advanti markedstelling)
+// ---------------------------------------------------------------------------
+// Real measured total commercial vacancy (all segments combined) by city,
+// half-yearly 2020 1H–2025 2H. Percent = ledig kvm / kartlagt areal (current
+// stock). Source: Advanti markedstelling (ledig kvm per halvår) + arealregister.
+// Endpoints match the current snapshot. Only Bodø, Tromsø sentrum and Harstad
+// have a measured series; the smaller cities have no total-trend data yet.
+// NOTE: this is TOTAL (all segments), distinct from the per-segment VACANCY
+// snapshot above — do not conflate the two.
+export const VACANCY_TOTAL_PERIODS = [
+  "2020 1H", "2020 2H", "2021 1H", "2021 2H", "2022 1H", "2022 2H",
+  "2023 1H", "2023 2H", "2024 1H", "2024 2H", "2025 1H", "2025 2H",
+]
+export const VACANCY_TOTAL: Record<string, number[]> = {
+  Bodø: [2.5, 4.8, 4.9, 4.7, 2.2, 2.8, 4.0, 4.4, 4.9, 3.1, 5.0, 5.7],
+  "Tromsø sentrum": [7.4, 6.5, 6.2, 5.6, 4.0, 2.9, 1.7, 2.7, 4.7, 5.2, 5.9, 5.5],
+  Harstad: [2.4, 2.8, 3.0, 3.2, 1.2, 1.8, 2.9, 4.6, 4.2, 4.7, 4.6, 3.0],
+}
+
 // Transactions are shown ANONYMIZED (type + area, no addresses/names): the
 // rows are illustrative market examples, and naming identifiable properties
 // with prices/yields would attribute deal terms to real parties.
