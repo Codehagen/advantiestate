@@ -163,7 +163,8 @@ export function AnalyseportalShell({ analyst }: { analyst: AnalystCard | null })
   }, [])
 
   const toggleCity = (c: PortalCity) => {
-    animateRef.current = false
+    // Animate the chart when a city enters/leaves the selection.
+    animateRef.current = true
     setCities((cs) =>
       cs.includes(c) ? (cs.length > 1 ? cs.filter((x) => x !== c) : cs) : [...cs, c],
     )
@@ -351,13 +352,7 @@ export function AnalyseportalShell({ analyst }: { analyst: AnalystCard | null })
               </div>
               <h2>{view.focusTitle}</h2>
             </div>
-            {view.focusAside ? (
-              // Keyed by sector+segment so the band re-fades on each switch
-              // (CSS animation in advanti-design.css, off under reduced-motion).
-              <div className="ap-focus-aside-wrap" key={`${sector}-${segment}`}>
-                {view.focusAside}
-              </div>
-            ) : (
+            {view.focusAside ?? (
               <div className="ap-focus-r">
                 <div className="ap-focus-val">
                   {view.focusValue}

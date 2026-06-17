@@ -10,6 +10,7 @@
 
 import dynamic from "next/dynamic"
 import type { ReactNode } from "react"
+import NumberFlow from "@number-flow/react"
 import {
   QUARTERS,
   QUARTERS_F,
@@ -308,7 +309,11 @@ function viewYield(s: ViewState): ViewSpec {
                   {est && <span className="est">est.</span>}
                 </div>
                 <div className="vl">
-                  {fmtComma(yieldCityNow(seg, city), 2)}
+                  <NumberFlow
+                    value={yieldCityNow(seg, city)}
+                    locales="nb-NO"
+                    format={{ minimumFractionDigits: 2, maximumFractionDigits: 2 }}
+                  />
                   <span className="u">%</span>
                 </div>
                 <div className="nt">{note}</div>
