@@ -162,9 +162,9 @@ const genRentF = (endpoint: number) =>
 // Endpoints: kontor from the release registry; handel/logistikk have no
 // release anchor — design-handoff levels (same generation method).
 const LEIE_ENDPOINTS: Record<Segment, Record<string, number>> = {
-  kontor: { Alta: 1950, Narvik: 1820, "Mo i Rana": 1750 },
-  handel: { Alta: 2480, Narvik: 2185, "Mo i Rana": 2030 },
-  logistikk: { Harstad: 1275, Alta: 1250, Narvik: 1300 },
+  kontor: { Alta: 2675, Narvik: 2545, "Mo i Rana": 2475 },
+  handel: { Alta: 2920, Narvik: 2625, "Mo i Rana": 2500 },
+  logistikk: { Harstad: 1500, Alta: 1475, Narvik: 1525 },
 }
 
 export const PORTAL_LEIE: Record<Segment, Record<string, number[]>> = {

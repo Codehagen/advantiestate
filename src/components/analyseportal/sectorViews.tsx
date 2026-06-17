@@ -10,6 +10,7 @@
 
 import dynamic from "next/dynamic"
 import type { ReactNode } from "react"
+import NumberFlow from "@number-flow/react"
 import {
   QUARTERS,
   QUARTERS_F,
@@ -29,7 +30,6 @@ import {
   PORTAL_VOLUME_F,
   DEALCOUNT,
   VAC_NOW,
-  VACANCY_TREND,
   NYBYGG,
   NYBYGG_F,
   MAKRO,
@@ -52,7 +52,13 @@ import {
   type PortalSegment,
   type PortalCity,
 } from "@/components/markedsinnsikt/portalSeries"
-import { TX, VOLUME, type Segment } from "@/components/markedsinnsikt/marketData"
+import {
+  TX,
+  VOLUME,
+  VACANCY_TOTAL,
+  VACANCY_TOTAL_PERIODS,
+  type Segment,
+} from "@/components/markedsinnsikt/marketData"
 import { mergeForecast, rangeWindow, type ChartRow, type SeriesDef } from "./seriesUtils"
 import { ChartSkeleton, Delta, Insight, PortalLegend } from "./bits"
 import { PORTAL_CHART_HEIGHT, SNAPSHOT_CHART_HEIGHT, SPARK_HEIGHT } from "./chartConstants"
@@ -303,7 +309,11 @@ function viewYield(s: ViewState): ViewSpec {
                   {est && <span className="est">est.</span>}
                 </div>
                 <div className="vl">
-                  {fmtComma(yieldCityNow(seg, city), 2)}
+                  <NumberFlow
+                    value={yieldCityNow(seg, city)}
+                    locales="nb-NO"
+                    format={{ minimumFractionDigits: 2, maximumFractionDigits: 2 }}
+                  />
                   <span className="u">%</span>
                 </div>
                 <div className="nt">{note}</div>
@@ -692,29 +702,55 @@ function viewLedighet(s: ViewState): ViewSpec {
     </table>
   )
 
+  // Total næringsledighet — MÅLT halvårlig (real data, Advanti markedstelling).
+  // Replaces the old synthetic per-segment sparklines. Only Bodø, Tromsø sentrum
+  // and Harstad have a measured series; the smaller cities have none yet.
+  const TOTAL_CITIES = ["Bodø", "Tromsø sentrum", "Harstad"]
+  const totalColor: Record<string, string> = {
+    Bodø: CITY_COLOR["Bodø"],
+    "Tromsø sentrum": CITY_COLOR["Tromsø"],
+    Harstad: CITY_COLOR["Harstad"],
+  }
+  const totalSeries: SeriesDef[] = TOTAL_CITIES.map((c) => ({
+    key: c,
+    label: c,
+    color: totalColor[c],
+    hist: VACANCY_TOTAL[c],
+    fc: [],
+    width: c === "Bodø" ? 2.6 : 2,
+  }))
+  const totalRows: ChartRow[] = VACANCY_TOTAL_PERIODS.map((p, i) => {
+    const row: ChartRow = { label: p, _f: false }
+    for (const c of TOTAL_CITIES) row[c] = VACANCY_TOTAL[c][i]
+    return row
+  })
+  const totalNames: Record<string, string> = {}
+  const totalColors: Record<string, string> = {}
+  for (const sd of totalSeries) {
+    totalNames[sd.key] = sd.label
+    totalColors[sd.key] = sd.color
+  }
+
   const compare = (
     <div className="ap-compare">
       <div className="ap-compare-head">
-        {segLabel(seg)}ledighet · utvikling per by
+        Total næringsledighet — målt utvikling (halvårlig)
       </div>
-      <div className="ap-spark-grid six">
-        {PORTAL_CITIES.map((c) => {
-          const v = VACANCY_TREND[seg][c]
-          const pp = Math.round((lastOf(v) - v[v.length - 5]) * 10) / 10
-          return (
-            <div className="ap-spark" key={c}>
-              <div className="ap-spark-top">
-                <span className="nm">{c}</span>
-                <span className="vv">{fmtPct1p(lastOf(v))}</span>
-              </div>
-              <Spark data={v.map((x) => ({ v: x }))} color={CITY_COLOR[c]} />
-              <div className="ap-spark-foot">
-                <Delta n={pp} unit=" pp" decimals={1} /> 12 mnd
-              </div>
-            </div>
-          )
-        })}
-      </div>
+      <TrendChart
+        data={totalRows}
+        series={totalSeries}
+        yFmt={(v) => fmtComma(v, 0) + "%"}
+        tipFmt={fmtPct1p}
+        names={totalNames}
+        colors={totalColors}
+        animate={s.animate}
+        height={SNAPSHOT_CHART_HEIGHT}
+      />
+      <p className="ap-note">
+        Total næringsledighet (alle segmenter) som andel av kartlagt areal, målt
+        halvårlig i Advantis markedstelling. Bodø og Harstad som region, Tromsø
+        som sentrum. Mindre byer har foreløpig ingen målt totalserie.
+      </p>
     </div>
   )
 
@@ -760,7 +796,7 @@ function viewLedighet(s: ViewState): ViewSpec {
     compare,
     csv: barData.map((d) => ({ By: d.label, "Ledighet (%)": d.vac as number })),
     method:
-      "Ledighet er målt som andel ledig av kartlagt areal per by og segment, fra Advantis markedstelling hvert kvartal.",
+      "Snapshot-tallene er målt andel ledig av kartlagt areal per by og segment, fra Advantis markedstelling. Total-utviklingen er målt halvårlig (alle segmenter samlet) for Bodø, Tromsø sentrum og Harstad — ledig kvm delt på kartlagt areal.",
     insights: (
       <>
         <Insight n="01" h="Tromsø er stramt.">
