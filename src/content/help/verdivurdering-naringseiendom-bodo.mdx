@@ -7,7 +7,7 @@ categories:
   - valuation
 takeaways:
   - En verdivurdering i Bodø bygger på to metoder — yield-basert kapitalisering og diskontert kontantstrøm (DCF) — som bør gi samme svar.
-  - "Det lokale markedet leverer de avgjørende forutsetningene: prime yield rundt 6,35 prosent og kontorleie rundt 2 400 kr/m²/år (Analyseportalen, Q4 2025)."
+  - "Det lokale markedet leverer de avgjørende forutsetningene: prime yield rundt 6,35 prosent og kontorleie rundt 3 002 kr/m²/år (Analyseportalen, Q4 2025)."
   - Yield-valget styrer verdien mer enn noe annet tall — derfor må det forankres i faktiske transaksjoner i samme by og segment.
   - Bruk markedstall som utgangspunkt, men juster for beliggenhet, leietakerprofil og kontraktslengde på den konkrete eiendommen.
 related:
@@ -17,7 +17,7 @@ related:
   - prime-yield
 faq:
   - question: "Hvordan verdsettes næringseiendom i Bodø?"
-    answer: "Verdivurdering i Bodø bygger på to metoder som krysspeiler hverandre: yield-basert kapitalisering, der netto leieinntekt deles på et avkastningskrav, og diskontert kontantstrøm (DCF), der fremtidige kontantstrømmer neddiskonteres. Begge forankres i lokale markedstall — for Bodø en prime yield rundt 6,35 prosent og kontorleie rundt 2 400 kr/m²/år ifølge Analyseportalen (Q4 2025)."
+    answer: "Verdivurdering i Bodø bygger på to metoder som krysspeiler hverandre: yield-basert kapitalisering, der netto leieinntekt deles på et avkastningskrav, og diskontert kontantstrøm (DCF), der fremtidige kontantstrømmer neddiskonteres. Begge forankres i lokale markedstall — for Bodø en prime yield rundt 6,35 prosent og kontorleie rundt 3 002 kr/m²/år ifølge Analyseportalen (Q4 2025)."
   - question: "Hva er prime yield i Bodø?"
     answer: "Prime yield i Bodø ligger på rundt 6,35 prosent ifølge Analyseportalen (Q4 2025). Prime yield gjelder de beste eiendommene — sentral beliggenhet, solide leietakere og lange kontrakter — og er gulvet i markedet. Eiendommer med mer risiko verdsettes med høyere avkastningskrav, altså lavere verdi per krone leieinntekt. Tallene endres kvartalsvis."
   - question: "Hvorfor betyr yield-valget så mye for verdien?"
@@ -49,12 +49,12 @@ Det som gjør vurderingen *lokal*, er forutsetningene. For Bodø henter vi to n�
 <StatStrip
   items={[
     { value: "6,35", unit: "%", label: "Prime yield, Bodø" },
-    { value: "2 400", unit: "kr/m²/år", label: "Kontorleie, Bodø" },
+    { value: "3 002", unit: "kr/m²/år", label: "Kontorleie, Bodø" },
     { value: "4,6", unit: "%", label: "Kontorledighet, Bodø" }
   ]}
 />
 
-Prime yield på 6,35 prosent gjelder de beste eiendommene — sentral beliggenhet, solide leietakere og lange kontrakter. Det er gulvet i markedet; eiendommer med mer risiko verdsettes med et høyere avkastningskrav og dermed lavere verdi per krone leieinntekt. Kontorleien på 2 400 kr/m²/år er utgangspunktet for å normalisere inntektssiden, mens en lav ledighet på 4,6 prosent forteller at kontormarkedet i Bodø er relativt stramt.
+Prime yield på 6,35 prosent gjelder de beste eiendommene — sentral beliggenhet, solide leietakere og lange kontrakter. Det er gulvet i markedet; eiendommer med mer risiko verdsettes med et høyere avkastningskrav og dermed lavere verdi per krone leieinntekt. Kontorleien på 3 002 kr/m²/år er utgangspunktet for å normalisere inntektssiden, mens en lav ledighet på 4,6 prosent forteller at kontormarkedet i Bodø er relativt stramt.
 
 <Note variant="caution">
   Tallene over er per Q4 2025 fra Analyseportalen og endres kvartalsvis. Bruk dem som utgangspunkt, men hent alltid ferske tall fra [analyseportalen](/analyseportal) før en faktisk vurdering. Transaksjonseksempelet lenger nede er en anonymisert illustrasjon, ikke en konkret eiendom.
@@ -62,15 +62,15 @@ Prime yield på 6,35 prosent gjelder de beste eiendommene — sentral beliggenhe
 
 ## Et yield-basert regneeksempel
 
-La oss verdsette et tenkt kontorbygg i Bodø sentrum på 4 200 m². Vi bruker kontorleien på 2 400 kr/m²/år som markedsinput, trekker fra et normalisert nivå for eier- og driftskostnader, og kapitaliserer netto leieinntekt med prime yield på 6,35 prosent.
+La oss verdsette et tenkt kontorbygg i Bodø sentrum på 4 200 m². Vi bruker kontorleien på 3 002 kr/m²/år som markedsinput, trekker fra et normalisert nivå for eier- og driftskostnader, og kapitaliserer netto leieinntekt med prime yield på 6,35 prosent.
 
 <Example
   title="Yield-basert verdi — kontorbygg Bodø sentrum (illustrativt)"
   steps={[
     {
       label: "Brutto leieinntekt",
-      value: "10 080 000",
-      calculation: "4 200 m² × 2 400 kr/m²/år"
+      value: "12 608 400",
+      calculation: "4 200 m² × 3 002 kr/m²/år"
     },
     {
       label: "Eierkostnader (anslag)",
@@ -79,19 +79,19 @@ La oss verdsette et tenkt kontorbygg i Bodø sentrum på 4 200 m². Vi bruker ko
     },
     {
       label: "Netto leieinntekt (NOI)",
-      value: "9 000 000",
+      value: "11 528 400",
       calculation: "Grunnlag for kapitalisering"
     },
     {
       label: "Markedsverdi",
-      value: "141 700 000",
-      calculation: "9 000 000 ÷ 6,35 %",
+      value: "181 500 000",
+      calculation: "11 528 400 ÷ 6,35 %",
       isResult: true
     }
   ]}
 />
 
-Tallene for areal og leie er hentet fra markedet, mens kostnadsanslaget er en illustrasjon — i en reell vurdering bygges det opp post for post fra regnskap og budsjett. Poenget er hvor mye yield-valget styrer resultatet: hadde vi brukt 6,85 prosent i stedet for 6,35 prosent, ville verdien falt fra rundt 142 til om lag 131 mnok. Et halvt prosentpoeng flytter altså verdien med over ti millioner.
+Tallene for areal og leie er hentet fra markedet, mens kostnadsanslaget er en illustrasjon — i en reell vurdering bygges det opp post for post fra regnskap og budsjett. Poenget er hvor mye yield-valget styrer resultatet: hadde vi brukt 6,85 prosent i stedet for 6,35 prosent, ville verdien falt fra rundt 182 til om lag 168 mnok. Et halvt prosentpoeng flytter altså verdien med over ti millioner.
 
 ## Yield må forankres i faktiske handler
 
