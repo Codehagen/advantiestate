@@ -109,6 +109,10 @@ export const CONTROLS: Record<
 export interface ViewSpec {
   focusTitle: ReactNode
   focusValue: string
+  /** Numeric focus value + decimals — when present the shell renders it with
+   *  NumberFlow (rolls on sector/segment change); falls back to focusValue. */
+  focusValueNum?: number
+  focusFractionDigits?: number
   focusUnit: string
   focusDelta: ReactNode
   /** Optional richer focus block (e.g. a multi-city strip) that replaces the
@@ -482,6 +486,8 @@ function viewLeie(s: ViewState): ViewSpec {
       </>
     ),
     focusValue: fmtGroup(lastOf(arr)),
+    focusValueNum: lastOf(arr),
+    focusFractionDigits: 0,
     focusUnit: " kr/m²",
     focusDelta: (
       <>
@@ -608,6 +614,8 @@ function viewTx(s: ViewState): ViewSpec {
       </>
     ),
     focusValue: fmtComma(total, 1),
+    focusValueNum: total,
+    focusFractionDigits: 1,
     focusUnit: " mrd",
     focusDelta: (
       <>
@@ -761,6 +769,8 @@ function viewLedighet(s: ViewState): ViewSpec {
       </>
     ),
     focusValue: fmtComma(avg, 1),
+    focusValueNum: avg,
+    focusFractionDigits: 1,
     focusUnit: " %",
     focusDelta: (
       <>
@@ -873,6 +883,8 @@ function viewNybygg(s: ViewState): ViewSpec {
       </>
     ),
     focusValue: fmtGroup(pipe),
+    focusValueNum: pipe,
+    focusFractionDigits: 0,
     focusUnit: " ’000 m²",
     focusDelta: (
       <>
@@ -990,6 +1002,8 @@ function viewMakro(s: ViewState): ViewSpec {
       </>
     ),
     focusValue: fmtComma(lastOf(MAKRO.styringsrente), 2),
+    focusValueNum: lastOf(MAKRO.styringsrente),
+    focusFractionDigits: 2,
     focusUnit: " %",
     focusDelta: (
       <>

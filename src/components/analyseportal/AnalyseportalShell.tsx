@@ -15,6 +15,7 @@ import {
   useState,
 } from "react"
 import Link from "next/link"
+import NumberFlow from "@number-flow/react"
 import { trackEvent } from "@/lib/analytics"
 import {
   PORTAL_SEGMENTS,
@@ -353,9 +354,23 @@ export function AnalyseportalShell({ analyst }: { analyst: AnalystCard | null })
               <h2>{view.focusTitle}</h2>
             </div>
             {view.focusAside ?? (
-              <div className="ap-focus-r">
+              // Keyed by sector so NumberFlow resets between sectors (no roll
+              // across unrelated metrics) but rolls within a sector on segment
+              // change. Falls back to the plain string when no numeric value.
+              <div className="ap-focus-r" key={sector}>
                 <div className="ap-focus-val">
-                  {view.focusValue}
+                  {view.focusValueNum != null ? (
+                    <NumberFlow
+                      value={view.focusValueNum}
+                      locales="nb-NO"
+                      format={{
+                        minimumFractionDigits: view.focusFractionDigits ?? 0,
+                        maximumFractionDigits: view.focusFractionDigits ?? 0,
+                      }}
+                    />
+                  ) : (
+                    view.focusValue
+                  )}
                   <span className="u">{view.focusUnit}</span>
                 </div>
                 <div className="ap-focus-delta">{view.focusDelta}</div>
