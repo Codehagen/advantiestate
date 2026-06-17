@@ -16,6 +16,9 @@
 //
 // ── Quarterly refresh runbook ───────────────────────────────────────────────
 // When a new quarter is released ("Neste oppdatering" on /markedsinnsikt):
+//   0. Renter: kjør `pnpm rates:sync` — henter siste styringsrente + 5Y/10Y
+//      statsobligasjon fra Norges Bank (via Supabase, ev. API direkte) og viser
+//      hva som skal settes som siste element i RATES.swap5y/gov10y + styringsrente.
 //   1. Add the release to marketReleases.ts (numeric city values, publishedAt).
 //   2. Append one value to each historical series in marketData.ts + the added
 //      series below (LEIE_EXTRA, VACANCY_TREND, STYRINGSRENTE) and push the new

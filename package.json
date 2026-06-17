@@ -10,7 +10,8 @@
     "typecheck": "tsc --noEmit",
     "test": "playwright test",
     "test:unit": "vitest run",
-    "indexnow:submit": "bash scripts/indexnow-submit.sh"
+    "indexnow:submit": "bash scripts/indexnow-submit.sh",
+    "rates:sync": "node scripts/sync-norges-bank-rates.mjs"
   },
   "dependencies": {
     "@mdx-js/loader": "^3.1.0",
