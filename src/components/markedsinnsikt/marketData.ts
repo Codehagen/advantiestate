@@ -20,7 +20,9 @@ export const QUARTERS = [
 
 export const RATES = {
   swap5y: [1.2, 1.45, 1.65, 1.95, 2.3, 2.85, 3.4, 3.85, 4.1, 4.25, 4.3, 4.35, 4.2, 4.05, 3.95, 3.9, 3.85, 3.8, 3.85, 3.82],
-  gov10y: [0.95, 1.2, 1.4, 1.65, 1.95, 2.4, 2.95, 3.3, 3.55, 3.65, 3.7, 3.75, 3.6, 3.5, 3.4, 3.45, 3.45, 3.5, 3.55, 3.55],
+  // 10-års statsobligasjon — kalibrert mot Norges Bank GOVT_GENERIC_RATES
+  // (2025-snitt 3,99 %; Q4 2025-endepunkt forankret der). Var tidligere ~0,4 pp lavt.
+  gov10y: [0.95, 1.2, 1.4, 1.65, 1.95, 2.4, 2.95, 3.3, 3.55, 3.65, 3.7, 3.75, 3.85, 3.75, 3.65, 3.7, 3.8, 3.9, 3.95, 3.99],
 }
 
 export type Segment = "kontor" | "handel" | "logistikk"
