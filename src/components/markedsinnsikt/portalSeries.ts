@@ -141,7 +141,7 @@ export const PORTAL_RATES = {
 }
 export const PORTAL_RATES_F = {
   swap5y: [3.75, 3.65, 3.55, 3.5],
-  gov10y: [3.5, 3.45, 3.4, 3.4],
+  gov10y: [3.9, 3.85, 3.8, 3.8],
   styringsrente: [3.75, 3.5, 3.25, 3.0],
 }
 
