@@ -85,6 +85,49 @@ export const VACANCY_TOTAL: Record<string, number[]> = {
   Harstad: [2.4, 2.8, 3.0, 3.2, 1.2, 1.8, 2.9, 4.6, 4.2, 4.7, 4.6, 3.0],
 }
 
+// ---------------------------------------------------------------------------
+// Ledig kvm per delområde — MÅLT, halvårlig (Advanti Estate-database)
+// ---------------------------------------------------------------------------
+// Absolute vacant floor area (ledig kvm) for the five most-exposed Nord-Norge
+// sub-areas, half-yearly 2020 1H–2025 2H (shares VACANCY_TOTAL_PERIODS).
+// Source: Advanti Estate-database (ledighetsanalyse / markedstelling per halvår).
+// Endpoints anchor to the current telling (e.g. Bodø ≈ 43 500, Tromsø sentrum
+// ≈ 18 800 kvm pr. 2025 2H). Rounded to nearest 100 kvm. This is the kvm
+// counterpart to the VACANCY_TOTAL percent series — same source, different unit.
+export const VACANCY_KVM_AREAS: Record<string, number[]> = {
+  Bodø: [18200, 30400, 49900, 31000, 25700, 22900, 32400, 28500, 29600, 21000, 37400, 43500],
+  "Tromsø sentrum": [21500, 21800, 24600, 18100, 13200, 10400, 9000, 19900, 19000, 17400, 17100, 18800],
+  Harstad: [7100, 9000, 12900, 11500, 9300, 13200, 16000, 16500, 15100, 15100, 16000, 14000],
+  Rana: [0, 100, 100, 2600, 1200, 2400, 6000, 7600, 8500, 12900, 14300, 21000],
+  "Tromsøya-vest": [2400, 3200, 2400, 1000, 5100, 4000, 2100, 3200, 3100, 7400, 9900, 9300],
+}
+
+// ---------------------------------------------------------------------------
+// Utbyggings-pipeline — næringsbygg etter byggesaksfase (Advanti Estate-database)
+// ---------------------------------------------------------------------------
+// Real development pipeline for the four Nord-Norge regions, by building-permit
+// stage (the Norwegian byggesaks funnel). Source: Advanti Estate-database
+// (utbyggingsanalyse, as-of latest statusdato). `bygg` = number of buildings,
+// `kvm` = floor area. byCity lists the top-5 areas per stage (sum < total —
+// the rest is spread across smaller areas).
+export type UtbyggingStage = {
+  key: "ramme" | "igangsatt" | "ferdig"
+  label: string
+  short: string
+  bygg: number
+  kvm: number
+}
+export const UTBYGGING_STAGES: UtbyggingStage[] = [
+  { key: "ramme", label: "Rammetillatelse", short: "Planlagt", bygg: 16, kvm: 35561 },
+  { key: "igangsatt", label: "Igangsettelse", short: "Under bygging", bygg: 33, kvm: 76146 },
+  { key: "ferdig", label: "Ferdigstilt", short: "Fullført", bygg: 71, kvm: 67533 },
+]
+export const UTBYGGING_BY_CITY: Record<UtbyggingStage["key"], [string, number, number][]> = {
+  ramme: [["Narvik", 7, 17010], ["Tromsdalen", 1, 8912], ["Bodø", 4, 6472], ["Tromsø randsone", 1, 2681], ["Rana", 1, 309]],
+  igangsatt: [["Narvik", 6, 30794], ["Tromsø sentrum", 2, 21089], ["Tromsø randsone", 1, 6507], ["Bodø", 3, 4621], ["Senja", 8, 3787]],
+  ferdig: [["Tromsø sentrum", 1, 15302], ["Narvik", 7, 9565], ["Senja", 11, 7720], ["Bodø", 7, 6177], ["Sortland", 5, 5632]],
+}
+
 // Transactions are shown ANONYMIZED (type + area, no addresses/names): the
 // rows are illustrative market examples, and naming identifiable properties
 // with prices/yields would attribute deal terms to real parties.
