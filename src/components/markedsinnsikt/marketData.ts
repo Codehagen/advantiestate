@@ -128,6 +128,35 @@ export const UTBYGGING_BY_CITY: Record<UtbyggingStage["key"], [string, number, n
   ferdig: [["Tromsø sentrum", 1, 15302], ["Narvik", 7, 9565], ["Senja", 11, 7720], ["Bodø", 7, 6177], ["Sortland", 5, 5632]],
 }
 
+// ---------------------------------------------------------------------------
+// Bygningsmasse per segment — eksisterende stock (Advanti Estate-database)
+// ---------------------------------------------------------------------------
+// Total existing næringsbygg-areal (kvm) by segment for the four Nord-Norge
+// regions. Source: Advanti Estate-database (sammendrag → Byggkategori), zoned.
+// Eksisterende sum = 7 561 717; planlagt = 478 572; grand total = 8 040 289 kvm.
+// Mirror persisted in Supabase crm_market_building_stock.
+export const STOCK_SEGMENT: { key: string; label: string; kvm: number }[] = [
+  { key: "handel", label: "Handel", kvm: 2197661 },
+  { key: "industri", label: "Industri", kvm: 1855965 },
+  { key: "kontor", label: "Kontor", kvm: 1556379 },
+  { key: "lager", label: "Lager", kvm: 1263245 },
+  { key: "hotell", label: "Hotell og restaurant", kvm: 571083 },
+  { key: "ovrig", label: "Øvrig", kvm: 117384 },
+]
+export const STOCK_TOTAL_EKSISTERENDE = 7561717
+export const STOCK_TOTAL_PLANLAGT = 478572
+
+// ---------------------------------------------------------------------------
+// Rammetillatelser per år — byggesakshistorikk (Advanti Estate-database)
+// ---------------------------------------------------------------------------
+// Real annual building-permit history (rammetillatelse = framework permit, the
+// leading pipeline indicator): floor area + building count per year, four
+// Nord-Norge regions. Source: Advanti Estate-database (sammendrag → RA siste
+// 20 år), zoned. Mirror persisted in Supabase crm_market_construction_permits.
+export const NYBYGG_PERMIT_YEARS = [2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026]
+export const NYBYGG_PERMIT_AREA = [70762, 85469, 114025, 136280, 62934, 216652, 34271, 49224, 100889, 41317]
+export const NYBYGG_PERMIT_COUNT = [37, 42, 36, 45, 41, 50, 30, 39, 37, 11]
+
 // Transactions are shown ANONYMIZED (type + area, no addresses/names): the
 // rows are illustrative market examples, and naming identifiable properties
 // with prices/yields would attribute deal terms to real parties.

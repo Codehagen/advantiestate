@@ -9714,6 +9714,20 @@ h1, h2, h3 {
 .ap-pl-cities li .r { font-variant-numeric: tabular-nums; color: var(--warm-grey); }
 @media (max-width: 760px) { .ap-pipeline { grid-template-columns: 1fr; } }
 @media (prefers-reduced-motion: reduce) { .ap-pl-bar > span { transition: none; } }
+
+/* stock-by-segment list (nybygg sector) */
+.ap-stock { display: flex; flex-direction: column; gap: 10px; }
+.ap-stock-row { display: grid; grid-template-columns: 150px 1fr 120px 48px; align-items: center; gap: 14px; }
+.ap-stock-lbl { font-size: 13px; font-weight: 500; }
+.ap-stock-bar { height: 10px; background: var(--warm-grey-12, #e8e4df); border-radius: 5px; overflow: hidden; }
+.ap-stock-bar > span { display: block; height: 100%; background: var(--terra, #c0795c); border-radius: 5px; transition: width 600ms cubic-bezier(0.22, 1, 0.36, 1); }
+.ap-stock-kvm { font-family: var(--font-display); font-size: 15px; font-variant-numeric: tabular-nums; text-align: right; }
+.ap-stock-pct { font-size: 12px; color: var(--warm-grey-85); font-variant-numeric: tabular-nums; text-align: right; }
+@media (max-width: 760px) {
+  .ap-stock-row { grid-template-columns: 1fr auto; row-gap: 4px; }
+  .ap-stock-bar { display: none; }
+}
+@media (prefers-reduced-motion: reduce) { .ap-stock-bar > span { transition: none; } }
 .ap-spark-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
 .ap-spark-grid.six { grid-template-columns: repeat(3, 1fr); }
 .ap-spark { border: var(--hairline); padding: 14px 14px 8px; background: var(--paper); }

@@ -60,6 +60,10 @@ import {
   VACANCY_KVM_AREAS,
   UTBYGGING_STAGES,
   UTBYGGING_BY_CITY,
+  STOCK_SEGMENT,
+  STOCK_TOTAL_EKSISTERENDE,
+  NYBYGG_PERMIT_YEARS,
+  NYBYGG_PERMIT_AREA,
   type Segment,
 } from "@/components/markedsinnsikt/marketData"
 import { mergeForecast, rangeWindow, type ChartRow, type SeriesDef } from "./seriesUtils"
@@ -915,7 +919,23 @@ function viewNybygg(s: ViewState): ViewSpec {
     ferdig: PORTAL_PALETTE.ink,
   }
   const maxStageKvm = Math.max(...UTBYGGING_STAGES.map((st) => st.kvm))
+
+  // Annual rammetillatelse history (Advanti Estate-database) — real permit area
+  // per year, the leading pipeline indicator.
+  const permitSeries: SeriesDef[] = [
+    { key: "area", label: "Rammetillatelse (areal)", color: PORTAL_PALETTE.terra, hist: NYBYGG_PERMIT_AREA, fc: [], width: 2.4 },
+  ]
+  const permitRows: ChartRow[] = NYBYGG_PERMIT_YEARS.map((y, i) => ({
+    label: String(y),
+    _f: false,
+    area: NYBYGG_PERMIT_AREA[i],
+  }))
+
+  // Existing building stock by segment (Advanti Estate-database).
+  const maxStockKvm = Math.max(...STOCK_SEGMENT.map((s) => s.kvm))
+
   const pipelineCompare = (
+    <>
     <div className="ap-compare">
       <div className="ap-compare-head">
         Utbyggings-pipeline — næringsbygg i Nord-Norge (Advanti Estate-database)
@@ -961,6 +981,54 @@ function viewNybygg(s: ViewState): ViewSpec {
         fase vist.
       </p>
     </div>
+
+    <div className="ap-compare">
+      <div className="ap-compare-head">
+        Rammetillatelser per år — byggesakshistorikk (Advanti Estate-database)
+      </div>
+      <TrendChart
+        data={permitRows}
+        series={permitSeries}
+        yFmt={(v) => Math.round(v / 1000) + "k"}
+        tipFmt={(v) => fmtGroup(v) + " m²"}
+        names={{ area: "Rammetillatelse (areal)" }}
+        colors={{ area: PORTAL_PALETTE.terra }}
+        animate={s.animate}
+        height={SNAPSHOT_CHART_HEIGHT}
+      />
+      <p className="ap-note">
+        Innvilget rammetillatelse-areal per år for de fire nordligste regionene,
+        målt fra Advanti Estate-databasen. 2022 var et toppår ({fmtGroup(216652)}{" "}
+        m²); aktiviteten har normalisert seg siden. Tidlig telling for 2026.
+      </p>
+    </div>
+
+    <div className="ap-compare">
+      <div className="ap-compare-head">
+        Bygningsmasse per segment — eksisterende areal (Advanti Estate-database)
+      </div>
+      <div className="ap-stock">
+        {STOCK_SEGMENT.map((sg) => (
+          <div className="ap-stock-row" key={sg.key}>
+            <span className="ap-stock-lbl">{sg.label}</span>
+            <div className="ap-stock-bar">
+              <span style={{ width: `${Math.round((sg.kvm / maxStockKvm) * 100)}%` }} />
+            </div>
+            <span className="ap-stock-kvm">{fmtGroup(sg.kvm)} m²</span>
+            <span className="ap-stock-pct">
+              {fmtComma((sg.kvm / STOCK_TOTAL_EKSISTERENDE) * 100, 0)} %
+            </span>
+          </div>
+        ))}
+      </div>
+      <p className="ap-note">
+        Samlet eksisterende næringsareal i Nord-Norge er {fmtGroup(STOCK_TOTAL_EKSISTERENDE)}{" "}
+        m². Handel og industri er de største segmentene; kontor utgjør{" "}
+        {fmtComma((1556379 / STOCK_TOTAL_EKSISTERENDE) * 100, 0)} %. Gir
+        markedsstørrelse bak yield-, leie- og ledighetstallene.
+      </p>
+    </div>
+    </>
   )
 
   const table = (
