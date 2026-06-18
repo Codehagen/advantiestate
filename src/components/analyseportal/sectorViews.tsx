@@ -64,6 +64,10 @@ import {
   STOCK_TOTAL_EKSISTERENDE,
   NYBYGG_PERMIT_YEARS,
   NYBYGG_PERMIT_AREA,
+  NYBYGG_FERDIG_AREA,
+  EIERSTRUKTUR,
+  LEDIGHETSTID_MND,
+  LEDIGHETSTID_SNITT,
   type Segment,
 } from "@/components/markedsinnsikt/marketData"
 import { mergeForecast, rangeWindow, type ChartRow, type SeriesDef } from "./seriesUtils"
@@ -821,6 +825,29 @@ function viewLedighet(s: ViewState): ViewSpec {
           siste årene.
         </p>
       </div>
+
+      <div className="ap-compare">
+        <div className="ap-compare-head">
+          Ledighetstid — snitt måneder på markedet (Advanti Estate-database)
+        </div>
+        <div className="ap-stock">
+          {Object.entries(LEDIGHETSTID_MND).map(([region, mnd]) => (
+            <div className="ap-stock-row" key={region}>
+              <span className="ap-stock-lbl">{region}</span>
+              <div className="ap-stock-bar">
+                <span style={{ width: `${Math.round((mnd / 18) * 100)}%` }} />
+              </div>
+              <span className="ap-stock-kvm">{fmtComma(mnd, 1)} mnd</span>
+              <span className="ap-stock-pct" />
+            </div>
+          ))}
+        </div>
+        <p className="ap-note">
+          Gjennomsnittlig tid et ledig næringslokale ligger på markedet før det
+          fylles, snitt {fmtComma(LEDIGHETSTID_SNITT, 1)} mnd for Nord-Norge.
+          Tromsøregionen har lengst omløpstid (16,4 mnd), Helgeland kortest (11,9).
+        </p>
+      </div>
     </>
   )
 
@@ -920,19 +947,29 @@ function viewNybygg(s: ViewState): ViewSpec {
   }
   const maxStageKvm = Math.max(...UTBYGGING_STAGES.map((st) => st.kvm))
 
-  // Annual rammetillatelse history (Advanti Estate-database) — real permit area
-  // per year, the leading pipeline indicator.
+  // Byggesakshistorikk (Advanti Estate-database) — rammetillatelse (leading
+  // indicator) vs ferdigstilt (realized) per year.
   const permitSeries: SeriesDef[] = [
-    { key: "area", label: "Rammetillatelse (areal)", color: PORTAL_PALETTE.terra, hist: NYBYGG_PERMIT_AREA, fc: [], width: 2.4 },
+    { key: "ramme", label: "Rammetillatelse", color: PORTAL_PALETTE.mist, hist: NYBYGG_PERMIT_AREA, fc: [], width: 2 },
+    { key: "ferdig", label: "Ferdigstilt", color: PORTAL_PALETTE.terra, hist: NYBYGG_FERDIG_AREA, fc: [], width: 2.4 },
   ]
   const permitRows: ChartRow[] = NYBYGG_PERMIT_YEARS.map((y, i) => ({
     label: String(y),
     _f: false,
-    area: NYBYGG_PERMIT_AREA[i],
+    ramme: NYBYGG_PERMIT_AREA[i],
+    ferdig: NYBYGG_FERDIG_AREA[i],
   }))
 
   // Existing building stock by segment (Advanti Estate-database).
   const maxStockKvm = Math.max(...STOCK_SEGMENT.map((s) => s.kvm))
+
+  // Eierstruktur — existing stock by owner category (Advanti Estate-database).
+  const maxEierKvm = Math.max(...EIERSTRUKTUR.map((e) => e.kvm))
+  const eierTotal = EIERSTRUKTUR.reduce((a, e) => a + e.kvm, 0)
+  const eierColor: Record<string, string> = {
+    kommersiell: PORTAL_PALETTE.terra,
+    offentlig: PORTAL_PALETTE.blue,
+  }
 
   const pipelineCompare = (
     <>
@@ -984,22 +1021,23 @@ function viewNybygg(s: ViewState): ViewSpec {
 
     <div className="ap-compare">
       <div className="ap-compare-head">
-        Rammetillatelser per år — byggesakshistorikk (Advanti Estate-database)
+        Byggesakshistorikk per år — tillatelser vs ferdigstilt (Advanti Estate-database)
       </div>
       <TrendChart
         data={permitRows}
         series={permitSeries}
         yFmt={(v) => Math.round(v / 1000) + "k"}
         tipFmt={(v) => fmtGroup(v) + " m²"}
-        names={{ area: "Rammetillatelse (areal)" }}
-        colors={{ area: PORTAL_PALETTE.terra }}
+        names={{ ramme: "Rammetillatelse", ferdig: "Ferdigstilt" }}
+        colors={{ ramme: PORTAL_PALETTE.mist, ferdig: PORTAL_PALETTE.terra }}
         animate={s.animate}
         height={SNAPSHOT_CHART_HEIGHT}
       />
       <p className="ap-note">
-        Innvilget rammetillatelse-areal per år for de fire nordligste regionene,
-        målt fra Advanti Estate-databasen. 2022 var et toppår ({fmtGroup(216652)}{" "}
-        m²); aktiviteten har normalisert seg siden. Tidlig telling for 2026.
+        Innvilget rammetillatelse (ledende indikator) vs ferdigstilt areal per år
+        for de fire nordligste regionene, målt fra Advanti Estate-databasen.
+        Rammetillatelser toppet i 2022 ({fmtGroup(216652)} m²); ferdigstilt holdt
+        seg høyt 2018–2024. Tidlig telling for 2026.
       </p>
     </div>
 
@@ -1026,6 +1064,37 @@ function viewNybygg(s: ViewState): ViewSpec {
         m². Handel og industri er de største segmentene; kontor utgjør{" "}
         {fmtComma((1556379 / STOCK_TOTAL_EKSISTERENDE) * 100, 0)} %. Gir
         markedsstørrelse bak yield-, leie- og ledighetstallene.
+      </p>
+    </div>
+
+    <div className="ap-compare">
+      <div className="ap-compare-head">
+        Eierstruktur — hvem eier byggmassen (Advanti Estate-database)
+      </div>
+      <div className="ap-stock">
+        {EIERSTRUKTUR.map((e) => (
+          <div className="ap-stock-row" key={e.key}>
+            <span className="ap-stock-lbl">
+              <span className="sw" style={{ background: eierColor[e.cat] }} />
+              {e.label}
+            </span>
+            <div className="ap-stock-bar">
+              <span
+                style={{
+                  width: `${Math.round((e.kvm / maxEierKvm) * 100)}%`,
+                  background: eierColor[e.cat],
+                }}
+              />
+            </div>
+            <span className="ap-stock-kvm">{fmtGroup(e.kvm)} m²</span>
+            <span className="ap-stock-pct">{fmtComma((e.kvm / eierTotal) * 100, 0)} %</span>
+          </div>
+        ))}
+      </div>
+      <p className="ap-note">
+        Lokale eiendomsaktører eier {fmtComma((4765228 / eierTotal) * 100, 0)} % av
+        næringsarealet — et lokalt dominert marked. Institusjonelt/offentlig eierskap
+        utgjør {fmtComma((925128 / eierTotal) * 100, 0)} %; utenlandsk kapital under 1 %.
       </p>
     </div>
     </>

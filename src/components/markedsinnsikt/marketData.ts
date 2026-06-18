@@ -156,6 +156,34 @@ export const STOCK_TOTAL_PLANLAGT = 478572
 export const NYBYGG_PERMIT_YEARS = [2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026]
 export const NYBYGG_PERMIT_AREA = [70762, 85469, 114025, 136280, 62934, 216652, 34271, 49224, 100889, 41317]
 export const NYBYGG_PERMIT_COUNT = [37, 42, 36, 45, 41, 50, 30, 39, 37, 11]
+// Ferdigstilte næringsbygg per år (same years/source as the RA series above).
+export const NYBYGG_FERDIG_AREA = [98254, 110751, 102695, 91112, 144089, 111500, 64329, 108795, 54751, 13412]
+export const NYBYGG_FERDIG_COUNT = [44, 69, 57, 50, 73, 52, 65, 46, 61, 17]
+
+// ---------------------------------------------------------------------------
+// Eierstruktur — eksisterende byggmasse etter eier (Advanti Estate-database)
+// ---------------------------------------------------------------------------
+// Existing stock (kvm) by owner category, four Nord-Norge regions. Source:
+// Advanti Estate-database (sammendrag → Eierskap), zoned. Total = 8 040 289.
+// Mirror persisted in Supabase crm_market_ownership.
+export const EIERSTRUKTUR: { key: string; label: string; kvm: number; cat: "kommersiell" | "offentlig" }[] = [
+  { key: "lokale", label: "Lokale eiendomsaktører", kvm: 4765228, cat: "kommersiell" },
+  { key: "nasjonale", label: "Nasjonale eiendomsaktører", kvm: 1215944, cat: "kommersiell" },
+  { key: "internasjonale", label: "Internasjonale industrielle", kvm: 842539, cat: "kommersiell" },
+  { key: "syndikater", label: "Syndikater", kvm: 128904, cat: "kommersiell" },
+  { key: "fond", label: "Eiendomsfond / pensjon / bank", kvm: 82523, cat: "kommersiell" },
+  { key: "utenlandske", label: "Utenlandske investorer", kvm: 80023, cat: "kommersiell" },
+  { key: "institusjoner", label: "Institusjoner / offentlige", kvm: 925128, cat: "offentlig" },
+]
+
+// Snitt ledighetstid (måneder på markedet) per region — Advanti Estate-database.
+export const LEDIGHETSTID_MND: Record<string, number> = {
+  Bodøregionen: 14.7,
+  Tromsøregionen: 16.4,
+  "Midtre Hålogaland": 14.7,
+  Helgelandsregionen: 11.9,
+}
+export const LEDIGHETSTID_SNITT = 14.9
 
 // Transactions are shown ANONYMIZED (type + area, no addresses/names): the
 // rows are illustrative market examples, and naming identifiable properties
