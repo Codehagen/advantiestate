@@ -57,6 +57,9 @@ import {
   VOLUME,
   VACANCY_TOTAL,
   VACANCY_TOTAL_PERIODS,
+  VACANCY_KVM_AREAS,
+  UTBYGGING_STAGES,
+  UTBYGGING_BY_CITY,
   type Segment,
 } from "@/components/markedsinnsikt/marketData"
 import { mergeForecast, rangeWindow, type ChartRow, type SeriesDef } from "./seriesUtils"
@@ -739,27 +742,82 @@ function viewLedighet(s: ViewState): ViewSpec {
     totalColors[sd.key] = sd.color
   }
 
+  // Ledig kvm per delområde — MÅLT halvårlig (Advanti Estate-database). Absolute
+  // vacant floor area for the five most-exposed Nord-Norge sub-areas. Same source
+  // and periods as the percent series above, different unit (kvm).
+  const KVM_AREAS = ["Bodø", "Tromsø sentrum", "Harstad", "Rana", "Tromsøya-vest"]
+  const kvmColor: Record<string, string> = {
+    Bodø: CITY_COLOR["Bodø"],
+    "Tromsø sentrum": CITY_COLOR["Tromsø"],
+    Harstad: CITY_COLOR["Harstad"],
+    Rana: CITY_COLOR["Narvik"],
+    "Tromsøya-vest": CITY_COLOR["Alta"],
+  }
+  const kvmSeries: SeriesDef[] = KVM_AREAS.map((c) => ({
+    key: c,
+    label: c,
+    color: kvmColor[c],
+    hist: VACANCY_KVM_AREAS[c],
+    fc: [],
+    width: c === "Bodø" ? 2.6 : 2,
+  }))
+  const kvmRows: ChartRow[] = VACANCY_TOTAL_PERIODS.map((p, i) => {
+    const row: ChartRow = { label: p, _f: false }
+    for (const c of KVM_AREAS) row[c] = VACANCY_KVM_AREAS[c][i]
+    return row
+  })
+  const kvmNames: Record<string, string> = {}
+  const kvmColors: Record<string, string> = {}
+  for (const sd of kvmSeries) {
+    kvmNames[sd.key] = sd.label
+    kvmColors[sd.key] = sd.color
+  }
+
   const compare = (
-    <div className="ap-compare">
-      <div className="ap-compare-head">
-        Total næringsledighet — målt utvikling (halvårlig)
+    <>
+      <div className="ap-compare">
+        <div className="ap-compare-head">
+          Total næringsledighet — målt utvikling (halvårlig)
+        </div>
+        <TrendChart
+          data={totalRows}
+          series={totalSeries}
+          yFmt={(v) => fmtComma(v, 0) + "%"}
+          tipFmt={fmtPct1p}
+          names={totalNames}
+          colors={totalColors}
+          animate={s.animate}
+          height={SNAPSHOT_CHART_HEIGHT}
+        />
+        <p className="ap-note">
+          Total næringsledighet (alle segmenter) som andel av kartlagt areal, målt
+          halvårlig i Advantis markedstelling. Bodø og Harstad som region, Tromsø
+          som sentrum. Mindre byer har foreløpig ingen målt totalserie.
+        </p>
       </div>
-      <TrendChart
-        data={totalRows}
-        series={totalSeries}
-        yFmt={(v) => fmtComma(v, 0) + "%"}
-        tipFmt={fmtPct1p}
-        names={totalNames}
-        colors={totalColors}
-        animate={s.animate}
-        height={SNAPSHOT_CHART_HEIGHT}
-      />
-      <p className="ap-note">
-        Total næringsledighet (alle segmenter) som andel av kartlagt areal, målt
-        halvårlig i Advantis markedstelling. Bodø og Harstad som region, Tromsø
-        som sentrum. Mindre byer har foreløpig ingen målt totalserie.
-      </p>
-    </div>
+
+      <div className="ap-compare">
+        <div className="ap-compare-head">
+          Ledig areal per delområde — målt utvikling (ledig kvm, halvårlig)
+        </div>
+        <TrendChart
+          data={kvmRows}
+          series={kvmSeries}
+          yFmt={(v) => Math.round(v / 1000) + "k"}
+          tipFmt={(v) => fmtGroup(v) + " kvm"}
+          names={kvmNames}
+          colors={kvmColors}
+          animate={s.animate}
+          height={SNAPSHOT_CHART_HEIGHT}
+        />
+        <p className="ap-note">
+          Ledig næringsareal i kvadratmeter for de fem mest eksponerte
+          delområdene i Nord-Norge, målt halvårlig fra Advanti Estate-databasen.
+          Bodø topper med rundt 43 500 kvm; Rana har den bratteste oppgangen de
+          siste årene.
+        </p>
+      </div>
+    </>
   )
 
   return {
@@ -850,6 +908,61 @@ function viewNybygg(s: ViewState): ViewSpec {
   const done = PORTAL_SEGMENTS.reduce((a, sg) => a + lastOf(NYBYGG[sg.key]), 0)
   const dPct = Math.round(((pipe - done) / done) * 100)
 
+  // Real development pipeline by building-permit stage (Advanti Estate-database).
+  const STAGE_COLOR: Record<string, string> = {
+    ramme: PORTAL_PALETTE.mist,
+    igangsatt: PORTAL_PALETTE.terra,
+    ferdig: PORTAL_PALETTE.ink,
+  }
+  const maxStageKvm = Math.max(...UTBYGGING_STAGES.map((st) => st.kvm))
+  const pipelineCompare = (
+    <div className="ap-compare">
+      <div className="ap-compare-head">
+        Utbyggings-pipeline — næringsbygg i Nord-Norge (Advanti Estate-database)
+      </div>
+      <div className="ap-pipeline">
+        {UTBYGGING_STAGES.map((st) => (
+          <div className="ap-pl-stage" key={st.key}>
+            <div className="ap-pl-top">
+              <span className="ap-pl-label">
+                <span className="sw" style={{ background: STAGE_COLOR[st.key] }} />
+                {st.label}
+              </span>
+              <span className="ap-pl-short">{st.short}</span>
+            </div>
+            <div className="ap-pl-bar">
+              <span
+                style={{
+                  width: `${Math.round((st.kvm / maxStageKvm) * 100)}%`,
+                  background: STAGE_COLOR[st.key],
+                }}
+              />
+            </div>
+            <div className="ap-pl-nums">
+              <span className="ap-pl-kvm">{fmtGroup(st.kvm)} m²</span>
+              <span className="ap-pl-bygg">{st.bygg} bygg</span>
+            </div>
+            <ul className="ap-pl-cities">
+              {UTBYGGING_BY_CITY[st.key].slice(0, 3).map(([city, , kvm]) => (
+                <li key={city}>
+                  <span>{city}</span>
+                  <span className="r">{fmtGroup(kvm)} m²</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+      <p className="ap-note">
+        Faktisk byggesakspipeline (rammetillatelse → igangsettelse → ferdigstilt)
+        for næringsbygg i de fire nordligste regionene, fra Advanti
+        Estate-databasen. {fmtGroup(UTBYGGING_STAGES[1].kvm)} m² er under bygging;
+        Narvik og Tromsø sentrum tynger igangsatt areal mest. Topp 3 områder per
+        fase vist.
+      </p>
+    </div>
+  )
+
   const table = (
     <table className="ap-table">
       <thead>
@@ -912,7 +1025,7 @@ function viewNybygg(s: ViewState): ViewSpec {
       </>
     ),
     table,
-    compare: null,
+    compare: pipelineCompare,
     csv: csvRows(rows, {
       kontor: "Kontor",
       handel: "Handel",
