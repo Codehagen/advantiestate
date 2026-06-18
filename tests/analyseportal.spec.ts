@@ -64,7 +64,11 @@ test("all six sectors render a chart and switching is clean", async ({ page }) =
   for (const key of SECTORS) {
     await page.locator(`#ap-tab-${key}`).click()
     // Focus header updates and a recharts surface draws real geometry.
-    await expect(page.locator(".ap-focus-val")).toBeVisible()
+    // Yield renders a per-city focus band (.ap-focus-aside) instead of the
+    // single .ap-focus-val number; accept either.
+    await expect(
+      page.locator(".ap-focus-val, .ap-focus-aside").first(),
+    ).toBeVisible()
     await expect(
       page.locator(".ap-chart .recharts-surface").first(),
     ).toBeVisible({ timeout: 15_000 })
