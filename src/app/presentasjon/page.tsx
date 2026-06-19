@@ -87,7 +87,7 @@ export default function PresentationPage() {
               style={{
                 background:
                   "radial-gradient(circle, rgba(59,130,246,0.08) 0%, transparent 70%)",
-                animationDuration: "1.5s",
+                animationDuration: "0.7s",
                 animationFillMode: "backwards",
                 animationDelay: `${idx * 0.2}s`,
               }}
@@ -97,7 +97,7 @@ export default function PresentationPage() {
               style={{
                 background:
                   "radial-gradient(circle, rgba(16,185,129,0.08) 0%, transparent 70%)",
-                animationDuration: "1.5s",
+                animationDuration: "0.7s",
                 animationFillMode: "backwards",
                 animationDelay: `${idx * 0.2 + 0.3}s`,
               }}
@@ -176,7 +176,7 @@ export default function PresentationPage() {
             <div
               className="animate-slide-up-fade absolute bottom-8 left-1/2 -translate-x-1/2"
               style={{
-                animationDuration: "1s",
+                animationDuration: "0.6s",
                 animationFillMode: "backwards",
                 animationDelay: `${idx * 0.2 + 1}s`,
               }}

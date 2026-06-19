@@ -139,7 +139,8 @@ export function MarketLineChart({
                   strokeWidth: 2,
                 }}
                 isAnimationActive={animate}
-                animationDuration={600}
+                animationDuration={500}
+                animationEasing="ease-out"
               />
             ) : (
               <Line
@@ -159,7 +160,8 @@ export function MarketLineChart({
                   strokeWidth: 2,
                 }}
                 isAnimationActive={animate}
-                animationDuration={600}
+                animationDuration={500}
+                animationEasing="ease-out"
               />
             ),
           )}

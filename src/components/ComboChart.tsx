@@ -925,8 +925,7 @@ const ComboChart = React.forwardRef<HTMLDivElement, ComboChartProps>(
 
             <Tooltip
               wrapperStyle={{ outline: "none" }}
-              isAnimationActive={true}
-              animationDuration={100}
+              isAnimationActive={false}
               cursor={{ stroke: "#d1d5db", strokeWidth: 1 }}
               offset={20}
               position={{

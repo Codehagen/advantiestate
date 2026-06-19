@@ -173,7 +173,8 @@ export function TrendChart({
                   dot={false}
                   activeDot={{ r: 4, strokeWidth: 0, fill: s.color }}
                   isAnimationActive={doAnimate}
-                  animationDuration={650}
+                  animationDuration={500}
+                  animationEasing="ease-out"
                   connectNulls
                 />,
                 <Line
@@ -186,7 +187,8 @@ export function TrendChart({
                   dot={false}
                   activeDot={{ r: 3, strokeWidth: 0, fill: s.color }}
                   isAnimationActive={doAnimate}
-                  animationDuration={650}
+                  animationDuration={500}
+                  animationEasing="ease-out"
                   connectNulls
                   opacity={0.85}
                 />,
@@ -242,7 +244,8 @@ export function StackedBar({
                   stackId="hist"
                   fill={s.color}
                   isAnimationActive={doAnimate}
-                  animationDuration={650}
+                  animationDuration={500}
+                  animationEasing="ease-out"
                   maxBarSize={46}
                 >
                   {data.map((d, i) => (
@@ -315,7 +318,8 @@ export function SnapshotBar({
           fill={PORTAL_PALETTE.ink}
           maxBarSize={54}
           isAnimationActive={doAnimate}
-          animationDuration={650}
+          animationDuration={500}
+          animationEasing="ease-out"
           radius={[2, 2, 0, 0]}
         >
           {data.map((d, i) => (

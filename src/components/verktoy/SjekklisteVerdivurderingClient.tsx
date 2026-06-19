@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import type { CSSProperties } from "react";
 
 import { subscribeNewsletter } from "@/app/actions/newsletter";
 
@@ -343,7 +344,7 @@ export function SjekklisteVerdivurderingClient() {
         </div>
 
         <div className="p-bar">
-          <div className="fill" style={{ width: `${stats.pct}%` }} />
+          <div className="fill" style={{ "--fill": stats.pct / 100 } as CSSProperties} />
         </div>
 
         <div className="p-must">

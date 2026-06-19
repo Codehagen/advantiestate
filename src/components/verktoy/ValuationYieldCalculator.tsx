@@ -2,7 +2,7 @@
 
 import NumberFlow from "@number-flow/react";
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import {
   PROPERTY_TYPES,
@@ -36,6 +36,21 @@ export function ValuationYieldCalculator() {
   const [driftKrStr, setDriftKrStr] = useState("180 000");
   const [ytelseStr, setYtelseStr] = useState(pct2(YIELDS["Kontor"]));
   const [arealStr, setArealStr] = useState("1 000");
+
+  // While typing in a numeric field we update results instantly (no roll) and
+  // only let NumberFlow animate once typing settles (~350ms after last change).
+  const [isEditing, setIsEditing] = useState(false);
+  const editTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const markEditing = () => {
+    setIsEditing(true);
+    if (editTimer.current) clearTimeout(editTimer.current);
+    editTimer.current = setTimeout(() => setIsEditing(false), 350);
+  };
+  useEffect(() => {
+    return () => {
+      if (editTimer.current) clearTimeout(editTimer.current);
+    };
+  }, []);
 
   // Picking a property type resets the yield to that segment's market level.
   function pickType(t: PropertyType) {
@@ -116,7 +131,10 @@ export function ValuationYieldCalculator() {
               type="text"
               inputMode="numeric"
               value={arealStr}
-              onChange={(e) => setArealStr(e.target.value)}
+              onChange={(e) => {
+                setArealStr(e.target.value);
+                markEditing();
+              }}
               onBlur={() => blurThousands(arealStr, setArealStr)}
             />
             <span className="suffix">m²</span>
@@ -136,7 +154,10 @@ export function ValuationYieldCalculator() {
               type="text"
               inputMode="numeric"
               value={leieStr}
-              onChange={(e) => setLeieStr(e.target.value)}
+              onChange={(e) => {
+                setLeieStr(e.target.value);
+                markEditing();
+              }}
               onBlur={() => blurThousands(leieStr, setLeieStr)}
             />
             <span className="suffix">kr / år</span>
@@ -180,7 +201,10 @@ export function ValuationYieldCalculator() {
               type="text"
               inputMode="numeric"
               value={driftStr}
-              onChange={(e) => setDriftStr(e.target.value)}
+              onChange={(e) => {
+                setDriftStr(e.target.value);
+                markEditing();
+              }}
               onBlur={() => {
                 if (driftMode === "kr") blurThousands(driftKrStr, setDriftKrStr);
               }}
@@ -201,7 +225,10 @@ export function ValuationYieldCalculator() {
               type="text"
               inputMode="numeric"
               value={ytelseStr}
-              onChange={(e) => setYtelseStr(e.target.value)}
+              onChange={(e) => {
+                setYtelseStr(e.target.value);
+                markEditing();
+              }}
               onBlur={() => setYtelseStr(pct2(num(ytelseStr)))}
             />
             <span className="suffix">%</span>
@@ -224,6 +251,7 @@ export function ValuationYieldCalculator() {
                 value={r.verdi / 1e6}
                 locales="nb-NO"
                 format={{ minimumFractionDigits: 1, maximumFractionDigits: 1 }}
+                animated={!isEditing}
                 prefix="kr "
                 suffix={" mill."}
               />
@@ -257,6 +285,7 @@ export function ValuationYieldCalculator() {
                     }}
                     prefix="kr "
                     suffix=" mill."
+                    animated={!isEditing}
                   />
                 </div>
               </div>
@@ -270,6 +299,7 @@ export function ValuationYieldCalculator() {
                       minimumFractionDigits: 2,
                       maximumFractionDigits: 2,
                     }}
+                    animated={!isEditing}
                   />
                   <span className="u">%</span>
                 </div>
@@ -281,6 +311,7 @@ export function ValuationYieldCalculator() {
                     value={Math.round(r.perM2)}
                     locales="nb-NO"
                     format={{ maximumFractionDigits: 0 }}
+                    animated={!isEditing}
                   />
                   <span className="u">kr</span>
                 </div>
@@ -295,6 +326,7 @@ export function ValuationYieldCalculator() {
                       minimumFractionDigits: 1,
                       maximumFractionDigits: 1,
                     }}
+                    animated={!isEditing}
                   />
                   <span className="u">%</span>
                 </div>

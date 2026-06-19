@@ -10,6 +10,8 @@ import Link from "next/link"
 
 import { useId } from "react"
 
+import { useReducedMotion } from "@/lib/hooks/useReducedMotion"
+
 function GridPattern({
   width,
   height,
@@ -126,6 +128,7 @@ export default function CategoryCard({
 }) {
   let mouseX = useMotionValue(0)
   let mouseY = useMotionValue(0)
+  let reduce = useReducedMotion()
 
   function onMouseMove({
     currentTarget,
@@ -136,6 +139,9 @@ export default function CategoryCard({
     clientX: number
     clientY: number
   }) {
+    // Skip tracking the cursor under reduced motion — the gradient mask no
+    // longer follows the pointer, but the hover opacity fade-in still applies.
+    if (reduce) return
     let { left, top } = currentTarget.getBoundingClientRect()
     mouseX.set(clientX - left)
     mouseY.set(clientY - top)

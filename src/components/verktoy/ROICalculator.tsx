@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import NumberFlow from "@number-flow/react";
 import { Input } from "@/components/Input";
 import { RiInformationLine } from "@remixicon/react";
@@ -13,14 +13,28 @@ export function ROICalculator() {
   const [verdiOkning, setVerdiOkning] = useState(3); // %
   const [holdeperiode, setHoldeperiode] = useState(10); // years
 
-  // Calculated values
-  const [totalAvkastningPercent, setTotalAvkastningPercent] = useState(0);
-  const [arligAvkastningPercent, setArligAvkastningPercent] = useState(0);
-  const [totalVerdi, setTotalVerdi] = useState(0);
-  const [nettoGevinst, setNettoGevinst] = useState(0);
-
-  // Calculate on input change
+  // While typing in a numeric field we update results instantly (no roll) and
+  // only let NumberFlow animate once typing settles (~350ms after last change).
+  const [isEditing, setIsEditing] = useState(false);
+  const editTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const markEditing = () => {
+    setIsEditing(true);
+    if (editTimer.current) clearTimeout(editTimer.current);
+    editTimer.current = setTimeout(() => setIsEditing(false), 350);
+  };
   useEffect(() => {
+    return () => {
+      if (editTimer.current) clearTimeout(editTimer.current);
+    };
+  }, []);
+
+  // Calculated values (derived — no 0→value roll on mount)
+  const {
+    totalAvkastningPercent,
+    arligAvkastningPercent,
+    totalVerdi,
+    nettoGevinst,
+  } = useMemo(() => {
     if (initialInvestering > 0 && holdeperiode > 0) {
       // Netto årlig leieinntekt
       const nettoArligInntekt = arligLeieinntekt - driftskostnader;
@@ -40,18 +54,25 @@ export function ROICalculator() {
 
       // Total avkastning i prosent
       const totalAvkastningPct = (totalAvkastning / initialInvestering) * 100;
-      setTotalAvkastningPercent(totalAvkastningPct);
 
       // Gjennomsnittlig årlig avkastning
       const arligAvkastningPct = totalAvkastningPct / holdeperiode;
-      setArligAvkastningPercent(arligAvkastningPct);
 
-      // Total verdi (initial investering + total avkastning)
-      setTotalVerdi(initialInvestering + totalAvkastning);
-
-      // Netto gevinst
-      setNettoGevinst(totalAvkastning);
+      return {
+        totalAvkastningPercent: totalAvkastningPct,
+        arligAvkastningPercent: arligAvkastningPct,
+        // Total verdi (initial investering + total avkastning)
+        totalVerdi: initialInvestering + totalAvkastning,
+        // Netto gevinst
+        nettoGevinst: totalAvkastning,
+      };
     }
+    return {
+      totalAvkastningPercent: 0,
+      arligAvkastningPercent: 0,
+      totalVerdi: 0,
+      nettoGevinst: 0,
+    };
   }, [
     initialInvestering,
     arligLeieinntekt,
@@ -99,6 +120,7 @@ export function ROICalculator() {
                   const value = e.target.value.replace(/\s/g, "");
                   const numValue = parseInt(value) || 0;
                   setInitialInvestering(numValue);
+                  markEditing();
                 }}
                 className="pr-12"
               />
@@ -131,6 +153,7 @@ export function ROICalculator() {
                   const value = e.target.value.replace(/\s/g, "");
                   const numValue = parseInt(value) || 0;
                   setArligLeieinntekt(numValue);
+                  markEditing();
                 }}
                 className="pr-12"
               />
@@ -163,6 +186,7 @@ export function ROICalculator() {
                   const value = e.target.value.replace(/\s/g, "");
                   const numValue = parseInt(value) || 0;
                   setDriftskostnader(numValue);
+                  markEditing();
                 }}
                 className="pr-12"
               />
@@ -192,7 +216,10 @@ export function ROICalculator() {
                 type="number"
                 step="0.1"
                 value={verdiOkning}
-                onChange={(e) => setVerdiOkning(parseFloat(e.target.value) || 0)}
+                onChange={(e) => {
+                  setVerdiOkning(parseFloat(e.target.value) || 0);
+                  markEditing();
+                }}
                 className="pr-12"
               />
               <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-warm-grey-2">
@@ -222,7 +249,10 @@ export function ROICalculator() {
                 step="1"
                 min="1"
                 value={holdeperiode}
-                onChange={(e) => setHoldeperiode(parseInt(e.target.value) || 1)}
+                onChange={(e) => {
+                  setHoldeperiode(parseInt(e.target.value) || 1);
+                  markEditing();
+                }}
                 className="pr-12"
               />
               <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-warm-grey-2">
@@ -247,6 +277,7 @@ export function ROICalculator() {
                 minimumFractionDigits: 1,
                 maximumFractionDigits: 1,
               }}
+              animated={!isEditing}
               className="text-4xl font-bold text-warm-grey"
             />
             <span className="ml-2 text-2xl font-semibold text-warm-grey-2">
@@ -270,6 +301,7 @@ export function ROICalculator() {
                 minimumFractionDigits: 1,
                 maximumFractionDigits: 1,
               }}
+              animated={!isEditing}
               className="text-4xl font-bold text-warm-grey"
             />
             <span className="ml-2 text-2xl font-semibold text-warm-grey-2">
@@ -296,6 +328,7 @@ export function ROICalculator() {
                 maximumFractionDigits: 0,
               }}
               locales="no-NO"
+              animated={!isEditing}
               className="text-3xl font-bold text-warm-grey"
             />
           </div>
@@ -319,6 +352,7 @@ export function ROICalculator() {
                 maximumFractionDigits: 0,
               }}
               locales="no-NO"
+              animated={!isEditing}
               className="text-3xl font-bold text-warm-grey"
             />
           </div>

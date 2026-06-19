@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import NumberFlow from "@number-flow/react";
 import { Input } from "@/components/Input";
 import { RiInformationLine } from "@remixicon/react";
@@ -12,18 +12,31 @@ export function MortgageCalculator() {
   const [rentesats, setRentesats] = useState(5.5); // %
   const [nedbetalingstid, setNedbetalingstid] = useState(25); // years
 
-  // Calculated values
-  const [lanebelop, setLanebelop] = useState(0);
-  const [manedligKostnad, setManedligKostnad] = useState(0);
-  const [totalRentekostnad, setTotalRentekostnad] = useState(0);
-  const [totalKostnad, setTotalKostnad] = useState(0);
-  const [belaning, setBelaning] = useState(0);
-
-  // Calculate on input change
+  // While typing in a numeric field we update results instantly (no roll) and
+  // only let NumberFlow animate once typing settles (~350ms after last change).
+  const [isEditing, setIsEditing] = useState(false);
+  const editTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const markEditing = () => {
+    setIsEditing(true);
+    if (editTimer.current) clearTimeout(editTimer.current);
+    editTimer.current = setTimeout(() => setIsEditing(false), 350);
+  };
   useEffect(() => {
+    return () => {
+      if (editTimer.current) clearTimeout(editTimer.current);
+    };
+  }, []);
+
+  // Calculated values (derived — no 0→value roll on mount)
+  const {
+    lanebelop,
+    manedligKostnad,
+    totalRentekostnad,
+    totalKostnad,
+    belaning,
+  } = useMemo(() => {
     // Lånebeløp = Kjøpesum - Egenkapital
     const laneAmount = kjopesum - egenkapital;
-    setLanebelop(laneAmount);
 
     if (laneAmount > 0 && rentesats > 0 && nedbetalingstid > 0) {
       // Månedlig rente
@@ -38,20 +51,32 @@ export function MortgageCalculator() {
         (laneAmount *
           (manedligRente * Math.pow(1 + manedligRente, antallManeder))) /
         (Math.pow(1 + manedligRente, antallManeder) - 1);
-      setManedligKostnad(manedlig);
 
       // Total kostnad
       const totalCost = manedlig * antallManeder;
-      setTotalKostnad(totalCost);
 
       // Total rentekostnad
       const totalRente = totalCost - laneAmount;
-      setTotalRentekostnad(totalRente);
 
       // Belåningsgrad (LTV - Loan to Value)
       const ltv = (laneAmount / kjopesum) * 100;
-      setBelaning(ltv);
+
+      return {
+        lanebelop: laneAmount,
+        manedligKostnad: manedlig,
+        totalRentekostnad: totalRente,
+        totalKostnad: totalCost,
+        belaning: ltv,
+      };
     }
+
+    return {
+      lanebelop: laneAmount,
+      manedligKostnad: 0,
+      totalRentekostnad: 0,
+      totalKostnad: 0,
+      belaning: 0,
+    };
   }, [kjopesum, egenkapital, rentesats, nedbetalingstid]);
 
   const formatCurrency = (value: number) => {
@@ -93,6 +118,7 @@ export function MortgageCalculator() {
                   const value = e.target.value.replace(/\s/g, "");
                   const numValue = parseInt(value) || 0;
                   setKjopesum(numValue);
+                  markEditing();
                 }}
                 className="pr-12"
               />
@@ -125,6 +151,7 @@ export function MortgageCalculator() {
                   const value = e.target.value.replace(/\s/g, "");
                   const numValue = parseInt(value) || 0;
                   setEgenkapital(numValue);
+                  markEditing();
                 }}
                 className="pr-12"
               />
@@ -154,7 +181,10 @@ export function MortgageCalculator() {
                 type="number"
                 step="0.1"
                 value={rentesats}
-                onChange={(e) => setRentesats(parseFloat(e.target.value) || 0)}
+                onChange={(e) => {
+                  setRentesats(parseFloat(e.target.value) || 0);
+                  markEditing();
+                }}
                 className="pr-12"
               />
               <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-warm-grey-2">
@@ -184,9 +214,10 @@ export function MortgageCalculator() {
                 step="1"
                 min="1"
                 value={nedbetalingstid}
-                onChange={(e) =>
-                  setNedbetalingstid(parseInt(e.target.value) || 1)
-                }
+                onChange={(e) => {
+                  setNedbetalingstid(parseInt(e.target.value) || 1);
+                  markEditing();
+                }}
                 className="pr-12"
               />
               <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-warm-grey-2">
@@ -214,6 +245,7 @@ export function MortgageCalculator() {
                 maximumFractionDigits: 0,
               }}
               locales="no-NO"
+              animated={!isEditing}
               className="text-4xl font-bold text-warm-grey"
             />
           </div>
@@ -237,6 +269,7 @@ export function MortgageCalculator() {
                 maximumFractionDigits: 0,
               }}
               locales="no-NO"
+              animated={!isEditing}
               className="text-4xl font-bold text-warm-grey"
             />
           </div>
@@ -260,6 +293,7 @@ export function MortgageCalculator() {
                 maximumFractionDigits: 0,
               }}
               locales="no-NO"
+              animated={!isEditing}
               className="text-3xl font-bold text-warm-grey"
             />
           </div>
@@ -283,6 +317,7 @@ export function MortgageCalculator() {
                 maximumFractionDigits: 0,
               }}
               locales="no-NO"
+              animated={!isEditing}
               className="text-3xl font-bold text-warm-grey"
             />
           </div>
@@ -303,6 +338,7 @@ export function MortgageCalculator() {
                 minimumFractionDigits: 1,
                 maximumFractionDigits: 1,
               }}
+              animated={!isEditing}
               className="text-3xl font-bold text-warm-grey"
             />
             <span className="ml-2 text-xl font-semibold text-warm-grey-2">
