@@ -3,6 +3,7 @@
 import { motion } from "motion/react"
 import { useEffect, useId, useRef, useState } from "react"
 
+import { useReducedMotion } from "@/lib/hooks/useReducedMotion"
 import { cx } from "@/lib/utils"
 
 interface AnimatedGridPatternProps {
@@ -38,6 +39,7 @@ export function AnimatedGridPattern({
   ...props
 }: AnimatedGridPatternProps) {
   const id = useId()
+  const reduce = useReducedMotion()
   const containerRef = useRef<SVGSVGElement>(null)
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 })
   const [squares, setSquares] = useState<Square[]>([])
@@ -64,13 +66,16 @@ export function AnimatedGridPattern({
     }
 
     regenerate()
+    // Under reduced motion the grid is a static decoration: populate the
+    // squares once above and skip arming the regeneration loop entirely.
+    if (reduce) return
     // One full fade in/out plus the stagger of the last square — squares sit at
     // opacity 0 by then, so regenerating positions causes no visible jump.
     const cycleMs =
       (duration * 2 + repeatDelay + numSquares * 0.1 + 0.5) * 1000
     const timer = window.setInterval(regenerate, cycleMs)
     return () => window.clearInterval(timer)
-  }, [dimensions, numSquares, width, height, duration, repeatDelay])
+  }, [dimensions, numSquares, width, height, duration, repeatDelay, reduce])
 
   // Single ResizeObserver tracks the container size.
   useEffect(() => {
@@ -112,25 +117,40 @@ export function AnimatedGridPattern({
       </defs>
       <rect width="100%" height="100%" fill={`url(#${id})`} />
       <svg x={x} y={y} className="overflow-visible">
-        {squares.map((square, index) => (
-          <motion.rect
-            key={square.id}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: maxOpacity }}
-            transition={{
-              duration,
-              repeat: 1,
-              delay: index * 0.1,
-              repeatType: "reverse",
-            }}
-            width={width - 1}
-            height={height - 1}
-            x={square.x * width + 1}
-            y={square.y * height + 1}
-            fill="currentColor"
-            strokeWidth="0"
-          />
-        ))}
+        {squares.map((square, index) =>
+          reduce ? (
+            // Static, visible rect — no opacity animation that would otherwise
+            // settle invisible after the reverse cycle.
+            <rect
+              key={square.id}
+              width={width - 1}
+              height={height - 1}
+              x={square.x * width + 1}
+              y={square.y * height + 1}
+              fill="currentColor"
+              strokeWidth="0"
+              opacity={maxOpacity}
+            />
+          ) : (
+            <motion.rect
+              key={square.id}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: maxOpacity }}
+              transition={{
+                duration,
+                repeat: 1,
+                delay: index * 0.1,
+                repeatType: "reverse",
+              }}
+              width={width - 1}
+              height={height - 1}
+              x={square.x * width + 1}
+              y={square.y * height + 1}
+              fill="currentColor"
+              strokeWidth="0"
+            />
+          ),
+        )}
       </svg>
     </svg>
   )

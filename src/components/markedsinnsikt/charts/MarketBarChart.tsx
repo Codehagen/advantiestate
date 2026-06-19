@@ -127,7 +127,8 @@ export function MarketBarChart({
               stroke="var(--warm-grey-75)"
               strokeWidth={0.75}
               isAnimationActive={animate}
-              animationDuration={600}
+              animationDuration={500}
+              animationEasing="ease-out"
               radius={isRows ? [0, 1, 1, 0] : [1, 1, 0, 0]}
             >
               {highlightLast &&

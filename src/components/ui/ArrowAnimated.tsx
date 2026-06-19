@@ -20,7 +20,7 @@ export function ArrowAnimated({
         d="M0 5h7"
       />
       <path
-        className="transition group-hover:translate-x-[3px]"
+        className="transition motion-safe:group-hover:translate-x-[3px]"
         d="M1 1l4 4-4 4"
       />
     </svg>

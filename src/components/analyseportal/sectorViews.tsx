@@ -9,7 +9,7 @@
 // the canonical series in marketData/portalSeries at build — never typed in.
 
 import dynamic from "next/dynamic"
-import type { ReactNode } from "react"
+import type { CSSProperties, ReactNode } from "react"
 import NumberFlow from "@number-flow/react"
 import {
   QUARTERS,
@@ -835,7 +835,7 @@ function viewLedighet(s: ViewState): ViewSpec {
             <div className="ap-stock-row" key={region}>
               <span className="ap-stock-lbl">{region}</span>
               <div className="ap-stock-bar">
-                <span style={{ width: `${Math.round((mnd / 18) * 100)}%` }} />
+                <span style={{ "--fill": mnd / 18 } as CSSProperties} />
               </div>
               <span className="ap-stock-kvm">{fmtComma(mnd, 1)} mnd</span>
               <span className="ap-stock-pct" />
@@ -990,9 +990,9 @@ function viewNybygg(s: ViewState): ViewSpec {
             <div className="ap-pl-bar">
               <span
                 style={{
-                  width: `${Math.round((st.kvm / maxStageKvm) * 100)}%`,
+                  "--fill": st.kvm / maxStageKvm,
                   background: STAGE_COLOR[st.key],
-                }}
+                } as CSSProperties}
               />
             </div>
             <div className="ap-pl-nums">
@@ -1050,7 +1050,7 @@ function viewNybygg(s: ViewState): ViewSpec {
           <div className="ap-stock-row" key={sg.key}>
             <span className="ap-stock-lbl">{sg.label}</span>
             <div className="ap-stock-bar">
-              <span style={{ width: `${Math.round((sg.kvm / maxStockKvm) * 100)}%` }} />
+              <span style={{ "--fill": sg.kvm / maxStockKvm } as CSSProperties} />
             </div>
             <span className="ap-stock-kvm">{fmtGroup(sg.kvm)} m²</span>
             <span className="ap-stock-pct">
@@ -1081,9 +1081,9 @@ function viewNybygg(s: ViewState): ViewSpec {
             <div className="ap-stock-bar">
               <span
                 style={{
-                  width: `${Math.round((e.kvm / maxEierKvm) * 100)}%`,
+                  "--fill": e.kvm / maxEierKvm,
                   background: eierColor[e.cat],
-                }}
+                } as CSSProperties}
               />
             </div>
             <span className="ap-stock-kvm">{fmtGroup(e.kvm)} m²</span>

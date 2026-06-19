@@ -144,6 +144,7 @@ const SelectContent = React.forwardRef<
           "border-warm-grey-1",
           // transition
           "will-change-[transform,opacity]",
+          "motion-reduce:animate-none",
           "data-[state=closed]:animate-hide",
           "data-[side=bottom]:animate-slideDownAndFade data-[side=left]:animate-slideLeftAndFade data-[side=right]:animate-slideRightAndFade data-[side=top]:animate-slideUpAndFade",
           className,

@@ -2,6 +2,8 @@
 
 import { motion } from "motion/react"
 
+import { useReducedMotion } from "@/lib/hooks/useReducedMotion"
+
 const container = {
   hidden: {},
   show: {
@@ -32,6 +34,19 @@ const item = {
   },
 }
 
+// Reduced-motion variant: fade in opacity only — no translate, blur, or spring.
+const reducedItem = {
+  hidden: {
+    opacity: 0,
+  },
+  show: {
+    opacity: 1,
+    transition: {
+      duration: 0.2,
+    },
+  },
+}
+
 function FadeContainer({
   children,
   className,
@@ -55,8 +70,9 @@ function FadeDiv({
   children: React.ReactNode
   className?: string
 }) {
+  const reduce = useReducedMotion()
   return (
-    <motion.div variants={item} className={className}>
+    <motion.div variants={reduce ? reducedItem : item} className={className}>
       {children}
     </motion.div>
   )
@@ -68,8 +84,9 @@ function FadeSpan({
   children: React.ReactNode
   className?: string
 }) {
+  const reduce = useReducedMotion()
   return (
-    <motion.span variants={item} className={className}>
+    <motion.span variants={reduce ? reducedItem : item} className={className}>
       {children}
     </motion.span>
   )

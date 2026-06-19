@@ -55,7 +55,7 @@ code .line::before {
 }
 
 a {
-  @apply scroll-my-24 decoration-warm-grey-2 transition-all;
+  @apply scroll-my-24 decoration-warm-grey-2 transition-colors;
 }
 
 .anchor-link {
@@ -75,12 +75,20 @@ a {
   @apply visible;
 }
 
-/* PERF-4: respect reduced-motion for the marquee ticker + scroll cue */
+/* PERF-4: respect reduced-motion for the marquee ticker + scroll cue, the
+   /presentasjon entrance cascade, and the bouncing scroll-arrow. Utility
+   classes need !important to beat Tailwind's own animation utilities. */
 @media (prefers-reduced-motion: reduce) {
   .ticker-track {
     animation: none !important;
   }
   .scroll-cue::after {
+    animation: none !important;
+  }
+  .animate-slide-up-fade {
+    animation: none !important;
+  }
+  .animate-bounce {
     animation: none !important;
   }
 }

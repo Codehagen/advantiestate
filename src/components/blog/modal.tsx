@@ -55,8 +55,10 @@ export default function Modal({
           }
         }}
       >
-        <Drawer.Overlay className="fixed inset-0 z-40 bg-warm-grey-2/5 backdrop-blur" />
         <Drawer.Portal>
+          {/* Overlay must live inside the Portal so vaul binds its
+              drag-coordinated opacity to the visible backdrop. */}
+          <Drawer.Overlay className="fixed inset-0 z-40 bg-warm-grey-2/5 backdrop-blur" />
           <Drawer.Content
             className={cx(
               "fixed bottom-0 left-0 right-0 z-50 mt-24 rounded-t-[10px] border-t border-warm-grey-2/20 bg-warm-white",
@@ -68,7 +70,6 @@ export default function Modal({
             </div>
             {children}
           </Drawer.Content>
-          <Drawer.Overlay />
         </Drawer.Portal>
       </Drawer.Root>
     )
@@ -86,13 +87,15 @@ export default function Modal({
         <Dialog.Overlay
           // for detecting when there's an active opened modal
           id="modal-backdrop"
-          className="animate-fade-in fixed inset-0 z-40 bg-warm-grey-2/5 backdrop-blur-md"
+          className="animate-dialogOverlayShow fixed inset-0 z-40 bg-warm-grey-2/5 backdrop-blur-md"
         />
         <Dialog.Content
           onOpenAutoFocus={(e) => e.preventDefault()}
           onCloseAutoFocus={(e) => e.preventDefault()}
           className={cx(
-            "animate-scale-in fixed inset-0 z-40 m-auto max-h-fit w-full max-w-md overflow-hidden bg-warm-white p-0 shadow-xl md:rounded-2xl",
+            // scale-in from 0.96 (modal stays centred); reduced motion falls
+            // back to an opacity-only fade.
+            "animate-scale-in motion-reduce:animate-dialogOverlayShow fixed inset-0 z-40 m-auto max-h-fit w-full max-w-md overflow-hidden bg-warm-white p-0 shadow-xl md:rounded-2xl",
             className,
           )}
         >

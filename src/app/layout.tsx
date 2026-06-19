@@ -2,6 +2,7 @@ import { Analytics } from "@vercel/analytics/next";
 import { GoogleTagManager } from "@/components/analytics/GoogleTagManager";
 import { TrackingListener } from "@/components/analytics/TrackingListener";
 import { Footer } from "@/components/site/Footer";
+import { MotionProvider } from "@/components/MotionProvider";
 import { Nav } from "@/components/site/Nav";
 import { navGroups } from "@/lib/navigation";
 import { baseMetadata } from "@/lib/utils";
@@ -52,7 +53,7 @@ export default async function RootLayout({
           Hopp til innhold
         </a>
         <main id="hovedinnhold" tabIndex={-1}>
-          {children}
+          <MotionProvider>{children}</MotionProvider>
         </main>
         <Footer />
         {/* Only on real Vercel deploys — locally/CI the insights script 404s

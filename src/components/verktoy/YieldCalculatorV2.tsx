@@ -2,7 +2,7 @@
 
 import NumberFlow from "@number-flow/react";
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import {
   PROPERTY_TYPES,
@@ -42,6 +42,21 @@ export function YieldCalculatorV2() {
   const [finOn, setFinOn] = useState(true);
   const [ltvStr, setLtvStr] = useState("70");
   const [renteStr, setRenteStr] = useState("5,5");
+
+  // While typing in a numeric field we update results instantly (no roll) and
+  // only let NumberFlow animate once typing settles (~350ms after last change).
+  const [isEditing, setIsEditing] = useState(false);
+  const editTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const markEditing = () => {
+    setIsEditing(true);
+    if (editTimer.current) clearTimeout(editTimer.current);
+    editTimer.current = setTimeout(() => setIsEditing(false), 350);
+  };
+  useEffect(() => {
+    return () => {
+      if (editTimer.current) clearTimeout(editTimer.current);
+    };
+  }, []);
 
   // Clamp the free-text finance fields so impossible input (e.g. LTV > 100,
   // which would make egenkapital negative) can't drive the result card into
@@ -130,7 +145,10 @@ export function YieldCalculatorV2() {
               type="text"
               inputMode="numeric"
               value={leieStr}
-              onChange={(e) => setLeieStr(e.target.value)}
+              onChange={(e) => {
+                setLeieStr(e.target.value);
+                markEditing();
+              }}
               onBlur={() => blurThousands(leieStr, setLeieStr)}
             />
             <span className="suffix">kr / år</span>
@@ -148,7 +166,10 @@ export function YieldCalculatorV2() {
               type="text"
               inputMode="numeric"
               value={kjopStr}
-              onChange={(e) => setKjopStr(e.target.value)}
+              onChange={(e) => {
+                setKjopStr(e.target.value);
+                markEditing();
+              }}
               onBlur={() => blurThousands(kjopStr, setKjopStr)}
             />
             <span className="suffix">kr</span>
@@ -192,7 +213,10 @@ export function YieldCalculatorV2() {
               type="text"
               inputMode="numeric"
               value={driftStr}
-              onChange={(e) => setDriftStr(e.target.value)}
+              onChange={(e) => {
+                setDriftStr(e.target.value);
+                markEditing();
+              }}
               onBlur={() => {
                 if (driftMode === "kr") blurThousands(driftKrStr, setDriftKrStr);
               }}
@@ -236,7 +260,10 @@ export function YieldCalculatorV2() {
                     type="text"
                     inputMode="numeric"
                     value={ltvStr}
-                    onChange={(e) => setLtvStr(e.target.value)}
+                    onChange={(e) => {
+                      setLtvStr(e.target.value);
+                      markEditing();
+                    }}
                   />
                   <span className="suffix">%</span>
                 </div>
@@ -251,7 +278,10 @@ export function YieldCalculatorV2() {
                     type="text"
                     inputMode="numeric"
                     value={renteStr}
-                    onChange={(e) => setRenteStr(e.target.value)}
+                    onChange={(e) => {
+                      setRenteStr(e.target.value);
+                      markEditing();
+                    }}
                     onBlur={() => setRenteStr(pct1(num(renteStr)))}
                   />
                   <span className="suffix">%</span>
@@ -275,6 +305,7 @@ export function YieldCalculatorV2() {
             value={r.netto}
             locales="nb-NO"
             format={{ minimumFractionDigits: 2, maximumFractionDigits: 2 }}
+            animated={!isEditing}
           />
           <span className="u">%</span>
         </div>
@@ -310,6 +341,7 @@ export function YieldCalculatorV2() {
                 value={r.brutto}
                 locales="nb-NO"
                 format={{ minimumFractionDigits: 2, maximumFractionDigits: 2 }}
+                animated={!isEditing}
               />
               <span className="u">%</span>
             </div>
@@ -337,6 +369,7 @@ export function YieldCalculatorV2() {
                       minimumFractionDigits: 1,
                       maximumFractionDigits: 1,
                     }}
+                    animated={!isEditing}
                   />
                   <span className="u">år</span>
                 </>

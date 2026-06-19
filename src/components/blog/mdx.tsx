@@ -23,7 +23,7 @@ const DcfChart = dynamic(
   {
     ssr: false,
     loading: () => (
-      <div className="mt-8 h-[420px] w-full animate-pulse rounded-lg border border-warm-grey-2/20 bg-warm-grey-2/10" />
+      <div className="mt-8 h-[420px] w-full animate-pulse rounded-lg border border-warm-grey-2/20 bg-warm-grey-2/10 motion-reduce:animate-none" />
     ),
   },
 )
@@ -662,7 +662,7 @@ export function MDX({ code, images, className }: MDXProps) {
   return (
     <article
       data-mdx-container
-      className={cx("ks-prose max-w-none transition-all", className)}
+      className={cx("ks-prose max-w-none", className)}
     >
       <MDXContent
         code={code}

@@ -13,6 +13,7 @@
 import dynamic from "next/dynamic"
 import Link from "next/link"
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
+import type { CSSProperties } from "react"
 
 import { SeOgsa } from "@/components/site/SeOgsa"
 import { MapErrorBoundary } from "@/components/markedsinnsikt/MapErrorBoundary"
@@ -491,9 +492,9 @@ export function MarkedsKartHoved() {
                       <span
                         className="rb-fill"
                         style={{
-                          width: `${(12 + t * 88).toFixed(0)}%`,
+                          "--fill": (12 + t * 88) / 100,
                           background: lerpColor(RAMP_LOW, RAMP_HIGH, t),
-                        }}
+                        } as CSSProperties}
                       />
                     </span>
                     <span className="rv">{m.fmt(c.values[metric])}</span>

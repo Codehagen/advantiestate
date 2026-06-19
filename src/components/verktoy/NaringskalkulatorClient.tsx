@@ -2,7 +2,7 @@
 
 import NumberFlow from "@number-flow/react";
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import {
   CITIES,
@@ -33,6 +33,22 @@ export function NaringskalkulatorClient() {
   const [rentStr, setRentStr] = useState("3 200 000");
   const [vacancyStr, setVacancyStr] = useState("5");
   const [opexStr, setOpexStr] = useState("10");
+
+  // While typing in a numeric field we update results instantly (no roll) and
+  // only let NumberFlow animate once typing settles (~350ms after last change).
+  // Vacancy/opex have no onBlur, so the debounce reset is the only signal back.
+  const [isEditing, setIsEditing] = useState(false);
+  const editTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const markEditing = () => {
+    setIsEditing(true);
+    if (editTimer.current) clearTimeout(editTimer.current);
+    editTimer.current = setTimeout(() => setIsEditing(false), 350);
+  };
+  useEffect(() => {
+    return () => {
+      if (editTimer.current) clearTimeout(editTimer.current);
+    };
+  }, []);
 
   const result = useMemo(
     () =>
@@ -122,7 +138,10 @@ export function NaringskalkulatorClient() {
               type="text"
               inputMode="numeric"
               value={areaStr}
-              onChange={(e) => setAreaStr(e.target.value)}
+              onChange={(e) => {
+                setAreaStr(e.target.value);
+                markEditing();
+              }}
               onBlur={() => formatThousands(areaStr, setAreaStr)}
             />
             <span className="suffix">m² BTA</span>
@@ -141,7 +160,10 @@ export function NaringskalkulatorClient() {
               type="text"
               inputMode="numeric"
               value={rentStr}
-              onChange={(e) => setRentStr(e.target.value)}
+              onChange={(e) => {
+                setRentStr(e.target.value);
+                markEditing();
+              }}
               onBlur={() => formatThousands(rentStr, setRentStr)}
             />
             <span className="suffix">kr / år</span>
@@ -166,7 +188,10 @@ export function NaringskalkulatorClient() {
                 type="text"
                 inputMode="numeric"
                 value={vacancyStr}
-                onChange={(e) => setVacancyStr(e.target.value)}
+                onChange={(e) => {
+                  setVacancyStr(e.target.value);
+                  markEditing();
+                }}
               />
               <span className="suffix">%</span>
             </div>
@@ -181,7 +206,10 @@ export function NaringskalkulatorClient() {
                 type="text"
                 inputMode="numeric"
                 value={opexStr}
-                onChange={(e) => setOpexStr(e.target.value)}
+                onChange={(e) => {
+                  setOpexStr(e.target.value);
+                  markEditing();
+                }}
               />
               <span className="suffix">%</span>
             </div>
@@ -210,6 +238,7 @@ export function NaringskalkulatorClient() {
                 }}
                 prefix="kr "
                 suffix=" mill."
+                animated={!isEditing}
               />
             </div>
             <div className="r-range">
@@ -241,6 +270,7 @@ export function NaringskalkulatorClient() {
                     }}
                     prefix="kr "
                     suffix=" mill."
+                    animated={!isEditing}
                   />
                 </div>
               </div>
@@ -254,6 +284,7 @@ export function NaringskalkulatorClient() {
                       minimumFractionDigits: 2,
                       maximumFractionDigits: 2,
                     }}
+                    animated={!isEditing}
                   />
                   <span className="u">%</span>
                 </div>
@@ -265,6 +296,7 @@ export function NaringskalkulatorClient() {
                     value={Math.round(result.valuePerM2)}
                     locales="nb-NO"
                     format={{ maximumFractionDigits: 0 }}
+                    animated={!isEditing}
                   />
                   <span className="u">kr</span>
                 </div>
@@ -279,6 +311,7 @@ export function NaringskalkulatorClient() {
                       minimumFractionDigits: 1,
                       maximumFractionDigits: 1,
                     }}
+                    animated={!isEditing}
                   />
                   <span className="u">%</span>
                 </div>
