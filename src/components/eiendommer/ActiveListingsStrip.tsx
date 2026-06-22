@@ -2,7 +2,6 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { getListings } from "@/lib/listing/listings";
-import { getListingCovers } from "@/lib/listing/gallery";
 
 const STATUS_LABELS: Record<string, string> = {
   "til-salgs": "Til salgs",
@@ -91,9 +90,9 @@ export async function ActiveListingsStrip({
 
   if (cards.length === 0) return null;
 
-  // CRM-published covers (Supabase), keyed by slug; MDX cover is the fallback —
-  // same source as the /eiendommer grid so a publish updates every card.
-  const covers = await getListingCovers(cards.map((c) => c.slug));
+  // Cover image comes from getListings() (mapProfileToListing sets coverImage =
+  // the published CRM cover_image), so no separate getListingCovers() query is
+  // needed — the previous redundant round-trip on every cross-link strip is gone.
 
   return (
     <section className="section section-divider">
@@ -121,8 +120,8 @@ export async function ActiveListingsStrip({
               >
                 <div className="ei-card-photo">
                   <Image
-                    src={covers[listing.slug]?.src ?? listing.coverImage}
-                    alt={covers[listing.slug]?.alt ?? listing.coverImageAlt}
+                    src={listing.coverImage}
+                    alt={listing.coverImageAlt}
                     fill
                     sizes="(max-width: 680px) 100vw, (max-width: 980px) 50vw, 33vw"
                     style={{ objectFit: "cover" }}

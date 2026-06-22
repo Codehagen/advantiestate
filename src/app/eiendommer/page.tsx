@@ -3,7 +3,6 @@ import Link from "next/link";
 import { constructMetadata } from "@/lib/utils";
 import { siteConfig } from "@/app/siteConfig";
 import { getListings } from "@/lib/listing/listings";
-import { getListingCovers } from "@/lib/listing/gallery";
 import { SubHero } from "@/components/site/SubHero";
 import {
   ListingsBrowser,
@@ -103,8 +102,9 @@ export const revalidate = 600;
 
 export default async function EiendommerPage() {
   const listings = await getListings();
-  // CRM-published covers (Supabase), keyed by slug; MDX cover is the fallback.
-  const covers = await getListingCovers(listings.map((l) => l.slug));
+  // Cover image already comes from getListings() — mapProfileToListing sets
+  // coverImage = cover_image (same Supabase column), so the previous separate
+  // getListingCovers() query was a redundant round-trip and has been removed.
 
   // KPI totals
   const activeCount = listings.filter(
@@ -167,8 +167,8 @@ export default async function EiendommerPage() {
     yieldNetto: listing.yieldNetto,
     yieldEstimat: listing.yieldEstimat ?? false,
     ferdig: listing.ferdig,
-    coverImage: covers[listing.slug]?.src ?? listing.coverImage,
-    coverImageAlt: covers[listing.slug]?.alt ?? listing.coverImageAlt,
+    coverImage: listing.coverImage,
+    coverImageAlt: listing.coverImageAlt,
     featured: listing.featured ?? false,
     featuredEyebrow: listing.featuredEyebrow,
     summary: listing.summary,
@@ -208,8 +208,8 @@ export default async function EiendommerPage() {
         url: `${siteConfig.url}/eiendommer/${listing.slug}`,
         name: listing.title,
         description: listing.summary,
-        image: (covers[listing.slug]?.src ?? listing.coverImage).startsWith("http")
-          ? (covers[listing.slug]?.src ?? listing.coverImage)
+        image: listing.coverImage.startsWith("http")
+          ? listing.coverImage
           : `${siteConfig.url}${listing.coverImage}`,
         ...(listing.prisantydning
           ? {

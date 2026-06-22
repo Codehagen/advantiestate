@@ -10,7 +10,6 @@ import { HELP_LINK_INDEX } from "@/lib/blog/help-link-index"
 import { cx } from "@/lib/utils"
 
 import { Advisor } from "./Advisor"
-import CategoryCard from "./category-card"
 import CopyBox from "./copy-box"
 import HelpArticleLink from "./help-article-link"
 import ZoomImage from "./zoom-image"
@@ -39,6 +38,12 @@ const AnimatedGridPattern = dynamic(
 const KatexMath = dynamic(() =>
   import("./katex-math").then((m) => m.KatexMath),
 )
+
+// category-card pulls in framer-motion (motion/react). It is only used by the
+// <HelpCategories> MDX widget, which no article currently renders — so loading
+// it dynamically keeps framer-motion out of every blog/help/listing/person page.
+// Default (ssr:true) so the category links still server-render when used.
+const CategoryCard = dynamic(() => import("./category-card"))
 
 const CustomLink = (props: any) => {
   const href = props.href

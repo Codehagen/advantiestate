@@ -110,15 +110,15 @@ export default async function CustomerStory({
     notFound();
   }
 
-  const [, images] = await Promise.all([
-    getBlurDataURL(data.image),
-    Promise.all(
-      data.images.map(async (src: string) => ({
-        src,
-        blurDataURL: await getBlurDataURL(src),
-      })),
-    ),
-  ]);
+  // Blur placeholders for the MDX body images. (A previous getBlurDataURL(
+  // data.image) call here was dead — its result was discarded by the leading
+  // comma and data.image's blur is never used — so it has been removed.)
+  const images = await Promise.all(
+    data.images.map(async (src: string) => ({
+      src,
+      blurDataURL: await getBlurDataURL(src),
+    })),
+  );
 
   const pres = PRESENTATION[data.slug];
   const companyInitial = data.company.charAt(0).toUpperCase();

@@ -82,3 +82,6 @@ tsconfig.tsbuildinfo
 .agents/
 .vercel
 skills-lock.json
+
+# Perf harness: transient measurement log (regenerated each run)
+scripts/perf/results.csv

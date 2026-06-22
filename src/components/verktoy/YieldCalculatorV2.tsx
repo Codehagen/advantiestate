@@ -26,6 +26,20 @@ const fmtMoney = (n: number) =>
 
 const num = (s: string) => parseNorwegianNumber(s) ?? 0;
 
+// Hoisted formatters — built once instead of constructing a transient
+// Intl.NumberFormat on every call (pct2 runs for diff/netto/brutto/market/payback
+// on each render). Output is identical to the previous toLocaleString calls.
+const _PCT1 = new Intl.NumberFormat("nb-NO", {
+  minimumFractionDigits: 1,
+  maximumFractionDigits: 1,
+});
+const _PCT2 = new Intl.NumberFormat("nb-NO", {
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2,
+});
+const pct1 = (n: number) => _PCT1.format(n);
+const pct2 = (n: number) => _PCT2.format(n);
+
 // Benchmark track runs 3 %–10 %; position the market mark + result dot on it.
 const SMIN = 3;
 const SMAX = 10;
@@ -88,17 +102,6 @@ export function YieldCalculatorV2() {
     });
     return `/verdivurdering?${params.toString()}`;
   }, [type, leieStr, kjopStr]);
-
-  const pct1 = (n: number) =>
-    n.toLocaleString("nb-NO", {
-      minimumFractionDigits: 1,
-      maximumFractionDigits: 1,
-    });
-  const pct2 = (n: number) =>
-    n.toLocaleString("nb-NO", {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    });
 
   function blurThousands(s: string, set: (v: string) => void) {
     const n = parseNorwegianNumber(s);

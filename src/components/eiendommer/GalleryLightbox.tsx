@@ -1,8 +1,17 @@
 "use client";
 
 import { useState, type ReactNode } from "react";
+import dynamic from "next/dynamic";
 
-import { ListingLightbox, type LightboxImage } from "./ListingLightbox";
+import type { LightboxImage } from "./ListingLightbox";
+
+// Radix Dialog (+ visually-hidden) only ships when the user actually opens the
+// lightbox — the render below is already gated on openIndex !== null, so this
+// keeps the dialog out of First Load JS on the heaviest page (/eiendommer/[slug]).
+const ListingLightbox = dynamic(
+  () => import("./ListingLightbox").then((m) => m.ListingLightbox),
+  { ssr: false },
+);
 
 /*
  * Client wrapper around the server-rendered .ed-gallery grid.

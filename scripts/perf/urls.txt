@@ -1,0 +1,62 @@
+# Canonical repeatable page-load test inventory for Advanti.
+# One entry per distinct page + one representative per templated (SSG) route.
+# Lines starting with # and blank lines are ignored.
+# Keep this list stable so measurements are comparable across runs.
+
+# --- Static pages (○) ---
+/
+/analyseportal
+/beslutningsgrunnlag
+/blog
+/eiendommer
+/help
+/integrasjoner
+/investorportal
+/karriere
+/kontakt
+/kunder
+/landing/verdivurdering
+/markedsinnsikt
+/markedsinnsikt/kart
+/markedsrapport
+/naringsmegler
+/off-market-tilgang
+/om-oss
+/personer
+/presentasjon
+/presserom
+/presserom/arkiv
+/privacy
+/sjekkliste-verdivurdering
+/terms
+/tjenester
+/tjenester/radgivning
+/tjenester/salg
+/tjenester/strategisk-radgivning
+/tjenester/transaksjoner
+/tjenester/utleie
+/tjenester/verdivurdering
+/verktoy
+/verktoy/boliglan-kalkulator
+/verktoy/naringskalkulator
+/verktoy/pris-verdivurdering
+/verktoy/roi-kalkulator
+/verktoy/yield-kalkulator
+
+# --- SSG templates (●) — one representative each ---
+/blog/advanti-lansering-nord-norge
+/blog/category/market-analysis
+/eiendommer/bodo-byport-stormyra
+/help/article/hva-er-yield
+/help/category/analysis
+/integrasjoner/brreg
+/kunder/morkvedbadet-bodo
+/naringsmegler/bodo
+/personer/christer-hagen
+/presserom/arkiv/q4-2025
+/tjenester/salg/bodo
+/tjenester/utleie/bodo
+/tjenester/verdivurdering/bodo
+
+# --- Dynamic / server-rendered on demand (ƒ) ---
+/verdivurdering

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import dynamic from "next/dynamic";
 import { Button } from "@/components/Button";
 import {
   RiCalculatorLine,
@@ -9,12 +10,35 @@ import {
   RiLightbulbLine,
   RiRoadMapLine,
 } from "@remixicon/react";
-import ValuationRequestModal from "@/components/modals/ValuationRequestModal";
-import ConsultationModal from "@/components/modals/ConsultationModal";
-import TransactionRequestModal from "@/components/modals/TransactionRequestModal";
-import LeaseRequestModal from "@/components/modals/LeaseRequestModal";
-import AdvisoryRequestModal from "@/components/modals/AdvisoryRequestModal";
-import StrategicAdvisoryModal from "@/components/modals/StrategicAdvisoryModal";
+
+// Modals are deferred out of the initial bundle: each is a pure client-side
+// overlay that renders nothing until its button is clicked (showModal=false on
+// first render), so ssr:false is safe and keeps Radix Dialog/Select + form
+// wiring out of First Load JS on every CTA page.
+const ValuationRequestModal = dynamic(
+  () => import("@/components/modals/ValuationRequestModal"),
+  { ssr: false },
+);
+const ConsultationModal = dynamic(
+  () => import("@/components/modals/ConsultationModal"),
+  { ssr: false },
+);
+const TransactionRequestModal = dynamic(
+  () => import("@/components/modals/TransactionRequestModal"),
+  { ssr: false },
+);
+const LeaseRequestModal = dynamic(
+  () => import("@/components/modals/LeaseRequestModal"),
+  { ssr: false },
+);
+const AdvisoryRequestModal = dynamic(
+  () => import("@/components/modals/AdvisoryRequestModal"),
+  { ssr: false },
+);
+const StrategicAdvisoryModal = dynamic(
+  () => import("@/components/modals/StrategicAdvisoryModal"),
+  { ssr: false },
+);
 
 export function ValuationCTAButton({
   className = "",

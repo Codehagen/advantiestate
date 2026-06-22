@@ -165,6 +165,12 @@ export function ListingsBrowser({
   const visibleCount =
     filteredItems.length + (featuredVisible ? 1 : 0);
 
+  // Compute the featured card's price/yield labels once (each builds an
+  // Intl.NumberFormat) instead of calling priceLabel/yieldLabel 3×/2× in JSX —
+  // mirrors the per-card caching in the grid below.
+  const featuredPrice = featured ? priceLabel(featured) : null;
+  const featuredYield = featured ? yieldLabel(featured) : null;
+
   return (
     // Containing block for the sticky filter. CSS `position: sticky` is
     // bounded by the nearest scroll ancestor — without this wrapper the bar
@@ -290,12 +296,12 @@ export function ListingsBrowser({
                     </div>
                   </div>
                   <div>
-                    <div className="l">{priceLabel(featured).label}</div>
+                    <div className="l">{featuredPrice?.label}</div>
                     <div className="v">
-                      {priceLabel(featured).value}
-                      {priceLabel(featured).unit && (
+                      {featuredPrice?.value}
+                      {featuredPrice?.unit && (
                         <span className="unit">
-                          {priceLabel(featured).unit}
+                          {featuredPrice.unit}
                         </span>
                       )}
                     </div>
@@ -303,10 +309,10 @@ export function ListingsBrowser({
                   <div>
                     <div className="l">Yield</div>
                     <div className="v">
-                      {yieldLabel(featured).value}
-                      {yieldLabel(featured).unit && (
+                      {featuredYield?.value}
+                      {featuredYield?.unit && (
                         <span className="unit">
-                          {yieldLabel(featured).unit}
+                          {featuredYield.unit}
                         </span>
                       )}
                     </div>

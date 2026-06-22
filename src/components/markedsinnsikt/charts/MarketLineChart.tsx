@@ -16,7 +16,7 @@ import {
   YAxis,
 } from "recharts"
 
-import { AXIS_TICK, CHART_HEIGHT, CHART_MARGIN, GRID_STROKE } from "./chartTheme"
+import { AXIS_TICK, CHART_HEIGHT, CHART_MARGIN, GRID_STROKE, LINE_CURSOR } from "./chartTheme"
 import { ChartTooltip } from "./ChartTooltip"
 import { useReducedMotion } from "@/lib/hooks/useReducedMotion"
 
@@ -118,7 +118,7 @@ export function MarketLineChart({
           />
           <Tooltip
             content={<ChartTooltip valueFormatter={yFormat} />}
-            cursor={{ stroke: "var(--warm-grey-75)", strokeWidth: 1 }}
+            cursor={LINE_CURSOR}
           />
           {series.map((s, si) =>
             si === areaIndex ? (

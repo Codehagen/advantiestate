@@ -75,27 +75,3 @@ export async function getListingGallery(
 
   return mapMediaToGallery((media ?? []) as MediaRow[], profile as ProfileRow)
 }
-
-/** Batch cover lookup for the /eiendommer index cards (one query, not N). */
-export async function getListingCovers(
-  slugs: string[],
-): Promise<Record<string, ListingGalleryImage>> {
-  const supabase = getSupabase()
-  if (!supabase || slugs.length === 0) return {}
-  const { data } = await supabase
-    .from("crm_property_listing_profiles")
-    .select("public_slug, cover_image, cover_image_alt")
-    .in("public_slug", slugs)
-    .not("cover_image", "is", null)
-  const map: Record<string, ListingGalleryImage> = {}
-  for (const r of (data ?? []) as Array<{
-    public_slug: string | null
-    cover_image: string | null
-    cover_image_alt: string | null
-  }>) {
-    if (r.public_slug && r.cover_image) {
-      map[r.public_slug] = { src: r.cover_image, alt: r.cover_image_alt ?? "" }
-    }
-  }
-  return map
-}

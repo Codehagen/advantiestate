@@ -20,7 +20,7 @@ import {
   YAxis,
 } from "recharts"
 
-import { AXIS_TICK, CHART_HEIGHT, CHART_MARGIN, GRID_STROKE } from "./chartTheme"
+import { AXIS_TICK, BAR_CURSOR, CHART_HEIGHT, CHART_MARGIN, GRID_STROKE } from "./chartTheme"
 import { ChartTooltip } from "./ChartTooltip"
 import { useReducedMotion } from "@/lib/hooks/useReducedMotion"
 
@@ -116,7 +116,7 @@ export function MarketBarChart({
           )}
           <Tooltip
             content={<ChartTooltip valueFormatter={valueFormatter} />}
-            cursor={{ fill: "var(--accent-faint)" }}
+            cursor={BAR_CURSOR}
           />
           {series.map((s, si) => (
             <Bar

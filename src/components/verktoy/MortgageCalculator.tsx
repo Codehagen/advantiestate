@@ -5,6 +5,14 @@ import NumberFlow from "@number-flow/react";
 import { Input } from "@/components/Input";
 import { RiInformationLine } from "@remixicon/react";
 
+// Hoisted so the Intl.NumberFormat (CLDR parsing) is built once at module load,
+// not reconstructed on every keystroke while editing the calculator inputs.
+const NOK_FORMAT = new Intl.NumberFormat("no-NO", {
+  minimumFractionDigits: 0,
+  maximumFractionDigits: 0,
+});
+const formatCurrency = (value: number) => NOK_FORMAT.format(value);
+
 export function MortgageCalculator() {
   // Input state
   const [kjopesum, setKjopesum] = useState(15000000);
@@ -78,13 +86,6 @@ export function MortgageCalculator() {
       belaning: 0,
     };
   }, [kjopesum, egenkapital, rentesats, nedbetalingstid]);
-
-  const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat("no-NO", {
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    }).format(value);
-  };
 
   return (
     <div className="grid gap-8 lg:grid-cols-2">

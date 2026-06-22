@@ -32,3 +32,9 @@ export const AXIS_TICK = {
   fontSize: 11,
   fill: "var(--warm-grey-85)",
 } as const
+
+// Tooltip cursor styles — hoisted so the <Tooltip cursor> prop keeps a stable
+// object reference across re-renders (legend toggles, range changes), avoiding
+// recharts re-rendering its cursor layer on every parent render.
+export const BAR_CURSOR = { fill: "var(--accent-faint)" } as const
+export const LINE_CURSOR = { stroke: "var(--warm-grey-75)", strokeWidth: 1 } as const
