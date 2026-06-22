@@ -90,6 +90,20 @@ export function MarkedsKartHoved() {
   const [viewRequest, setViewRequest] = useState<ViewRequest>(null)
   const viewNRef = useRef(0)
 
+  // Reset zone interaction when the user switches city — done during render
+  // (not a useEffect) so the right-hand panel never paints one frame with the
+  // new city under the previous city's pinned zone. The WMS cadastre layer
+  // belongs to the zone view, so it is cleared too — without this it keeps
+  // fetching GeoNorge tiles after a city switch while its toggle (the only
+  // off-switch) is hidden (codex-funn).
+  const [prevSelected, setPrevSelected] = useState(selected)
+  if (selected !== prevSelected) {
+    setPrevSelected(selected)
+    setPinnedZoneId(null)
+    setHoveredZoneId(null)
+    setShowCadastre(false)
+  }
+
   const m = METRICS[metric]
 
   // Norm/min/max for aktiv metric — driver markørstørrelse og ramp
@@ -152,16 +166,8 @@ export function MarkedsKartHoved() {
     [metric, norm, m],
   )
 
-  // Nullstill pin + hover ved bytte av by eller ved zoom under terskel
-  useEffect(() => {
-    setPinnedZoneId(null)
-    setHoveredZoneId(null)
-    // WMS-laget hører til sonevisningen — uten denne ville laget fortsette å
-    // hente GeoNorge-tiles etter bybytte mens togglen (eneste av-knapp) er
-    // skjult (codex-funn).
-    setShowCadastre(false)
-  }, [selected])
-
+  // Nullstill pin + hover når zoom faller under sone-terskelen. (Bybytte
+  // håndteres i render-fasen over, ikke her.)
   useEffect(() => {
     if (zoneSet && zoom < zoneSet.minZoneZoom) {
       setPinnedZoneId(null)

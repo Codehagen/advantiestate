@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
+  memo,
+  useCallback,
   useEffect,
   useLayoutEffect,
   useMemo,
@@ -146,6 +148,165 @@ const PANELS: Record<
   },
 };
 
+const isPathActive = (cleanPath: string, href: string) =>
+  cleanPath === href || cleanPath.startsWith(`${href}/`);
+
+// Desktop panel content (icon-tile grid + "see all" + featured promo), extracted
+// as a memoized component. Its props (id literal, the stable `groups` prop,
+// cleanPath, and a stable onClose) only change on navigation — so it bails out of
+// re-rendering on the frequent hover/scroll renders that just flip openGroup/scrolled.
+const RegistryPanel = memo(function RegistryPanel({
+  id,
+  groups,
+  cleanPath,
+  onClose,
+}: {
+  id: RegistryGroupId;
+  groups: Record<RegistryGroupId, NavEntry[]>;
+  cleanPath: string;
+  onClose: () => void;
+}) {
+  const panel = PANELS[id];
+  const byPath = (path: string) => groups[id].find((e) => e.path === path);
+  return (
+    <div className="nav-panel-inner nav-panel-grid">
+      <div className="nav-panel-main">
+        <ul className="nav-item-grid" onClick={onClose}>
+          {panel.items.map((p) => {
+            const e = byPath(p);
+            if (!e) return null;
+            const Icon = ICONS[p];
+            const desc = e.description ?? FALLBACK_DESC[p];
+            return (
+              <li key={p}>
+                <Link
+                  prefetch={false}
+                  href={e.path}
+                  className="nav-item"
+                  aria-current={isPathActive(cleanPath, e.path) ? "page" : undefined}
+                >
+                  <span className="nav-item-icon" aria-hidden>
+                    {Icon ? <Icon aria-hidden /> : null}
+                  </span>
+                  <span className="nav-item-text">
+                    <span className="nav-item-title">{e.label}</span>
+                    {desc && <span className="nav-item-desc">{desc}</span>}
+                  </span>
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
+        {panel.seeAll && (
+          <Link
+            prefetch={false}
+            href={panel.seeAll.href}
+            className="nav-panel-seeall"
+            aria-current={cleanPath === panel.seeAll.href ? "page" : undefined}
+            onClick={onClose}
+          >
+            {panel.seeAll.label} →
+          </Link>
+        )}
+      </div>
+
+      <Link
+        prefetch={false}
+        href={panel.promo.href}
+        className="nav-promo"
+        aria-current={isPathActive(cleanPath, panel.promo.href) ? "page" : undefined}
+        onClick={onClose}
+      >
+        <span className="nav-promo-eyebrow">{panel.promo.eyebrow}</span>
+        <span className="nav-promo-title">{panel.promo.title}</span>
+        <span className="nav-promo-desc">{panel.promo.desc}</span>
+        <span className="nav-promo-cta">
+          {panel.promo.cta} <span aria-hidden>→</span>
+        </span>
+        <span
+          className="nav-promo-img"
+          style={{ backgroundImage: `url(${panel.promo.img})` }}
+          aria-hidden
+        />
+      </Link>
+    </div>
+  );
+});
+
+// Eiendommer panel: the listing cities (→ /eiendommer?by={slug}) + a "selge?"
+// promo. Registry-independent — cities are the static EIENDOM_CITIES list.
+const EiendommerPanel = memo(function EiendommerPanel({
+  cleanPath,
+  onClose,
+}: {
+  cleanPath: string;
+  onClose: () => void;
+}) {
+  return (
+    <div className="nav-panel-inner nav-panel-grid">
+      <div className="nav-panel-main">
+        <ul className="nav-item-grid" onClick={onClose}>
+          {EIENDOM_CITIES.map((c) => (
+            <li key={c.slug}>
+              <Link
+                prefetch={false}
+                href={`/eiendommer?by=${c.slug}`}
+                className="nav-item"
+              >
+                <span className="nav-item-icon" aria-hidden>
+                  <MapPin aria-hidden />
+                </span>
+                <span className="nav-item-text">
+                  <span className="nav-item-title">{c.label}</span>
+                  <span className="nav-item-desc">Til salgs i {c.label}.</span>
+                </span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+        <Link
+          prefetch={false}
+          href="/eiendommer"
+          className="nav-panel-seeall"
+          aria-current={cleanPath === "/eiendommer" ? "page" : undefined}
+          onClick={onClose}
+        >
+          Se alle eiendommer →
+        </Link>
+      </div>
+
+      <Link
+        prefetch={false}
+        href="/verktoy/pris-verdivurdering"
+        className="nav-promo"
+        aria-current={
+          isPathActive(cleanPath, "/verktoy/pris-verdivurdering")
+            ? "page"
+            : undefined
+        }
+        onClick={onClose}
+      >
+        <span className="nav-promo-eyebrow">Selge eiendom?</span>
+        <span className="nav-promo-title">Vurderer du å selge?</span>
+        <span className="nav-promo-desc">
+          Få en uforpliktende verdivurdering av næringseiendommen din.
+        </span>
+        <span className="nav-promo-cta">
+          Få verdivurdering <span aria-hidden>→</span>
+        </span>
+        <span
+          className="nav-promo-img"
+          style={{
+            backgroundImage:
+              "url(/building/pexels-berlin-architectural-37375943.jpg)",
+          }}
+          aria-hidden
+        />
+      </Link>
+    </div>
+  );
+});
+
 /**
  * Site navigation — fixed; transparent over a dark hero, solid otherwise.
  *
@@ -187,12 +348,12 @@ export function Nav({ groups }: NavProps) {
     };
   }, []);
 
-  const cancelClose = () => {
+  const cancelClose = useCallback(() => {
     if (closeTimer.current !== null) {
       window.clearTimeout(closeTimer.current);
       closeTimer.current = null;
     }
-  };
+  }, []);
   const scheduleClose = () => {
     if (!canHover.current) return;
     cancelClose();
@@ -299,7 +460,7 @@ export function Nav({ groups }: NavProps) {
     };
     document.addEventListener("keydown", onKeyDown);
     return () => document.removeEventListener("keydown", onKeyDown);
-  }, [openGroup]);
+  }, [openGroup, cancelClose]);
 
   // ── desktop panel: click outside closes ───────────────────────────────
   useEffect(() => {
@@ -339,11 +500,11 @@ export function Nav({ groups }: NavProps) {
     });
   };
 
-  const closePanel = () => {
+  const closePanel = useCallback(() => {
     cancelClose();
     hoverOpened.current = null;
     setOpenGroup(null);
-  };
+  }, [cancelClose]);
 
   // `scrolled` (size change) is driven ONLY by real scroll. `solid` (opaque
   // background) also applies while a dropdown / mobile menu is open — so opening
@@ -407,143 +568,6 @@ export function Nav({ groups }: NavProps) {
     onMouseEnter: cancelClose,
     onMouseLeave: scheduleClose,
   };
-
-  const byPath = (id: RegistryGroupId, path: string) =>
-    groups[id].find((e) => e.path === path);
-
-  // Renders a desktop panel: icon-tile grid + "see all" + featured promo.
-  const renderPanel = (id: RegistryGroupId) => {
-    const panel = PANELS[id];
-    return (
-      <div className="nav-panel-inner nav-panel-grid">
-        <div className="nav-panel-main">
-          <ul className="nav-item-grid" onClick={closePanel}>
-            {panel.items.map((p) => {
-              const e = byPath(id, p);
-              if (!e) return null;
-              const Icon = ICONS[p];
-              const desc = e.description ?? FALLBACK_DESC[p];
-              return (
-                <li key={p}>
-                  <Link
-                    prefetch={false}
-                    href={e.path}
-                    className="nav-item"
-                    aria-current={isLinkActive(e.path) ? "page" : undefined}
-                  >
-                    <span className="nav-item-icon" aria-hidden>
-                      {Icon ? <Icon aria-hidden /> : null}
-                    </span>
-                    <span className="nav-item-text">
-                      <span className="nav-item-title">{e.label}</span>
-                      {desc && <span className="nav-item-desc">{desc}</span>}
-                    </span>
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
-          {panel.seeAll && (
-            <Link
-              prefetch={false}
-              href={panel.seeAll.href}
-              className="nav-panel-seeall"
-              aria-current={
-                cleanPath === panel.seeAll.href ? "page" : undefined
-              }
-              onClick={closePanel}
-            >
-              {panel.seeAll.label} →
-            </Link>
-          )}
-        </div>
-
-        <Link
-          prefetch={false}
-          href={panel.promo.href}
-          className="nav-promo"
-          aria-current={isLinkActive(panel.promo.href) ? "page" : undefined}
-          onClick={closePanel}
-        >
-          <span className="nav-promo-eyebrow">{panel.promo.eyebrow}</span>
-          <span className="nav-promo-title">{panel.promo.title}</span>
-          <span className="nav-promo-desc">{panel.promo.desc}</span>
-          <span className="nav-promo-cta">
-            {panel.promo.cta} <span aria-hidden>→</span>
-          </span>
-          <span
-            className="nav-promo-img"
-            style={{ backgroundImage: `url(${panel.promo.img})` }}
-            aria-hidden
-          />
-        </Link>
-      </div>
-    );
-  };
-
-  // Eiendommer panel: the listing cities (→ /eiendommer?by={slug}) + a "selge?"
-  // promo. Registry-independent — cities are the static EIENDOM_CITIES list.
-  const renderEiendommerPanel = () => (
-    <div className="nav-panel-inner nav-panel-grid">
-      <div className="nav-panel-main">
-        <ul className="nav-item-grid" onClick={closePanel}>
-          {EIENDOM_CITIES.map((c) => (
-            <li key={c.slug}>
-              <Link
-                prefetch={false}
-                href={`/eiendommer?by=${c.slug}`}
-                className="nav-item"
-              >
-                <span className="nav-item-icon" aria-hidden>
-                  <MapPin aria-hidden />
-                </span>
-                <span className="nav-item-text">
-                  <span className="nav-item-title">{c.label}</span>
-                  <span className="nav-item-desc">Til salgs i {c.label}.</span>
-                </span>
-              </Link>
-            </li>
-          ))}
-        </ul>
-        <Link
-          prefetch={false}
-          href="/eiendommer"
-          className="nav-panel-seeall"
-          aria-current={cleanPath === "/eiendommer" ? "page" : undefined}
-          onClick={closePanel}
-        >
-          Se alle eiendommer →
-        </Link>
-      </div>
-
-      <Link
-        prefetch={false}
-        href="/verktoy/pris-verdivurdering"
-        className="nav-promo"
-        aria-current={
-          isLinkActive("/verktoy/pris-verdivurdering") ? "page" : undefined
-        }
-        onClick={closePanel}
-      >
-        <span className="nav-promo-eyebrow">Selge eiendom?</span>
-        <span className="nav-promo-title">Vurderer du å selge?</span>
-        <span className="nav-promo-desc">
-          Få en uforpliktende verdivurdering av næringseiendommen din.
-        </span>
-        <span className="nav-promo-cta">
-          Få verdivurdering <span aria-hidden>→</span>
-        </span>
-        <span
-          className="nav-promo-img"
-          style={{
-            backgroundImage:
-              "url(/building/pexels-berlin-architectural-37375943.jpg)",
-          }}
-          aria-hidden
-        />
-      </Link>
-    </div>
-  );
 
   return (
     <>
@@ -665,7 +689,12 @@ export function Nav({ groups }: NavProps) {
           ref={panelRefCb["tjenester"]}
           inert={openGroup !== "tjenester"}
         >
-          {renderPanel("tjenester")}
+          <RegistryPanel
+            id="tjenester"
+            groups={groups}
+            cleanPath={cleanPath}
+            onClose={closePanel}
+          />
         </div>
 
         <div
@@ -674,7 +703,7 @@ export function Nav({ groups }: NavProps) {
           ref={panelRefCb["eiendommer"]}
           inert={openGroup !== "eiendommer"}
         >
-          {renderEiendommerPanel()}
+          <EiendommerPanel cleanPath={cleanPath} onClose={closePanel} />
         </div>
 
         <div
@@ -683,7 +712,12 @@ export function Nav({ groups }: NavProps) {
           ref={panelRefCb["innsikt"]}
           inert={openGroup !== "innsikt"}
         >
-          {renderPanel("innsikt")}
+          <RegistryPanel
+            id="innsikt"
+            groups={groups}
+            cleanPath={cleanPath}
+            onClose={closePanel}
+          />
         </div>
 
         <div
@@ -692,7 +726,12 @@ export function Nav({ groups }: NavProps) {
           ref={panelRefCb["om-oss"]}
           inert={openGroup !== "om-oss"}
         >
-          {renderPanel("om-oss")}
+          <RegistryPanel
+            id="om-oss"
+            groups={groups}
+            cleanPath={cleanPath}
+            onClose={closePanel}
+          />
         </div>
       </div>
 

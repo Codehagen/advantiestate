@@ -34,7 +34,7 @@ All 52 scanned in the 2026-06-22 sweep. `done` = relevant fix applied & re-verif
 | 18 | /kunder/[slug] | done | dead getBlurDataURL fetch removed |
 | 19 | /landing/verdivurdering | clean | |
 | 20 | /markedsinnsikt | done | chart Tooltip cursors hoisted |
-| 21 | /markedsinnsikt/kart | done* | reviewed; MarkedsKartHoved render-state fix deferred (risk:medium, see Findings) — no safe win to apply |
+| 21 | /markedsinnsikt/kart | done | MarkedsKartHoved render-phase reset applied + verified (Batch 3) |
 | 22 | /markedsrapport | clean | |
 | 23 | /naringsmegler | clean | |
 | 24 | /naringsmegler/[slug] | done | shares MDX path; CityLeadForm analytics already deferred |
@@ -67,7 +67,7 @@ All 52 scanned in the 2026-06-22 sweep. `done` = relevant fix applied & re-verif
 | 51 | /verktoy/roi-kalkulator | done | ROICalculator formatter hoisted |
 | 52 | /verktoy/yield-kalkulator | done | YieldCalculatorV2 pct hoisted |
 
-Shared (cross-page): `site/Nav.tsx` memo refactor reviewed & deferred (risk > reward on critical UI, unmeasurable with harness — see Findings).
+Shared (cross-page): `site/Nav.tsx` panel memoization APPLIED + verified (Batch 3) — panels skip re-render on hover/scroll; SSR markup unchanged.
 
 **Progress: 52/52 through the process.** Every page scanned and dispositioned; all low-risk/verifiable wins applied & measured. 3 items consciously deferred (Nav, MarkedsKartHoved, gallery.ts combine) + 2 skipped as marginal — all documented above, available on request. `*` /markedsinnsikt/kart processed but its one finding was deferred on risk grounds.
 
@@ -91,13 +91,17 @@ Shared (cross-page): `site/Nav.tsx` memo refactor reviewed & deferred (risk > re
 - ✅ `components/eiendommer/ListingsBrowser.tsx` · js-cache-function-results · hoisted priceLabel/yieldLabel for the featured card (was 3×/2× per render).
 - Note: the alt-text swap is a minor improvement — meaningful title-derived alt instead of "" when cover_image_alt is null (verified: index empty-alt count = 0).
 
+### Batch 3 — APPLIED (deferred items revisited via /loop; build green, TTFB 0/52 over)
+- ✅ `site/Nav.tsx` · rerender-memo · extracted the desktop panels into two module-level `React.memo` components (`RegistryPanel`, `EiendommerPanel`) with stable props (id, groups, cleanPath, useCallback'd onClose), so they bail out of re-rendering on the frequent hover/scroll renders (only openGroup/scrolled change). `cancelClose`/`closePanel` → useCallback. Verified: build green, lint clean, SSR markup identical (24 nav-item links + 4 promos), headless browser confirmed open/switch/Escape/link-click-closes + mobile menu all work, panel renders visually identical, no nav console errors.
+- ✅ `markedsinnsikt/maps/MarkedsKartHoved.tsx` · rerender-derived-state-no-effect · replaced the `useEffect([selected])` pin/hover/cadastre reset with a render-phase reset guarded by a `prevSelected` state — the right-hand panel no longer paints one frame with the new city under the old city's pinned zone. Verified in headless browser: page loads, Leaflet mounts, multiple city switches update `selected` + the panel, **no render loop / React error overlay** (the key risk of render-phase setState), no new console errors. Zoom-threshold reset effect kept as-is.
+
 ### REJECTED (verified harmful as written)
 - ❌ `blog/zoom-image.tsx` ssr:false — ZoomImage wraps the actual content `<img>` (BlurImage/next-image); ssr:false would drop blog images from SSR HTML → SEO/LCP regression. Correct fix = SSR the image, lazy-load only the zoom interaction. Deferred as careful refactor.
 
 ### DEFERRED — reviewed, consciously not applied (risk/benefit; available on request)
-- ⏳ `site/Nav.tsx` · rerender-memo · extract panels to React.memo + useCallback handlers. **Highest-leverage remaining (every page)** BUT: benefit (fewer hover-time re-renders) is unmeasurable with the TTFB/payload harness, and the refactor is high-risk on the most critical UI component (timers, refs, ResizeObserver, layout effects). Site already sub-9ms with no reported jank → risk > reward. Verifiable later via SSR-HTML equivalence if attempted.
-- ⏳ `markedsinnsikt/maps/MarkedsKartHoved.tsx` · rerender-derived-state-no-effect · render-phase setState for pin reset. Changes reset timing relative to the child MapController's selected-change effect; benefit is a one-frame flash removal. Needs interactive map-state verification before applying — risk:medium.
-- ⏳ `lib/listing/gallery.ts` · async-parallel · combine getListingGallery's 2 sequential Supabase queries into one nested query. Needs FK-constraint-name verification (Supabase MCP); only runs on ISR/on-demand CRM detail renders (not prerendered pages) → marginal on a prerender-heavy site. risk:medium.
+- ✅ `site/Nav.tsx` — APPLIED in Batch 3 (see above). The risk was managed by keeping output identical (SSR markup verified byte-equivalent) + full headless interaction test. No longer deferred.
+- ✅ `markedsinnsikt/maps/MarkedsKartHoved.tsx` — APPLIED in Batch 3 (see above). No longer deferred.
+- ⏳ `lib/listing/gallery.ts` · async-parallel · combine getListingGallery's 2 sequential Supabase queries into one nested query. **Homework done 2026-06-22:** FK confirmed embeddable — exactly one FK media→profiles (`crm_property_listing_media_listing_profile_id_fkey` on `listing_profile_id`), so the PostgREST embed is unambiguous. **NOT shipped — blocked on verifiability:** local build has no `SUPABASE_SERVICE_ROLE_KEY`, so `getSupabase()` returns null and this query path can't be exercised locally (CRM falls back to MDX). Benefit is also near-zero today: all *published* listings have 0 media (bodo-byport-stormyra has 9 but is_public_ready=false), so the combined query saves nothing on current public pages and ~1 round-trip on future media-bearing CRM renders. Do it against a service-role-connected preview deploy, not blind. Ready-to-apply query shape recorded in this turn's notes.
 
 ### SKIPPED — reviewed, judged not worthwhile (marginal)
 - ⊘ `eiendommer/ListingLightbox.tsx` · advanced-use-latest · stable keydown handler. Re-binding one window listener per arrow-press is microsecond churn; skill rates the category LOW. Not worth adding ref+sync-effect to critical lightbox code.
@@ -107,3 +111,4 @@ Shared (cross-page): `site/Nav.tsx` memo refactor reviewed & deferred (risk > re
 _(date · file · rule · effect)_
 - 2026-06-22 · batch 1 (8 files) · bundle/js/rerender · eiendommer/[slug] −47.5kB, blog/[slug] & /terms −35kB First Load JS; TTFB 0/52 over 50ms (slowest 7.0ms); build green.
 - 2026-06-22 · batch 2 (6 files) · server-dedup/async/js · removed 3 redundant getListingCovers Supabase round-trips (eiendommer index + detail-related + ActiveListingsStrip-on-every-tjenester/naringsmegler-page) + 1 dead getBlurDataURL fetch + dead fn; featured-card label caching. Build green; covers verified rendering; TTFB 0/52 over 50ms; client JS unchanged (server-only wins).
+- 2026-06-22 · batch 3 (2 files, /loop on deferred items) · rerender · Nav.tsx panels → React.memo (skip hover/scroll re-renders; SSR markup identical) + MarkedsKartHoved render-phase pin-reset. Both verified in headless browser; build green, lint clean, TTFB 0/52 over 50ms. gallery.ts query-combine consciously NOT shipped (unverifiable locally — no service-role key; near-zero benefit today). All 3 deferred items now resolved (2 applied, 1 rejected w/ rationale).
