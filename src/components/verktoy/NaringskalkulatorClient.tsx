@@ -52,6 +52,11 @@ export function NaringskalkulatorClient() {
     fmtYield(marketYield("Kontor", "Bodø")),
   );
   const [yieldEdited, setYieldEdited] = useState(false);
+  // The yield field shows a rolling NumberFlow when idle and swaps to a real
+  // input on focus — so toggling Netto/Brutto or changing city animates the
+  // number like the result-card stats do.
+  const [yieldFocused, setYieldFocused] = useState(false);
+  const yieldInputRef = useRef<HTMLInputElement>(null);
 
   // While typing in a numeric field we update results instantly (no roll) and
   // only let NumberFlow animate once typing settles (~350ms after last change).
@@ -97,6 +102,24 @@ export function NaringskalkulatorClient() {
     if (n == null || n <= 0) return undefined;
     return yieldMode === "gross" ? n * factor : n;
   }, [yieldEdited, yieldStr, yieldMode, factor]);
+
+  // Numeric value the idle field rolls to — the typed yield, or the market
+  // default for the current mode when the field is blank.
+  const yieldDisplay = useMemo(() => {
+    const n = parseNorwegianNumber(yieldStr);
+    if (n != null && n > 0) return n;
+    return yieldMode === "gross" && factor > 0 ? marketNet / factor : marketNet;
+  }, [yieldStr, yieldMode, factor, marketNet]);
+
+  // Focus + select the real input when the field enters edit mode.
+  useEffect(() => {
+    if (!yieldFocused) return;
+    const el = yieldInputRef.current;
+    if (el) {
+      el.focus();
+      el.select();
+    }
+  }, [yieldFocused]);
 
   function changeYieldMode(next: YieldMode) {
     if (next === yieldMode) return;
@@ -297,6 +320,7 @@ export function NaringskalkulatorClient() {
               className="calc-lbl"
               htmlFor="in-yield"
               style={{ marginBottom: 0 }}
+              onClick={() => setYieldFocused(true)}
             >
               Avkastningskrav (yield)
             </label>
@@ -322,21 +346,38 @@ export function NaringskalkulatorClient() {
             </span>
           </div>
           <div className="num-wrap" style={{ marginTop: 12 }}>
-            <input
-              id="in-yield"
-              type="text"
-              inputMode="decimal"
-              value={yieldStr}
-              onChange={(e) => {
-                setYieldStr(e.target.value);
-                setYieldEdited(true);
-                markEditing();
-              }}
-              onBlur={() => {
-                const n = parseNorwegianNumber(yieldStr);
-                if (n != null) setYieldStr(fmtYield(n));
-              }}
-            />
+            {yieldFocused ? (
+              <input
+                id="in-yield"
+                ref={yieldInputRef}
+                type="text"
+                inputMode="decimal"
+                value={yieldStr}
+                onChange={(e) => {
+                  setYieldStr(e.target.value);
+                  setYieldEdited(true);
+                  markEditing();
+                }}
+                onBlur={() => {
+                  const n = parseNorwegianNumber(yieldStr);
+                  if (n != null) setYieldStr(fmtYield(n));
+                  setYieldFocused(false);
+                }}
+              />
+            ) : (
+              <button
+                type="button"
+                className="num-display"
+                onClick={() => setYieldFocused(true)}
+                aria-label="Rediger avkastningskrav (yield)"
+              >
+                <NumberFlow
+                  value={yieldDisplay}
+                  locales="nb-NO"
+                  format={{ maximumFractionDigits: 2 }}
+                />
+              </button>
+            )}
             <span className="suffix">
               % {yieldMode === "net" ? "netto" : "brutto"}
             </span>

@@ -10152,13 +10152,24 @@ h1, h2, h3 {
   font-variant-numeric: tabular-nums;
 }
 .num-wrap input:focus { outline: none; }
+/* Idle yield value: a NumberFlow display styled to match .num-wrap input, so it
+   can roll on toggle/market change and swap to the real input on click. */
+.num-wrap .num-display {
+  flex: 1; min-width: 0; text-align: left;
+  background: transparent; border: 0; padding: 10px 0;
+  font-family: var(--font-body); font-size: 21px;
+  letter-spacing: -0.01em; color: var(--warm-grey);
+  font-variant-numeric: tabular-nums; cursor: text;
+}
+.num-wrap .num-display:focus-visible { outline: 2px solid var(--warm-grey); outline-offset: 2px; }
 .num-wrap .suffix { font-size: 14px; color: var(--warm-grey-85); white-space: nowrap; }
 .num-hint { margin-top: 8px; font-size: 12.5px; color: var(--warm-grey-85); line-height: 1.5; }
 .num-hint button {
-  color: var(--accent); cursor: pointer; font-weight: 500;
+  color: var(--warm-grey); cursor: pointer; font-weight: 500;
   background: none; border: 0; padding: 0; font: inherit;
+  text-decoration: underline; text-underline-offset: 2px;
 }
-.num-hint button:hover { text-decoration: underline; }
+.num-hint button:hover { color: var(--warm-grey-85); }
 
 .calc-two { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
 @media (max-width: 580px) { .calc-two { grid-template-columns: 1fr; gap: 0; } }
