@@ -45,6 +45,16 @@ export const CITY_ADJ: Record<City, number> = {
   Harstad: 0.25,
 };
 
+/**
+ * Indicative market net yield (applied yield / cap rate, %) for a segment in a
+ * city — the standard assumption the calculator starts from. The UI shows this
+ * as the default and lets the user override it; computeEstimate falls back to
+ * it when no override is supplied.
+ */
+export function marketYield(type: PropertyType, city: City): number {
+  return (YIELDS[type] ?? 7.0) + (CITY_ADJ[city] ?? 0);
+}
+
 // Indicative market rent per m²/year by type — used by the "bruk et
 // markedsanslag" helper to prefill gross rent from area.
 export const RENT_RATE: Record<PropertyType, number> = {
@@ -68,6 +78,12 @@ export interface EstimateInputs {
   vacancyPct: number;
   /** Owner costs as a percent value, e.g. 10 means 10%. */
   opexPct: number;
+  /**
+   * Optional applied (net) yield override, %. When supplied and positive it
+   * replaces the market default from marketYield(); otherwise the market
+   * default is used. The UI passes this when the user adjusts the yield.
+   */
+  yieldOverride?: number;
 }
 
 export interface ValidEstimate {
@@ -121,7 +137,12 @@ export function computeEstimate(inputs: EstimateInputs): EstimateResult {
   const vacancy = clampPct(inputs.vacancyPct) / 100;
   const opex = clampPct(inputs.opexPct) / 100;
 
-  const appliedYield = (YIELDS[type] ?? 7.0) + (CITY_ADJ[city] ?? 0);
+  // User override wins when positive; otherwise fall back to the market default.
+  const override = inputs.yieldOverride;
+  const appliedYield =
+    override != null && Number.isFinite(override) && override > 0
+      ? override
+      : marketYield(type, city);
   const noi = grossRent * (1 - vacancy) * (1 - opex);
 
   const lowYield = appliedYield + YIELD_RANGE_PP;

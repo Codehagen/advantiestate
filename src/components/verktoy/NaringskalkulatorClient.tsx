@@ -9,12 +9,20 @@ import {
   PROPERTY_TYPES,
   RENT_RATE,
   computeEstimate,
+  marketYield,
   parseNorwegianNumber,
   type City,
   type PropertyType,
 } from "@/lib/verktoy/naringskalkulator";
 
 const fmtInt = (n: number) => Math.round(n).toLocaleString("nb-NO");
+
+/** Format a yield value in nb-NO, up to two decimals (e.g. "6,75", "7,9"). */
+const fmtYield = (n: number) =>
+  n.toLocaleString("nb-NO", { maximumFractionDigits: 2 });
+
+/** Which yield the user is entering. Value math is always driven by net. */
+type YieldMode = "net" | "gross";
 
 /** Format a kr amount in millions, nb-NO, one decimal (e.g. "40,5"). */
 function millOnly(n: number) {
@@ -34,6 +42,17 @@ export function NaringskalkulatorClient() {
   const [vacancyStr, setVacancyStr] = useState("5");
   const [opexStr, setOpexStr] = useState("10");
 
+  // Yield is editable via a single field with a Netto/Brutto toggle. The field
+  // text is its own state (so partial input like "6," is tolerated); the value
+  // math is always driven by the NET yield. `yieldEdited` tracks whether the
+  // user has overridden the market default — while false the field follows the
+  // market assumption for the current type/city/mode.
+  const [yieldMode, setYieldMode] = useState<YieldMode>("net");
+  const [yieldStr, setYieldStr] = useState(() =>
+    fmtYield(marketYield("Kontor", "Bodø")),
+  );
+  const [yieldEdited, setYieldEdited] = useState(false);
+
   // While typing in a numeric field we update results instantly (no roll) and
   // only let NumberFlow animate once typing settles (~350ms after last change).
   // Vacancy/opex have no onBlur, so the debounce reset is the only signal back.
@@ -50,6 +69,54 @@ export function NaringskalkulatorClient() {
     };
   }, []);
 
+  // Market net yield for the current segment/city, and the net→gross factor:
+  // gross = net / ((1 − vacancy)(1 − opex)). Used to convert between the two
+  // toggle modes and to back-solve a typed gross yield into the net yield.
+  const marketNet = marketYield(type, city);
+  const factor = useMemo(() => {
+    const vac = Math.min(100, Math.max(0, parseNorwegianNumber(vacancyStr) ?? 0));
+    const opx = Math.min(100, Math.max(0, parseNorwegianNumber(opexStr) ?? 0));
+    return (1 - vac / 100) * (1 - opx / 100);
+  }, [vacancyStr, opexStr]);
+
+  // While the user hasn't overridden the yield, keep the field showing the
+  // market default for the current type/city/mode (gross default tracks the
+  // vacancy/opex factor). Once edited, the field is left alone.
+  useEffect(() => {
+    if (yieldEdited) return;
+    const def = yieldMode === "gross" && factor > 0 ? marketNet / factor : marketNet;
+    setYieldStr(fmtYield(def));
+  }, [marketNet, factor, yieldMode, yieldEdited]);
+
+  // Net yield override passed to the estimate — only when the user has actually
+  // adjusted it. Unedited input uses the exact market default (avoids the tiny
+  // rounding drift a back-converted, 2-decimal gross display would introduce).
+  const yieldOverride = useMemo(() => {
+    if (!yieldEdited) return undefined;
+    const n = parseNorwegianNumber(yieldStr);
+    if (n == null || n <= 0) return undefined;
+    return yieldMode === "gross" ? n * factor : n;
+  }, [yieldEdited, yieldStr, yieldMode, factor]);
+
+  function changeYieldMode(next: YieldMode) {
+    if (next === yieldMode) return;
+    // Converting preserves the underlying net yield exactly, so the valuation
+    // doesn't move on toggle — only which number the field shows.
+    if (yieldEdited && factor > 0) {
+      const cur = parseNorwegianNumber(yieldStr);
+      if (cur != null && cur > 0) {
+        setYieldStr(fmtYield(next === "gross" ? cur / factor : cur * factor));
+      }
+    }
+    setYieldMode(next);
+  }
+
+  function resetYield() {
+    setYieldEdited(false);
+    const def = yieldMode === "gross" && factor > 0 ? marketNet / factor : marketNet;
+    setYieldStr(fmtYield(def));
+  }
+
   const result = useMemo(
     () =>
       computeEstimate({
@@ -59,8 +126,9 @@ export function NaringskalkulatorClient() {
         grossRent: parseNorwegianNumber(rentStr) ?? 0,
         vacancyPct: parseNorwegianNumber(vacancyStr) ?? 0,
         opexPct: parseNorwegianNumber(opexStr) ?? 0,
+        yieldOverride,
       }),
-    [type, city, areaStr, rentStr, vacancyStr, opexStr],
+    [type, city, areaStr, rentStr, vacancyStr, opexStr, yieldOverride],
   );
 
   const rentRate = RENT_RATE[type];
@@ -220,6 +288,77 @@ export function NaringskalkulatorClient() {
           Eierkostnader dekker forvaltning, vedlikehold, forsikring og
           eiendomsskatt — typisk 8–12 % av brutto leie for godt drevne bygg.
         </p>
+
+        <div className="step-mark">03 — Yield</div>
+
+        <div className="num-field">
+          <div className="num-field-top">
+            <label
+              className="calc-lbl"
+              htmlFor="in-yield"
+              style={{ marginBottom: 0 }}
+            >
+              Avkastningskrav (yield)
+            </label>
+            <span
+              className="unit-seg"
+              role="group"
+              aria-label="Netto eller brutto yield"
+            >
+              <button
+                type="button"
+                aria-pressed={yieldMode === "net"}
+                onClick={() => changeYieldMode("net")}
+              >
+                Netto
+              </button>
+              <button
+                type="button"
+                aria-pressed={yieldMode === "gross"}
+                onClick={() => changeYieldMode("gross")}
+              >
+                Brutto
+              </button>
+            </span>
+          </div>
+          <div className="num-wrap" style={{ marginTop: 12 }}>
+            <input
+              id="in-yield"
+              type="text"
+              inputMode="decimal"
+              value={yieldStr}
+              onChange={(e) => {
+                setYieldStr(e.target.value);
+                setYieldEdited(true);
+                markEditing();
+              }}
+              onBlur={() => {
+                const n = parseNorwegianNumber(yieldStr);
+                if (n != null) setYieldStr(fmtYield(n));
+              }}
+            />
+            <span className="suffix">
+              % {yieldMode === "net" ? "netto" : "brutto"}
+            </span>
+          </div>
+          <p className="num-hint">
+            {yieldEdited ? (
+              <>
+                Justert. Markedsanslag for {type.toLowerCase()} i {city} er{" "}
+                {fmtYield(marketNet)} % netto.{" "}
+                <button type="button" onClick={resetYield}>
+                  Tilbakestill
+                </button>
+              </>
+            ) : (
+              <>
+                Markedsanslag for {type.toLowerCase()} i {city} (
+                {fmtYield(marketNet)} % netto). Juster om du kjenner yielden for
+                eiendommen.
+              </>
+            )}
+          </p>
+        </div>
       </div>
 
       {/* RESULT */}
