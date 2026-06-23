@@ -28,6 +28,21 @@ const nextConfig = {
         permanent: true,
       },
       {
+        // The production *.vercel.app alias serves the same content as the
+        // custom domain — keep it out of the index by sending it to www.
+        // Exact host match: per-commit preview deploys use a different host
+        // (advantiestate-git-*.vercel.app) and are unaffected, so previews work.
+        source: "/:path*",
+        has: [
+          {
+            type: "host",
+            value: "advantiestate.vercel.app",
+          },
+        ],
+        destination: "https://www.advantiestate.no/:path*",
+        permanent: true,
+      },
+      {
         source: "/tjenester/verdsettelse",
         destination: "/tjenester/verdivurdering",
         permanent: true,
@@ -105,6 +120,13 @@ const nextConfig = {
         source:
           "/kunder/hvordan-vi-hjalp-en-investor-realisere-25-hoyere-avkastning",
         destination: "/kunder/investor-avkastning",
+        permanent: true,
+      },
+      {
+        // Removed team member (no longer with the company). The page 404s but
+        // Google still has the URL indexed — send it to the team listing.
+        source: "/personer/thomas-knutsen-johansen",
+        destination: "/personer",
         permanent: true,
       },
     ];
