@@ -18,6 +18,19 @@ interface StructuredDataProps {
 
 export type HowToStep = { name: string; text: string };
 
+// Topical entity association for the company (Organization + RealEstateAgent).
+// Strengthens Knowledge Graph / AI resolution of what Advanti is expert in.
+// Mirrors the actual services — no claims about services not offered.
+const KNOWS_ABOUT = [
+  "Næringseiendom",
+  "Verdivurdering av næringseiendom",
+  "DCF-analyse",
+  "Yield",
+  "Transaksjonsrådgivning",
+  "Utleie av næringseiendom",
+  "Næringsmegling i Nord-Norge",
+];
+
 export default function StructuredData({
   type = "organization",
   data,
@@ -47,7 +60,7 @@ export default function StructuredData({
                   postalCode: contact.address.postalCode,
                   addressCountry: contact.address.addressCountry,
                 },
-                sameAs: [contact.social.linkedin, contact.social.twitter],
+                sameAs: contact.social.sameAs,
               },
               areaServed: {
                 "@type": "AdministrativeArea",
@@ -124,7 +137,15 @@ export default function StructuredData({
               geoRadius: 500000,
             },
           ],
-          sameAs: [contact.social.linkedin, contact.social.twitter],
+          sameAs: contact.social.sameAs,
+          legalName: siteConfig.legalName,
+          identifier: {
+            "@type": "PropertyValue",
+            propertyID: "organisasjonsnummer",
+            value: siteConfig.orgNumber,
+          },
+          vatID: siteConfig.vatId,
+          knowsAbout: KNOWS_ABOUT,
           foundingDate: "2024",
           numberOfEmployees: {
             "@type": "QuantitativeValue",
@@ -237,7 +258,15 @@ export default function StructuredData({
               },
             },
           ],
-          sameAs: [contact.social.linkedin, contact.social.twitter],
+          sameAs: contact.social.sameAs,
+          legalName: siteConfig.legalName,
+          identifier: {
+            "@type": "PropertyValue",
+            propertyID: "organisasjonsnummer",
+            value: siteConfig.orgNumber,
+          },
+          vatID: siteConfig.vatId,
+          knowsAbout: KNOWS_ABOUT,
         };
 
         if (!data) {
