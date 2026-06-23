@@ -6,9 +6,9 @@ import { constructMetadata } from "@/lib/utils";
 
 export const metadata = constructMetadata({
   path: "/",
-  title: "Næringseiendom Nord-Norge – Verdivurdering & Salg | Advanti Estate",
+  title: "Næringsmegler Nord-Norge | Advanti Estate",
   description:
-    "Din lokale ekspert på salg og verdivurdering av næringseiendom i Nord-Norge. Vi hjelper eiendomsbesittere med å oppnå best mulig pris og nøyaktige verdivurderinger. Kontakt oss for en uforpliktende samtale.",
+    "Din lokale ekspert på salg og verdivurdering av næringseiendom i Nord-Norge. Vi hjelper deg å oppnå best mulig pris og presise verdivurderinger.",
 });
 
 const italicMuted = {
