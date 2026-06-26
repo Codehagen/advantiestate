@@ -138,6 +138,25 @@ h1, h2, h3 {
 .section-tight { padding: 80px 0; }
 .section-divider { border-top: var(--hairline); }
 
+/* Editorial scroll-reveal — a restrained fade + rise as a block enters view.
+   Pure CSS scroll-driven animation: no JS, no bundle cost, CLS-safe (transform
+   only; content stays in the DOM for crawlers). Double-gated, so browsers
+   without scroll-driven-animation support AND visitors who prefer reduced
+   motion get the static page with every block fully visible. */
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .reveal {
+      animation: reveal-rise linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 40%;
+    }
+    @keyframes reveal-rise {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+  }
+}
+
 /* Skip link — visually hidden until keyboard focus, then a solid pill above
    the fixed nav (z 50). Keyboard-only affordance; never visible on load. */
 .skip-link {
@@ -965,34 +984,6 @@ h1, h2, h3 {
 }
 .btn-outline:hover { background: var(--warm-grey); color: var(--warm-white); }
 .btn .arrow { font-size: 13px; }
-
-/* Hero scroll cue */
-.scroll-cue {
-  position: absolute;
-  bottom: 32px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 3;
-  font-size: 11px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: rgba(243, 241, 239, 0.7);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-}
-.scroll-cue::after {
-  content: "";
-  width: 1px;
-  height: 32px;
-  background: linear-gradient(to bottom, rgba(243,241,239,0.7), transparent);
-  animation: cue 2.4s ease-in-out infinite;
-}
-@keyframes cue {
-  0%, 100% { transform: scaleY(1); opacity: 0.7; }
-  50%      { transform: scaleY(1.4); opacity: 1; }
-}
 
 /* Hero variants (set by Tweaks) */
 

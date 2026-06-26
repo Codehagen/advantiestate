@@ -247,7 +247,6 @@ export default function Home() {
             </Link>
           </div>
         </div>
-        <div className="scroll-cue">Bla ned</div>
       </section>
       {/* Nav sentinel: present only on pages with a dark hero */}
       <div id="hero-sentinel" aria-hidden="true" />
@@ -292,7 +291,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="services">
+          <div className="services reveal">
             {SERVICES.map((s) => (
               <Link href={s.href} className="service" key={s.num}>
                 <span className="num">{s.num}</span>
@@ -333,7 +332,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="market-grid">
+          <div className="market-grid reveal">
             <div className="market-stats">
               {STATS.map((s) => (
                 <div className="stat" key={s.label}>
@@ -383,7 +382,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="about">
+          <div className="about reveal">
             <div className="about-text">
               <p>
                 Advanti er et kompetansemiljø dedikert til næringseiendom i
@@ -453,7 +452,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="cases">
+          <div className="cases reveal">
             {CASES.map((c) => (
               <Link className="case" href={c.href} key={c.title}>
                 <div className="case-img" style={{ position: "relative" }}>
