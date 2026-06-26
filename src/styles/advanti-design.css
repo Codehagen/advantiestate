@@ -156,6 +156,12 @@ h1, h2, h3 {
     }
   }
 }
+/* Paged/print media has no scroll timeline, so the view()-driven reveal would
+   freeze these blocks at their hidden from-state and print blank. Force them
+   visible when printing or saving to PDF. */
+@media print {
+  .reveal { opacity: 1 !important; transform: none !important; }
+}
 
 /* Skip link — visually hidden until keyboard focus, then a solid pill above
    the fixed nav (z 50). Keyboard-only affordance; never visible on load. */
