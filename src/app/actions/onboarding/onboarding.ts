@@ -1,6 +1,5 @@
 "use server";
 
-import { cookies } from "next/headers";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { subscribe } from "@/lib/email/subscribe";
 import { sanitizeDiscordValue } from "@/lib/email/sanitize";
@@ -14,97 +13,6 @@ interface DiscordMessage {
     color: number;
     fields: { name: string; value: string }[];
   }[];
-}
-
-interface OnboardingData {
-  purpose: string;
-  company: {
-    name: string;
-    orgNumber: string;
-    address: string;
-  };
-  contact: {
-    name: string;
-    email: string;
-    phone: string;
-  };
-}
-
-export async function submitOnboarding(data: OnboardingData) {
-  if (!(await checkRateLimit("onboarding"))) {
-    return { success: false, error: "For mange forsøk. Prøv igjen om noen minutter." };
-  }
-
-  try {
-    // Send to Discord
-    const webhookUrl = process.env.DISCORD_WEBHOOK_URL;
-    if (!webhookUrl) {
-      throw new Error("Discord webhook URL not configured");
-    }
-
-    const message: DiscordMessage = {
-      content: "🎉 New Advanti User!",
-      embeds: [
-        {
-          title: "New Onboarding Submission",
-          description: `${data.company.name} has completed their onboarding!`,
-          color: 0x00ffff, // Light blue color
-          fields: [
-            {
-              name: "Purpose",
-              value: sanitizeDiscordValue(data.purpose),
-            },
-            {
-              name: "Company Details",
-              value: [
-                `**Name**: ${sanitizeDiscordValue(data.company.name)}`,
-                `**Org Number**: ${sanitizeDiscordValue(data.company.orgNumber)}`,
-                `**Address**: ${sanitizeDiscordValue(data.company.address)}`,
-              ].join("\n"),
-            },
-            {
-              name: "Contact Information",
-              value: [
-                `**Name**: ${sanitizeDiscordValue(data.contact.name)}`,
-                `**Email**: ${sanitizeDiscordValue(data.contact.email)}`,
-                `**Phone**: ${sanitizeDiscordValue(data.contact.phone)}`,
-              ].join("\n"),
-            },
-            {
-              name: "Timestamp",
-              value: new Date().toISOString(),
-            },
-          ],
-        },
-      ],
-    };
-
-    const response = await fetch(webhookUrl, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(message),
-    });
-
-    if (!response.ok) {
-      throw new Error("Failed to send Discord notification");
-    }
-
-    // Set completion cookie
-    const cookieStore = await cookies();
-    cookieStore.set("onboarding-completed", "true", {
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
-      httpOnly: true,
-      maxAge: 60 * 60 * 24 * 30, // 30 days
-    });
-
-    return { success: true };
-  } catch (error) {
-    console.error("Error submitting onboarding:", error);
-    return { success: false, error: "Failed to submit onboarding" };
-  }
 }
 
 // Interface for the new contact inquiry data
