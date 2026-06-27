@@ -26,6 +26,8 @@ done.
 | 015  | Proper tab semantics (role="tab"/tablist) for MarkedsinnsiktShell subtab/sector buttons — clears the last 3 lint warnings | P3 | S | — | DONE (`improve/audit-fixes`; lint now 0 warnings; 3 aria-selected tests still green) |
 | 016  | Zod input validation on lead/contact server actions (complements the landed Discord sanitization) | P2 | M | — | DONE (`improve/audit-fixes`; zod 4 schemas for 5 actions + 9 unit tests; investorportal also re-routed through subscribe() so it actually reaches the CRM) |
 | 017  | PR #74 calculator hardening: extract+test the yield/valuation math, dedup shared markup, clamp storage, trim duplicate CTA, SEO slug decision | tests/tech-debt/UX | S–M | — | DONE (`feat/verdivurdering-yield-kalkulator`; 5 findings planned+fixed in one session; `yieldCalc.ts`+18 tests → 206 total; build green) |
+| 018  | Yield-kalkulator v2 (editorial) + calculator step-mark contrast fix | design/UX | S–M | — | DONE (landed via `feat/verktoy` commits `d9da6e3` redigerbar yield + `ff2ea4a` rullende yield-felt + lesbar lenkefarge; older free-form plan format) |
+| 019  | Remove the orphaned onboarding server actions (dead code: `submitOnboarding` + `searchOrganization`, zero callers) | tech-debt | S | — | DONE (executor on `advisor/019-remove-dead-onboarding`, commit `da3cd4e`; reviewer-APPROVED: 182-line pure deletion, scope clean, build + 214 unit tests green. NOT merged — branch based on `cfb607a`, rebase/cherry-pick onto `feat/forside-faq` before merge) |
 
 Status values: TODO | IN PROGRESS | DONE | BLOCKED (with one-line reason) | REJECTED (with one-line rationale)
 
@@ -54,6 +56,49 @@ vetting + live Supabase schema check.
 - Supabase RLS / global rate-limit — ops-side; in-memory limiter is by design.
 - Modal duplication (6 CtaLead modals) + `MarkedsinnsiktShell` 1218-line split —
   real maintainability debt, L effort, low urgency; revisit on next touch.
+
+## Full-repo audit 2026-06-27 (commit `d42cbc1`, branch `feat/forside-faq`)
+
+Standard re-audit weighted to code new since `eb166f1` (analyseportal expansion,
+yield/næringskalkulator, forside FAQ + CSS scroll-reveal, SEO schema, the
+`rates:sync` script). 4-agent fan-out (2 completed: correctness + security; perf
+and tests/tech-debt agents died on infra and were audited directly instead).
+**Verdict: the codebase is in excellent shape** — recent work is well-guarded,
+well-tested, and recently perf-tuned. Only one worth-doing finding.
+
+**Planned:**
+- **019** — delete the orphaned onboarding server actions (`submitOnboarding`
+  posts to Discord unauthenticated + unvalidated; `searchOrganization` proxies
+  Brreg). Both have **zero callers** — the UI was moved to `.removed/onboarding/`.
+  Pure deletion; `submitContactInquiry` shares the file and stays.
+
+**Considered and rejected (don't re-audit):**
+- **`AnimatedGridPattern` `seq++` "key churn"** — by design: fresh keys per cycle
+  are what re-trigger the Framer entry animation; stable keys would freeze it.
+- **`sectorViews` nulls into Recharts** — by design and explicitly tested
+  (`analyseportal.test.ts` "keeps solid null in forecast rows"); sparse
+  historical/forecast merge. `buildCsv` already escapes CSV formula-injection.
+- **`yieldCalc` highYield asymmetry** — masked by the `!(highYield > 0)` guard
+  that returns `{valid:false}` first; latent at worst.
+- **Cash-on-cash can go negative** — financially correct (negative leverage when
+  rate > yield); clamping would mislead. Not a bug.
+- **`sync-norges-bank-rates.mjs` regex fragility** — manual quarterly dev helper
+  whose output table the human reads (`?` shows inline). Not runtime/CI.
+- **Supabase project ref in `next.config` `remotePatterns`** — inherently public
+  (in every image URL + `NEXT_PUBLIC_SUPABASE_URL`); RLS is the control, not
+  hiding the ref. Non-finding.
+- **Rate-limiter `buckets.clear()`** — already-rejected "crude memory bound" by
+  design; WAF is the backstop.
+- **`email-preview` route NODE_ENV gate** — templates only, adequately gated on
+  Vercel; LOW, noted not planned.
+- **Second large client dashboard file** — `analyseportal/sectorViews.tsx` (1325
+  lines) now joins `MarkedsinnsiktShell` (1226) with parallel structure (sector
+  nav / controls / CSV / deep-links). Real L debt, low urgency — same disposition
+  as the existing deferred shell-split item; revisit on next touch.
+
+**Not audited this round:** MDX content correctness/SEO (180 files; covered in
+prior help/SEO rounds), Supabase RLS/schema (ops-side), deep a11y. Stayed
+read-only — no build/test run.
 
 ## Dependency notes
 
