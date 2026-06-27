@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { CtaStrip } from "@/components/site/CtaStrip";
+import { Faq } from "@/components/site/Faq";
 import { constructMetadata } from "@/lib/utils";
 
 export const metadata = constructMetadata({
@@ -164,6 +165,43 @@ const CASES = [
   },
 ];
 
+// Topp-funnel FAQ for forsiden — siterbare, frittstående svar (CORE-EEAT C02)
+// som AI-motorer kan trekke ut. Ingen markedstall (proofStats-gate /
+// synthetic-series-forbud); kun prosess, tjeneste og kategori. FAQPage-schema
+// emittes automatisk av <Faq>.
+const FAQ_ITEMS = [
+  {
+    question: "Hva er en næringsmegler, og hva gjør Advanti?",
+    answer:
+      "En næringsmegler bistår med kjøp, salg, utleie og verdivurdering av næringseiendom — som kontor, handel, lager og logistikk. Advanti er næringsmegler i Nord-Norge og kombinerer lokal markedskunnskap med datadrevet analyse gjennom hele eiendommens livssyklus.",
+  },
+  {
+    question: "Hvilke områder i Nord-Norge dekker Advanti?",
+    answer:
+      "Vi er næringsmegler i hele Nord-Norge, med lokal tilstedeværelse i blant annet Bodø, Tromsø, Alta, Harstad, Narvik og Lofoten. Hovedkontoret ligger i Bodø.",
+  },
+  {
+    question: "Hva koster en verdivurdering av næringseiendom?",
+    answer:
+      "Verdivurdering og utleieoppdrag har vanligvis et fast honorar, mens salgsoppdrag prises som en provisjon av oppnådd salgssum. Nivået avhenger av eiendomstype, størrelse og kompleksitet — du får et konkret, skriftlig tilbud før vi starter.",
+  },
+  {
+    question: "Hvor lang tid tar et salg av næringseiendom?",
+    answer:
+      "En typisk salgsprosess tar fra to til seks måneder fra oppstart til signert kontrakt, avhengig av segment, prisnivå og marked. Kontoreiendom med solide leietakere går ofte raskere; mer spesialiserte objekter tar lengre tid.",
+  },
+  {
+    question: "Hva er forskjellen på en verdivurdering og en takst?",
+    answer:
+      "En verdivurdering fra en næringsmegler estimerer markedsverdi basert på leieinntekter, sammenlignbare transaksjoner og DCF-analyse — et beslutningsgrunnlag for salg, finansiering eller strategi. En takst er en mer formell tilstands- og verdivurdering, ofte utført av en sertifisert takstmann.",
+  },
+  {
+    question: "Jobber Advanti med både kjøpere, selgere og leietakere?",
+    answer:
+      "Ja. Vi bistår eiendomsbesittere med salg, utleie og verdivurdering, investorer og kjøpere med å finne og vurdere objekter, og leietakere med søk, reforhandling og rådgivning om leienivå.",
+  },
+];
+
 export default function Home() {
   return (
     <>
@@ -209,7 +247,6 @@ export default function Home() {
             </Link>
           </div>
         </div>
-        <div className="scroll-cue">Bla ned</div>
       </section>
       {/* Nav sentinel: present only on pages with a dark hero */}
       <div id="hero-sentinel" aria-hidden="true" />
@@ -254,7 +291,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="services">
+          <div className="services reveal">
             {SERVICES.map((s) => (
               <Link href={s.href} className="service" key={s.num}>
                 <span className="num">{s.num}</span>
@@ -295,7 +332,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="market-grid">
+          <div className="market-grid reveal">
             <div className="market-stats">
               {STATS.map((s) => (
                 <div className="stat" key={s.label}>
@@ -345,7 +382,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="about">
+          <div className="about reveal">
             <div className="about-text">
               <p>
                 Advanti er et kompetansemiljø dedikert til næringseiendom i
@@ -415,7 +452,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="cases">
+          <div className="cases reveal">
             {CASES.map((c) => (
               <Link className="case" href={c.href} key={c.title}>
                 <div className="case-img" style={{ position: "relative" }}>
@@ -460,9 +497,21 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ===== FAQ ===== */}
+      <Faq
+        eyebrow="05 — Ofte stilte spørsmål"
+        title={
+          <>
+            Spørsmål om <span className="italic">næringseiendom.</span>
+          </>
+        }
+        lede="Korte svar på det folk oftest lurer på. Finner du ikke svaret? Ta kontakt for en uforpliktende samtale."
+        items={FAQ_ITEMS}
+      />
+
       {/* ===== CTA ===== */}
       <CtaStrip
-        eyebrow="05 — Kontakt"
+        eyebrow="06 — Kontakt"
         title={
           <>
             Ta kontakt for en <br />
