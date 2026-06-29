@@ -124,7 +124,8 @@ Acceptance criteria met • `pnpm build` + `pnpm lint` green • box ticked with
 
 ### Final gate
 
-- [ ] **QA1 — Live-app QA of everything the refactors touched**
+- [x] **QA1 — Live-app QA of everything the refactors touched**
+  > done 2026-06-29: ran live `/qa` against `pnpm dev` across the changed surfaces — **0 bugs found**, no console errors anywhere (only a benign pre-existing Recharts 0-size warning). Verified: `/markedsinnsikt` renders with 1 tablist / 6 tabs / 1 tabpanel (R3b) + 2 radiogroups (R3a); the **kart** sector loads Leaflet with 6 interactive hit-circles all `role="button"` (R6b) and the tabpanel `aria-labelledby` updates to `mi-tab-kart` on switch; ranked-table city buttons present (R6a); SectionHead/SegmentControls render (R7); chart renders (R2); `roi-kalkulator` has 5 focusable `Mer info` buttons + 5 `role="tooltip"`, zero Tremor tokens (R4); valuation modal opens with a 44×44px `Lukk` close button + 3 `inputmode=numeric` fields (T0+R1); blog article scroll-progress bar is `transform: scaleX(0)` + `origin-left transition-transform motion-reduce:transition-none` (T0). next-env.d.ts dev-regen reverted. No fix commits needed.
   - **Why:** Build + lint prove it compiles; this proves it *works*. Runs once, after every code task above is `[x]`.
   - **Do:** Invoke the `/qa` skill. Walk the surfaces changed by `T0`-`R8` and fix any bug it surfaces (then re-run `pnpm build`):
     - **Modals (R1):** open each lead-gen modal (lease / valuation / transaction / consultation / strategic / advisory) from its CTA; on a narrow + landscape viewport confirm the form scrolls and submit is reachable; rapid double-click submits once; currency fields accept space-grouped input; close button works + reads "Lukk".
