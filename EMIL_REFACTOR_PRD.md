@@ -68,7 +68,8 @@ Acceptance criteria met • `pnpm build` + `pnpm lint` green • box ticked with
     4. Currency/area `type="number"` → `type="text" inputMode="numeric"` (matches `VerdivurderingIntakeForm.tsx:226,238`).
   - **Accept:** every modal scrolls with submit reachable at 667px-landscape; rapid double-click dispatches one lead; no number spinners; close buttons 44px.
 
-- [ ] **R2 — Chart animation mount-gating**
+- [x] **R2 — Chart animation mount-gating**
+  > done 2026-06-29: self-contained first-mount gate in `MarketLineChart` + `MarketBarChart` (`firstRender` ref → animate once, flips off in `useEffect` without a re-render so the entrance completes; range/legend re-renders pass `isAnimationActive={false}`). Reduced motion still disables. Kept 500ms (mount-only entrance is rubric-OK per audit). Chose the self-contained gate over threading a parent `animate` prop, so `MarkedsinnsiktShell` is unchanged — same outcome, less plumbing. build exit 0, lint 0 errors/0 warnings.
   - **Why:** The two primary market charts replay a 500ms draw on every range switch / legend toggle (rules 9/12). Audit §3 Easing/Timing.
   - **Files:** `src/components/markedsinnsikt/charts/MarketLineChart.tsx`, `src/components/markedsinnsikt/charts/MarketBarChart.tsx`, `src/components/markedsinnsikt/MarkedsinnsiktShell.tsx`; reference `src/components/analyseportal/charts/PortalCharts.tsx`.
   - **Do:** Replace the constant `animate={!useReducedMotion()}` with a parent-controlled `animate` prop gated to first mount/reveal (the `PortalCharts` pattern); pass `false` on subsequent range/legend-driven re-renders. Optionally drop 500ms → ~300ms.

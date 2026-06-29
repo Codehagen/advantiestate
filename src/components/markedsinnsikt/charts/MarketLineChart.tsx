@@ -4,7 +4,7 @@
 // LineChart from EditorialCharts.tsx. Props mirror the old component so the
 // Markedsinnsikt views rewire with minimal change.
 
-import { useId } from "react"
+import { useEffect, useId, useRef } from "react"
 import {
   Area,
   CartesianGrid,
@@ -59,9 +59,16 @@ export function MarketLineChart({
   height = CHART_HEIGHT,
   ariaLabel,
 }: MarketLineChartProps) {
-  // Respect prefers-reduced-motion: no entrance/re-draw animation when the
-  // user toggles a legend series or switches the time range.
-  const animate = !useReducedMotion()
+  // Animate the entrance once per mounted instance. Legend toggles and range
+  // switches re-render the same instance and must not replay the 500ms draw, so
+  // a first-render ref flips off in an effect after mount (no re-render, so the
+  // entrance still completes). Reduced motion disables it entirely.
+  const reduced = useReducedMotion()
+  const firstRender = useRef(true)
+  const animate = firstRender.current && !reduced
+  useEffect(() => {
+    firstRender.current = false
+  }, [])
   const isHidden = (name: string) => hidden?.includes(name) ?? false
   // recharts wants an array of row objects, not parallel arrays.
   const data = labels.map((label, i) => {
