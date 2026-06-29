@@ -57,7 +57,8 @@ Acceptance criteria met • `pnpm build` + `pnpm lint` green • box ticked with
 
 ### Bigger refactors (the ask — R1 first)
 
-- [ ] **R1 — Modal hardening (scroll + double-submit + number inputs + 44px)**
+- [x] **R1 — Modal hardening (scroll + double-submit + number inputs + 44px)**
+  > done 2026-06-29: scroll fix (`max-h-[85vh] overflow-y-auto` + dropped inner `overflow-hidden`) on the 5 remaining modals; synchronous `useRef` double-submit guard on all 6 modals + ContactUsForm (placed after validation in CUF so early-returns don't lock it); close buttons → `grid h-11 w-11 place-items-center` (44px); currency/area `type="number"` → `type="text" inputMode="numeric"` (Lease ×2, Valuation ×3, Transaction ×1). build exit 0, lint 0 errors/0 warnings.
   - **Why:** Lead-gen modals clip on landscape phones (submit unreachable), can double-fire, and reject formatted currency. Audit §3 Forms + §6.
   - **Files:** all 6 `src/components/modals/*Modal.tsx`, `src/components/modals/modal.tsx`, `src/components/ContactUsForm.tsx`; reference `src/components/modals/ValuationRequestModal.tsx` (scroll fix) + `src/components/naringsmegler/CityLeadForm.tsx` (submit guard).
   - **Do:**
