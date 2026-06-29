@@ -91,7 +91,8 @@ Acceptance criteria met • `pnpm build` + `pnpm lint` green • box ticked with
   - **Do:** Rebuild all 9 tooltips as focusable controls (`<button aria-label="Mer info">` + `role="tooltip"` child toggled on `group-hover`/`group-focus-visible`, or Radix Tooltip, or `aria-describedby`). Replace `text-tremor-*` tokens + Tailwind cards with `.calc-*` / `text-warm-grey` per DESIGN.md.
   - **Accept:** every tooltip reachable by Tab + announced by SR; zero `tremor` tokens remain; chrome matches `.calc-inputs`/`.calc-result`.
 
-- [ ] **R5 — Site-wide button press feedback (new pattern — confirm feel)**
+- [x] **R5 — Site-wide button press feedback (new pattern — confirm feel)**
+  > done 2026-06-29: `active:scale-[0.97]` press feedback on the shared primitives — `Button` base (added `transform` to the named transition + `motion-reduce:active:scale-100`), `.btn` (`:active` rule; `transform` was already in its transition) and `.cy-form .fbtn` (added `transform` to transition + `:active`), each CSS one guarded by `@media (prefers-reduced-motion: reduce){ transform: none }`; plus the ContactUsForm raw submit (`transition-transform active:scale-[0.97] motion-reduce:active:scale-100`). ⚠️ NEW site-wide interaction pattern — wants a visual sign-off; revert by dropping the `:active`/`active:scale` rules if the feel is off. build exit 0, lint 0 errors/0 warnings.
   - **Why:** No tactile press on the shared primitives (rules 37/53). Audit §3 Component-design.
   - **Files:** `src/components/Button.tsx`, `src/styles/advanti-design.css` (`.btn`, `.fbtn`), `src/components/ContactUsForm.tsx` submit.
   - **Do:** Add `active:scale-[0.97]` + include `transform` in the transition on `Button` base, `.btn`, `.fbtn`; guard with `@media (prefers-reduced-motion: reduce) { transform: none }`.

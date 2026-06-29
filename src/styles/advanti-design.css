@@ -969,6 +969,11 @@ h1, h2, h3 {
     box-shadow 0.22s ease;
   white-space: nowrap;
 }
+/* Tactile press feedback (Emil rule 37); transform already in .btn transition. */
+.btn:active { transform: scale(0.97); }
+@media (prefers-reduced-motion: reduce) {
+  .btn:active { transform: none; }
+}
 .btn-primary {
   background: var(--warm-white);
   color: var(--warm-grey);
@@ -6071,12 +6076,16 @@ h1, h2, h3 {
 .cy-form .fbtn {
   display: inline-flex; align-items: center; justify-content: center; gap: 10px; margin-top: 12px;
   padding: 15px 26px; background: var(--warm-grey); color: var(--warm-white); border: 0; border-radius: 999px;
-  font: inherit; font-size: 14px; font-weight: 500; cursor: pointer; transition: background 0.2s; width: 100%;
+  font: inherit; font-size: 14px; font-weight: 500; cursor: pointer; transition: background 0.2s, transform 0.2s; width: 100%;
   min-height: 48px;
 }
 .cy-form .fbtn:hover { background: #0f0e0c; }
 .cy-form .fbtn:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 .cy-form .fbtn:disabled { opacity: 0.6; cursor: default; }
+.cy-form .fbtn:active { transform: scale(0.97); }
+@media (prefers-reduced-motion: reduce) {
+  .cy-form .fbtn:active { transform: none; }
+}
 .cy-form .ferr { margin-top: 14px; font-size: 13px; color: var(--delta-down); }
 .cy-form .fnote { margin-top: 14px; font-size: 12px; color: var(--warm-grey-85); text-align: center; }
 .cy-form .fnote a { color: var(--warm-grey); border-bottom: 1px solid var(--warm-grey-75); }

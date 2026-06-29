@@ -223,7 +223,7 @@ export default function ContactUsForm() {
             </p>
             <button
               type="submit"
-              className="whitespace-nowrap rounded-tremor-default border border-tremor-brand bg-tremor-brand px-4 py-2.5 text-tremor-default font-medium text-tremor-brand-inverted shadow-tremor-input ring-1 ring-inset ring-tremor-brand/40 hover:bg-tremor-brand-emphasis focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tremor-brand"
+              className="whitespace-nowrap rounded-tremor-default border border-tremor-brand bg-tremor-brand px-4 py-2.5 text-tremor-default font-medium text-tremor-brand-inverted shadow-tremor-input ring-1 ring-inset ring-tremor-brand/40 hover:bg-tremor-brand-emphasis focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tremor-brand transition-transform active:scale-[0.97] motion-reduce:active:scale-100"
               disabled={isSubmitting}
             >
               {isSubmitting ? "Sender..." : "Send Henvendelse"}
