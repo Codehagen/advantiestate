@@ -3098,7 +3098,7 @@ h1, h2, h3 {
   transition: background-color 0.2s ease, color 0.2s ease;
 }
 .mi-subtabs button:hover { color: var(--warm-grey); }
-.mi-subtabs button[aria-selected="true"] {
+.mi-subtabs button[aria-checked="true"] {
   background: var(--warm-grey);
   color: var(--warm-white);
 }
@@ -3217,7 +3217,7 @@ h1, h2, h3 {
   outline: 2px solid var(--warm-grey);
   outline-offset: -2px;
 }
-.miv-range button[aria-selected="true"] {
+.miv-range button[aria-checked="true"] {
   background: var(--warm-grey);
   color: var(--warm-white);
 }

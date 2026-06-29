@@ -4,7 +4,7 @@
 // Ported from advanti/markedsinnsikt.html + markedsinnsikt.js.
 // Holds the sector sidebar nav, sub-tabs, datasets and the six content views.
 
-import { Fragment, useEffect, useState } from "react"
+import { Fragment, useEffect, useRef, useState } from "react"
 import dynamic from "next/dynamic"
 import Link from "next/link"
 import { SeOgsa } from "@/components/site/SeOgsa"
@@ -137,6 +137,58 @@ function windowTail<T>(arr: T[], n: number): T[] {
   return arr.length <= n ? arr : arr.slice(arr.length - n)
 }
 
+// Segmented filter rendered as a radiogroup, not a tabset: each option just
+// re-filters the same chart (there is no separate tabpanel per option), so
+// role="radio"/aria-checked is the honest semantic. Roving tabindex + arrow
+// keys give it the radio-group keyboard contract the old role="tab" lacked.
+function SegmentTabs<T extends string>({
+  items,
+  value,
+  onChange,
+  ariaLabel,
+  className,
+}: {
+  items: readonly { id: T; label: string }[]
+  value: T
+  onChange: (id: T) => void
+  ariaLabel: string
+  className: string
+}) {
+  const refs = useRef<(HTMLButtonElement | null)[]>([])
+  const onKeyDown = (e: React.KeyboardEvent, i: number) => {
+    const last = items.length - 1
+    let next = -1
+    if (e.key === "ArrowRight" || e.key === "ArrowDown") next = i === last ? 0 : i + 1
+    else if (e.key === "ArrowLeft" || e.key === "ArrowUp") next = i === 0 ? last : i - 1
+    else if (e.key === "Home") next = 0
+    else if (e.key === "End") next = last
+    else return
+    e.preventDefault()
+    onChange(items[next].id)
+    refs.current[next]?.focus()
+  }
+  return (
+    <div className={className} role="radiogroup" aria-label={ariaLabel}>
+      {items.map((it, i) => (
+        <button
+          key={it.id}
+          ref={(el) => {
+            refs.current[i] = el
+          }}
+          type="button"
+          role="radio"
+          aria-checked={value === it.id}
+          tabIndex={value === it.id ? 0 : -1}
+          onClick={() => onChange(it.id)}
+          onKeyDown={(e) => onKeyDown(e, i)}
+        >
+          {it.label}
+        </button>
+      ))}
+    </div>
+  )
+}
+
 function RangeSelector({
   value,
   onChange,
@@ -145,19 +197,13 @@ function RangeSelector({
   onChange: (id: RangeId) => void
 }) {
   return (
-    <div className="miv-range" role="tablist" aria-label="Tidsrom">
-      {RANGES.map((r) => (
-        <button
-          key={r.id}
-          type="button"
-          role="tab"
-          aria-selected={value === r.id}
-          onClick={() => onChange(r.id)}
-        >
-          {r.label}
-        </button>
-      ))}
-    </div>
+    <SegmentTabs
+      className="miv-range"
+      ariaLabel="Tidsrom"
+      items={RANGES}
+      value={value}
+      onChange={onChange}
+    />
   )
 }
 
@@ -288,19 +334,13 @@ function YieldView() {
       </div>
 
       <div className="miv-controls">
-        <div className="mi-subtabs" role="tablist" aria-label="Visning">
-          {SUB_TABS.map((t) => (
-            <button
-              key={t.id}
-              type="button"
-              role="tab"
-              aria-selected={sub === t.id}
-              onClick={() => setSub(t.id)}
-            >
-              {t.label}
-            </button>
-          ))}
-        </div>
+        <SegmentTabs
+          className="mi-subtabs"
+          ariaLabel="Visning"
+          items={SUB_TABS}
+          value={sub}
+          onChange={setSub}
+        />
         <div className="miv-spacer" />
         <RangeSelector value={range} onChange={setRange} />
       </div>
@@ -495,19 +535,13 @@ function LeieView() {
       </div>
 
       <div className="miv-controls">
-        <div className="mi-subtabs" role="tablist" aria-label="Visning">
-          {SUB_TABS.map((t) => (
-            <button
-              key={t.id}
-              type="button"
-              role="tab"
-              aria-selected={sub === t.id}
-              onClick={() => setSub(t.id)}
-            >
-              {t.label}
-            </button>
-          ))}
-        </div>
+        <SegmentTabs
+          className="mi-subtabs"
+          ariaLabel="Visning"
+          items={SUB_TABS}
+          value={sub}
+          onChange={setSub}
+        />
         <div className="miv-spacer" />
         <RangeSelector value={range} onChange={setRange} />
       </div>
@@ -1213,14 +1247,14 @@ export function MarkedsinnsiktShell() {
         ))}
       </aside>
 
-      <main>
+      <section aria-label="Markedsdata">
         {sector === "yield" && <YieldView />}
         {sector === "leie" && <LeieView />}
         {sector === "tx" && <TxView />}
         {sector === "ledighet" && <LedighetView />}
         {sector === "kart" && <KartView />}
         {sector === "rapporter" && <RapporterView />}
-      </main>
+      </section>
     </div>
   )
 }

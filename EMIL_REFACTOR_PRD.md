@@ -75,11 +75,13 @@ Acceptance criteria met • `pnpm build` + `pnpm lint` green • box ticked with
   - **Do:** Replace the constant `animate={!useReducedMotion()}` with a parent-controlled `animate` prop gated to first mount/reveal (the `PortalCharts` pattern); pass `false` on subsequent range/legend-driven re-renders. Optionally drop 500ms → ~300ms.
   - **Accept:** first mount animates once; range/legend changes redraw instantly; reduced-motion still disables.
 
-- [ ] **R3 — Markedsinnsikt tab a11y contract**
-  - **Why:** `role="tab"`/`tablist`/`aria-selected` declared with no keyboard contract; nested `<main>`; RangeSelector mislabeled as tabs. Audit §3 Accessibility.
-  - **Files:** `src/components/markedsinnsikt/MarkedsinnsiktShell.tsx`.
-  - **Do:** Adopt Radix Tabs **or** add roving `tabindex` + Arrow/Home/End handling + `id`/`aria-controls` + `role="tabpanel"` on content. Fix `:1216` nested `<main>` → `<section aria-label="Markedsdata">`. Convert RangeSelector to `role="radiogroup"`/`role="radio" aria-checked`. Keyboard tab changes must not trigger the chart morph (rule 12).
-  - **Accept:** arrow keys move tabs with roving focus; panels linked via `aria-controls`; no duplicate `main` (axe `landmark-no-duplicate-main` clean); keyboard switches don't animate charts.
+- [x] **R3a — Markedsinnsikt: landmark + segmented-filter a11y** (split from R3)
+  > done 2026-06-29: nested `<main>` → `<section aria-label="Markedsdata">` (fixes axe `landmark-no-duplicate-main`); extracted a shared `SegmentTabs` radiogroup (`role="radiogroup"`/`role="radio"`, `aria-checked`, roving `tabIndex` + Arrow/Home/End) and wired it into `RangeSelector` + both "Visning" sub-tab groups; switched `.mi-subtabs`/`.miv-range` active CSS from `[aria-selected]` to `[aria-checked]`. The shared helper also seeds R7's de-dup. build exit 0, lint 0 errors/0 warnings.
+- [ ] **R3b — Markedsinnsikt: sector nav proper tab contract** (split from R3)
+  - **Why:** the sector nav (`aside.mi-nav`, ~1195) is the real tabset with the `<section>` panel, but declares `role="tab"`/`tablist`/`aria-selected` with no keyboard contract or panel wiring. Audit §3 Accessibility.
+  - **Files:** `src/components/markedsinnsikt/MarkedsinnsiktShell.tsx` (+ `advanti-design.css` only if selectors change).
+  - **Do:** Add roving `tabIndex` + Arrow/Home/End to the sector buttons; give each an `id` and `aria-controls` pointing at the panel; make the `<section>` `role="tabpanel"` with `aria-labelledby` the active tab (drop the interim `aria-label`) + `tabIndex={0}`. Keep `aria-selected` on the sector buttons (these are real tabs, so the `.mi-nav` CSS stays). Charts already mount-gate (R2), so keyboard sector moves won't replay mid-view animations.
+  - **Accept:** arrow keys move between sectors with roving focus; panel linked via `aria-controls`/`aria-labelledby`; `role="tab"` buttons own a `role="tabpanel"`.
 
 - [ ] **R4 — Calculator tooltips + design-system migration**
   - **Why:** 9 hover-only tooltips invisible to keyboard/SR; dead Tremor tokens off-brand. Audit §3 Accessibility + Component-design.
