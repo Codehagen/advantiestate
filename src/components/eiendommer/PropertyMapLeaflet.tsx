@@ -43,6 +43,9 @@ export function PropertyMapLeaflet({
       maxZoom={TILE_MAX_ZOOM}
       zoomControl={zoomControl}
       scrollWheelZoom={false}
+      dragging={false}
+      touchZoom={false}
+      doubleClickZoom={false}
       style={{ height: "100%", width: "100%" }}
     >
       <TileLayer
