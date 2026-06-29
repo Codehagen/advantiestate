@@ -165,9 +165,9 @@ function CityMarker({ city, isSelected, onSelectCity }: CityMarkerProps) {
         }}
       />
 
-      {/* Hovedmarkør */}
+      {/* Hovedmarkør — ikke-interaktiv; den usynlige hit-sirkelen under bærer
+          input slik at trefflaten blir >=44px (synlig prikk er bare 16-36px). */}
       <CircleMarker
-        ref={markerRef}
         center={[city.lat, city.lon]}
         radius={radius}
         pathOptions={{
@@ -175,8 +175,8 @@ function CityMarker({ city, isSelected, onSelectCity }: CityMarkerProps) {
           fillOpacity: 1,
           color: MARKER.stroke,
           weight: isSelected ? 3 : MARKER.strokeWidth,
+          interactive: false,
         }}
-        eventHandlers={eventHandlers}
       >
         <Tooltip
           permanent
@@ -187,6 +187,20 @@ function CityMarker({ city, isSelected, onSelectCity }: CityMarkerProps) {
           {showValue ? `${city.name} · ${city.formattedValue}` : city.name}
         </Tooltip>
       </CircleMarker>
+
+      {/* Usynlig trefflate (>=44px) — bærer ref, eventHandlers og a11y. */}
+      <CircleMarker
+        ref={markerRef}
+        center={[city.lat, city.lon]}
+        radius={Math.max(radius, 22)}
+        pathOptions={{
+          color: "transparent",
+          weight: 0,
+          fillColor: "transparent",
+          fillOpacity: 0,
+        }}
+        eventHandlers={eventHandlers}
+      />
     </>
   )
 }
