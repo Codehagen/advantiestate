@@ -108,7 +108,8 @@ Acceptance criteria met • `pnpm build` + `pnpm lint` green • box ticked with
   - **Accept:** map markers are keyboard-focusable, announce a name + action, and have ≥44px hit areas; maps still render and select correctly.
   - **Accept:** markers keyboard-focusable with ≥44px hit area; ranked rows expose a real button; table semantics intact.
 
-- [ ] **R7 — MarkedsinnsiktShell de-duplication**
+- [x] **R7 — MarkedsinnsiktShell de-duplication**
+  > done 2026-06-29: extracted `<SectionHead eyebrow heading source stamp?>` (used by all 6 views, replacing the hand-repeated `.mi-section-head` block; the inline `{marginBottom:18,display:inline-flex}` eyebrow style moved to `.mi-section-head .eyebrow` in CSS; `stamp` defaults to `LATEST_RELEASE_STAMP`, Rapporter passes its own) and `<SegmentControls sub setSub range setRange>` (Yield + Leie, wrapping the R3a `SegmentTabs` + `RangeSelector`). Pure refactor, no behavior change: 6 SectionHead + 2 SegmentControls call sites, soft hyphens preserved (12→12). build exit 0, lint 0 errors/0 warnings.
   - **Why:** Six views hand-repeat `.mi-section-head` + `.miv-controls` verbatim. Audit §3 Component-design.
   - **Files:** `src/components/markedsinnsikt/MarkedsinnsiktShell.tsx` (extract into the same file or a sibling).
   - **Do:** Extract `<SectionHead eyebrow stamp source>` (move the inline `marginBottom:18` into CSS) and `<SegmentControls>` (sub-tabs + RangeSelector); replace the six duplicated blocks. Pure refactor, no behavior change.

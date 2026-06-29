@@ -207,6 +207,60 @@ function RangeSelector({
   )
 }
 
+// Shared section header for the six market views — was hand-repeated verbatim
+// (incl. an inline eyebrow style now moved to .mi-section-head .eyebrow in CSS).
+function SectionHead({
+  eyebrow,
+  heading,
+  source,
+  stamp = LATEST_RELEASE_STAMP,
+}: {
+  eyebrow: string
+  heading: React.ReactNode
+  source: string
+  stamp?: string
+}) {
+  return (
+    <div className="mi-section-head">
+      <div>
+        <span className="eyebrow">{eyebrow}</span>
+        <h2>{heading}</h2>
+      </div>
+      <div className="updated">
+        <span className="live">{stamp}</span>
+        <span>{source}</span>
+      </div>
+    </div>
+  )
+}
+
+// Sub-tab (segment) + time-range controls, shared by the Yield and Leie views.
+function SegmentControls({
+  sub,
+  setSub,
+  range,
+  setRange,
+}: {
+  sub: Segment
+  setSub: (s: Segment) => void
+  range: RangeId
+  setRange: (r: RangeId) => void
+}) {
+  return (
+    <div className="miv-controls">
+      <SegmentTabs
+        className="mi-subtabs"
+        ariaLabel="Visning"
+        items={SUB_TABS}
+        value={sub}
+        onChange={setSub}
+      />
+      <div className="miv-spacer" />
+      <RangeSelector value={range} onChange={setRange} />
+    </div>
+  )
+}
+
 interface LegendItem {
   key: string // must match the chart series `name`
   label: string
@@ -314,36 +368,18 @@ function YieldView() {
 
   return (
     <div>
-      <div className="mi-section-head">
-        <div>
-          <span
-            className="eyebrow"
-            style={{ marginBottom: 18, display: "inline-flex" }}
-          >
-            01 · Yield & renter
-          </span>
-          <h2>
+      <SectionHead
+        eyebrow="01 · Yield & renter"
+        source="Kilde: Advanti markedsdata"
+        heading={
+          <>
             Yield mot rente­markedet,{" "}
             <span className="italic">kvartal for kvartal.</span>
-          </h2>
-        </div>
-        <div className="updated">
-          <span className="live">{LATEST_RELEASE_STAMP}</span>
-          <span>Kilde: Advanti markedsdata</span>
-        </div>
-      </div>
+          </>
+        }
+      />
 
-      <div className="miv-controls">
-        <SegmentTabs
-          className="mi-subtabs"
-          ariaLabel="Visning"
-          items={SUB_TABS}
-          value={sub}
-          onChange={setSub}
-        />
-        <div className="miv-spacer" />
-        <RangeSelector value={range} onChange={setRange} />
-      </div>
+      <SegmentControls sub={sub} setSub={setSub} range={range} setRange={setRange} />
 
       <div className="mi-chart-card">
         <div className="mi-chart-head">
@@ -515,36 +551,18 @@ function LeieView() {
 
   return (
     <div>
-      <div className="mi-section-head">
-        <div>
-          <span
-            className="eyebrow"
-            style={{ marginBottom: 18, display: "inline-flex" }}
-          >
-            02 · Markedsleie
-          </span>
-          <h2>
+      <SectionHead
+        eyebrow="02 · Markedsleie"
+        source="Kilde: Advanti leiekontrakt­base"
+        heading={
+          <>
             Markedsleie per by,{" "}
             <span className="italic">prime kvalitet.</span>
-          </h2>
-        </div>
-        <div className="updated">
-          <span className="live">{LATEST_RELEASE_STAMP}</span>
-          <span>Kilde: Advanti leiekontrakt­base</span>
-        </div>
-      </div>
+          </>
+        }
+      />
 
-      <div className="miv-controls">
-        <SegmentTabs
-          className="mi-subtabs"
-          ariaLabel="Visning"
-          items={SUB_TABS}
-          value={sub}
-          onChange={setSub}
-        />
-        <div className="miv-spacer" />
-        <RangeSelector value={range} onChange={setRange} />
-      </div>
+      <SegmentControls sub={sub} setSub={setSub} range={range} setRange={setRange} />
 
       <div className="mi-chart-card">
         <div className="mi-chart-head">
@@ -682,24 +700,16 @@ function LeieView() {
 function TxView() {
   return (
     <div>
-      <div className="mi-section-head">
-        <div>
-          <span
-            className="eyebrow"
-            style={{ marginBottom: 18, display: "inline-flex" }}
-          >
-            03 · Transaksjoner
-          </span>
-          <h2>
+      <SectionHead
+        eyebrow="03 · Transaksjoner"
+        source="Kilde: Advanti transaksjons­database"
+        heading={
+          <>
             Transaksjons­volum og{" "}
             <span className="italic">utvalgte handler.</span>
-          </h2>
-        </div>
-        <div className="updated">
-          <span className="live">{LATEST_RELEASE_STAMP}</span>
-          <span>Kilde: Advanti transaksjons­database</span>
-        </div>
-      </div>
+          </>
+        }
+      />
 
       <div className="mi-chart-card">
         <div className="mi-chart-head">
@@ -797,23 +807,15 @@ function TxView() {
 function LedighetView() {
   return (
     <div>
-      <div className="mi-section-head">
-        <div>
-          <span
-            className="eyebrow"
-            style={{ marginBottom: 18, display: "inline-flex" }}
-          >
-            04 · Ledighet
-          </span>
-          <h2>
+      <SectionHead
+        eyebrow="04 · Ledighet"
+        source="Kilde: Advanti markeds­telling"
+        heading={
+          <>
             Ledighet per by <span className="italic">og segment.</span>
-          </h2>
-        </div>
-        <div className="updated">
-          <span className="live">{LATEST_RELEASE_STAMP}</span>
-          <span>Kilde: Advanti markeds­telling</span>
-        </div>
-      </div>
+          </>
+        }
+      />
 
       <div className="mi-chart-card">
         <div className="mi-chart-head">
@@ -940,23 +942,15 @@ function KartView() {
 
   return (
     <div>
-      <div className="mi-section-head">
-        <div>
-          <span
-            className="eyebrow"
-            style={{ marginBottom: 18, display: "inline-flex" }}
-          >
-            05 · Markedskart
-          </span>
-          <h2>
+      <SectionHead
+        eyebrow="05 · Markedskart"
+        source="Yield, leie og ledighet — Q4 2025"
+        heading={
+          <>
             By for by. <span className="italic">Klikk for detaljer.</span>
-          </h2>
-        </div>
-        <div className="updated">
-          <span className="live">{LATEST_RELEASE_STAMP}</span>
-          <span>Yield, leie og ledighet — Q4 2025</span>
-        </div>
-      </div>
+          </>
+        }
+      />
 
       <div className="mi-map-card">
         <div className="mi-map">
@@ -1080,24 +1074,17 @@ const REPORTS = [
 function RapporterView() {
   return (
     <div>
-      <div className="mi-section-head">
-        <div>
-          <span
-            className="eyebrow"
-            style={{ marginBottom: 18, display: "inline-flex" }}
-          >
-            06 · Rapporter & analyser
-          </span>
-          <h2>
+      <SectionHead
+        eyebrow="06 · Rapporter & analyser"
+        source="Q4 2025 Marked Nord-Norge"
+        stamp="SISTE RAPPORT 12. JAN 2026"
+        heading={
+          <>
             Dypdykk i markedet,{" "}
             <span className="italic">når du trenger det.</span>
-          </h2>
-        </div>
-        <div className="updated">
-          <span className="live">SISTE RAPPORT 12. JAN 2026</span>
-          <span>Q4 2025 Marked Nord-Norge</span>
-        </div>
-      </div>
+          </>
+        }
+      />
 
       <div className="mi-report-card">
         <div>

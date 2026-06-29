@@ -3028,6 +3028,8 @@ h1, h2, h3 {
   border-bottom: var(--hairline);
   flex-wrap: wrap;
 }
+/* Was an inline style repeated on every view's eyebrow; now in one place. */
+.mi-section-head .eyebrow { margin-bottom: 18px; display: inline-flex; }
 .mi-section-head h2 {
   font-size: clamp(28px, 3vw, 44px);
   font-weight: 400;
