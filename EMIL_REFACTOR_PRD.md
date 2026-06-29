@@ -98,10 +98,13 @@ Acceptance criteria met • `pnpm build` + `pnpm lint` green • box ticked with
   - **Do:** Add `active:scale-[0.97]` + include `transform` in the transition on `Button` base, `.btn`, `.fbtn`; guard with `@media (prefers-reduced-motion: reduce) { transform: none }`.
   - **Accept:** buttons depress on press; reduced-motion users get no transform; consistent across CTAs. **Flag in commit body: introduces a site-wide interaction pattern — wants a visual sign-off.**
 
-- [ ] **R6 — Leaflet marker a11y + ranked-table action**
-  - **Why:** City markers are mouse-only + sub-44px; ranked rows put the action on a role-less `<tr>`. Audit §3 Accessibility + Component-design.
-  - **Files:** `src/components/markedsinnsikt/maps/NordNorgeLeafletMap.tsx`, `src/components/markedsinnsikt/maps/MarkedsKartLeafletCelle.tsx`, `src/components/markedsinnsikt/maps/MarkedsKartHoved.tsx`.
-  - **Do:** Add transparent interactive hit-circles (`radius ≥ 22`, `fillOpacity 0`, `weight 0`) carrying handlers + keyboard/role/aria-label parity (mirror `CityMarker` in `MarkedsKartLeafletCelle`). Convert the interactive `<tr>` (`MarkedsKartHoved.tsx:481-493`) to a `<button>` in the first cell, dropping row-level handlers.
+- [x] **R6a — Ranked-table action → button-in-cell** (split from R6)
+  > done 2026-06-29: dropped the role-less interactive `<tr>` handlers (onClick/tabIndex/onKeyDown/aria-label) in `MarkedsKartHoved` and moved the action to a `<button className="mi-rank-citybtn" aria-label aria-pressed>` inside the city-name cell, so SR announces an action not "row". Added `.mi-rank-citybtn` CSS (reads as the cell text, full-width, focus-visible ring). Row `:hover`/`.active` highlight unchanged. build exit 0, lint 0 errors/0 warnings.
+- [ ] **R6b — Leaflet marker a11y + 44px hit targets** (split from R6)
+  - **Why:** `NordNorgeLeafletMap` city markers are mouse-only (no keyboard/role/aria); both maps' smallest markers are sub-44px. Audit §3 Accessibility. (Note: the audit calls NordNorge "not blocking" since the adjacent `mi-city-picker` buttons already give a keyboard path.)
+  - **Files:** `src/components/markedsinnsikt/maps/NordNorgeLeafletMap.tsx`, `src/components/markedsinnsikt/maps/MarkedsKartLeafletCelle.tsx`.
+  - **Do:** Mirror `CityMarker`'s `add`-handler a11y (role=button, tabindex, aria-label, Enter/Space) on NordNorge markers; on both maps add a transparent interactive hit-circle (`radius={Math.max(radius, 22)}`, `fillOpacity 0`, `weight 0`) carrying the handlers, with the visible marker `interactive: false`. Isolated commit (Leaflet) — `QA1` will exercise the maps.
+  - **Accept:** map markers are keyboard-focusable, announce a name + action, and have ≥44px hit areas; maps still render and select correctly.
   - **Accept:** markers keyboard-focusable with ≥44px hit area; ranked rows expose a real button; table semantics intact.
 
 - [ ] **R7 — MarkedsinnsiktShell de-duplication**
