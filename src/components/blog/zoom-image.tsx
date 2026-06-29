@@ -24,7 +24,7 @@ export default function ZoomImage(
       >
         <BlurImage
           {...props}
-          className="rounded-lg border border-gray-200"
+          className="rounded-lg border border-warm-grey-2/20"
           placeholder="blur"
           blurDataURL={
             props.blurDataURL ||
@@ -33,7 +33,7 @@ export default function ZoomImage(
         />
       </Zoom>
       {!props?.hideCaption && (
-        <figcaption className="text-center text-sm italic text-gray-500">
+        <figcaption className="text-center text-sm italic text-warm-grey/60">
           {props.alt}
         </figcaption>
       )}

@@ -81,7 +81,7 @@ function CardPattern({
 
   return (
     <div className="pointer-events-none">
-      <div className="absolute inset-0 rounded-2xl transition duration-300 [mask-image:linear-gradient(white,transparent)] group-hover:opacity-50">
+      <div className="absolute inset-0 rounded-2xl transition duration-150 [mask-image:linear-gradient(white,transparent)] group-hover:opacity-50">
         <GridPattern
           width={72}
           height={56}
@@ -91,11 +91,11 @@ function CardPattern({
         />
       </div>
       <motion.div
-        className="absolute inset-0 rounded-2xl bg-gradient-to-r from-warm-grey-2/20 to-warm-grey-1/20 opacity-0 transition duration-300 group-hover:opacity-100"
+        className="absolute inset-0 rounded-2xl bg-gradient-to-r from-warm-grey-2/20 to-warm-grey-1/20 opacity-0 transition duration-150 group-hover:opacity-100"
         style={style}
       />
       <motion.div
-        className="absolute inset-0 rounded-2xl opacity-0 mix-blend-overlay transition duration-300 group-hover:opacity-100"
+        className="absolute inset-0 rounded-2xl opacity-0 mix-blend-overlay transition duration-150 group-hover:opacity-100"
         style={style}
       >
         <GridPattern

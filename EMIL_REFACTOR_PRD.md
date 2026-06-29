@@ -115,7 +115,8 @@ Acceptance criteria met • `pnpm build` + `pnpm lint` green • box ticked with
   - **Do:** Extract `<SectionHead eyebrow stamp source>` (move the inline `marginBottom:18` into CSS) and `<SegmentControls>` (sub-tabs + RangeSelector); replace the six duplicated blocks. Pure refactor, no behavior change.
   - **Accept:** six views render identically to before; duplication removed; build green. Do R3 first if it changes the controls' markup.
 
-- [ ] **R8 — Blog motion polish**
+- [x] **R8 — Blog motion polish**
+  > done 2026-06-29: named the 4 remaining `transition-all` offenders (integrations `transition-colors` + `transition-[filter]`, expanding-arrow ×2 `transition-[transform,opacity]`; scroll-progress already done in T0); added `[vaul-drawer]`/`[vaul-overlay]` 200ms `cubic-bezier(0.165,0.84,0.44,1)` override (rule 81, `!important` to beat Vaul's inline transition — ⚠️ QA1 verify mobile drawer); category-card 3× hover `duration-300`→`duration-150`; aligned modal backdrop/content by setting `scale-in` 180ms→150ms (matches `dialogOverlayShow`; scale-in is modal-only); removed the dead `transition-shadow` no-op in `mdx.tsx`; swapped off-system `gray-*` tokens → warm-grey in `copy-box` + `zoom-image`. build exit 0, lint 0 errors/0 warnings.
   - **Why:** Remaining blog `transition-all`, Vaul defaults, off-system tokens. Audit §3 Blog.
   - **Files:** `src/components/blog/{integrations,category-card,modal,mdx,zoom-image,copy-box}.tsx`, `src/components/blog/icons/expanding-arrow.tsx`, `src/styles/advanti-design.css`.
   - **Do:** Name all 5 `transition-all` offenders to explicit props (rule 23). Add `[vaul-drawer]`/`[vaul-overlay]` `200ms cubic-bezier(0.165,0.84,0.44,1)` to `advanti-design.css` (rule 81). `category-card` hover fades → `duration-150`. Align `modal` backdrop/content durations. Remove the dead `transition-shadow` no-op in `mdx.tsx:389`. Swap `border-gray-*`/`text-gray-*` for warm-grey tokens in `copy-box`/`zoom-image` (rule 43).

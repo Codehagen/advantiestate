@@ -194,6 +194,17 @@ h1, h2, h3 {
    itself (focus is just a scroll/landmark anchor, not an interactive control). */
 #hovedinnhold:focus { outline: none; }
 
+/* Vaul mobile drawer (blog/modal Drawer): override the library's ~500ms snap to
+   a snappier 200ms native feel (Emil rule 81). !important beats Vaul's inline
+   transition. */
+[vaul-drawer] {
+  transition-duration: 200ms !important;
+  transition-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1) !important;
+}
+[vaul-overlay] {
+  transition-duration: 200ms !important;
+}
+
 /* ============================================================
    NAV
    ============================================================ */

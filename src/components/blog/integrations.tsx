@@ -17,7 +17,7 @@ export const Integration = ({
     <Link
       href={site || `/integrasjoner/${slug}`}
       {...(site ? { target: "_blank", rel: "noreferrer noopener" } : {})}
-      className="group flex h-full flex-col items-center justify-between space-y-4 rounded-xl border border-warm-grey/10 bg-warm-white/5 p-8 backdrop-blur-sm transition-all hover:border-warm-grey/20 hover:bg-warm-white/10 sm:p-10"
+      className="group flex h-full flex-col items-center justify-between space-y-4 rounded-xl border border-warm-grey/10 bg-warm-white/5 p-8 backdrop-blur-sm transition-colors hover:border-warm-grey/20 hover:bg-warm-white/10 sm:p-10"
     >
       <div className="flex flex-col items-center space-y-4">
         <BlurImage
@@ -25,7 +25,7 @@ export const Integration = ({
           alt={slug.toUpperCase()}
           width={520}
           height={182}
-          className="max-h-16 grayscale transition-all group-hover:grayscale-0"
+          className="max-h-16 grayscale transition-[filter] duration-150 group-hover:grayscale-0"
         />
         {description && (
           <>
