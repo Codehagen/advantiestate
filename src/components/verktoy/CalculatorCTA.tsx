@@ -22,7 +22,7 @@ export function CalculatorCTA({
         </p>
         <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:justify-center">
           <Link href="/kontakt">
-            <Button className="h-10 w-full font-semibold sm:w-auto">
+            <Button className="h-11 w-full font-semibold sm:w-auto">
               <RiMailLine className="mr-2 size-4" />
               Kontakt oss
             </Button>
@@ -30,7 +30,7 @@ export function CalculatorCTA({
           <Link href="/personer">
             <Button
               variant="secondary"
-              className="h-10 w-full font-semibold sm:w-auto"
+              className="h-11 w-full font-semibold sm:w-auto"
             >
               <RiTeamLine className="mr-2 size-4" />
               Snakk med en ekspert

@@ -33,7 +33,7 @@ const SORTS: { key: SortKey; label: string }[] = [
 
 function highlight(text: string, q: string) {
   if (!q) return text
-  const i = text.toLowerCase().indexOf(q.toLowerCase())
+  const i = foldNo(text).indexOf(foldNo(q))
   if (i === -1) return text
   return (
     <>

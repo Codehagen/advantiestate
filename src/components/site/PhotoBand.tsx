@@ -2,7 +2,11 @@ import Image from "next/image";
 
 export interface PhotoBandProps {
   src: string;
-  alt: string;
+  /**
+   * Alt text for the image. Optional: a caption-less band is decorative
+   * (aria-hidden), so it renders alt="" rather than requiring meaningful text.
+   */
+  alt?: string;
   caption?: string;
 }
 
@@ -10,7 +14,7 @@ export interface PhotoBandProps {
  * Full-bleed editorial photo band — breaks up long content pages and
  * carries the photo-first design intent. Spans the viewport edge-to-edge.
  */
-export function PhotoBand({ src, alt, caption }: PhotoBandProps) {
+export function PhotoBand({ src, alt = "", caption }: PhotoBandProps) {
   return (
     <section className="photo-band" aria-hidden={caption ? undefined : true}>
       <Image

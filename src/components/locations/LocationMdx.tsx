@@ -2,23 +2,34 @@
 
 import { MDXContent } from "@content-collections/mdx/react";
 import Link from "next/link";
+import React from "react";
 
-const CustomLink = (props: any) => {
-  const href = props.href as string;
-
+const CustomLink = ({
+  href,
+  children,
+  ...rest
+}: React.ComponentPropsWithoutRef<"a">) => {
   if (href?.startsWith("/")) {
     return (
-      <Link {...props} href={href}>
-        {props.children}
+      <Link href={href} {...rest}>
+        {children}
       </Link>
     );
   }
 
   if (href?.startsWith("#")) {
-    return <a {...props} />;
+    return (
+      <a href={href} {...rest}>
+        {children}
+      </a>
+    );
   }
 
-  return <a target="_blank" rel="noopener noreferrer" {...props} />;
+  return (
+    <a href={href} target="_blank" rel="noopener noreferrer" {...rest}>
+      {children}
+    </a>
+  );
 };
 
 // Plain elements so the editorial `.ks-prose` typography from the design

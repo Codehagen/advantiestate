@@ -12,42 +12,42 @@ export default function FeatureDivider({ className }: { className?: string }) {
           className="bg-warm-grey-2 absolute left-0 top-0 size-1 rounded-full transition-colors"
           style={{
             animation: reduce ? undefined : `wave 2s infinite ease-in-out`,
-            animationDelay: `${0 * 0.2}s`,
+            animationDelay: "0s",
           }}
         />
         <div
           className="bg-warm-grey-2 absolute left-4 top-0 size-1 rounded-full transition-colors"
           style={{
             animation: reduce ? undefined : `wave 2s infinite ease-in-out`,
-            animationDelay: `${0 * 0.2}s`,
+            animationDelay: "0s",
           }}
         />
         <div
           className="bg-warm-grey-2 absolute left-2 top-1 size-1 rounded-full transition-colors"
           style={{
             animation: reduce ? undefined : `wave 2s infinite ease-in-out`,
-            animationDelay: `${2 * 0.2}s`,
+            animationDelay: "0.4s",
           }}
         />
         <div
           className="bg-warm-grey-2 absolute left-0 top-2 size-1 rounded-full transition-colors"
           style={{
             animation: reduce ? undefined : `wave 2s infinite ease-in-out`,
-            animationDelay: `${3 * 0.2}s`,
+            animationDelay: "0.6s",
           }}
         />
         <div
           className="bg-warm-grey-2 absolute left-4 top-2 size-1 rounded-full transition-colors"
           style={{
             animation: reduce ? undefined : `wave 2s infinite ease-in-out`,
-            animationDelay: `${3 * 0.2}s`,
+            animationDelay: "0.6s",
           }}
         />
         <div
           className="bg-warm-grey-2 absolute left-2 top-3 size-1 rounded-full transition-colors"
           style={{
             animation: reduce ? undefined : `wave 2s infinite ease-in-out`,
-            animationDelay: `${5 * 0.2}s`,
+            animationDelay: "1s",
           }}
         />
       </div>

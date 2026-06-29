@@ -102,14 +102,14 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         {isPassword && (
           <div
             className={cx(
-              "absolute bottom-0 right-0 flex h-full items-center justify-center px-3",
+              "absolute bottom-0 right-0 flex h-full items-center justify-center",
             )}
           >
             <button
               aria-label="Change password visibility"
               className={cx(
                 // base
-                "h-fit w-fit rounded-sm outline-none transition-all",
+                "flex h-full min-h-[44px] min-w-[44px] items-center justify-center rounded-sm outline-none transition-colors duration-150",
                 // text
                 "text-warm-grey-2",
                 // hover
