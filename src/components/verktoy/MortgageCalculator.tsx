@@ -3,7 +3,7 @@
 import { useState, useEffect, useMemo, useRef } from "react";
 import NumberFlow from "@number-flow/react";
 import { Input } from "@/components/Input";
-import { RiInformationLine } from "@remixicon/react";
+import { InfoTooltip } from "./InfoTooltip";
 
 // Hoisted so the Intl.NumberFormat (CLDR parsing) is built once at module load,
 // not reconstructed on every keystroke while editing the calculator inputs.
@@ -98,18 +98,15 @@ export function MortgageCalculator() {
         <div className="space-y-6">
           {/* Kjøpesum */}
           <div className="space-y-2">
-            <label
-              htmlFor="kjopesum"
-              className="flex items-center text-tremor-default font-medium text-tremor-content-strong"
-            >
-              Kjøpesum (NOK)
-              <div className="group relative ml-2">
-                <RiInformationLine className="size-4 text-warm-grey-2" />
-                <div className="pointer-events-none absolute bottom-full left-1/2 mb-2 hidden w-64 -translate-x-1/2 rounded-lg bg-warm-grey px-3 py-2 text-xs text-warm-white shadow-lg group-hover:block">
-                  Total kjøpesum for eiendommen
-                </div>
-              </div>
-            </label>
+            <div className="flex items-center">
+              <label
+                htmlFor="kjopesum"
+                className="text-sm font-medium text-warm-grey"
+              >
+                Kjøpesum (NOK)
+              </label>
+              <InfoTooltip text="Total kjøpesum for eiendommen" />
+            </div>
             <div className="relative">
               <Input
                 id="kjopesum"
@@ -131,18 +128,15 @@ export function MortgageCalculator() {
 
           {/* Egenkapital */}
           <div className="space-y-2">
-            <label
-              htmlFor="egenkapital"
-              className="flex items-center text-tremor-default font-medium text-tremor-content-strong"
-            >
-              Egenkapital (NOK)
-              <div className="group relative ml-2">
-                <RiInformationLine className="size-4 text-warm-grey-2" />
-                <div className="pointer-events-none absolute bottom-full left-1/2 mb-2 hidden w-64 -translate-x-1/2 rounded-lg bg-warm-grey px-3 py-2 text-xs text-warm-white shadow-lg group-hover:block">
-                  Hvor mye skal du betale kontant?
-                </div>
-              </div>
-            </label>
+            <div className="flex items-center">
+              <label
+                htmlFor="egenkapital"
+                className="text-sm font-medium text-warm-grey"
+              >
+                Egenkapital (NOK)
+              </label>
+              <InfoTooltip text="Hvor mye skal du betale kontant?" />
+            </div>
             <div className="relative">
               <Input
                 id="egenkapital"
@@ -164,18 +158,15 @@ export function MortgageCalculator() {
 
           {/* Rentesats */}
           <div className="space-y-2">
-            <label
-              htmlFor="rentesats"
-              className="flex items-center text-tremor-default font-medium text-tremor-content-strong"
-            >
-              Rentesats (%)
-              <div className="group relative ml-2">
-                <RiInformationLine className="size-4 text-warm-grey-2" />
-                <div className="pointer-events-none absolute bottom-full left-1/2 mb-2 hidden w-64 -translate-x-1/2 rounded-lg bg-warm-grey px-3 py-2 text-xs text-warm-white shadow-lg group-hover:block">
-                  Årlig rentesats på lånet
-                </div>
-              </div>
-            </label>
+            <div className="flex items-center">
+              <label
+                htmlFor="rentesats"
+                className="text-sm font-medium text-warm-grey"
+              >
+                Rentesats (%)
+              </label>
+              <InfoTooltip text="Årlig rentesats på lånet" />
+            </div>
             <div className="relative">
               <Input
                 id="rentesats"
@@ -196,18 +187,15 @@ export function MortgageCalculator() {
 
           {/* Nedbetalingstid */}
           <div className="space-y-2">
-            <label
-              htmlFor="nedbetalingstid"
-              className="flex items-center text-tremor-default font-medium text-tremor-content-strong"
-            >
-              Nedbetalingstid (år)
-              <div className="group relative ml-2">
-                <RiInformationLine className="size-4 text-warm-grey-2" />
-                <div className="pointer-events-none absolute bottom-full left-1/2 mb-2 hidden w-64 -translate-x-1/2 rounded-lg bg-warm-grey px-3 py-2 text-xs text-warm-white shadow-lg group-hover:block">
-                  Hvor mange år skal du betale ned lånet?
-                </div>
-              </div>
-            </label>
+            <div className="flex items-center">
+              <label
+                htmlFor="nedbetalingstid"
+                className="text-sm font-medium text-warm-grey"
+              >
+                Nedbetalingstid (år)
+              </label>
+              <InfoTooltip text="Hvor mange år skal du betale ned lånet?" />
+            </div>
             <div className="relative">
               <Input
                 id="nedbetalingstid"
