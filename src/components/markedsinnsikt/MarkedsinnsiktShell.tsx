@@ -1224,6 +1224,24 @@ export function MarkedsinnsiktShell() {
     window.history.replaceState(null, "", `#${id}`)
   }
 
+  // Roving-tabindex keyboard contract for the sector tablist (WAI-ARIA tabs):
+  // arrow keys move focus and activate, Home/End jump to the ends. Charts
+  // mount-gate (R2), so a keyboard sector switch animates a fresh entrance,
+  // never a mid-view replay.
+  const tabRefs = useRef<(HTMLButtonElement | null)[]>([])
+  const onTabKeyDown = (e: React.KeyboardEvent, i: number) => {
+    const last = SECTORS.length - 1
+    let next = -1
+    if (e.key === "ArrowDown" || e.key === "ArrowRight") next = i === last ? 0 : i + 1
+    else if (e.key === "ArrowUp" || e.key === "ArrowLeft") next = i === 0 ? last : i - 1
+    else if (e.key === "Home") next = 0
+    else if (e.key === "End") next = last
+    else return
+    e.preventDefault()
+    selectSector(SECTORS[next].id)
+    tabRefs.current[next]?.focus()
+  }
+
   return (
     <div className="mi-shell">
       <aside className="mi-nav" role="tablist" aria-label="Sektorer">
@@ -1234,11 +1252,18 @@ export function MarkedsinnsiktShell() {
           <Fragment key={s.id}>
             {i === 4 && <div className="divider" aria-hidden="true" />}
             <button
+              ref={(el) => {
+                tabRefs.current[i] = el
+              }}
               type="button"
               role="tab"
+              id={`mi-tab-${s.id}`}
+              aria-controls="mi-panel"
               data-sector={s.id}
               aria-selected={sector === s.id}
+              tabIndex={sector === s.id ? 0 : -1}
               onClick={() => selectSector(s.id)}
+              onKeyDown={(e) => onTabKeyDown(e, i)}
             >
               <span>{s.label}</span>
               <span className="pre">{s.pre}</span>
@@ -1247,7 +1272,12 @@ export function MarkedsinnsiktShell() {
         ))}
       </aside>
 
-      <section aria-label="Markedsdata">
+      <section
+        id="mi-panel"
+        role="tabpanel"
+        aria-labelledby={`mi-tab-${sector}`}
+        tabIndex={0}
+      >
         {sector === "yield" && <YieldView />}
         {sector === "leie" && <LeieView />}
         {sector === "tx" && <TxView />}
