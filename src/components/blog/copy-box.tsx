@@ -17,6 +17,7 @@ export default function CopyBox(props: { title: string; copy: string }) {
         </div>
         <button
           type="button"
+          aria-label={copied ? "Kopiert" : "Kopier"}
           className="rounded-md p-1 transition-colors hover:bg-gray-200 active:bg-gray-300"
           onClick={() => {
             navigator.clipboard.writeText(props.copy)
@@ -26,9 +27,9 @@ export default function CopyBox(props: { title: string; copy: string }) {
           }}
         >
           {copied ? (
-            <RiCheckLine className="h-4 w-4 text-gray-500" />
+            <RiCheckLine aria-hidden="true" className="h-4 w-4 text-gray-500" />
           ) : (
-            <RiFileCopyLine className="h-4 w-4 text-gray-500" />
+            <RiFileCopyLine aria-hidden="true" className="h-4 w-4 text-gray-500" />
           )}
         </button>
       </div>

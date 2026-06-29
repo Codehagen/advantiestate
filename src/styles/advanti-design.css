@@ -1513,6 +1513,10 @@ h1, h2, h3 {
   color: var(--warm-white);
   outline: none;
 }
+.newsletter-form input:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
 .newsletter-form input::placeholder { color: rgba(243, 241, 239, 0.5); }
 .newsletter-form .btn {
   background: var(--warm-white);

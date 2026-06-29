@@ -30,7 +30,7 @@ const CustomTooltip: React.FC<TooltipProps> = ({ active, payload }) => {
             "border-b border-warm-grey/10 px-4 py-2",
           )}
         >
-          <p className={cx("font-medium text-warm-grey")}>
+          <p className={cx("font-medium text-warm-white")}>
             Kontantstrøm
           </p>
         </div>
@@ -60,7 +60,7 @@ const CustomTooltip: React.FC<TooltipProps> = ({ active, payload }) => {
                     : "Akkumulert nåverdi"}
                 </p>
               </div>
-              <p className="whitespace-nowrap text-right tabular-nums text-warm-grey">
+              <p className="whitespace-nowrap text-right tabular-nums text-warm-white">
                 {valueFormatter(value)} kr
               </p>
             </div>

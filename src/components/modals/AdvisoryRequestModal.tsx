@@ -58,10 +58,12 @@ export default function AdvisoryRequestModal({
       <div className="relative overflow-hidden bg-warm-white">
         <div className="border-b border-warm-grey-1/20 bg-gradient-to-br from-light-blue/10 to-warm-white px-6 py-6">
           <button
+            type="button"
+            aria-label="Lukk"
             onClick={() => setShowModal(false)}
             className="absolute right-4 top-4 rounded-full p-2 text-warm-grey-2 transition-colors hover:bg-warm-grey-1/10"
           >
-            <RiCloseLine className="h-5 w-5" />
+            <RiCloseLine aria-hidden="true" className="h-5 w-5" />
           </button>
           <div className="flex items-center gap-3">
             <div className="rounded-xl bg-light-blue/20 p-3">
