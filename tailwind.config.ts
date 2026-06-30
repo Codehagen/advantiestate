@@ -107,7 +107,7 @@ const config: Config = {
           "dialogOverlayShow 150ms cubic-bezier(0.16, 1, 0.3, 1)",
         dialogContentShow:
           "dialogContentShow 150ms cubic-bezier(0.16, 1, 0.3, 1)",
-        "scale-in": "scale-in 180ms cubic-bezier(0.16, 1, 0.3, 1)",
+        "scale-in": "scale-in 150ms cubic-bezier(0.16, 1, 0.3, 1)",
         // Entrances decelerate — ease-out curve, not built-in ease-in-out.
         // Duration is supplied inline per element (e.g. /presentasjon cascade).
         "slide-down-fade": "slide-down-fade cubic-bezier(0.16, 1, 0.3, 1)",

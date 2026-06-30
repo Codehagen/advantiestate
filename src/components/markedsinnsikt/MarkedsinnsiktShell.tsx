@@ -4,7 +4,7 @@
 // Ported from advanti/markedsinnsikt.html + markedsinnsikt.js.
 // Holds the sector sidebar nav, sub-tabs, datasets and the six content views.
 
-import { Fragment, useEffect, useState } from "react"
+import { Fragment, useEffect, useRef, useState } from "react"
 import dynamic from "next/dynamic"
 import Link from "next/link"
 import { SeOgsa } from "@/components/site/SeOgsa"
@@ -137,6 +137,58 @@ function windowTail<T>(arr: T[], n: number): T[] {
   return arr.length <= n ? arr : arr.slice(arr.length - n)
 }
 
+// Segmented filter rendered as a radiogroup, not a tabset: each option just
+// re-filters the same chart (there is no separate tabpanel per option), so
+// role="radio"/aria-checked is the honest semantic. Roving tabindex + arrow
+// keys give it the radio-group keyboard contract the old role="tab" lacked.
+function SegmentTabs<T extends string>({
+  items,
+  value,
+  onChange,
+  ariaLabel,
+  className,
+}: {
+  items: readonly { id: T; label: string }[]
+  value: T
+  onChange: (id: T) => void
+  ariaLabel: string
+  className: string
+}) {
+  const refs = useRef<(HTMLButtonElement | null)[]>([])
+  const onKeyDown = (e: React.KeyboardEvent, i: number) => {
+    const last = items.length - 1
+    let next = -1
+    if (e.key === "ArrowRight" || e.key === "ArrowDown") next = i === last ? 0 : i + 1
+    else if (e.key === "ArrowLeft" || e.key === "ArrowUp") next = i === 0 ? last : i - 1
+    else if (e.key === "Home") next = 0
+    else if (e.key === "End") next = last
+    else return
+    e.preventDefault()
+    onChange(items[next].id)
+    refs.current[next]?.focus()
+  }
+  return (
+    <div className={className} role="radiogroup" aria-label={ariaLabel}>
+      {items.map((it, i) => (
+        <button
+          key={it.id}
+          ref={(el) => {
+            refs.current[i] = el
+          }}
+          type="button"
+          role="radio"
+          aria-checked={value === it.id}
+          tabIndex={value === it.id ? 0 : -1}
+          onClick={() => onChange(it.id)}
+          onKeyDown={(e) => onKeyDown(e, i)}
+        >
+          {it.label}
+        </button>
+      ))}
+    </div>
+  )
+}
+
 function RangeSelector({
   value,
   onChange,
@@ -145,18 +197,66 @@ function RangeSelector({
   onChange: (id: RangeId) => void
 }) {
   return (
-    <div className="miv-range" role="tablist" aria-label="Tidsrom">
-      {RANGES.map((r) => (
-        <button
-          key={r.id}
-          type="button"
-          role="tab"
-          aria-selected={value === r.id}
-          onClick={() => onChange(r.id)}
-        >
-          {r.label}
-        </button>
-      ))}
+    <SegmentTabs
+      className="miv-range"
+      ariaLabel="Tidsrom"
+      items={RANGES}
+      value={value}
+      onChange={onChange}
+    />
+  )
+}
+
+// Shared section header for the six market views — was hand-repeated verbatim
+// (incl. an inline eyebrow style now moved to .mi-section-head .eyebrow in CSS).
+function SectionHead({
+  eyebrow,
+  heading,
+  source,
+  stamp = LATEST_RELEASE_STAMP,
+}: {
+  eyebrow: string
+  heading: React.ReactNode
+  source: string
+  stamp?: string
+}) {
+  return (
+    <div className="mi-section-head">
+      <div>
+        <span className="eyebrow">{eyebrow}</span>
+        <h2>{heading}</h2>
+      </div>
+      <div className="updated">
+        <span className="live">{stamp}</span>
+        <span>{source}</span>
+      </div>
+    </div>
+  )
+}
+
+// Sub-tab (segment) + time-range controls, shared by the Yield and Leie views.
+function SegmentControls({
+  sub,
+  setSub,
+  range,
+  setRange,
+}: {
+  sub: Segment
+  setSub: (s: Segment) => void
+  range: RangeId
+  setRange: (r: RangeId) => void
+}) {
+  return (
+    <div className="miv-controls">
+      <SegmentTabs
+        className="mi-subtabs"
+        ariaLabel="Visning"
+        items={SUB_TABS}
+        value={sub}
+        onChange={setSub}
+      />
+      <div className="miv-spacer" />
+      <RangeSelector value={range} onChange={setRange} />
     </div>
   )
 }
@@ -268,42 +368,18 @@ function YieldView() {
 
   return (
     <div>
-      <div className="mi-section-head">
-        <div>
-          <span
-            className="eyebrow"
-            style={{ marginBottom: 18, display: "inline-flex" }}
-          >
-            01 · Yield & renter
-          </span>
-          <h2>
+      <SectionHead
+        eyebrow="01 · Yield & renter"
+        source="Kilde: Advanti markedsdata"
+        heading={
+          <>
             Yield mot rente­markedet,{" "}
             <span className="italic">kvartal for kvartal.</span>
-          </h2>
-        </div>
-        <div className="updated">
-          <span className="live">{LATEST_RELEASE_STAMP}</span>
-          <span>Kilde: Advanti markedsdata</span>
-        </div>
-      </div>
+          </>
+        }
+      />
 
-      <div className="miv-controls">
-        <div className="mi-subtabs" role="tablist" aria-label="Visning">
-          {SUB_TABS.map((t) => (
-            <button
-              key={t.id}
-              type="button"
-              role="tab"
-              aria-selected={sub === t.id}
-              onClick={() => setSub(t.id)}
-            >
-              {t.label}
-            </button>
-          ))}
-        </div>
-        <div className="miv-spacer" />
-        <RangeSelector value={range} onChange={setRange} />
-      </div>
+      <SegmentControls sub={sub} setSub={setSub} range={range} setRange={setRange} />
 
       <div className="mi-chart-card">
         <div className="mi-chart-head">
@@ -475,42 +551,18 @@ function LeieView() {
 
   return (
     <div>
-      <div className="mi-section-head">
-        <div>
-          <span
-            className="eyebrow"
-            style={{ marginBottom: 18, display: "inline-flex" }}
-          >
-            02 · Markedsleie
-          </span>
-          <h2>
+      <SectionHead
+        eyebrow="02 · Markedsleie"
+        source="Kilde: Advanti leiekontrakt­base"
+        heading={
+          <>
             Markedsleie per by,{" "}
             <span className="italic">prime kvalitet.</span>
-          </h2>
-        </div>
-        <div className="updated">
-          <span className="live">{LATEST_RELEASE_STAMP}</span>
-          <span>Kilde: Advanti leiekontrakt­base</span>
-        </div>
-      </div>
+          </>
+        }
+      />
 
-      <div className="miv-controls">
-        <div className="mi-subtabs" role="tablist" aria-label="Visning">
-          {SUB_TABS.map((t) => (
-            <button
-              key={t.id}
-              type="button"
-              role="tab"
-              aria-selected={sub === t.id}
-              onClick={() => setSub(t.id)}
-            >
-              {t.label}
-            </button>
-          ))}
-        </div>
-        <div className="miv-spacer" />
-        <RangeSelector value={range} onChange={setRange} />
-      </div>
+      <SegmentControls sub={sub} setSub={setSub} range={range} setRange={setRange} />
 
       <div className="mi-chart-card">
         <div className="mi-chart-head">
@@ -648,24 +700,16 @@ function LeieView() {
 function TxView() {
   return (
     <div>
-      <div className="mi-section-head">
-        <div>
-          <span
-            className="eyebrow"
-            style={{ marginBottom: 18, display: "inline-flex" }}
-          >
-            03 · Transaksjoner
-          </span>
-          <h2>
+      <SectionHead
+        eyebrow="03 · Transaksjoner"
+        source="Kilde: Advanti transaksjons­database"
+        heading={
+          <>
             Transaksjons­volum og{" "}
             <span className="italic">utvalgte handler.</span>
-          </h2>
-        </div>
-        <div className="updated">
-          <span className="live">{LATEST_RELEASE_STAMP}</span>
-          <span>Kilde: Advanti transaksjons­database</span>
-        </div>
-      </div>
+          </>
+        }
+      />
 
       <div className="mi-chart-card">
         <div className="mi-chart-head">
@@ -763,23 +807,15 @@ function TxView() {
 function LedighetView() {
   return (
     <div>
-      <div className="mi-section-head">
-        <div>
-          <span
-            className="eyebrow"
-            style={{ marginBottom: 18, display: "inline-flex" }}
-          >
-            04 · Ledighet
-          </span>
-          <h2>
+      <SectionHead
+        eyebrow="04 · Ledighet"
+        source="Kilde: Advanti markeds­telling"
+        heading={
+          <>
             Ledighet per by <span className="italic">og segment.</span>
-          </h2>
-        </div>
-        <div className="updated">
-          <span className="live">{LATEST_RELEASE_STAMP}</span>
-          <span>Kilde: Advanti markeds­telling</span>
-        </div>
-      </div>
+          </>
+        }
+      />
 
       <div className="mi-chart-card">
         <div className="mi-chart-head">
@@ -906,23 +942,15 @@ function KartView() {
 
   return (
     <div>
-      <div className="mi-section-head">
-        <div>
-          <span
-            className="eyebrow"
-            style={{ marginBottom: 18, display: "inline-flex" }}
-          >
-            05 · Markedskart
-          </span>
-          <h2>
+      <SectionHead
+        eyebrow="05 · Markedskart"
+        source="Yield, leie og ledighet — Q4 2025"
+        heading={
+          <>
             By for by. <span className="italic">Klikk for detaljer.</span>
-          </h2>
-        </div>
-        <div className="updated">
-          <span className="live">{LATEST_RELEASE_STAMP}</span>
-          <span>Yield, leie og ledighet — Q4 2025</span>
-        </div>
-      </div>
+          </>
+        }
+      />
 
       <div className="mi-map-card">
         <div className="mi-map">
@@ -1046,24 +1074,17 @@ const REPORTS = [
 function RapporterView() {
   return (
     <div>
-      <div className="mi-section-head">
-        <div>
-          <span
-            className="eyebrow"
-            style={{ marginBottom: 18, display: "inline-flex" }}
-          >
-            06 · Rapporter & analyser
-          </span>
-          <h2>
+      <SectionHead
+        eyebrow="06 · Rapporter & analyser"
+        source="Q4 2025 Marked Nord-Norge"
+        stamp="SISTE RAPPORT 12. JAN 2026"
+        heading={
+          <>
             Dypdykk i markedet,{" "}
             <span className="italic">når du trenger det.</span>
-          </h2>
-        </div>
-        <div className="updated">
-          <span className="live">SISTE RAPPORT 12. JAN 2026</span>
-          <span>Q4 2025 Marked Nord-Norge</span>
-        </div>
-      </div>
+          </>
+        }
+      />
 
       <div className="mi-report-card">
         <div>
@@ -1190,6 +1211,24 @@ export function MarkedsinnsiktShell() {
     window.history.replaceState(null, "", `#${id}`)
   }
 
+  // Roving-tabindex keyboard contract for the sector tablist (WAI-ARIA tabs):
+  // arrow keys move focus and activate, Home/End jump to the ends. Charts
+  // mount-gate (R2), so a keyboard sector switch animates a fresh entrance,
+  // never a mid-view replay.
+  const tabRefs = useRef<(HTMLButtonElement | null)[]>([])
+  const onTabKeyDown = (e: React.KeyboardEvent, i: number) => {
+    const last = SECTORS.length - 1
+    let next = -1
+    if (e.key === "ArrowDown" || e.key === "ArrowRight") next = i === last ? 0 : i + 1
+    else if (e.key === "ArrowUp" || e.key === "ArrowLeft") next = i === 0 ? last : i - 1
+    else if (e.key === "Home") next = 0
+    else if (e.key === "End") next = last
+    else return
+    e.preventDefault()
+    selectSector(SECTORS[next].id)
+    tabRefs.current[next]?.focus()
+  }
+
   return (
     <div className="mi-shell">
       <aside className="mi-nav" role="tablist" aria-label="Sektorer">
@@ -1200,11 +1239,18 @@ export function MarkedsinnsiktShell() {
           <Fragment key={s.id}>
             {i === 4 && <div className="divider" aria-hidden="true" />}
             <button
+              ref={(el) => {
+                tabRefs.current[i] = el
+              }}
               type="button"
               role="tab"
+              id={`mi-tab-${s.id}`}
+              aria-controls="mi-panel"
               data-sector={s.id}
               aria-selected={sector === s.id}
+              tabIndex={sector === s.id ? 0 : -1}
               onClick={() => selectSector(s.id)}
+              onKeyDown={(e) => onTabKeyDown(e, i)}
             >
               <span>{s.label}</span>
               <span className="pre">{s.pre}</span>
@@ -1213,14 +1259,19 @@ export function MarkedsinnsiktShell() {
         ))}
       </aside>
 
-      <main>
+      <section
+        id="mi-panel"
+        role="tabpanel"
+        aria-labelledby={`mi-tab-${sector}`}
+        tabIndex={0}
+      >
         {sector === "yield" && <YieldView />}
         {sector === "leie" && <LeieView />}
         {sector === "tx" && <TxView />}
         {sector === "ledighet" && <LedighetView />}
         {sector === "kart" && <KartView />}
         {sector === "rapporter" && <RapporterView />}
-      </main>
+      </section>
     </div>
   )
 }

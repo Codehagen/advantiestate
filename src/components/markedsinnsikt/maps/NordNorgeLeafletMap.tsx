@@ -4,6 +4,8 @@
 // basemap. Replaces the hand-rolled stylized SVG NordNorgeMap. Loaded by
 // MarkedsinnsiktShell via next/dynamic({ ssr: false }) — Leaflet needs `window`.
 
+import { useEffect, useMemo, useRef } from "react"
+import type { CircleMarker as LeafletCircleMarker } from "leaflet"
 import { CircleMarker, MapContainer, TileLayer, Tooltip } from "react-leaflet"
 
 import type { MapCity } from "../types"
@@ -19,6 +21,84 @@ interface NordNorgeLeafletMapProps {
 // sit comfortably in view.
 const CENTER: [number, number] = [68.7, 18]
 const ZOOM = 5
+
+// A single overview-map city marker. The visible CircleMarker is decorative
+// (interactive:false); a transparent CircleMarker on top carries the click +
+// keyboard handlers and the accessibility attributes, with radius >= 22 so the
+// tap target clears 44px (the visible dot is only 14-20px). Mirrors CityMarker
+// in MarkedsKartLeafletCelle.
+function NordNorgeMarker({
+  city,
+  isActive,
+  onSelectCity,
+}: {
+  city: MapCity
+  isActive: boolean
+  onSelectCity: (id: string) => void
+}) {
+  const markerRef = useRef<LeafletCircleMarker | null>(null)
+  const radius = isActive ? MARKER.activeRadius : MARKER.radius
+  const label = `${city.name}, velg by`
+
+  const eventHandlers = useMemo(
+    () => ({
+      // The Leaflet element exists once added — set ARIA + role here.
+      add: () => {
+        const el = markerRef.current?.getElement() as SVGElement | null
+        if (!el) return
+        el.setAttribute("role", "button")
+        el.setAttribute("tabindex", "0")
+        el.setAttribute("aria-label", label)
+        if (!el.hasAttribute("aria-pressed")) {
+          el.setAttribute("aria-pressed", "false")
+        }
+      },
+      click: () => onSelectCity(city.id),
+      keydown: (e: unknown) => {
+        const oe = (e as { originalEvent?: KeyboardEvent }).originalEvent
+        if (oe?.key === "Enter" || oe?.key === " ") {
+          oe.preventDefault()
+          onSelectCity(city.id)
+        }
+      },
+    }),
+    [city.id, label, onSelectCity],
+  )
+
+  // Re-apply aria-pressed when the selection changes (Leaflet does not re-fire add).
+  useEffect(() => {
+    const el = markerRef.current?.getElement() as SVGElement | null
+    if (!el) return
+    el.setAttribute("aria-label", label)
+    el.setAttribute("aria-pressed", String(isActive))
+  }, [label, isActive])
+
+  return (
+    <>
+      {/* Interactive marker — carries ref, handlers, and a11y (role=button,
+          tabindex, aria-label, Enter/Space). A transparent >=44px hit-circle was
+          tried for a bigger tap target but rendered with a 0-width bounding box
+          (unclickable by real users and Playwright), so the handlers live on the
+          visible marker. */}
+      <CircleMarker
+        ref={markerRef}
+        center={[city.lat, city.lon]}
+        radius={radius}
+        pathOptions={{
+          color: isActive ? MARKER.activeHalo : MARKER.stroke,
+          weight: isActive ? 3 : MARKER.strokeWidth,
+          fillColor: MARKER.fill,
+          fillOpacity: 1,
+        }}
+        eventHandlers={eventHandlers}
+      >
+        <Tooltip permanent direction="top" offset={[0, -6]} className="mi-map-label">
+          {city.name}
+        </Tooltip>
+      </CircleMarker>
+    </>
+  )
+}
 
 export function NordNorgeLeafletMap({
   cities,
@@ -45,32 +125,14 @@ export function NordNorgeLeafletMap({
         attribution={TILE_ATTRIBUTION}
         maxZoom={TILE_MAX_ZOOM}
       />
-      {cities.map((c) => {
-        const isActive = c.id === activeCityId
-        return (
-          <CircleMarker
-            key={c.id}
-            center={[c.lat, c.lon]}
-            radius={isActive ? MARKER.activeRadius : MARKER.radius}
-            pathOptions={{
-              color: isActive ? MARKER.activeHalo : MARKER.stroke,
-              weight: isActive ? 3 : MARKER.strokeWidth,
-              fillColor: MARKER.fill,
-              fillOpacity: 1,
-            }}
-            eventHandlers={{ click: () => onSelectCity(c.id) }}
-          >
-            <Tooltip
-              permanent
-              direction="top"
-              offset={[0, -6]}
-              className="mi-map-label"
-            >
-              {c.name}
-            </Tooltip>
-          </CircleMarker>
-        )
-      })}
+      {cities.map((c) => (
+        <NordNorgeMarker
+          key={c.id}
+          city={c}
+          isActive={c.id === activeCityId}
+          onSelectCity={onSelectCity}
+        />
+      ))}
     </MapContainer>
   )
 }

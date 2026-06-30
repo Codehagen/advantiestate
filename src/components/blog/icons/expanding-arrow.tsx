@@ -6,7 +6,7 @@ export default function ExpandingArrow({ className }: { className?: string }) {
       <svg
         className={`${
           className ? className : "h-4 w-4"
-        } absolute transition-all group-hover:translate-x-1 group-hover:opacity-0`}
+        } absolute transition-[transform,opacity] group-hover:translate-x-1 group-hover:opacity-0`}
         xmlns="http://www.w3.org/2000/svg"
         fill="currentColor"
         viewBox="0 0 16 16"
@@ -21,7 +21,7 @@ export default function ExpandingArrow({ className }: { className?: string }) {
       <svg
         className={`${
           className ? className : "h-4 w-4"
-        } absolute opacity-0 transition-all group-hover:translate-x-1 group-hover:opacity-100`}
+        } absolute opacity-0 transition-[transform,opacity] group-hover:translate-x-1 group-hover:opacity-100`}
         xmlns="http://www.w3.org/2000/svg"
         fill="currentColor"
         viewBox="0 0 16 16"

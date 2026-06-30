@@ -481,18 +481,19 @@ export function MarkedsKartHoved() {
                 <tr
                   key={c.id}
                   className={c.id === selected ? "active" : ""}
-                  onClick={() => handleSelectCity(c.id)}
-                  tabIndex={0}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" || e.key === " ") {
-                      e.preventDefault()
-                      handleSelectCity(c.id)
-                    }
-                  }}
-                  aria-label={`${c.name}, velg by`}
                 >
                   <td className="rk">{i + 1}</td>
-                  <td className="rc">{c.name}</td>
+                  <td className="rc">
+                    <button
+                      type="button"
+                      className="mi-rank-citybtn"
+                      onClick={() => handleSelectCity(c.id)}
+                      aria-label={`${c.name}, velg by`}
+                      aria-pressed={c.id === selected}
+                    >
+                      {c.name}
+                    </button>
+                  </td>
                   <td className="rb-cell">
                     <span className="rb">
                       <span

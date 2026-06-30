@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Input } from "./Input";
 import { Divider } from "./ui/Divider";
 import { submitContactInquiry } from "@/app/actions/onboarding/onboarding";
@@ -29,6 +29,9 @@ export default function ContactUsForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  // Synchronous double-submit guard: isSubmitting only flips after a re-render,
+  // so two clicks in the same frame would both dispatch the inquiry.
+  const submitting = useRef(false);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -48,6 +51,8 @@ export default function ContactUsForm() {
       return;
     }
 
+    if (submitting.current) return;
+    submitting.current = true;
     setIsSubmitting(true);
 
     try {
@@ -74,6 +79,7 @@ export default function ContactUsForm() {
       setError("En uventet feil oppstod. Vennligst prøv igjen.");
     } finally {
       setIsSubmitting(false);
+      submitting.current = false;
     }
   };
 
@@ -217,7 +223,7 @@ export default function ContactUsForm() {
             </p>
             <button
               type="submit"
-              className="whitespace-nowrap rounded-tremor-default border border-tremor-brand bg-tremor-brand px-4 py-2.5 text-tremor-default font-medium text-tremor-brand-inverted shadow-tremor-input ring-1 ring-inset ring-tremor-brand/40 hover:bg-tremor-brand-emphasis focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tremor-brand"
+              className="whitespace-nowrap rounded-tremor-default border border-tremor-brand bg-tremor-brand px-4 py-2.5 text-tremor-default font-medium text-tremor-brand-inverted shadow-tremor-input ring-1 ring-inset ring-tremor-brand/40 hover:bg-tremor-brand-emphasis focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tremor-brand transition-transform active:scale-[0.97] motion-reduce:active:scale-100"
               disabled={isSubmitting}
             >
               {isSubmitting ? "Sender..." : "Send Henvendelse"}

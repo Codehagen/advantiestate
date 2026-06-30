@@ -5,7 +5,7 @@ import { Input } from "@/components/Input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/Select"
 import Modal from "@/components/blog/modal"
 import { RiCloseLine, RiCalculatorLine, RiCheckLine } from "@remixicon/react"
-import { useState, type Dispatch, type SetStateAction } from "react"
+import { useRef, useState, type Dispatch, type SetStateAction } from "react"
 import { submitCtaLead } from "@/app/actions/cta-lead"
 import { trackLeadSubmit } from "@/lib/analytics"
 import { useLeadStartOnFocus } from "@/lib/hooks/useLeadFunnel"
@@ -23,9 +23,14 @@ export default function ValuationRequestModal({
   const onFirstFocus = useLeadStartOnFocus("service-modal", "Verdsettelse")
   const [isSuccess, setIsSuccess] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  // Synchronous double-submit guard: isSubmitting only flips after a re-render,
+  // so two clicks in the same frame would both dispatch the lead.
+  const submitting = useRef(false)
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    if (submitting.current) return
+    submitting.current = true
     setIsSubmitting(true)
     setError(null)
 
@@ -46,6 +51,7 @@ export default function ValuationRequestModal({
     })
 
     setIsSubmitting(false)
+    submitting.current = false
     if (result.ok) {
       trackLeadSubmit("service-modal", "Verdsettelse")
       setIsSuccess(true)
@@ -65,10 +71,12 @@ export default function ValuationRequestModal({
         {/* Header */}
         <div className="border-b border-warm-grey-1/20 bg-gradient-to-br from-light-blue/10 to-warm-white px-6 py-6">
           <button
+            type="button"
+            aria-label="Lukk"
             onClick={() => setShowModal(false)}
-            className="absolute right-4 top-4 rounded-full p-2 text-warm-grey-2 transition-colors hover:bg-warm-grey-1/10"
+            className="absolute right-4 top-4 grid h-11 w-11 place-items-center rounded-full text-warm-grey-2 transition-colors hover:bg-warm-grey-1/10"
           >
-            <RiCloseLine className="h-5 w-5" />
+            <RiCloseLine aria-hidden="true" className="h-5 w-5" />
           </button>
 
           <div className="flex items-center gap-3">
@@ -222,7 +230,8 @@ export default function ValuationRequestModal({
                     <Input
                       id="size"
                       name="size"
-                      type="number"
+                      type="text"
+                      inputMode="numeric"
                       placeholder="1000"
                     />
                   </div>
@@ -240,7 +249,8 @@ export default function ValuationRequestModal({
                     <Input
                       id="income"
                       name="income"
-                      type="number"
+                      type="text"
+                      inputMode="numeric"
                       placeholder="1 000 000"
                     />
                   </div>
@@ -254,7 +264,8 @@ export default function ValuationRequestModal({
                     <Input
                       id="costs"
                       name="costs"
-                      type="number"
+                      type="text"
+                      inputMode="numeric"
                       placeholder="500 000"
                     />
                   </div>

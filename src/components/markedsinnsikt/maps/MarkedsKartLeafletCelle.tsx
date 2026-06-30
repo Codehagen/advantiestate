@@ -165,7 +165,11 @@ function CityMarker({ city, isSelected, onSelectCity }: CityMarkerProps) {
         }}
       />
 
-      {/* Hovedmarkør */}
+      {/* Hovedmarkør — interaktiv: bærer ref, eventHandlers og a11y (role=button,
+          tabindex, aria, Enter/Space). Et tidligere forsøk med en usynlig
+          hit-sirkel (fillOpacity 0) for >=44px trefflate hadde 0-bredde bounding
+          box og fanget verken ekte klikk eller Playwright — så interaktiviteten
+          ligger på den synlige markøren (pålitelig klikkbar). */}
       <CircleMarker
         ref={markerRef}
         center={[city.lat, city.lon]}

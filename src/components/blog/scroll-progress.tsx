@@ -37,8 +37,8 @@ export default function ScrollProgress() {
   return (
     <div className="fixed top-0 left-0 right-0 z-50 h-1 bg-warm-grey-2/10">
       <div
-        className="h-full bg-warm-grey-2/60 transition-all duration-150"
-        style={{ width: `${progress}%` }}
+        className="h-full w-full origin-left bg-warm-grey-2/60 transition-transform duration-150 motion-reduce:transition-none"
+        style={{ transform: `scaleX(${progress / 100})` }}
       />
     </div>
   );

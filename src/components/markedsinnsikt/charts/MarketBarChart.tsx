@@ -9,6 +9,7 @@
 // <BarChart> — it does not look through React Fragments. So the axes are
 // rendered as direct conditional children, never wrapped in <>...</>.
 
+import { useEffect, useRef } from "react"
 import {
   Bar,
   BarChart,
@@ -59,8 +60,16 @@ export function MarketBarChart({
   })
 
   const isRows = orientation === "rows"
-  // Respect prefers-reduced-motion: skip the bar-grow animation.
-  const animate = !useReducedMotion()
+  // Animate the bar-grow once per mounted instance. Data changes re-render the
+  // same instance and must not replay it, so a first-render ref flips off in an
+  // effect after mount (no re-render, so the entrance still completes).
+  // Reduced motion disables it entirely.
+  const reduced = useReducedMotion()
+  const firstRender = useRef(true)
+  const animate = firstRender.current && !reduced
+  useEffect(() => {
+    firstRender.current = false
+  }, [])
 
   return (
     <div role="img" aria-label={ariaLabel} style={{ width: "100%", height }}>

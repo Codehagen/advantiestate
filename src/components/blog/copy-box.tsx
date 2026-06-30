@@ -7,17 +7,18 @@ import { useState } from "react"
 export default function CopyBox(props: { title: string; copy: string }) {
   const [copied, setCopied] = useState(false)
   return (
-    <div className="not-prose my-4 rounded-xl border border-gray-200 bg-white p-4">
+    <div className="not-prose my-4 rounded-xl border border-warm-grey-2/20 bg-warm-white p-4">
       <p>{props.title}</p>
-      <div className="mt-1 flex w-full items-center justify-between rounded-md bg-gray-100 p-1.5 pl-3">
+      <div className="mt-1 flex w-full items-center justify-between rounded-md bg-warm-grey-2/10 p-1.5 pl-3">
         <div className="scrollbar-hide overflow-auto">
-          <p className="whitespace-nowrap text-gray-600 sm:text-sm">
+          <p className="whitespace-nowrap text-warm-grey/70 sm:text-sm">
             {props.copy}
           </p>
         </div>
         <button
           type="button"
-          className="rounded-md p-1 transition-colors hover:bg-gray-200 active:bg-gray-300"
+          aria-label={copied ? "Kopiert" : "Kopier"}
+          className="rounded-md p-1 transition-colors hover:bg-warm-grey-2/10 active:bg-warm-grey-2/20"
           onClick={() => {
             navigator.clipboard.writeText(props.copy)
             setCopied(true)
@@ -26,9 +27,9 @@ export default function CopyBox(props: { title: string; copy: string }) {
           }}
         >
           {copied ? (
-            <RiCheckLine className="h-4 w-4 text-gray-500" />
+            <RiCheckLine aria-hidden="true" className="h-4 w-4 text-warm-grey/60" />
           ) : (
-            <RiFileCopyLine className="h-4 w-4 text-gray-500" />
+            <RiFileCopyLine aria-hidden="true" className="h-4 w-4 text-warm-grey/60" />
           )}
         </button>
       </div>

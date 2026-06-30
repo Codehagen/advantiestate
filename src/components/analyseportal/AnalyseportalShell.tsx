@@ -144,8 +144,10 @@ export function AnalyseportalShell({ analyst }: { analyst: AnalystCard | null })
   // --nav-h is written by the Nav component (single writer, E7).
   // AnalyseportalShell only consumes var(--nav-h, 72px) via CSS.
 
-  const setSector = useCallback((key: SectorKey) => {
-    animateRef.current = true
+  // animate defaults to true (click activation morphs the chart); keyboard tab
+  // moves pass animate=false so arrow/Home/End don't fire a morph per keypress.
+  const setSector = useCallback((key: SectorKey, animate = true) => {
+    animateRef.current = animate
     setSectorState(key)
     setHidden({})
     trackEvent("analyseportal_sector_change", { sector: key })
@@ -164,8 +166,9 @@ export function AnalyseportalShell({ analyst }: { analyst: AnalystCard | null })
   }, [])
 
   const toggleCity = (c: PortalCity) => {
-    // Animate the chart when a city enters/leaves the selection.
-    animateRef.current = true
+    // City-chip toggles stay unanimated — frequent interaction, "speed over
+    // delight" (matches the segment-handler note below).
+    animateRef.current = false
     setCities((cs) =>
       cs.includes(c) ? (cs.length > 1 ? cs.filter((x) => x !== c) : cs) : [...cs, c],
     )
@@ -224,7 +227,8 @@ export function AnalyseportalShell({ analyst }: { analyst: AnalystCard | null })
     else if (e.key === "End") next = SECTORS.length - 1
     if (next != null) {
       e.preventDefault()
-      setSector(SECTORS[next].key)
+      // Keyboard tab nav: don't animate the chart morph on every keypress.
+      setSector(SECTORS[next].key, false)
       tabRefs.current[next]?.focus()
     }
   }

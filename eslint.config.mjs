@@ -4,6 +4,7 @@ import nextTypeScript from "eslint-config-next/typescript"
 const config = [
   {
     ignores: [
+      ".claude/**",
       ".content-collections/**",
       ".next/**",
       ".removed/**",

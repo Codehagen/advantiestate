@@ -3,7 +3,7 @@
 import { useState, useEffect, useMemo, useRef } from "react";
 import NumberFlow from "@number-flow/react";
 import { Input } from "@/components/Input";
-import { RiInformationLine } from "@remixicon/react";
+import { InfoTooltip } from "./InfoTooltip";
 
 // Hoisted so the Intl.NumberFormat (CLDR parsing) is built once at module load,
 // not reconstructed on every keystroke while editing the calculator inputs.
@@ -100,18 +100,15 @@ export function ROICalculator() {
         <div className="space-y-6">
           {/* Initial investering */}
           <div className="space-y-2">
-            <label
-              htmlFor="initialInvestering"
-              className="flex items-center text-tremor-default font-medium text-tremor-content-strong"
-            >
-              Initial investering (NOK)
-              <div className="group relative ml-2">
-                <RiInformationLine className="size-4 text-warm-grey-2" />
-                <div className="pointer-events-none absolute bottom-full left-1/2 mb-2 hidden w-64 -translate-x-1/2 rounded-lg bg-warm-grey px-3 py-2 text-xs text-warm-white shadow-lg group-hover:block">
-                  Kjøpesum inkludert omkostninger
-                </div>
-              </div>
-            </label>
+            <div className="flex items-center">
+              <label
+                htmlFor="initialInvestering"
+                className="text-sm font-medium text-warm-grey"
+              >
+                Initial investering (NOK)
+              </label>
+              <InfoTooltip text="Kjøpesum inkludert omkostninger" />
+            </div>
             <div className="relative">
               <Input
                 id="initialInvestering"
@@ -133,18 +130,15 @@ export function ROICalculator() {
 
           {/* Årlig leieinntekt */}
           <div className="space-y-2">
-            <label
-              htmlFor="arligLeieinntekt"
-              className="flex items-center text-tremor-default font-medium text-tremor-content-strong"
-            >
-              Årlig leieinntekt (NOK)
-              <div className="group relative ml-2">
-                <RiInformationLine className="size-4 text-warm-grey-2" />
-                <div className="pointer-events-none absolute bottom-full left-1/2 mb-2 hidden w-64 -translate-x-1/2 rounded-lg bg-warm-grey px-3 py-2 text-xs text-warm-white shadow-lg group-hover:block">
-                  Forventet årlig leieinntekt
-                </div>
-              </div>
-            </label>
+            <div className="flex items-center">
+              <label
+                htmlFor="arligLeieinntekt"
+                className="text-sm font-medium text-warm-grey"
+              >
+                Årlig leieinntekt (NOK)
+              </label>
+              <InfoTooltip text="Forventet årlig leieinntekt" />
+            </div>
             <div className="relative">
               <Input
                 id="arligLeieinntekt"
@@ -166,18 +160,15 @@ export function ROICalculator() {
 
           {/* Driftskostnader */}
           <div className="space-y-2">
-            <label
-              htmlFor="driftskostnader"
-              className="flex items-center text-tremor-default font-medium text-tremor-content-strong"
-            >
-              Årlige driftskostnader (NOK)
-              <div className="group relative ml-2">
-                <RiInformationLine className="size-4 text-warm-grey-2" />
-                <div className="pointer-events-none absolute bottom-full left-1/2 mb-2 hidden w-64 -translate-x-1/2 rounded-lg bg-warm-grey px-3 py-2 text-xs text-warm-white shadow-lg group-hover:block">
-                  Vedlikehold, forsikring, eiendomsskatt, etc.
-                </div>
-              </div>
-            </label>
+            <div className="flex items-center">
+              <label
+                htmlFor="driftskostnader"
+                className="text-sm font-medium text-warm-grey"
+              >
+                Årlige driftskostnader (NOK)
+              </label>
+              <InfoTooltip text="Vedlikehold, forsikring, eiendomsskatt, etc." />
+            </div>
             <div className="relative">
               <Input
                 id="driftskostnader"
@@ -199,18 +190,15 @@ export function ROICalculator() {
 
           {/* Verdiøkning per år */}
           <div className="space-y-2">
-            <label
-              htmlFor="verdiOkning"
-              className="flex items-center text-tremor-default font-medium text-tremor-content-strong"
-            >
-              Forventet verdiøkning per år (%)
-              <div className="group relative ml-2">
-                <RiInformationLine className="size-4 text-warm-grey-2" />
-                <div className="pointer-events-none absolute bottom-full left-1/2 mb-2 hidden w-64 -translate-x-1/2 rounded-lg bg-warm-grey px-3 py-2 text-xs text-warm-white shadow-lg group-hover:block">
-                  Estimert årlig verdiøkning på eiendommen
-                </div>
-              </div>
-            </label>
+            <div className="flex items-center">
+              <label
+                htmlFor="verdiOkning"
+                className="text-sm font-medium text-warm-grey"
+              >
+                Forventet verdiøkning per år (%)
+              </label>
+              <InfoTooltip text="Estimert årlig verdiøkning på eiendommen" />
+            </div>
             <div className="relative">
               <Input
                 id="verdiOkning"
@@ -231,18 +219,15 @@ export function ROICalculator() {
 
           {/* Holdeperiode */}
           <div className="space-y-2">
-            <label
-              htmlFor="holdeperiode"
-              className="flex items-center text-tremor-default font-medium text-tremor-content-strong"
-            >
-              Holdeperiode (år)
-              <div className="group relative ml-2">
-                <RiInformationLine className="size-4 text-warm-grey-2" />
-                <div className="pointer-events-none absolute bottom-full left-1/2 mb-2 hidden w-64 -translate-x-1/2 rounded-lg bg-warm-grey px-3 py-2 text-xs text-warm-white shadow-lg group-hover:block">
-                  Hvor lenge planlegger du å eie eiendommen?
-                </div>
-              </div>
-            </label>
+            <div className="flex items-center">
+              <label
+                htmlFor="holdeperiode"
+                className="text-sm font-medium text-warm-grey"
+              >
+                Holdeperiode (år)
+              </label>
+              <InfoTooltip text="Hvor lenge planlegger du å eie eiendommen?" />
+            </div>
             <div className="relative">
               <Input
                 id="holdeperiode"

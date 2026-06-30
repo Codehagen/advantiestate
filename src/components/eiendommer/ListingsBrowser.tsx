@@ -181,7 +181,7 @@ export function ListingsBrowser({
         <div className="wrap">
           <div
             className="ei-filter-group"
-            role="radiogroup"
+            role="group"
             aria-label="Status"
           >
             <span className="label">Status</span>
@@ -206,7 +206,7 @@ export function ListingsBrowser({
 
           <div
             className="ei-filter-group"
-            role="radiogroup"
+            role="group"
             aria-label="Eiendomstype"
           >
             <span className="label">Type</span>
@@ -225,7 +225,7 @@ export function ListingsBrowser({
 
           <div
             className="ei-filter-group"
-            role="radiogroup"
+            role="group"
             aria-label="Lokasjon"
           >
             <span className="label">By</span>

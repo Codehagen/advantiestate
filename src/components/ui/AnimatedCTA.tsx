@@ -54,7 +54,7 @@ export function AnimatedCTA({
             {primaryAction && (
               <Link
                 href={primaryAction.href}
-                className="inline-flex items-center justify-center rounded-full bg-warm-grey px-6 py-2 font-medium text-white transition-colors hover:bg-warm-grey-2"
+                className="inline-flex min-h-[44px] items-center justify-center rounded-full bg-warm-grey px-6 py-2.5 font-medium text-white transition-[color,background-color,transform] hover:bg-warm-grey-2 active:scale-[0.97] motion-reduce:active:scale-100"
               >
                 {primaryAction.label}
               </Link>
@@ -62,7 +62,7 @@ export function AnimatedCTA({
             {secondaryAction && (
               <Link
                 href={secondaryAction.href}
-                className="inline-flex items-center justify-center rounded-full px-6 py-2 font-medium text-warm-grey ring-1 ring-warm-grey/20 transition-colors hover:bg-warm-grey/5"
+                className="inline-flex min-h-[44px] items-center justify-center rounded-full px-6 py-2.5 font-medium text-warm-grey ring-1 ring-warm-grey/20 transition-[color,background-color,transform] hover:bg-warm-grey/5 active:scale-[0.97] motion-reduce:active:scale-100"
               >
                 {secondaryAction.label} →
               </Link>
