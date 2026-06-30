@@ -80,7 +80,7 @@ test("selecting a city updates the panel and broker link", async ({
   // Default selection is Bodø.
   await expect(page.locator(".mi-map-info h3")).toHaveText("Bodø");
   // Click Tromsø in the ranked list.
-  await page.locator(".mi-rank-table tbody tr", { hasText: "Tromsø" }).click();
+  await page.locator(".mi-rank-table tbody tr", { hasText: "Tromsø" }).locator(".mi-rank-citybtn").click();
   await expect(page.locator(".mi-map-info h3")).toHaveText("Tromsø");
   // SeOgsa-blokken legger til en andre a-lenke med samme href — .first() unngår
   // strict-mode-feil og bekrefter at primær-CTA-knappen er synlig.
@@ -88,7 +88,7 @@ test("selecting a city updates the panel and broker link", async ({
     page.locator('.mi-map-info a[href="/naringsmegler/tromso"]').first(),
   ).toBeVisible();
   // "Mo i Rana" maps to the mo-i-rana broker slug (id "mo" in the release).
-  await page.locator(".mi-rank-table tbody tr", { hasText: "Mo i Rana" }).click();
+  await page.locator(".mi-rank-table tbody tr", { hasText: "Mo i Rana" }).locator(".mi-rank-citybtn").click();
   await expect(
     page.locator('.mi-map-info a[href="/naringsmegler/mo-i-rana"]').first(),
   ).toBeVisible();
@@ -195,12 +195,13 @@ test("tabell-tastatur, Bodø-only-note og pin-reset ved bybytte", async ({
 }) => {
   await gotoKart(page);
 
-  // Tastaturvei i rangert tabell: fokuser Harstad-raden og trykk Enter
-  // (a11y-kravet fra design 6.2 — radene har tabIndex + Enter/Space-handler).
-  const harstadRad = page.locator(".mi-rank-table tbody tr", {
-    hasText: "Harstad",
-  });
-  await harstadRad.focus();
+  // Tastaturvei i rangert tabell: fokuser Harstad-by-knappen og trykk Enter
+  // (a11y — handlingen ligger nå på by-knappen i cellen (.mi-rank-citybtn),
+  // ikke på raden, så tabIndex/Enter-handler er på knappen).
+  const harstadBtn = page
+    .locator(".mi-rank-table tbody tr", { hasText: "Harstad" })
+    .locator(".mi-rank-citybtn");
+  await harstadBtn.focus();
   await page.keyboard.press("Enter");
   await expect(page.locator(".mi-map-info h3")).toHaveText("Harstad");
 
@@ -213,11 +214,11 @@ test("tabell-tastatur, Bodø-only-note og pin-reset ved bybytte", async ({
   );
 
   // Pin en Bodø-sone, bytt by — pinnen skal nulles (effekt i MarkedsKartHoved)
-  await page.locator(".mi-rank-table tbody tr", { hasText: "Bodø" }).click();
+  await page.locator(".mi-rank-table tbody tr", { hasText: "Bodø" }).locator(".mi-rank-citybtn").click();
   await page.getByRole("button", { name: /^Se prissoner i Bodø/ }).click();
   const sentrumChip = page.getByRole("button", { name: "Sentrum", exact: true });
   await sentrumChip.click();
   await expect(page.locator(".mi-zone-block")).toBeVisible();
-  await page.locator(".mi-rank-table tbody tr", { hasText: "Tromsø" }).click();
+  await page.locator(".mi-rank-table tbody tr", { hasText: "Tromsø" }).locator(".mi-rank-citybtn").click();
   await expect(page.locator(".mi-zone-block")).not.toBeVisible();
 });

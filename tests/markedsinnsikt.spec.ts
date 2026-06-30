@@ -15,7 +15,7 @@ test.describe("Markedsinnsikt", () => {
     const res = await page.goto("/markedsinnsikt");
     expect(res?.status()).toBeLessThan(400);
     await expect(page.locator("nav#nav")).toBeVisible();
-    await expect(page.locator('.mi-shell main [role="img"]')).toBeVisible();
+    await expect(page.locator('#mi-panel [role="img"]')).toBeVisible();
   });
 
   test("each sidebar sector switches the view", async ({ page }) => {
@@ -30,7 +30,7 @@ test.describe("Markedsinnsikt", () => {
     ];
     for (const [id, heading] of sectors) {
       await page.locator(`button[data-sector="${id}"]`).click();
-      await expect(page.locator(".mi-shell main h2")).toContainText(heading);
+      await expect(page.locator("#mi-panel h2")).toContainText(heading);
     }
   });
 
@@ -39,7 +39,7 @@ test.describe("Markedsinnsikt", () => {
   }) => {
     await page.goto("/markedsinnsikt");
     await page.locator('button[data-sector="ledighet"]').click();
-    await expect(page.locator('.mi-shell main [role="img"]')).toBeVisible();
+    await expect(page.locator('#mi-panel [role="img"]')).toBeVisible();
     await expect(page.locator(".mi-city-table")).toBeVisible();
   });
 
@@ -111,14 +111,14 @@ test.describe("Markedsinnsikt", () => {
     await page.goto("/markedsinnsikt");
     const handel = page.locator(".mi-subtabs button", { hasText: "Handel" });
     await handel.click();
-    await expect(handel).toHaveAttribute("aria-selected", "true");
-    await expect(page.locator('.mi-shell main [role="img"]')).toBeVisible();
+    await expect(handel).toHaveAttribute("aria-checked", "true");
+    await expect(page.locator('#mi-panel [role="img"]')).toBeVisible();
   });
 
   test("Transaksjoner tab renders the volume bar chart", async ({ page }) => {
     await page.goto("/markedsinnsikt");
     await page.locator('button[data-sector="tx"]').click();
-    await expect(page.locator('.mi-shell main [role="img"]')).toBeVisible();
+    await expect(page.locator('#mi-panel [role="img"]')).toBeVisible();
   });
 
   // markedsinnsikt v2 editorial: the time-range selector windows the chart and
@@ -127,13 +127,13 @@ test.describe("Markedsinnsikt", () => {
     await page.goto("/markedsinnsikt");
     // data-points reflects the number of quarters fed to the chart, so it proves
     // the window trimmed the series — not just that the button toggled.
-    const chart = page.locator('.mi-shell main [role="img"]').first();
+    const chart = page.locator('#mi-panel [role="img"]').first();
     await expect(chart).toHaveAttribute("data-points", "20"); // 5-year default
     const threeYear = page
       .locator(".miv-range button", { hasText: "3 år" })
       .first();
     await threeYear.click();
-    await expect(threeYear).toHaveAttribute("aria-selected", "true");
+    await expect(threeYear).toHaveAttribute("aria-checked", "true");
     await expect(chart).toHaveAttribute("data-points", "12"); // 3-year window
   });
 
@@ -142,7 +142,7 @@ test.describe("Markedsinnsikt", () => {
   }) => {
     await page.goto("/markedsinnsikt");
     // Prime yield is the filled area; SWAP + gov are the two lines.
-    const lines = page.locator(".mi-shell main .recharts-line");
+    const lines = page.locator("#mi-panel .recharts-line");
     const legend = page.locator(".mi-chart-legend button.item");
     const swap = legend.filter({ hasText: "5 år SWAP" });
     const gov = legend.filter({ hasText: "10 år statsobl." });
@@ -158,7 +158,7 @@ test.describe("Markedsinnsikt", () => {
     // chart can never be blanked.
     await gov.click();
     await expect(prime).toBeDisabled();
-    await expect(page.locator(".mi-shell main .recharts-area")).toBeVisible();
+    await expect(page.locator("#mi-panel .recharts-area")).toBeVisible();
   });
 
   test("Leie view has its own range selector and clickable legend", async ({
@@ -166,13 +166,13 @@ test.describe("Markedsinnsikt", () => {
   }) => {
     await page.goto("/markedsinnsikt");
     await page.locator('button[data-sector="leie"]').click();
-    await expect(page.locator(".mi-shell main h2")).toContainText(/Markedsleie/i);
+    await expect(page.locator("#mi-panel h2")).toContainText(/Markedsleie/i);
 
     const threeYear = page
       .locator(".miv-range button", { hasText: "3 år" })
       .first();
     await threeYear.click();
-    await expect(threeYear).toHaveAttribute("aria-selected", "true");
+    await expect(threeYear).toHaveAttribute("aria-checked", "true");
 
     // City series: hide two so only the first remains, which then locks.
     const legend = page.locator(".mi-chart-legend button.item");
@@ -186,6 +186,6 @@ test.describe("Markedsinnsikt", () => {
     await page.emulateMedia({ reducedMotion: "reduce" });
     await page.goto("/markedsinnsikt");
     // The reduce branch must still render the chart (no animation, no crash).
-    await expect(page.locator('.mi-shell main [role="img"]')).toBeVisible();
+    await expect(page.locator('#mi-panel [role="img"]')).toBeVisible();
   });
 });
