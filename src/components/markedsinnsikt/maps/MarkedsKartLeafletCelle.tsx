@@ -165,9 +165,13 @@ function CityMarker({ city, isSelected, onSelectCity }: CityMarkerProps) {
         }}
       />
 
-      {/* Hovedmarkør — ikke-interaktiv; den usynlige hit-sirkelen under bærer
-          input slik at trefflaten blir >=44px (synlig prikk er bare 16-36px). */}
+      {/* Hovedmarkør — interaktiv: bærer ref, eventHandlers og a11y (role=button,
+          tabindex, aria, Enter/Space). Et tidligere forsøk med en usynlig
+          hit-sirkel (fillOpacity 0) for >=44px trefflate hadde 0-bredde bounding
+          box og fanget verken ekte klikk eller Playwright — så interaktiviteten
+          ligger på den synlige markøren (pålitelig klikkbar). */}
       <CircleMarker
+        ref={markerRef}
         center={[city.lat, city.lon]}
         radius={radius}
         pathOptions={{
@@ -175,8 +179,8 @@ function CityMarker({ city, isSelected, onSelectCity }: CityMarkerProps) {
           fillOpacity: 1,
           color: MARKER.stroke,
           weight: isSelected ? 3 : MARKER.strokeWidth,
-          interactive: false,
         }}
+        eventHandlers={eventHandlers}
       >
         <Tooltip
           permanent
@@ -187,20 +191,6 @@ function CityMarker({ city, isSelected, onSelectCity }: CityMarkerProps) {
           {showValue ? `${city.name} · ${city.formattedValue}` : city.name}
         </Tooltip>
       </CircleMarker>
-
-      {/* Usynlig trefflate (>=44px) — bærer ref, eventHandlers og a11y. */}
-      <CircleMarker
-        ref={markerRef}
-        center={[city.lat, city.lon]}
-        radius={Math.max(radius, 22)}
-        pathOptions={{
-          color: "transparent",
-          weight: 0,
-          fillColor: "transparent",
-          fillOpacity: 0,
-        }}
-        eventHandlers={eventHandlers}
-      />
     </>
   )
 }

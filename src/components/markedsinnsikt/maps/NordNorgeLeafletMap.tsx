@@ -75,8 +75,13 @@ function NordNorgeMarker({
 
   return (
     <>
-      {/* Visible marker — decorative; the transparent hit-circle below carries input. */}
+      {/* Interactive marker — carries ref, handlers, and a11y (role=button,
+          tabindex, aria-label, Enter/Space). A transparent >=44px hit-circle was
+          tried for a bigger tap target but rendered with a 0-width bounding box
+          (unclickable by real users and Playwright), so the handlers live on the
+          visible marker. */}
       <CircleMarker
+        ref={markerRef}
         center={[city.lat, city.lon]}
         radius={radius}
         pathOptions={{
@@ -84,27 +89,13 @@ function NordNorgeMarker({
           weight: isActive ? 3 : MARKER.strokeWidth,
           fillColor: MARKER.fill,
           fillOpacity: 1,
-          interactive: false,
         }}
+        eventHandlers={eventHandlers}
       >
         <Tooltip permanent direction="top" offset={[0, -6]} className="mi-map-label">
           {city.name}
         </Tooltip>
       </CircleMarker>
-
-      {/* Transparent >=44px hit target carrying handlers + a11y. */}
-      <CircleMarker
-        ref={markerRef}
-        center={[city.lat, city.lon]}
-        radius={Math.max(radius, 22)}
-        pathOptions={{
-          color: "transparent",
-          weight: 0,
-          fillColor: "transparent",
-          fillOpacity: 0,
-        }}
-        eventHandlers={eventHandlers}
-      />
     </>
   )
 }
