@@ -27,6 +27,7 @@ export const EIENDOM_CITIES: { slug: string; label: string }[] = [
   { slug: "narvik", label: "Narvik" },
   { slug: "lofoten", label: "Lofoten" },
   { slug: "mo-i-rana", label: "Mo i Rana" },
+  { slug: "hammerfest", label: "Hammerfest" },
 ];
 
 export interface NavEntry {

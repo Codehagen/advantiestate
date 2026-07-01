@@ -23,6 +23,7 @@ const CITY_LABELS: Record<string, string> = {
   narvik: "Narvik",
   lofoten: "Lofoten",
   "mo-i-rana": "Mo i Rana",
+  hammerfest: "Hammerfest",
 };
 
 function formatInt(value: number) {

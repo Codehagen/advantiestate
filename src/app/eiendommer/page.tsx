@@ -20,6 +20,7 @@ const CITY_LABELS: Record<string, string> = {
   narvik: "Narvik",
   lofoten: "Lofoten",
   "mo-i-rana": "Mo i Rana",
+  hammerfest: "Hammerfest",
   stokmarknes: "Stokmarknes",
   ulvsvag: "Ulvsvåg",
   andenes: "Andenes",

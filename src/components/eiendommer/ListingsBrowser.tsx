@@ -33,7 +33,8 @@ export type ListingCardData = {
     | "alta"
     | "narvik"
     | "lofoten"
-    | "mo-i-rana";
+    | "mo-i-rana"
+    | "hammerfest";
   cityLabel: string;
   titleHead: string;
   titleTail: string;

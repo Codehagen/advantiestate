@@ -637,6 +637,7 @@ export const ListingPost = defineCollection({
       "narvik",
       "lofoten",
       "mo-i-rana",
+      "hammerfest",
     ]),
 
     // Identity
