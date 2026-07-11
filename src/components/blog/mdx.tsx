@@ -667,7 +667,10 @@ export function MDX({ code, images, className }: MDXProps) {
   return (
     <article
       data-mdx-container
-      className={cx("typeset typeset-docs", "max-w-none", className)}
+      // w-full: under shrink-to-fit parents (legal's items-center flex column)
+      // the article must fill the wrapper, not grow to its widest table —
+      // .ae-table-scroll clamps against the article's width.
+      className={cx("typeset typeset-docs", "w-full max-w-none", className)}
     >
       <MDXContent
         code={code}
