@@ -45,8 +45,10 @@ function renderInline(text: string, keyBase: string): ReactNode[] {
 
 export function ListingProse({ body }: { body: string }) {
   const blocks = body.trim().split(/\n{2,}/)
+  // Wrap in the shared `typeset typeset-docs` container so CRM bodies inherit
+  // the same type system as the MDX branch (which wraps via <MDX>'s article).
   return (
-    <>
+    <div className="typeset typeset-docs">
       {blocks.map((raw, bi) => {
         const block = raw.trim()
         if (!block) return null
@@ -80,7 +82,7 @@ export function ListingProse({ body }: { body: string }) {
           </p>
         )
       })}
-    </>
+    </div>
   )
 }
 

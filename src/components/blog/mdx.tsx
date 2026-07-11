@@ -577,9 +577,9 @@ function Figure(props: {
 }
 
 // Base markdown (h2/h3/p/ul/table…) intentionally has NO per-element
-// className overrides — typography is inherited from `.ks-prose` on the
-// <article> wrapper so blog, help, kunder, integrasjoner and eiendommer all
-// share one editorial type system. Only the custom components below are mapped.
+// className overrides — typography is inherited from the `typeset typeset-docs`
+// classes on the <article> wrapper so blog, help, kunder, integrasjoner and
+// eiendommer all share one type system. Only the custom components below are mapped.
 const components = {
   a: CustomLink,
   Note,
@@ -653,12 +653,9 @@ interface MDXProps {
   code: string
   images?: { alt: string; src: string; blurDataURL: string }[]
   className?: string
-  /** "editorial" = .ks-prose design-system typography (default, used by
-   *  kunder/integrasjoner/eiendommer); "typeset" = shadcn typeset (blog/help). */
-  typography?: "editorial" | "typeset"
 }
 
-export function MDX({ code, images, className, typography = "editorial" }: MDXProps) {
+export function MDX({ code, images, className }: MDXProps) {
   const MDXImage = (props: any) => {
     const blurDataURL = images
       ? images.find((image) => image.src === props.src)?.blurDataURL
@@ -670,11 +667,10 @@ export function MDX({ code, images, className, typography = "editorial" }: MDXPr
   return (
     <article
       data-mdx-container
-      className={cx(
-        typography === "typeset" ? "typeset typeset-docs" : "ks-prose",
-        "max-w-none",
-        className,
-      )}
+      // w-full: under shrink-to-fit parents (legal's items-center flex column)
+      // the article must fill the wrapper, not grow to its widest table —
+      // .ae-table-scroll clamps against the article's width.
+      className={cx("typeset typeset-docs", "w-full max-w-none", className)}
     >
       <MDXContent
         code={code}

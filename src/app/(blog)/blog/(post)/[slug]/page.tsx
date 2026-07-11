@@ -243,7 +243,6 @@ export default async function BlogArticle({
           <div className="ks-article">
             <article className="ks-art-body" id="art-main">
               <MDX
-                typography="typeset"
                 code={data.mdx}
                 images={images.map((image) => ({
                   ...image,

@@ -32,8 +32,8 @@ const CustomLink = ({
   );
 };
 
-// Plain elements so the editorial `.ks-prose` typography from the design
-// stylesheet applies (h2 / h3 / p / ul styling defined globally).
+// Plain elements so the `typeset` typography from the parent ProseShell
+// applies (h2 / h3 / p / ul styling defined globally).
 const components = {
   a: (props: any) => <CustomLink {...props} />,
 };

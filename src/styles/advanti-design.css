@@ -4591,76 +4591,6 @@ h1, h2, h3 {
   color: var(--warm-grey-85);
 }
 
-/* Article prose — long-form typography */
-.ks-prose {
-  font-size: 17px;
-  line-height: 1.7;
-  color: var(--warm-grey);
-  overflow-wrap: break-word;
-}
-.ks-prose > * + * { margin-top: 1.1em; }
-.ks-prose img { max-width: 100%; height: auto; }
-.ks-prose pre { max-width: 100%; overflow-x: auto; }
-.ks-prose h2 {
-  font-family: var(--font-display);
-  font-size: 36px;
-  font-weight: 400;
-  letter-spacing: -0.02em;
-  line-height: 1.1;
-  margin-top: 64px !important;
-  margin-bottom: 24px;
-  scroll-margin-top: 100px;
-}
-.ks-prose h2 .italic { font-style: italic; font-weight: 300; color: var(--warm-grey-85); }
-.ks-prose h3 {
-  font-family: var(--font-display);
-  font-size: 26px;
-  font-weight: 400;
-  letter-spacing: -0.015em;
-  line-height: 1.15;
-  margin-top: 48px !important;
-  margin-bottom: 16px;
-  scroll-margin-top: 100px;
-}
-.ks-prose p { text-wrap: pretty; color: var(--warm-grey-85); }
-.ks-prose p strong { color: var(--warm-grey); font-weight: 500; }
-.ks-prose a {
-  color: var(--warm-grey);
-  border-bottom: 1px solid var(--warm-grey-85);
-  transition: border-color 0.15s;
-}
-.ks-prose a:hover { border-color: var(--accent); }
-.ks-prose ul, .ks-prose ol {
-  padding-left: 24px;
-  color: var(--warm-grey-85);
-}
-.ks-prose li {
-  margin-bottom: 8px;
-  text-wrap: pretty;
-}
-.ks-prose li::marker {
-  color: var(--warm-grey-75);
-}
-.ks-prose blockquote {
-  border-left: 3px solid var(--accent);
-  padding: 8px 0 8px 24px;
-  margin: 32px 0;
-  font-family: var(--font-display);
-  font-size: 22px;
-  font-style: italic;
-  font-weight: 300;
-  line-height: 1.45;
-  color: var(--warm-grey);
-}
-.ks-prose code {
-  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
-  font-size: 0.88em;
-  background: var(--accent-soft);
-  padding: 2px 7px;
-  border-radius: 3px;
-  color: var(--warm-grey);
-}
-
 /* Formula block */
 
 /* Note callout */
@@ -5356,14 +5286,6 @@ h1, h2, h3 {
 }
 
 @media (max-width: 700px) {
-  /* Wide data tables scroll horizontally inside the article instead of
-     stretching the whole page. */
-  .ks-prose table {
-    display: block;
-    max-width: 100%;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-  }
   /* The article title is the next thing on screen — drop it from the
      breadcrumb so a long title does not wrap to four lines. */
   .crumb-article .here,
@@ -5581,24 +5503,6 @@ h1, h2, h3 {
   border-top: var(--hairline);
 }
 .pe-main { max-width: 720px; }
-.pe-main h2 {
-  font-family: var(--font-display);
-  font-size: 32px;
-  font-weight: 400;
-  letter-spacing: -0.018em;
-  margin-top: 48px;
-  margin-bottom: 20px;
-}
-.pe-main h2:first-child { margin-top: 0; }
-.pe-main h2 .italic { font-style: italic; font-weight: 300; color: var(--warm-grey-85); }
-.pe-main p {
-  font-size: 16.5px;
-  color: var(--warm-grey-85);
-  line-height: 1.7;
-  margin-bottom: 16px;
-  text-wrap: pretty;
-}
-.pe-main p strong { color: var(--warm-grey); font-weight: 500; }
 
 /* Specializations list (numbered, no icons) */
 .pe-spec {
@@ -6539,7 +6443,7 @@ h1, h2, h3 {
   .footer-col ul { gap: 4px; }
 }
 
-/* Blog article body — reuses .ks-prose with a hero image on top */
+/* Blog article body — typeset prose with a hero image on top */
 .bg-art-hero {
   margin-bottom: 56px;
 }
@@ -6556,32 +6460,6 @@ h1, h2, h3 {
   letter-spacing: 0.04em;
   font-style: italic;
 }
-
-/* Data table inside article prose */
-.ks-prose table {
-  width: 100%;
-  border-collapse: collapse;
-  margin: 32px 0;
-  font-size: 14px;
-  font-variant-numeric: tabular-nums;
-}
-.ks-prose table thead th {
-  text-align: left;
-  font-weight: 500;
-  font-size: 11px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--warm-grey-85);
-  padding: 12px 14px;
-  border-bottom: 1px solid var(--warm-grey-75);
-}
-.ks-prose table tbody td {
-  padding: 14px;
-  border-bottom: var(--hairline);
-  color: var(--warm-grey-85);
-}
-.ks-prose table tbody tr:hover td { background: var(--accent-faint); }
-.ks-prose table tbody td:first-child { color: var(--warm-grey); font-weight: 500; }
 
 /* ============================================================
    BLOG · Editorial MDX components  (.ae-*)
@@ -8338,14 +8216,6 @@ h1, h2, h3 {
   text-wrap: pretty;
 }
 .ed-body .lead .italic { font-style: italic; font-weight: 300; color: var(--warm-grey-85); }
-.ed-body p {
-  font-size: 16px;
-  color: var(--warm-grey-85);
-  line-height: 1.65;
-  margin-bottom: 18px;
-  max-width: 62ch;
-}
-.ed-body p strong { color: var(--warm-grey); font-weight: 500; }
 
 /* Megler card */
 .ed-megler {
