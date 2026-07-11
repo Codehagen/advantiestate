@@ -162,12 +162,14 @@ describe("submitCityLead", () => {
   it("propagates a subscribe() failure to the caller", async () => {
     subscribeMock.mockResolvedValueOnce({
       ok: false,
-      error: "Tjenesten er midlertidig utilgjengelig.",
+      error:
+        "Tjenesten er midlertidig utilgjengelig. Prøv igjen om litt, eller ring oss på +47 984 53 571.",
     })
     const result = await submitCityLead(leadForm())
     expect(result).toEqual({
       ok: false,
-      error: "Tjenesten er midlertidig utilgjengelig.",
+      error:
+        "Tjenesten er midlertidig utilgjengelig. Prøv igjen om litt, eller ring oss på +47 984 53 571.",
     })
   })
 

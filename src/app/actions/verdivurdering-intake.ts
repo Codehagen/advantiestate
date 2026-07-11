@@ -53,7 +53,10 @@ export async function subscribeVerdivurderingIntake(
     intakeSource: String(formData.get("intakeSource") ?? ""),
   })
   if (!parsed.success) {
-    return { ok: false, error: "Fyll ut alle påkrevde felt." }
+    return {
+      ok: false,
+      error: "Fyll ut e-post, eiendomstype, sted og formål for å sende forespørselen.",
+    }
   }
   const d = parsed.data
 

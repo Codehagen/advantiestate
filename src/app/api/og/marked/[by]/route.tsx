@@ -44,7 +44,7 @@ export async function GET(
   // user-controlled text is ever rendered into the credited graphic.
   const city = LATEST_RELEASE.cities.find((c) => c.id === by)
   if (!city) {
-    return new Response("Not found", { status: 404 })
+    return new Response("Fant ikke byen.", { status: 404 })
   }
 
   // All display strings derived from validated numeric city data (never raw param).
@@ -361,6 +361,6 @@ export async function GET(
   } catch (e: unknown) {
     const msg = e instanceof Error ? e.message : "unknown"
     console.error(`Failed to generate market OG image for "${by}": ${msg}`)
-    return new Response(`Failed to generate OG image: ${msg}`, { status: 500 })
+    return new Response("Kunne ikke generere bildet.", { status: 500 })
   }
 }

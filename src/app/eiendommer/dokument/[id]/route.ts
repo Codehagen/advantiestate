@@ -25,7 +25,10 @@ export async function GET(
 ) {
   const { id } = await params
   const supabase = getSupabase()
-  if (!supabase) return new NextResponse("Not available", { status: 503 })
+  if (!supabase) return new NextResponse(
+      "Tjenesten er midlertidig utilgjengelig. Prøv igjen om litt, eller ring oss på +47 984 53 571.",
+      { status: 503 },
+    )
 
   const { data } = await supabase
     .from("crm_property_listing_downloads")
@@ -39,11 +42,17 @@ export async function GET(
 
   // Open, published downloads only — never NDA rows, never unapproved/missing.
   if (!row || !row.public_approved || row.requires_nda || !row.storage_path) {
-    return new NextResponse("Not found", { status: 404 })
+    return new NextResponse(
+      "Dokumentet er ikke tilgjengelig. Det kan være fjernet, eller det krever en signert avtale. Ring oss på +47 984 53 571, så hjelper vi deg.",
+      { status: 404 },
+    )
   }
 
   const base = (process.env.SUPABASE_URL ?? "").replace(/\/+$/, "")
-  if (!base) return new NextResponse("Not available", { status: 503 })
+  if (!base) return new NextResponse(
+      "Tjenesten er midlertidig utilgjengelig. Prøv igjen om litt, eller ring oss på +47 984 53 571.",
+      { status: 503 },
+    )
   const url = `${base}/storage/v1/object/public/${PUBLIC_BUCKET}/${row.storage_path}`
 
   return NextResponse.redirect(url, {

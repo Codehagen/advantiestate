@@ -138,7 +138,9 @@ export default async function BlogCategory({
           {articles.length === 0 && (
             <p className="mi-footnote" style={{ borderTop: 0 }}>
               <span className="source">
-                Ingen artikler i denne kategorien ennå. Kom tilbake snart.
+                Ingen artikler i denne kategorien ennå. Se{" "}
+                <Link href="/blog">alle innleggene i bloggen</Link> mens vi
+                fyller på.
               </span>
             </p>
           )}

@@ -116,7 +116,11 @@ export async function subscribe(input: SubscribeInput): Promise<SubscribeResult>
     console.error(
       "subscribe(): no destinations configured (Resend, Discord, Supabase all unset).",
     )
-    return { ok: false, error: "Tjenesten er midlertidig utilgjengelig." }
+    return {
+      ok: false,
+      error:
+        "Tjenesten er midlertidig utilgjengelig. Prøv igjen om litt, eller ring oss på +47 984 53 571.",
+    }
   }
 
   const results: DestinationResult[] = []
@@ -240,7 +244,11 @@ export async function subscribe(input: SubscribeInput): Promise<SubscribeResult>
     console.error(
       `subscribe(): all configured destinations failed for source "${input.source}".`,
     )
-    return { ok: false, error: "Tjenesten er midlertidig utilgjengelig." }
+    return {
+      ok: false,
+      error:
+        "Tjenesten er midlertidig utilgjengelig. Prøv igjen om litt, eller ring oss på +47 984 53 571.",
+    }
   }
 
   if (HIGH_INTENT.includes(input.source)) {
@@ -251,7 +259,11 @@ export async function subscribe(input: SubscribeInput): Promise<SubscribeResult>
       console.error(
         `subscribe(): high-intent lead had no durable destination for source "${input.source}".`,
       )
-      return { ok: false, error: "Tjenesten er midlertidig utilgjengelig." }
+      return {
+      ok: false,
+      error:
+        "Tjenesten er midlertidig utilgjengelig. Prøv igjen om litt, eller ring oss på +47 984 53 571.",
+    }
     }
   }
 

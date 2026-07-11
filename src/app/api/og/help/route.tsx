@@ -8,9 +8,10 @@ export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url)
 
-    const title = searchParams.get("title") || "Help Center"
+    const title = searchParams.get("title") || "Kunnskapsbase"
     const summary =
-      searchParams.get("summary") || "Learn more about our platform"
+      searchParams.get("summary") ||
+      "Lær mer om Advanti og næringseiendom i Nord-Norge."
 
     return new ImageResponse(
       (
@@ -113,7 +114,7 @@ export async function GET(req: NextRequest) {
     )
   } catch (e: any) {
     console.error(`Failed to generate OG image: ${e.message}`)
-    return new Response(`Failed to generate OG image: ${e.message}`, {
+    return new Response("Kunne ikke generere bildet.", {
       status: 500,
     })
   }
