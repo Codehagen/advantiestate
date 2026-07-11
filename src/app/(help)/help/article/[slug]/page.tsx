@@ -226,7 +226,7 @@ export default async function HelpArticle({
                 </div>
               )}
 
-              <MDX typography="typeset" code={data.mdx} images={images} />
+              <MDX code={data.mdx} images={images} />
 
               {data.faq && data.faq.length >= 2 && (
                 <div className="ks-faq">

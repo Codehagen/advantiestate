@@ -167,7 +167,7 @@ export default async function PersonPage({ params }: PersonPageProps) {
         <div className="wrap">
           <div className="pe-body">
             {/* MAIN */}
-            <article className="pe-main">
+            <article className="pe-main typeset typeset-docs">
               <PersonMDX code={person.mdx} />
 
               {person.specializations.length > 0 && (

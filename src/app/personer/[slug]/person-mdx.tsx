@@ -21,8 +21,8 @@ const CustomLink = (props: any) => {
   return <a target="_blank" rel="noopener noreferrer" {...props} />;
 };
 
-// Plain elements so the editorial `.pe-main` typography from the design
-// stylesheet applies (h2 / p / ul styling defined globally).
+// Plain elements so the shared `typeset typeset-docs` typography on the
+// `.pe-main` wrapper applies (h2 / p / ul styled by the typeset layer).
 const components = {
   a: (props: any) => <CustomLink {...props} />,
 };
