@@ -62,7 +62,7 @@ export async function submitCityLead(
     return { ok: false, error: "Fyll ut navn, telefon og e-post." }
   }
   if (type && !(PROPERTY_TYPES as readonly string[]).includes(type)) {
-    return { ok: false, error: "Ugyldig eiendomstype." }
+    return { ok: false, error: "Velg en gyldig eiendomstype fra listen." }
   }
 
   const result = await subscribe({

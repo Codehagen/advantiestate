@@ -1,9 +1,8 @@
 import type { ReactNode } from "react";
 
 /**
- * Wrapper that applies the editorial long-form prose styling (`.ks-prose`
- * from the design system). Used by help articles and customer case studies
- * in Phase 2 to host rendered MDX.
+ * Wrapper that applies shadcn typeset typography to rendered MDX.
+ * Used by the location (næringsmegler) pages.
  */
 export function ProseShell({
   children,
@@ -13,7 +12,11 @@ export function ProseShell({
   className?: string;
 }) {
   return (
-    <div className={className ? `ks-prose ${className}` : "ks-prose"}>
+    <div
+      className={
+        className ? `typeset typeset-docs ${className}` : "typeset typeset-docs"
+      }
+    >
       {children}
     </div>
   );

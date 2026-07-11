@@ -653,9 +653,12 @@ interface MDXProps {
   code: string
   images?: { alt: string; src: string; blurDataURL: string }[]
   className?: string
+  /** "editorial" = .ks-prose design-system typography (default, used by
+   *  kunder/integrasjoner/eiendommer); "typeset" = shadcn typeset (blog/help). */
+  typography?: "editorial" | "typeset"
 }
 
-export function MDX({ code, images, className }: MDXProps) {
+export function MDX({ code, images, className, typography = "editorial" }: MDXProps) {
   const MDXImage = (props: any) => {
     const blurDataURL = images
       ? images.find((image) => image.src === props.src)?.blurDataURL
@@ -667,7 +670,11 @@ export function MDX({ code, images, className }: MDXProps) {
   return (
     <article
       data-mdx-container
-      className={cx("ks-prose max-w-none", className)}
+      className={cx(
+        typography === "typeset" ? "typeset typeset-docs" : "ks-prose",
+        "max-w-none",
+        className,
+      )}
     >
       <MDXContent
         code={code}

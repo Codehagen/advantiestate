@@ -23,7 +23,9 @@ export function FargeKopier() {
       await navigator.clipboard.writeText(hex)
       melding = `${hex} kopiert`
     } catch {
-      // clipboard avslått — vis HEX-koden i toasten så den kan skrives av
+      // clipboard avslått — si fra at den ikke ble kopiert, og vis HEX-koden
+      // så den kan skrives av manuelt
+      melding = `Kopier manuelt: ${hex}`
     }
     setToast(melding)
     if (timer.current) clearTimeout(timer.current)

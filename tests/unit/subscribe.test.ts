@@ -111,7 +111,8 @@ describe("subscribe", () => {
 
     expect(result).toEqual({
       ok: false,
-      error: "Tjenesten er midlertidig utilgjengelig.",
+      error:
+        "Tjenesten er midlertidig utilgjengelig. Prøv igjen om litt, eller ring oss på +47 984 53 571.",
     })
   })
 

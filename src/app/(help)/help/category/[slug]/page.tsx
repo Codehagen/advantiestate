@@ -136,7 +136,8 @@ export default async function HelpCategory({
           {/* ARTICLES LIST */}
           {articles.length === 0 ? (
             <p className="ks-art-lede">
-              Ingen artikler i denne kategorien ennå. Kom tilbake snart.
+              Ingen artikler i denne kategorien ennå. Se{" "}
+              <Link href="/help">hele hjelpesenteret</Link> mens vi fyller på.
             </p>
           ) : (
             <div className="ks-articles">

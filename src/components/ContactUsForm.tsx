@@ -42,12 +42,12 @@ export default function ContactUsForm() {
       return;
     }
     if (!service?.trim()) {
-      setError("Vennligst velg hvilken tjeneste henvendelsen gjelder.");
+      setError("Velg hvilken tjeneste henvendelsen gjelder.");
       return;
     }
     // Basic email validation (can be more sophisticated)
     if (!/\S+@\S+\.\S+/.test(email)) {
-      setError("Vennligst oppgi en gyldig e-postadresse.");
+      setError("Oppgi en gyldig e-postadresse.");
       return;
     }
 
@@ -73,10 +73,15 @@ export default function ContactUsForm() {
         setMessage("");
         trackContactSubmitted();
       } else {
-        setError(result.error || "Innsending feilet. Vennligst prøv igjen.");
+        setError(
+          result.error ||
+            "Vi fikk ikke sendt henvendelsen. Prøv igjen om litt, eller ring oss på +47 984 53 571.",
+        );
       }
     } catch {
-      setError("En uventet feil oppstod. Vennligst prøv igjen.");
+      setError(
+        "Noe gikk galt, og henvendelsen ble ikke sendt. Prøv igjen om litt, eller ring oss på +47 984 53 571.",
+      );
     } finally {
       setIsSubmitting(false);
       submitting.current = false;

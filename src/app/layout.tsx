@@ -7,7 +7,7 @@ import { Nav } from "@/components/site/Nav";
 import { navGroups } from "@/lib/navigation";
 import { baseMetadata } from "@/lib/utils";
 import type { Viewport } from "next";
-import { Inter } from "next/font/google";
+import { Geist, Geist_Mono, Inter } from "next/font/google";
 import StructuredData from "@/components/StructuredData";
 import "./globals.css";
 
@@ -19,6 +19,18 @@ const inter = Inter({
   display: "swap",
   style: ["normal", "italic"],
   variable: "--font-inter",
+});
+
+// typeset (shadcn) fonts — only consumed inside .typeset-docs containers,
+// site-wide type stays on Inter per DESIGN.md.
+const geist = Geist({
+  subsets: ["latin"],
+  variable: "--font-geist",
+});
+
+const geistMono = Geist_Mono({
+  subsets: ["latin"],
+  variable: "--font-geist-mono",
 });
 
 // Site-wide metadata defaults. Every real page overrides these via
@@ -37,7 +49,7 @@ export default async function RootLayout({
   return (
     <html
       lang="nb"
-      className={inter.variable}
+      className={`${inter.variable} ${geist.variable} ${geistMono.variable}`}
       data-scroll-behavior="smooth"
     >
       <head>
