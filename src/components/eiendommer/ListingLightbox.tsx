@@ -64,25 +64,148 @@ export function ListingLightbox({
   }, [next, prev]);
 
   // Pointer swipe + tap-to-close on the image stage. Horizontal-dominant drag
-  // (>50px, |dx|>|dy|) pages; a near-stationary tap dismisses; anything else
-  // (vertical drag) is ignored.
-  const start = useRef<{ x: number; y: number } | null>(null);
-  const onPointerDown = (e: React.PointerEvent) => {
-    start.current = { x: e.clientX, y: e.clientY };
+  // follows the finger on the active slide; on release it advances on velocity
+  // (|dx|/ms > 0.11) or distance (>50px), otherwise springs back. A
+  // near-stationary tap dismisses; a vertical drag is ignored (native pan-y
+  // scroll). Reduced motion skips the finger-tracking and keeps the release-only
+  // threshold behaviour. Slides are pointer-events:none, so the stage owns the
+  // gesture — see .ed-lb-stage (touch-action: pan-y).
+  const SWIPE_DISTANCE = 50; // px — existing paging threshold
+  const SWIPE_VELOCITY = 0.11; // px/ms — flick dismissal
+  const AXIS_LOCK = 8; // px — intent before locking horizontal/vertical
+  const TAP_SLOP = 10; // px — near-stationary tap
+  const SPRING = "transform 220ms cubic-bezier(0.22, 1, 0.36, 1)";
+
+  const stageRef = useRef<HTMLDivElement | null>(null);
+  // Per-move state lives in refs so pointermove never triggers a re-render.
+  const start = useRef<{ x: number; y: number; t: number } | null>(null);
+  const axis = useRef<"h" | "v" | null>(null);
+  const dragged = useRef<HTMLElement | null>(null);
+  const springTimer = useRef<number | null>(null);
+
+  const reducedMotion = () =>
+    typeof window !== "undefined" &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  const activeSlide = () =>
+    stageRef.current?.querySelector<HTMLElement>(".ed-lb-slide.is-active") ??
+    null;
+
+  // Strip the inline drag styles off whichever slide we last touched. Uses the
+  // stored ref (not a fresh query) so it targets the right node even after the
+  // window re-renders on advance.
+  const clearDrag = () => {
+    const el = dragged.current;
+    if (el) {
+      el.style.transition = "";
+      el.style.transform = "";
+    }
+    dragged.current = null;
   };
+
+  const onPointerDown = (e: React.PointerEvent) => {
+    if (springTimer.current) {
+      window.clearTimeout(springTimer.current);
+      springTimer.current = null;
+    }
+    clearDrag();
+    start.current = { x: e.clientX, y: e.clientY, t: e.timeStamp };
+    axis.current = null;
+  };
+
+  const onPointerMove = (e: React.PointerEvent) => {
+    const s = start.current;
+    if (!s || reducedMotion()) return;
+    const dx = e.clientX - s.x;
+    const dy = e.clientY - s.y;
+    if (axis.current === null) {
+      if (Math.abs(dx) < AXIS_LOCK && Math.abs(dy) < AXIS_LOCK) return;
+      axis.current = Math.abs(dx) > Math.abs(dy) ? "h" : "v";
+      if (axis.current === "h") {
+        const el = activeSlide();
+        if (el) {
+          dragged.current = el;
+          try {
+            e.currentTarget.setPointerCapture(e.pointerId);
+          } catch {
+            /* pointer capture is best-effort */
+          }
+        }
+      }
+    }
+    if (axis.current !== "h" || !dragged.current) return;
+    // Rubber-band when dragging past the first/last slide.
+    const atEnd =
+      (index === 0 && dx > 0) || (index === count - 1 && dx < 0);
+    const offset = atEnd ? dx * 0.3 : dx;
+    dragged.current.style.transition = "none";
+    dragged.current.style.transform = `translateX(${offset}px)`;
+  };
+
   const onPointerUp = (e: React.PointerEvent) => {
     const s = start.current;
     start.current = null;
+    const wasHorizontal = axis.current === "h";
+    axis.current = null;
     if (!s) return;
     const dx = e.clientX - s.x;
     const dy = e.clientY - s.y;
-    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) {
+
+    // Reduced motion: original release-only threshold behaviour, no follow.
+    if (reducedMotion()) {
+      if (Math.abs(dx) > SWIPE_DISTANCE && Math.abs(dx) > Math.abs(dy)) {
+        if (dx < 0) next();
+        else prev();
+      } else if (Math.abs(dx) < TAP_SLOP && Math.abs(dy) < TAP_SLOP) {
+        onClose();
+      }
+      return;
+    }
+
+    // Non-horizontal gesture: tap-to-close, else ignore (vertical scroll).
+    if (!wasHorizontal) {
+      if (Math.abs(dx) < TAP_SLOP && Math.abs(dy) < TAP_SLOP) onClose();
+      clearDrag();
+      return;
+    }
+
+    const elapsed = Math.max(1, e.timeStamp - s.t);
+    const velocity = Math.abs(dx) / elapsed;
+    const wantsAdvance =
+      velocity > SWIPE_VELOCITY || Math.abs(dx) > SWIPE_DISTANCE;
+    const canAdvance =
+      (dx > 0 && index > 0) || (dx < 0 && index < count - 1);
+
+    if (wantsAdvance && canAdvance) {
+      // Drop the drag transform instantly; the 180ms .ed-lb-slide cross-fade
+      // handles the actual swap (opacity out on the old slide, in on the new).
+      clearDrag();
       if (dx < 0) next();
       else prev();
-    } else if (Math.abs(dx) < 10 && Math.abs(dy) < 10) {
-      onClose();
+      return;
+    }
+
+    // Not enough to advance (or blocked at an end): spring back to centre, then
+    // clean up the inline styles once the transition has settled.
+    const el = dragged.current;
+    if (el) {
+      el.style.transition = SPRING;
+      el.style.transform = "translateX(0)";
+      springTimer.current = window.setTimeout(() => {
+        clearDrag();
+        springTimer.current = null;
+      }, 240);
+    } else {
+      clearDrag();
     }
   };
+
+  // Clear any pending spring-cleanup timer if the lightbox unmounts mid-drag.
+  useEffect(() => {
+    return () => {
+      if (springTimer.current) window.clearTimeout(springTimer.current);
+    };
+  }, []);
 
   // Keep the active thumbnail scrolled into view.
   const activeThumb = (el: HTMLButtonElement | null) => {
@@ -116,8 +239,10 @@ export function ListingLightbox({
           </div>
 
           <div
+            ref={stageRef}
             className="ed-lb-stage"
             onPointerDown={onPointerDown}
+            onPointerMove={onPointerMove}
             onPointerUp={onPointerUp}
           >
             {windowIdx.map((i) => (
