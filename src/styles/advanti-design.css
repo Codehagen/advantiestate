@@ -2170,6 +2170,27 @@ h1, h2, h3 {
 .faq details {
   border-bottom: var(--hairline);
 }
+/* Progressive enhancement: animate open/close via ::details-content while
+   keeping native <details> semantics. Browsers without interpolate-size keep
+   today's instant snap (no broken half-states). Mirrors the
+   .nav-mobile-group-children rhythm — height 250ms ease, opacity trailing 50ms. */
+@supports (interpolate-size: allow-keywords) {
+  .faq details { interpolate-size: allow-keywords; }
+  .faq details::details-content {
+    block-size: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: block-size 250ms ease, opacity 200ms ease 50ms,
+      content-visibility 250ms allow-discrete;
+  }
+  .faq details[open]::details-content {
+    block-size: auto;
+    opacity: 1;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .faq details::details-content { transition: opacity 200ms ease; }
+  }
+}
 .faq summary {
   list-style: none;
   cursor: pointer;
@@ -2195,11 +2216,14 @@ h1, h2, h3 {
   align-items: center;
   justify-content: center;
   color: var(--warm-grey-85);
-  transition: transform 0.25s ease, color 0.2s;
+  transition: transform 200ms ease, color 0.2s;
 }
 .faq details[open] summary { color: var(--warm-grey); }
-.faq details[open] summary::after { content: "−"; }
+.faq details[open] summary::after { transform: rotate(45deg); }
 .faq summary:hover { color: var(--warm-grey-85); }
+@media (prefers-reduced-motion: reduce) {
+  .faq summary::after { transition: none; }
+}
 .faq .a {
   padding: 0 0 32px;
   font-size: 16px;
@@ -2675,6 +2699,53 @@ h1, h2, h3 {
   color: var(--accent);
   margin-bottom: 16px;
   line-height: 1;
+}
+
+/*
+ * Suksess-entré — delt mekanisme for form→suksess-bytte.
+ * Brukes av .form-success (verdivurdering-skjema) og .success-enter
+ * (modalenes isSuccess-visning). @starting-style trigger på første
+ * render når elementet monteres betinget i React — ingen JS.
+ * Delight-budsjett: en sjelden, høy-emosjon (lead sendt). Kun opacity/transform.
+ */
+.form-success,
+.success-enter {
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    opacity 300ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 300ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.form-success .check,
+.success-enter .success-check {
+  transition:
+    opacity 300ms cubic-bezier(0.22, 1, 0.36, 1) 80ms,
+    transform 300ms cubic-bezier(0.22, 1, 0.36, 1) 80ms;
+}
+@starting-style {
+  .form-success,
+  .success-enter,
+  .form-success .check,
+  .success-enter .success-check {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .form-success,
+  .success-enter,
+  .form-success .check,
+  .success-enter .success-check {
+    transform: none;
+  }
+  @starting-style {
+    .form-success,
+    .success-enter,
+    .form-success .check,
+    .success-enter .success-check {
+      transform: none;
+    }
+  }
 }
 
 /* Aside — «Hva du får»-kort */
@@ -7914,10 +7985,23 @@ h1, h2, h3 {
   background: rgba(22, 20, 18, 0.94);
   backdrop-filter: blur(4px);
 }
+/* Enter animation only — Radix unmounts on close, so there is no honest exit
+   frame to animate without forceMount. Overlay fades; content fades + settles
+   from a near-1 scale (never from 0). */
+.ed-lb-overlay[data-state="open"] {
+  animation: ed-lb-fade-in 200ms ease;
+}
+@keyframes ed-lb-fade-in {
+  from { opacity: 0; }
+}
+@keyframes ed-lb-content-in {
+  from { opacity: 0; transform: scale(0.97); }
+}
 .ed-lightbox {
   position: fixed;
   inset: 0;
   z-index: 1001;
+  animation: ed-lb-content-in 220ms cubic-bezier(0.22, 1, 0.36, 1);
   display: flex;
   flex-direction: column;
   height: 100dvh;
@@ -8038,6 +8122,8 @@ h1, h2, h3 {
 }
 @media (prefers-reduced-motion: reduce) {
   .ed-lb-slide { transition: none; }
+  /* Opacity-only entrance: no scale settle. */
+  .ed-lightbox { animation-name: ed-lb-fade-in; }
 }
 
 /* Title block */

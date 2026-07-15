@@ -97,8 +97,8 @@ export default function LeaseRequestModal({
 
         {/* Success State */}
         {isSuccess ? (
-          <div className="flex flex-col items-center justify-center px-6 py-12">
-            <div className="mb-4 rounded-full bg-green-100 p-4">
+          <div className="success-enter flex flex-col items-center justify-center px-6 py-12">
+            <div className="success-check mb-4 rounded-full bg-green-100 p-4">
               <RiCheckLine className="h-8 w-8 text-green-600" />
             </div>
             <h3 className="text-xl font-semibold text-warm-grey">
