@@ -14,6 +14,60 @@ const nextConfig = {
     // See PERFORMANCE_PLAN.md Phase 2.3.
     optimizePackageImports: ["@remixicon/react"],
   },
+  // acceptmarkdown.com content negotiation: the same URL serves HTML to browsers
+  // and markdown to agents that ask for it. `beforeFiles` (not the default
+  // `afterFiles`) is required — afterFiles rewrites only run when no route
+  // matched, and every path we want to negotiate already has a page.
+  //
+  // The negative lookahead keeps the rewrite off /api, /_next and the
+  // machine-readable files that already have their own content type
+  // (sitemap.xml, robots.txt, llms.txt, markedstall.csv, images).
+  async rewrites() {
+    const acceptsMarkdown = {
+      type: "header",
+      key: "accept",
+      value: "(.*)text/markdown(.*)",
+    };
+    const NOT_ASSET =
+      "(?!api/|_next/|.*\\.(?:xml|txt|csv|json|ico|png|jpg|jpeg|webp|avif|svg|pdf|xsl)$)";
+
+    return {
+      beforeFiles: [
+        { source: "/", has: [acceptsMarkdown], destination: "/api/md" },
+        {
+          source: `/:path(${NOT_ASSET}.*)`,
+          has: [acceptsMarkdown],
+          destination: "/api/md/:path",
+        },
+        // Explicit .md suffix — the convention agents reach for when they can't
+        // set headers. No Accept condition; the suffix is the request.
+        {
+          source: "/:path((?!api/|_next/).*\\.md)",
+          destination: "/api/md/:path",
+        },
+        // llmstxt.org publishes at /llms.txt; the well-known registry mirrors it
+        // at /.well-known/llms.txt. Serve one document from both, so an agent
+        // that only knows one convention still finds it.
+        { source: "/.well-known/llms.txt", destination: "/llms.txt" },
+      ],
+      afterFiles: [],
+      fallback: [],
+    };
+  },
+  // No `headers()` entry for `Vary: Accept` on the HTML side, and that is a
+  // measured decision rather than an omission. Next.js sets `Vary` on every
+  // App Router page response itself (rsc, next-router-state-tree, …) and that
+  // write lands after custom headers, so a config-level `Vary` is silently
+  // dropped — verified locally with a probe header, which *did* survive on the
+  // same rule. The markdown representation sets `Vary: Accept` on its own
+  // Response in src/app/api/md, which is the header an Accept-negotiating
+  // client actually reads.
+  //
+  // Cache correctness does not depend on it either: the negotiation happens as
+  // a `has`-conditioned rewrite, so the markdown variant resolves to a
+  // different route (/api/md/*) and therefore a different CDN cache key than
+  // the HTML. The two representations cannot collide the way they would with
+  // same-URL negotiation.
   async redirects() {
     return [
       {
@@ -41,6 +95,23 @@ const nextConfig = {
         ],
         destination: "https://www.advantiestate.no/:path*",
         permanent: true,
+      },
+      // English trust-anchor aliases. The site is Norwegian, so /om-oss and
+      // /kontakt stay canonical — but agents (and is-agentic's trust-anchor
+      // check) probe /about and /contact by convention. A permanent redirect
+      // answers them without creating a duplicate-content twin.
+      // 301 rather than `permanent: true` (which emits 308) on purpose: these
+      // two are probed by third-party agents and crawlers whose HTTP clients
+      // handle 301 universally, while 308 support is patchier.
+      {
+        source: "/about",
+        destination: "/om-oss",
+        statusCode: 301,
+      },
+      {
+        source: "/contact",
+        destination: "/kontakt",
+        statusCode: 301,
       },
       {
         source: "/tjenester/verdsettelse",

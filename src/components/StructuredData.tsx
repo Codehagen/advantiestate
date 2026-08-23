@@ -118,6 +118,27 @@ export default function StructuredData({
             "Advanti tilbyr ekspertise innen kjøp, salg, utleie, verdivurdering og strategisk rådgivning for næringseiendom i Nord-Norge.",
           email: contact.email,
           telephone: contact.phone,
+          // contactPoint in addition to the flat email/telephone above: the
+          // flat fields say how to reach the company, contactPoint says which
+          // channel serves which purpose and in what language. Consumers that
+          // answer "how do I contact them" read contactPoint, not telephone.
+          contactPoint: [
+            {
+              "@type": "ContactPoint",
+              contactType: "sales",
+              telephone: contact.phone,
+              email: contact.email,
+              areaServed: "NO",
+              availableLanguage: ["Norwegian", "English"],
+            },
+            {
+              "@type": "ContactPoint",
+              contactType: "customer support",
+              email: contact.email,
+              areaServed: "NO",
+              availableLanguage: ["Norwegian", "English"],
+            },
+          ],
           address: {
             "@type": "PostalAddress",
             streetAddress: contact.address.streetAddress,
