@@ -28,6 +28,7 @@ done.
 | 017  | PR #74 calculator hardening: extract+test the yield/valuation math, dedup shared markup, clamp storage, trim duplicate CTA, SEO slug decision | tests/tech-debt/UX | S–M | — | DONE (`feat/verdivurdering-yield-kalkulator`; 5 findings planned+fixed in one session; `yieldCalc.ts`+18 tests → 206 total; build green) |
 | 018  | Yield-kalkulator v2 (editorial) + calculator step-mark contrast fix | design/UX | S–M | — | DONE (landed via `feat/verktoy` commits `d9da6e3` redigerbar yield + `ff2ea4a` rullende yield-felt + lesbar lenkefarge; older free-form plan format) |
 | 019  | Remove the orphaned onboarding server actions (dead code: `submitOnboarding` + `searchOrganization`, zero callers) | tech-debt | S | — | DONE (executor on `advisor/019-remove-dead-onboarding`, commit `da3cd4e`; reviewer-APPROVED: 182-line pure deletion, scope clean, build + 214 unit tests green. NOT merged — branch based on `cfb607a`, rebase/cherry-pick onto `feat/forside-faq` before merge) |
+| 020  | Agent-readiness-loop mot is-agentic.com (scan → fiks → deploy → rescan); baseline 83/100, 4 åpne funn | P2 | M | — | PLANNED (plans/020-agentic-readiness-loop.md, baseline @ `480782c`, 2026-08-23) |
 
 Status values: TODO | IN PROGRESS | DONE | BLOCKED (with one-line reason) | REJECTED (with one-line rationale)
 

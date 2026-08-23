@@ -13,6 +13,7 @@ import {
   getServiceCityLocation,
 } from "@/lib/service-cities";
 import { RELEASES } from "@/components/markedsinnsikt/marketReleases";
+import { SERVICE_PAGES } from "@/lib/servicePages";
 
 // llmstxt.org-compliant Markdown for AI engines (ChatGPT, Claude, Perplexity,
 // Google AI Overviews). Hand-curated section headings + descriptions; auto-listed
@@ -23,48 +24,7 @@ import { RELEASES } from "@/components/markedsinnsikt/marketReleases";
 // a newly published mandate is exposed to AI engines without a redeploy.
 export const revalidate = 600;
 
-const SERVICES: Array<{
-  path: string;
-  title: string;
-  description: string;
-}> = [
-  {
-    path: "/tjenester/salg",
-    title: "Salg av næringseiendom",
-    description:
-      "Salgsprosess fra verdivurdering til oppgjør. Åpen eller diskré markedsføring; resultatbasert honorar.",
-  },
-  {
-    path: "/tjenester/utleie",
-    title: "Utleie av næringseiendom",
-    description:
-      "Utleie av kontor, butikk og lager. Leietakerstrategi, markedsføring og kontraktsforhandling.",
-  },
-  {
-    path: "/tjenester/verdivurdering",
-    title: "Verdivurdering",
-    description:
-      "DCF-analyse, yield-beregning og markedsbaserte verdivurderinger av næringseiendom.",
-  },
-  {
-    path: "/tjenester/radgivning",
-    title: "Rådgivning",
-    description:
-      "Strategisk og transaksjonsrettet rådgivning for eiere og investorer i næringseiendom.",
-  },
-  {
-    path: "/tjenester/transaksjoner",
-    title: "Transaksjoner",
-    description:
-      "Due diligence, forhandling og strukturering av eiendomstransaksjoner.",
-  },
-  {
-    path: "/tjenester/strategisk-radgivning",
-    title: "Strategisk rådgivning",
-    description:
-      "Porteføljestrategi, exit-planlegging og langsiktig posisjonering i eiendomsmarkedet.",
-  },
-];
+const SERVICES = SERVICE_PAGES;
 
 function line(title: string, url: string, description?: string): string {
   return description
