@@ -13,6 +13,8 @@
 
 ## Status
 
+- **Status**: DONE — 83 → **100/100** (0 åpne funn), merget via PR #102 (`0f59700`),
+  prod-deploy 2026-08-23, verifisert med fersk scan `2026-08-23T11:23:46Z`.
 - **Priority**: P2 (høy ROI, lav risiko — men ikke inntektskritisk i seg selv)
 - **Effort**: M (Fase 0–1: S. Fase 2: M. Fase 3: L, valgfri.)
 - **Risk**: LOW→MEDIUM (Fase 2 rører middleware + cache-headere på hele sitet)
@@ -42,6 +44,16 @@ retrieve, understand, and use» — altså AI-agent-lesbarhet, ikke klassisk SEO
 
 **Viktig asymmetri**: MCP-en kan bare *lese* lagrede rapporter. Den kan ikke
 starte en scan. Derfor: CLI for å scanne, MCP for kontekst.
+
+**Fallgruve funnet under gjennomføring**: CLI-en starter *bare* en scan når det
+ikke finnes en lagret rapport for URL-en — finnes den, returnerer den cachen
+uten å si fra. Det finnes ingen offentlig API for å tvinge rescan (bekreftet i
+developer-docs: «Run a new scan from https://is-agentic.com/»). To veier videre:
+scanne en URL som aldri er skannet før (f.eks. en undersides-URL) for en rask
+fersk måling, eller klikke «Rescan» på rapportsiden for å friske opp den
+kanoniske rot-URL-en. Rescan tok ~10 min for dette sitet, og `/api/v1/report`
+serverte den gamle rapporten en stund etter at scannen faktisk var ferdig — så
+poll på `scanned_at`, ikke bare på `score`.
 
 ---
 
