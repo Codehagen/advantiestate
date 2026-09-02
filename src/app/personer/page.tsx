@@ -31,8 +31,8 @@ const PRESENTATION: Record<
     specialty: "Salg · Verdivurdering",
   },
   "ole-ostensen": {
-    office: "NHH · Bergen",
-    specialty: "Jus · DD",
+    office: "Bodø · Lofoten",
+    specialty: "Fagansvar · Eiendomsmegling",
   },
   "havard-nome": {
     office: "Alta",
