@@ -20,7 +20,7 @@ const OFFICE: Record<string, string> = {
   "christer-hagen": "Bodø",
   "mathias-nilssen": "Bodø",
   "daniel-adamsen": "Alta",
-  "ole-ostensen": "Bergen",
+  "ole-ostensen": "Bodø",
   "havard-nome": "Alta",
   "tobias-bronder": "Bodø",
 };
